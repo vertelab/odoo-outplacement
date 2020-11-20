@@ -2,7 +2,7 @@
     <data>
         <record id="outplacement_form_view" model="ir.ui.view">
             <field name="name">HR Job Seeker</field>
-            <field name="model">hr.jobseeker</field>
+            <field name="model">outplacement</field>
             <field name="arch" type="xml">
                 <form>
                     <header>
@@ -111,7 +111,7 @@
             <field name="name">Outplacement</field>
             <field name="model">outplacement</field>
             <field name="arch" type="xml">
-                <search string="Job Seeker">
+                <search string="Outplacement">
                     <field name="name"/>
                     <field name="employee_id"/>
                 </search>

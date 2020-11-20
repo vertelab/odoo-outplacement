@@ -11,11 +11,9 @@
     'depends': ['base', 'hr', 'mail'],
     'data': [
         'security/ir.model.access.csv',
-
         'views/menu_item.xml',
-        'views/job_seeker_view.xml',
-        'views/job_seeker_stage_view.xml',
-
+        'views/outplacement_stage_view.xml',
+        'views/outplacement_view.xml',
         'data/data.xml',
 
     ],

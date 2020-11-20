@@ -1,15 +1,15 @@
 <odoo>
     <data>
         <menuitem
-            id="parent_menu_hr_job_seeker"
-            name="Job Seeker"
+            id="parent_menu_outplacement"
+            name="Outplacement"
             groups="base.group_user"
             web_icon="hr_jobseeker,static/description/icon.png"
             sequence="75"/>
 
         <menuitem
-            id="hr_job_seeker_configuration"
-            parent="hr_jobseeker.parent_menu_hr_job_seeker"
+            id="outplacement_configuration"
+            parent="outplacement.parent_menu_outplacement"
             name="Configuration"
             groups="base.group_user"
             sequence="75"/>

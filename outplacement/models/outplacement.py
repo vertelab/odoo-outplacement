@@ -30,7 +30,8 @@ class JobSeeker(models.Model):
     date_begin = fields.Datetime(string="Start Date", required=True)
     date_end = fields.Datetime(string="End Date", required=True)
     color = fields.Integer('Kanban Color Index')
-
+    
+    # TODO!
     # Nils: Remove Image as we have no image of the jobseeker?
     # image: all image fields are base64 encoded and PIL-supported
     image = fields.Binary(
@@ -72,7 +73,7 @@ class JobSeeker(models.Model):
 
 
 class OutplacementStage(models.Model):
-    _name = 'Outplacement.stage'
+    _name = 'outplacement.stage'
     _description = 'Outplacement Stage'
 
     name = fields.Char(string="Name")

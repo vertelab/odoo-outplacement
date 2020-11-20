@@ -7,7 +7,7 @@ from odoo.exceptions import ValidationError, AccessError
 from odoo.modules.module import get_module_resource
 
 
-class JobSeeker(models.Model):
+class Outplacement(models.Model):
     _name = 'outplacement'
     _description = 'Outplacement'
     _inherit = ['mail.thread', 'mail.activity.mixin', 'resource.mixin']

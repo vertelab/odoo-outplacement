@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<data>
+
+    <record model="ir.ui.view" id="deviation_report_form">
+        <field name="name">Deviation Report</field>
+        <field name="model">outplacement.deviation.report.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="first_name"/>
+                        <field name="last_name"/>
+                        <field name="social_sec_nr"/>
+                        <field name="responsible_id"/>
+                        <field name="company_name"/>
+                        <field name="user_id"/>
+                    </group>
+                    <group>
+                        <field name="deviation_date"/>
+                        <field name="deviation_allday"/>
+                        <field name="deviation_timestart" widget="float_time"/>
+                        <field name="deviation_timeend" widget="float_time"/>
+                        <field name="deviation_reason"/>
+                    </group>
+                </group>
+                 <footer>
+                    <button name="action_send" type="object" string="Send" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window"
+            id="deviation_report_action">
+        <field name="name">Deviation Report</field>
+        <field name="res_model">outplacement.deviation.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</data>

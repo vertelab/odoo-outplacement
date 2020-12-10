@@ -211,10 +211,10 @@ class ClientConfig(models.Model):
                 "efternamn": outplacement.partner_id.lastname,
                 "deltog_per_distans": outplacement.meeting_remote
             },
-            "inskickad_datum": outplacement.jp_sent_date,
+            "inskickad_datum": str(outplacement.jp_sent_date),
             "innehall": []
         }
-        for task in sorted(outplacement.task_ids.sort, key=lambda field: field['activity_id']):
+        for task in sorted(outplacement.task_ids, key=lambda field: field['activity_id']):
             payload['innehall'].append({
                 'aktivitets_id': task.activity_id,
                 'aktivitets_namn': task.activity_name,

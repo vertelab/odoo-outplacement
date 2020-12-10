@@ -109,9 +109,18 @@ class ClientConfig(models.Model):
             url = self.url + '/' + path
         return url
 
-    def post_report(self):
+    def post_report(self, payload):
         querystring = {"client_secret": self.client_secret,
                        "client_id": self.client_id}
+        url = self.get_url('v1/gemensam-planering')
+        response = self.request_call(method="POST",
+                                     url=url,
+                                     payload=json.dumps(payload),
+                                     headers=self.get_headers(),
+                                     params=querystring)
+        return response
+
+    def test_post_report(self):
         payload = {
             "utforande_verksamhets_id": "10009858",
             "avrops_id": "A000000398768",
@@ -175,10 +184,40 @@ class ClientConfig(models.Model):
             ]
         }
 
-        url = self.get_url('v1/gemensam-planering')
-        response = self.request_call(method="POST",
-                                     url=url,
-                                     payload=json.dumps(payload),
-                                     headers=self.get_headers(),
-                                     params=querystring)
+        response = self.post_report(payload)
         print(response.text)
+
+    @api.model
+    def get_api(self):
+        return self.search([], limit=1)
+
+    @api.model
+    def post_request(self, outplacement, res_joint_planning_af_recordset):
+        res_join = res_joint_planning_af_recordset
+        api = self.get_api()
+        if 'department_ref' in outplacement.department_id:
+            dep_id = outplacement.department_id.department_ref
+        else:
+            dep_id = outplacement.department_id.ka_ref
+        payload = {
+            "utforande_verksamhets_id": dep_id,
+            "avrops_id": outplacement.name,
+            "genomforande_referens": outplacement.order_id.origin,
+            "ordernummer": outplacement.order_id.name,
+            "personnr": outplacement.partner_id.social_sec_nr_age,
+            "unikt_id": "1321",
+            "deltagare": {
+                "fornamn": outplacement.partner_id.firstname,
+                "efternamn": outplacement.partner_id.lastname,
+                "deltog_per_distans": outplacement.meeting_remote
+            },
+            "inskickad_datum": outplacement.jp_sent_date,
+            "innehall": []
+        }
+        for task in sorted(outplacement.task_ids.sort, key=lambda field: field['activity_id']):
+            payload['innehall'].append({
+                'aktivitets_id': task.activity_id,
+                'aktivitets_namn': task.activity_name,
+                'beskrivning': task.name,
+            })
+        api.post_report(payload)

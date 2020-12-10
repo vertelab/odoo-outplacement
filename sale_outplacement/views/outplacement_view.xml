@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+        <record id="outplacement_form_view" model="ir.ui.view">
+            <field name="name">Outplacement</field>
+            <field name="model">outplacement</field>
+            <field name="inherit_id" ref="outplacement.outplacement_form_view"/>
+            <field name="arch" type="xml">
+                <group position="after">
+                    <group>
+                        <group>
+                            <field name="booking_ref"/>
+                            <field name="participitation_rate"/>
+                            <field name="file_reference_number"/>
+                        </group>
+                        <group>
+                            <field name="service_start_date"/>
+                            <field name="service_end_date"/>
+                            <field name="order_close_date"/>
+                        </group>
+                    </group>
+                </group>
+            </field>
+        </record>
+
+    </data>
+</odoo>

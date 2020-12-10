@@ -109,71 +109,72 @@ class ClientConfig(models.Model):
             url = self.url + '/' + path
         return url
 
-    def post_report(self):
+    def post_report(self, payload):
         querystring = {"client_secret": self.client_secret,
                        "client_id": self.client_id}
-        payload = {
-            "utforande_verksamhets_id": "10009858",
-            "avrops_id": "A000000398768",
-            "genomforande_referens": "100000123",
-            "ordernummer": "MEET-1",
-            "personnr": "197608277278",
-            "unikt_id": "1321",
-            "deltagare": {
-                "fornamn": "John",
-                "efternamn": "Doe",
-                "deltog_per_distans": "yes"
-            },
-            "inskickad_datum": "2020-08-20",
-            "status": "SENT",
-            "innehall": [
-                {
-                    "aktivitets_id": "1",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test"
+        if not payload:
+            payload = {
+                "utforande_verksamhets_id": "10009858",
+                "avrops_id": "A000000398768",
+                "genomforande_referens": "100000123",
+                "ordernummer": "MEET-1",
+                "personnr": "197608277278",
+                "unikt_id": "1321",
+                "deltagare": {
+                    "fornamn": "John",
+                    "efternamn": "Doe",
+                    "deltog_per_distans": "yes"
                 },
-                {
-                    "aktivitets_id": "2",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 2"
-                },
-                {
-                    "aktivitets_id": "3",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 3"
-                },
-                {
-                    "aktivitets_id": "4",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 4"
-                },
-                {
-                    "aktivitets_id": "5",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 5"
-                },
-                {
-                    "aktivitets_id": "6",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 6"
-                },
-                {
-                    "aktivitets_id": "7",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 7"
-                },
-                {
-                    "aktivitets_id": "8",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 8"
-                },
-                {
-                    "aktivitets_id": "9",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 9"
-                }
-            ]
-        }
+                "inskickad_datum": "2020-08-20",
+                "status": "SENT",
+                "innehall": [
+                    {
+                        "aktivitets_id": "1",
+                        "aktivitets_namn": "KVL",
+                        "beskrivning": "test"
+                    },
+                    {
+                        "aktivitets_id": "2",
+                        "aktivitets_namn": "KVL",
+                        "beskrivning": "test 2"
+                    },
+                    {
+                        "aktivitets_id": "3",
+                        "aktivitets_namn": "KVL",
+                        "beskrivning": "test 3"
+                    },
+                    {
+                        "aktivitets_id": "4",
+                        "aktivitets_namn": "KVL",
+                        "beskrivning": "test 4"
+                    },
+                    {
+                        "aktivitets_id": "5",
+                        "aktivitets_namn": "KVL",
+                        "beskrivning": "test 5"
+                    },
+                    {
+                        "aktivitets_id": "6",
+                        "aktivitets_namn": "KVL",
+                        "beskrivning": "test 6"
+                    },
+                    {
+                        "aktivitets_id": "7",
+                        "aktivitets_namn": "KVL",
+                        "beskrivning": "test 7"
+                    },
+                    {
+                        "aktivitets_id": "8",
+                        "aktivitets_namn": "KVL",
+                        "beskrivning": "test 8"
+                    },
+                    {
+                        "aktivitets_id": "9",
+                        "aktivitets_namn": "KVL",
+                        "beskrivning": "test 9"
+                    }
+                ]
+            }
 
         url = self.get_url('v1/gemensam-planering')
         response = self.request_call(method="POST",

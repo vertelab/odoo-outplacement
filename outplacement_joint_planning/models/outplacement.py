@@ -23,6 +23,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
+from datetime import date
 
 
 class Outplacement(models.Model):
@@ -41,6 +42,7 @@ class Outplacement(models.Model):
                 _('Please, configure the configuration to send this report.'))
 
         for outplacement in self:
+            outplacement.jp_sent_date = date.today()
             joint_plannings = self.env['res.joint_planning'].search([])
             joint_planning_data = [{"aktivitets_id": joint_planning.activity_id,
                                     "aktivitets_namn": joint_planning.task_type,

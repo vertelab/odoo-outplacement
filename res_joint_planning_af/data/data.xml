@@ -1,0 +1,96 @@
+<odoo>
+    <data noupdate="1">
+
+        <record id="joint_planning_1" model="res.joint_planning">
+            <field name="name">Gruppskapande aktiviteter</field>
+            <field name="sequence">1</field>
+            <field name="task_type">mandatory</field>
+            <field name="activity_id">175</field>
+        </record>
+
+        <record id="joint_planning_2" model="res.joint_planning">
+            <field name="name">Val och framtidsplanering - deltagarens karriärplan</field>
+            <field name="sequence">1</field>
+            <field name="task_type">mandatory</field>
+            <field name="activity_id">176</field>
+        </record>
+
+        <record id="joint_planning_3" model="res.joint_planning">
+            <field name="name">Individuella karriärsvägledningssamtal</field>
+            <field name="sequence">1</field>
+            <field name="task_type">mandatory</field>
+            <field name="activity_id">177</field>
+        </record>
+
+        <record id="joint_planning_4" model="res.joint_planning">
+            <field name="name">Stöd till att bli antagen till kommunens insatser</field>
+            <field name="sequence">1</field>
+            <field name="task_type">mandatory</field>
+            <field name="activity_id">178</field>
+        </record>
+
+        <record id="joint_planning_5" model="res.joint_planning">
+            <field name="name">Självständigt arbete</field>
+            <field name="sequence">1</field>
+            <field name="task_type">mandatory</field>
+            <field name="activity_id">186</field>
+        </record>
+
+        <record id="joint_planning_6" model="res.joint_planning">
+            <field name="name">Studiebesök arbetsplatser</field>
+            <field name="sequence">1</field>
+            <field name="task_type">mandatory</field>
+            <field name="activity_id">180</field>
+        </record>
+
+        <record id="joint_planning_7" model="res.joint_planning">
+            <field name="name">Möte med förebilder</field>
+            <field name="sequence">1</field>
+            <field name="task_type">mandatory</field>
+            <field name="activity_id">181</field>
+        </record>
+
+        <record id="joint_planning_8" model="res.joint_planning">
+            <field name="name">Kunskap om arbetsmarknad, utbildningsvägar, studiefinansiering, omvärldsbev.</field>
+            <field name="sequence">1</field>
+            <field name="task_type">mandatory</field>
+            <field name="activity_id">182</field>
+        </record>
+
+        <record id="joint_planning_9" model="res.joint_planning">
+            <field name="name">Hälsa och stresshantering i förhållande till arbete och studier</field>
+            <field name="sequence">1</field>
+            <field name="task_type">mandatory</field>
+            <field name="activity_id">183</field>
+        </record>
+
+        <record id="joint_planning_10" model="res.joint_planning">
+            <field name="name">Rättigheter och skyldigheter i arbetslivet</field>
+            <field name="sequence">1</field>
+            <field name="task_type">optional</field>
+            <field name="activity_id">184</field>
+        </record>
+
+        <record id="joint_planning_11" model="res.joint_planning">
+            <field name="name">Digital kompetens</field>
+            <field name="sequence">1</field>
+            <field name="task_type">optional</field>
+            <field name="activity_id">185</field>
+        </record>
+
+        <record id="joint_planning_12" model="res.joint_planning">
+            <field name="name">Studiebesök utbildningsanordnare</field>
+            <field name="sequence">1</field>
+            <field name="task_type">optional</field>
+            <field name="activity_id">179</field>
+        </record>
+
+        <record id="joint_planning_13" model="res.joint_planning">
+            <field name="name">Studiebesök utbildningsanordnare</field>
+            <field name="sequence">1</field>
+            <field name="task_type">optional</field>
+            <field name="activity_id">187</field>
+        </record>
+
+    </data>
+</odoo>

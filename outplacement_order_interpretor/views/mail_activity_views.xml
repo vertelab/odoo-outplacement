@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="inerpretor" model="ir.ui.view">
+        <field name="name">mail.activity.form.inherit.calendar</field>
+        <field name="model">mail.activity</field>
+        <field name="inherit_id" ref="mail.mail_activity_view_form_popup"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_deadline']" position="attributes">
+                <attribute name="attrs">{'invisible': [('activity_category',
+                    '=', 'meeting')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('activity_category',
+                    '=', 'meeting')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_close_dialog']"
+                   position="attributes">
+                <attribute name="attrs">{'invisible': [('activity_category',
+                    '=', 'meeting')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_done']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|',
+                    ('activity_category', '=', 'meeting'), ('force_next', '=',
+                    True)]}
+                </attribute>
+            </xpath>
+            <xpath expr="//button[@special='cancel']" position="attributes">
+                <attribute name="attrs">{'invisible': [('activity_category',
+                    '=', 'meeting')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='note']" position="attributes">
+                <attribute name="attrs">{'invisible': [('activity_category',
+                    '=', 'meeting')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_close_dialog']"
+                   position="before">
+                <button string="Open Calendar"
+                        attrs="{'invisible': [('activity_category', '!=', 'meeting')]}"
+                        name="action_create_calendar_event"
+                        type="object"
+                        class="btn-primary"/>
+            </xpath>
+            <field name="summary" position="after">
+                <field name="location_type" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
+                <field name="phone" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
+                <field name="time_start" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
+                <field name="time_end" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
+            </field>
+            <field name="user_id" position="after">
+                <field name="interpreter_gender_preference" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
+                <field name="interpreter_language" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
+                <label for="street" string="Address" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
+                <div class="o_address_format" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}">
+                    <field name="street" placeholder="Street..."
+                           class="o_address_street"/>
+                    <field name="street2" placeholder="Street 2..."
+                           class="o_address_street"/>
+                    <field name="city" placeholder="City" class="o_address_city"/>
+                    <field name="state_id" class="o_address_state"
+                           placeholder="State"
+                           options="{&quot;no_open&quot;: True}"
+                           context="{'country_id': country_id, 'zip': zip}"/>
+                    <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                    <field name="country_id" placeholder="Country"
+                           class="o_address_country"
+                           options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                </div>
+            </field>
+        </field>
+    </record>
+
+</odoo>

@@ -109,7 +109,7 @@ class ClientConfig(models.Model):
             url = self.url + '/' + path
         return url
 
-    def post_report(self, ):
+    def post_report(self):
         querystring = {"client_secret": self.client_secret,
                        "client_id": self.client_id}
         payload = {

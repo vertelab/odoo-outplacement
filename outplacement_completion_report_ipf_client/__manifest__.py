@@ -24,9 +24,7 @@
     'name': 'IPF CompletionReport Client',
     'version': '12.0.0.0.1',
     'category': 'Tools',
-    'description': """
-
-""",
+    'description': """This module adds joint_planing (Gemensam planering) to Outplacement module.""",
 
     'author': "N-development",
     'license': 'AGPL-3',

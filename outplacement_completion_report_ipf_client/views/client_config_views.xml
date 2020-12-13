@@ -20,7 +20,7 @@
             <form>
                 <header>
                     <button class="btn-primary" type="object"
-                            string="POST" name="post_report"/>
+                            string="POST" name="test_post_report"/>
                 </header>
                 <sheet>
                     <group>

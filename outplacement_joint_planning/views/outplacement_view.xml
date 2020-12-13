@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="ir_actions_server_send_gp_to_bar" model="ir.actions.server">
+            <field name="name">Send GP to BAR</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_outplacement"/>
+            <field name="binding_model_id"
+                   ref="outplacement.model_outplacement"/>
+            <field name="state">code</field>
+            <field name="code">action = records.send_gp_to_bar()</field>
+        </record>
+
+        <record id="outplacement_form_view" model="ir.ui.view">
+            <field name="name">Outplacement</field>
+            <field name="model">outplacement</field>
+            <field name="inherit_id" ref="outplacement.outplacement_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='employee_id']" position="after">
+                    <field name="jp_sent_date" required="True"/>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

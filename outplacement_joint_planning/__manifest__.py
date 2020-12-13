@@ -1,3 +1,4 @@
+
 # -*- coding: UTF-8 -*-
 
 ################################################################################
@@ -21,20 +22,23 @@
 ################################################################################
 
 {
-    'name': 'IPF CompletionReport Client',
-    'version': '12.0.0.0.1',
-    'category': 'Tools',
-    'description': """This module adds joint_planing (Gemensam planering) to Outplacement module.""",
-
-    'author': "N-development",
+    'name': 'Joint Planning',
+    'version': '12.0.0.1',
+    'category': 'Human resources',
+    'description': """
+	 Module to handle outplacement (Avrop).
+    """,
+    'author': 'Vertel AB',
     'license': 'AGPL-3',
-    'website': 'https://www.n-development.com',
+    'website': 'http://www.vertel.se',
+    'depends': [
+        'outplacement',
+        'res_joint_planning_af',
+        'outplacement_completion_report_ipf_client',
+    ],
     'data': [
-        "security/ir.model.access.csv",
-        'views/client_config_views.xml',
+        'views/outplacement_view.xml',
+
     ],
     'installable': True,
-    'images': [
-        'static/description/img.png'
-    ],
 }

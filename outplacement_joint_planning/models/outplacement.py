@@ -20,21 +20,28 @@
 #
 ################################################################################
 
-{
-    'name': 'IPF CompletionReport Client',
-    'version': '12.0.0.0.1',
-    'category': 'Tools',
-    'description': """This module adds joint_planing (Gemensam planering) to Outplacement module.""",
 
-    'author': "N-development",
-    'license': 'AGPL-3',
-    'website': 'https://www.n-development.com',
-    'data': [
-        "security/ir.model.access.csv",
-        'views/client_config_views.xml',
-    ],
-    'installable': True,
-    'images': [
-        'static/description/img.png'
-    ],
-}
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
+from datetime import date
+
+
+class Outplacement(models.Model):
+    _inherit = "outplacement"
+
+    jp_sent_date = fields.Date(string="Log on change",
+                               track_visibility='onchange')
+
+    @api.model
+    def send_gp_to_bar(self):
+
+        client = self.env['ipf.completion_report.client.config'].search(
+            [], limit=1)
+        if not client:
+            raise ValidationError(
+                _('Please, configure the configuration to send this report.'))
+
+        for outplacement in self:
+            outplacement.jp_sent_date = date.today()
+            joint_plannings = self.env['res.joint_planning'].search([])
+            client.post_request(outplacement, joint_plannings)

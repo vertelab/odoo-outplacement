@@ -20,21 +20,4 @@
 #
 ################################################################################
 
-{
-    'name': 'IPF CompletionReport Client',
-    'version': '12.0.0.0.1',
-    'category': 'Tools',
-    'description': """This module adds joint_planing (Gemensam planering) to Outplacement module.""",
-
-    'author': "N-development",
-    'license': 'AGPL-3',
-    'website': 'https://www.n-development.com',
-    'data': [
-        "security/ir.model.access.csv",
-        'views/client_config_views.xml',
-    ],
-    'installable': True,
-    'images': [
-        'static/description/img.png'
-    ],
-}
+from . import models

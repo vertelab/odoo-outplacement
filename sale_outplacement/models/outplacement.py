@@ -72,6 +72,7 @@ class Outplacement(models.Model):
 
     @api.model
     def ipf_data_process(self, data):
+        data = self.env[''].ipf_data_process()
         partner = self._get_partner(data)
         management_team = self._get_management_team(data)
         department = self._get_department(data)
@@ -103,3 +104,15 @@ class Outplacement(models.Model):
             'order_id': order.id,
         })
         return True
+
+
+
+class ClientConfig(models.Model):
+    _inherit = 'ipf.client.config'
+
+
+    @api.model
+    def process_data(self, data):
+        """For overriding and processing data"""
+        return self.env['outplacement.outplacement'].ipf_data_process(data)
+        

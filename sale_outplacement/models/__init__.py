@@ -21,5 +21,5 @@
 ################################################################################
 
 from . import outplacement
-from . import product_task
+from . import project
 from . import hr_department

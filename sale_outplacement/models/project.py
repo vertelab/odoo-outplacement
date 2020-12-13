@@ -7,9 +7,8 @@ from odoo.exceptions import ValidationError, AccessError
 from odoo.modules.module import get_module_resource
 
 
-class ProductTask(models.Model):
-    _name = 'product.task'
-    _description = 'Product Task'
+class ProjectTask(models.Model):
+    _name = 'project.task'
 
     outplacement_id = fields.Many2one('outplacement', 'Outplacement')
     activity_id = fields.Many2one('res.joint_planning', 'Activity')

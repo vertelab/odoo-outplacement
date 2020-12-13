@@ -1,138 +1,124 @@
 <odoo>
-    <data>
-        <record id="outplacement_form_view" model="ir.ui.view">
-            <field name="name">Outplacement</field>
-            <field name="model">outplacement</field>
-            <field name="arch" type="xml">
-                <form>
-                    <header>
-                        <field name="stage_id" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}"/>
-                    </header>
-                    <sheet>
-                        <field name="image" widget='image' class="oe_avatar" options='{"preview_image":"image_medium"}'/>
-                        <div class="oe_title">
-                            <label for="name" class="oe_edit_only"/>
-                            <h1>
-                                <field name="name" required="True"/>
-                            </h1>
-                        </div>
-                        <group>
-                            <group>
-                                <field name="employee_id"/>
-                            </group>
-                            <group>
-                                <field name="date_begin"/>
-                                <field name="date_end"/>
-                            </group>
-                        </group>
-                    </sheet>
-                    <div class="oe_chatter">
-                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
-                        <field name="activity_ids" widget="mail_activity"/>
-                        <field name="message_ids" widget="mail_thread"/>
+  <data>
+    <record id="outplacement_form_view" model="ir.ui.view">
+      <field name="name">Outplacement</field>
+      <field name="model">outplacement</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <field name="stage_id" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}" />
+          </header>
+          <sheet>
+            <div class="oe_button_box" name="button_box" />
+            <field name="image" widget='image' class="oe_avatar" options='{"preview_image":"image_medium"}' />
+            <div class="oe_title">
+              <label for="name" class="oe_edit_only" />
+              <h1>
+                <field name="name" required="True" />
+              </h1>
+            </div>
+            <group>
+              <group>
+                <field name="employee_id" />
+              </group>
+              <group>
+                <field name="date_begin" />
+                <field name="date_end" />
+              </group>
+            </group>
+            <notebook />
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+            <field name="activity_ids" widget="mail_activity" />
+            <field name="message_ids" widget="mail_thread" />
+          </div>
+        </form>
+      </field>
+    </record>
+    <record id="outplacement_tree_view" model="ir.ui.view">
+      <field name="name">Outplacement</field>
+      <field name="model">outplacement</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name" />
+          <field name="employee_id" />
+          <field name="stage_id" />
+        </tree>
+      </field>
+    </record>
+    <record id="outplacement_pivot_view" model="ir.ui.view">
+      <field name="name">Outplacement</field>
+      <field name="model">outplacement</field>
+      <field name="arch" type="xml">
+        <pivot display_quantity="True">
+          <field name="employee_id" type="row" />
+          <field name="stage_id" type="measure" />
+        </pivot>
+      </field>
+    </record>
+    <record id="outplacement_kanban_view" model="ir.ui.view">
+      <field name="name">Outplacement</field>
+      <field name="model">outplacement</field>
+      <field name="arch" type="xml">
+        <kanban class="o_hr_employee_kanban" default_group_by="stage_id">
+          <field name="id" />
+          <field name="message_follower_ids" />
+          <field name="message_ids" />
+          <field name="message_needaction_counter" />
+          <templates>
+            <t t-name="kanban-box">
+              <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
+                <!-- Medium employee's picture -->
+                <div class="o_kanban_image_fill_left d-none d-md-block" t-attf-style="background-image: url(#{kanban_image('hr.jobseeker', 'image_medium', record.id.raw_value)})" role="img" />
+                <!-- Employee's picture optimized for mobile -->
+                <div class="o_kanban_image d-md-none rounded-circle" t-attf-style="background-image: url(#{kanban_image('hr.jobseeker', 'image_small', record.id.raw_value)})" role="img" />
+                <div class="oe_kanban_details">
+                  <div class="o_kanban_record_top">
+                    <div class="o_kanban_record_headings">
+                      <strong class="o_kanban_record_title">
+                        <field name="name" />
+                      </strong>
+                      <!--                                        <span t-if="record.job_id.raw_value" class="o_kanban_record_subtitle"><field name="job_id"/></span>-->
                     </div>
-                </form>
-            </field>
-        </record>
-
-        <record id="outplacement_tree_view" model="ir.ui.view">
-            <field name="name">Outplacement</field>
-            <field name="model">outplacement</field>
-            <field name="arch" type="xml">
-                <tree>
-                    <field name="name"/>
-                    <field name="employee_id"/>
-                    <field name="stage_id"/>
-                </tree>
-            </field>
-        </record>
-
-        <record id="outplacement_pivot_view" model="ir.ui.view">
-            <field name="name">Outplacement</field>
-            <field name="model">outplacement</field>
-            <field name="arch" type="xml">
-                <pivot display_quantity="True">
-                    <field name="employee_id" type="row"/>
-                    <field name="stage_id" type="measure"/>
-                </pivot>
-            </field>
-        </record>
-
-        <record id="outplacement_kanban_view" model="ir.ui.view">
-            <field name="name">Outplacement</field>
-            <field name="model">outplacement</field>
-            <field name="arch" type="xml">
-                <kanban class="o_hr_employee_kanban" default_group_by="stage_id">
-                    <field name="id"/>
-                    <field name="message_follower_ids"/>
-                    <field name="message_ids"/>
-                    <field name="message_needaction_counter"/>
-                    <templates>
-                        <t t-name="kanban-box">
-                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
-                            <!-- Medium employee's picture -->
-                            <div class="o_kanban_image_fill_left d-none d-md-block" t-attf-style="background-image: url(#{kanban_image('hr.jobseeker', 'image_medium', record.id.raw_value)})" role="img"/>
-                            <!-- Employee's picture optimized for mobile -->
-                            <div class="o_kanban_image d-md-none rounded-circle" t-attf-style="background-image: url(#{kanban_image('hr.jobseeker', 'image_small', record.id.raw_value)})" role="img"/>
-
-                            <div class="oe_kanban_details">
-                                <div class="o_kanban_record_top">
-                                    <div class="o_kanban_record_headings">
-                                        <strong class="o_kanban_record_title">
-                                            <field name="name"/>
-                                        </strong>
-<!--                                        <span t-if="record.job_id.raw_value" class="o_kanban_record_subtitle"><field name="job_id"/></span>-->
-                                    </div>
-                                </div>
-<!--                                <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>-->
-<!--                                <ul>-->
-<!--                                    <li t-if="record.work_location.raw_value"><field name="work_location"/></li>-->
-<!--                                </ul>-->
-                            </div>
-                        </div>
-                        </t>
-                    </templates>
-                </kanban>
-            </field>
-        </record>
-
-        <record id="outplacement_calendar_view" model="ir.ui.view">
-            <field name="name">Outplacement</field>
-            <field name="model">outplacement</field>
-            <field name="arch" type="xml">
-                <calendar string="Leads Generation" date_start="date_begin" date_stop="date_end" quick_add="False" color="employee_id">
-                    <field name="name"/>
-                    <field name="employee_id"/>
-                </calendar>
-            </field>
-        </record>
-
-        <record id="outplacement_filter_view" model="ir.ui.view">
-            <field name="name">Outplacement</field>
-            <field name="model">outplacement</field>
-            <field name="arch" type="xml">
-                <search string="Outplacement">
-                    <field name="name"/>
-                    <field name="employee_id"/>
-                </search>
-            </field>
-        </record>
-
-
-        <record id="outplacement_action" model="ir.actions.act_window">
-            <field name="name">Outplacement</field>
-            <field name="res_model">outplacement</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">kanban,calendar,tree,form,pivot</field>
-        </record>
-
-        <menuitem
-            id="menu_outplacement"
-            parent="outplacement.parent_menu_outplacement"
-            action="outplacement.outplacement_action"
-            name="Outplacement"
-            groups="base.group_user"
-            sequence="5"/>
-
-    </data>
+                  </div>
+                  <!--                                <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>-->
+                  <!--                                <ul>-->
+                  <!--                                    <li t-if="record.work_location.raw_value"><field name="work_location"/></li>-->
+                  <!--                                </ul>-->
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+    <record id="outplacement_calendar_view" model="ir.ui.view">
+      <field name="name">Outplacement</field>
+      <field name="model">outplacement</field>
+      <field name="arch" type="xml">
+        <calendar string="Leads Generation" date_start="date_begin" date_stop="date_end" quick_add="False" color="employee_id">
+          <field name="name" />
+          <field name="employee_id" />
+        </calendar>
+      </field>
+    </record>
+    <record id="outplacement_filter_view" model="ir.ui.view">
+      <field name="name">Outplacement</field>
+      <field name="model">outplacement</field>
+      <field name="arch" type="xml">
+        <search string="Outplacement">
+          <field name="name" />
+          <field name="employee_id" />
+        </search>
+      </field>
+    </record>
+    <record id="outplacement_action" model="ir.actions.act_window">
+      <field name="name">Outplacement</field>
+      <field name="res_model">outplacement</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">kanban,calendar,tree,form,pivot</field>
+    </record>
+    <menuitem id="menu_outplacement" parent="outplacement.parent_menu_outplacement" action="outplacement.outplacement_action" name="Outplacement" groups="base.group_user" sequence="5" />
+  </data>
 </odoo>

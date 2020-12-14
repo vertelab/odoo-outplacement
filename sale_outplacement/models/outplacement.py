@@ -1,10 +1,26 @@
-import base64
-import logging
+# -*- coding: UTF-8 -*-
 
-from odoo import api, fields, models, tools, SUPERUSER_ID
-from odoo import tools, _
-from odoo.exceptions import ValidationError, AccessError
-from odoo.modules.module import get_module_resource
+################################################################################
+#
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2019 N-Development (<https://n-development.com>).
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+
+from odoo import api, fields, models, _
 
 
 class Outplacement(models.Model):
@@ -22,6 +38,11 @@ class Outplacement(models.Model):
     file_reference_number = fields.Char()
     task_ids = fields.Many2many('product.task', string='Tasks')
     order_id = fields.Many2one('sale.order')
+    tasks_count = fields.Integer(compute='_compute_tasks_count')
+
+    def _compute_tasks_count(self):
+        for record in self:
+            record.tasks_count = len(record.task_ids)
 
     @api.multi
     def _get_partner(self, data):
@@ -105,5 +126,11 @@ class Outplacement(models.Model):
         })
         return data
 
-
-
+    def action_project_task(self):
+        return {
+            'name': _('Product Task'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'res_model': 'product.task',
+        }

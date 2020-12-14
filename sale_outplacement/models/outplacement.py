@@ -79,13 +79,13 @@ class Outplacement(models.Model):
         partner = self._get_partner(data)
         management_team = self._get_management_team(data)
         department = self._get_department(data)
-        skill = self._get_skill(data)
+        # ~ skill = self._get_skill(data)
         order = self.env['sale.order'].create({
             'origin': data['genomforande_referens'],
             'name': data['ordernummer'],
             'partner_id': partner.id,
         })
-        product = self.env.ref('sale_outplacement.product')
+        product = self.env.ref('sale_outplacement.product_suborder')
         self.env['sale.order.line'].create({
             'product_id': product.id,
             'order_id': order.id,
@@ -95,7 +95,7 @@ class Outplacement(models.Model):
             'departement_id': department and department.id or False,
             'booking_ref': data['boknings_id'],
             'partner_id': partner.id,
-            'skill_id': skill and skill.id or False,
+            # ~ 'skill_id': skill and skill.id or False,
             'participitation_rate': data['deltagandegrad'],
             'service_start_date': data['startdatum_insats'],
             'service_end_date': data['slutdatum_insats'],

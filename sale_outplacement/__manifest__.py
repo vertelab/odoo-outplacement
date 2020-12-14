@@ -34,6 +34,7 @@
         'sale',
         'res_joint_planning_af',
         'sale_suborder_ipf_server',
+        'project'
     ],
     'data': [
         'security/ir.model.access.csv',

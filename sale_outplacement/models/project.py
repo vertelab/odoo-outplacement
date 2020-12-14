@@ -8,7 +8,7 @@ from odoo.modules.module import get_module_resource
 
 
 class ProjectTask(models.Model):
-    _name = 'project.task'
+    _inherit = 'project.task'
 
     outplacement_id = fields.Many2one('outplacement', 'Outplacement')
     activity_id = fields.Many2one('res.joint_planning', 'Activity')

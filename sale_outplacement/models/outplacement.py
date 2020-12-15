@@ -22,6 +22,7 @@
 
 from odoo import api, fields, models, _
 
+_logger = logging.getLogger(__name__)
 
 class Outplacement(models.Model):
     _inherit = 'outplacement'
@@ -30,13 +31,13 @@ class Outplacement(models.Model):
     booking_ref = fields.Char()
     partner_id = fields.Many2one('res.partner')
     management_team_id = fields.Many2one('res.partner')
-    skill_id = fields.Many2one('hr.skill')
+    # ~ skill_id = fields.Many2one('hr.skill')
     participitation_rate = fields.Integer()
     service_start_date = fields.Date()
     service_end_date = fields.Date()
     order_close_date = fields.Date()
     file_reference_number = fields.Char()
-    task_ids = fields.Many2many('product.task', string='Tasks')
+    task_ids = fields.Many2many('project.task', string='Tasks')
     order_id = fields.Many2one('sale.order')
     tasks_count = fields.Integer(compute='_compute_tasks_count')
 
@@ -93,17 +94,19 @@ class Outplacement(models.Model):
 
     @api.model
     def suborder_process_data(self, data):
+        _logger.warn('Nisse: %s suborder_process_data outplacement' % data)
         data = super(Outplacement,self).suborder_process_data(data)
+        _logger.warn('Nisse: suborder_process_data outplacement after super')
         partner = self._get_partner(data)
         management_team = self._get_management_team(data)
         department = self._get_department(data)
-        skill = self._get_skill(data)
+        # ~ skill = self._get_skill(data)
         order = self.env['sale.order'].create({
             'origin': data['genomforande_referens'],
             'name': data['ordernummer'],
             'partner_id': partner.id,
         })
-        product = self.env.ref('sale_outplacement.product')
+        product = self.env.ref('sale_outplacement.product_suborder')
         self.env['sale.order.line'].create({
             'product_id': product.id,
             'order_id': order.id,
@@ -113,7 +116,7 @@ class Outplacement(models.Model):
             'departement_id': department and department.id or False,
             'booking_ref': data['boknings_id'],
             'partner_id': partner.id,
-            'skill_id': skill and skill.id or False,
+            # ~ 'skill_id': skill and skill.id or False,
             'participitation_rate': data['deltagandegrad'],
             'service_start_date': data['startdatum_insats'],
             'service_end_date': data['slutdatum_insats'],

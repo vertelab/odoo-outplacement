@@ -60,6 +60,11 @@ class Outplacement(models.Model):
         return stages.search([], order=order)
 
     @api.model
+    def _read_group_employee_id(self, stages, domain, order):
+        """ Always display all stages """
+        return self['hr.employee'].search([], order=order)
+
+    @api.model
     def create(self, vals):
         tools.image_resize_images(vals)
         employee = super(Outplacement, self).create(vals)

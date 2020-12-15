@@ -105,6 +105,7 @@ class Outplacement(models.Model):
             'partner_id': partner.id,
         })
         product = self.env.ref('sale_outplacement.product_suborder')
+        task_ids = self.env['res.joint_planning'].search([])
         self.env['sale.order.line'].create({
             'product_id': product.id,
             'order_id': order.id,
@@ -124,6 +125,7 @@ class Outplacement(models.Model):
             'file_reference_number': data['aktnummer_diariet'],
             'management_team_id': management_team.id,
             'order_id': order.id,
+            'task_ids': [(6, 0, task_ids)],
         })
         return data
 

@@ -41,6 +41,7 @@
         'data/product.xml',
         'views/outplacement_view.xml',
         'views/hr_department_view.xml',
+        'views/product_product_views.xml',
     ],
     'installable': True,
     'images': [

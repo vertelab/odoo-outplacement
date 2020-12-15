@@ -23,3 +23,4 @@
 from . import outplacement
 from . import product_task
 from . import hr_department
+from . import product_product

@@ -125,17 +125,6 @@ class Outplacement(models.Model):
         self.env['project.task'].init_joint_planning_stage(outplacement.id)
         _logger.warn('Nisse: outplacement %s' % dir(outplacement))
 
-        MailActivity = self.env['mail.activity']
-        if product.is_suborder:
-            for activity in product.mail_activity_ids:
-                MailActivity.create({
-                    'res_id': self.id,
-                    'res_model': self._name,
-                    'activity_type_id': activity.activity_type_id,
-                    'date_deadline': fields.Date.today() + relativedelta(days=activity.due_days),
-                    'summary': activity.summary,
-                    'user_id': self.employee_id.user_id
-                })
         return data
 
     def action_project_task(self):

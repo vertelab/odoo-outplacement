@@ -23,6 +23,9 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 
+import logging
+_logger = logging.getLogger(__name__)
+
 class Outplacement(models.Model):
     _inherit = 'outplacement'
 

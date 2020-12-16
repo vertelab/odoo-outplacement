@@ -29,6 +29,7 @@
     'author': "N-development",
     'license': 'AGPL-3',
     'website': 'https://www.n-development.com',
+    'depends': ['l10n_se'],
     'data': [
         "security/ir.model.access.csv",
         'views/client_config_views.xml',

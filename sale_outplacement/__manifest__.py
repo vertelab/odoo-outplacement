@@ -38,10 +38,8 @@
         'project'
     ],
     'data': [
-        'security/ir.model.access.csv',
         'data/product.xml',
         'views/outplacement_view.xml',
-        'views/hr_department_view.xml',
     ],
     'installable': True,
     'images': [

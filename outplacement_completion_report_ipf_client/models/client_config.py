@@ -204,7 +204,7 @@ class ClientConfig(models.Model):
             "avrops_id": outplacement.name,
             "genomforande_referens": outplacement.order_id.origin,
             "ordernummer": outplacement.order_id.name,
-            "personnr": outplacement.partner_id.social_sec_nr_age,
+            "personnr": outplacement.partner_id.company_registry,
             "unikt_id": "1321",
             "deltagare": {
                 "fornamn": outplacement.partner_id.firstname,

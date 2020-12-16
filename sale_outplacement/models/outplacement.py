@@ -26,7 +26,6 @@ from odoo import api, fields, models, _
 class Outplacement(models.Model):
     _inherit = 'outplacement'
 
-    departement_id = fields.Many2one('hr.department')
     booking_ref = fields.Char()
     partner_id = fields.Many2one('res.partner')
     management_team_id = fields.Many2one('res.partner')
@@ -120,6 +119,7 @@ class Outplacement(models.Model):
             'order_id': order.id,
         })
         self.env['project.task'].init_joint_planning(outplacement.id)
+        self.env['project.task'].init_joint_planning_stage(outplacement.id)
         _logger.warn('Nisse: outplacement %s' % dir(outplacement))
 
         MailActivity = self.env['mail.activity']
@@ -142,4 +142,5 @@ class Outplacement(models.Model):
             'view_type': 'form',
             'view_mode': 'tree,form',
             'res_model': 'product.task',
+            'context':  "{'default_outplacement_id': '%s'}" % self.id,
         }

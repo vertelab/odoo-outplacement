@@ -31,6 +31,7 @@ class Outplacement(models.Model):
     date_begin = fields.Datetime(string="Start Date", required=True)
     date_end = fields.Datetime(string="End Date", required=True)
     color = fields.Integer('Kanban Color Index')
+    meeting_remote = fields.Selection(selection=[('no','On Premice'),('yes','Remote')],string='Meeting type')
     
     # TODO!
     # Nils: Remove Image as we have no image of the jobseeker?

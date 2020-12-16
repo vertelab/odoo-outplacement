@@ -21,6 +21,7 @@
               <group>
                 <field name="employee_id" />
                 <field name="department_id" />
+                <field name="meeting_remote" />
               </group>
               <group>
                 <field name="date_begin" />

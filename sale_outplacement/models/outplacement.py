@@ -29,13 +29,9 @@ _logger = logging.getLogger(__name__)
 class Outplacement(models.Model):
     _inherit = 'outplacement'
 
-    booking_ref = fields.Char()
-    partner_id = fields.Many2one('res.partner')
     management_team_id = fields.Many2one('res.partner')
     # ~ skill_id = fields.Many2one('hr.skill')
     participitation_rate = fields.Integer()
-    service_start_date = fields.Date()
-    service_end_date = fields.Date()
     order_close_date = fields.Date()
     file_reference_number = fields.Char()
     task_ids = fields.Many2many('project.task', string='Tasks')
@@ -107,7 +103,7 @@ class Outplacement(models.Model):
         _logger.warn('Nisse: outplacement %s' % order)
         outplacement = self.env['outplacement'].create({
             'name': data['ordernummer'],
-            'departement_id': self._get_department_id(data),
+            'department_id': self._get_department_id(data),
             'booking_ref': data['boknings_id'],
             'partner_id': partner_id,
             'partner_id': 8,

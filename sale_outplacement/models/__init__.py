@@ -20,6 +20,6 @@
 #
 ################################################################################
 
-from . import outplacement
 from . import project
 from . import hr_department
+from . import outplacement

@@ -29,12 +29,18 @@ from datetime import date
 class Outplacement(models.Model):
     _inherit = "outplacement"
 
-    jp_sent_date = fields.Date(string="Log on change",
-                               track_visibility='onchange')
+    jp_sent_date = fields.Date(string="Joint Planning Sent Date",
+                                            track_visibility='onchange',
+                                            help="Latest Sent Date for Joint Planning")
+
+    
+    def _compute_task_count(self):
+        for outplacement in self:
+            outplacement.task_count = self.env['project.task'].search_count([('outplacement_id','=',outplacement.id)])
+    task_count = fields.Integer(compute='_compute_task_count', string="Task Count")
 
     @api.model
     def send_gp_to_bar(self):
-
         client = self.env['ipf.completion_report.client.config'].search(
             [], limit=1)
         if not client:
@@ -45,3 +51,4 @@ class Outplacement(models.Model):
             outplacement.jp_sent_date = date.today()
             joint_plannings = self.env['res.joint_planning'].search([])
             client.post_request(outplacement, joint_plannings)
+

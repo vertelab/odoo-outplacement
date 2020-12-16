@@ -26,7 +26,8 @@ class Outplacement(models.Model):
                             group_expand='_read_group_stage_ids',
                             default=lambda self: self._default_stage_id()
                             )
-    employee_id = fields.Many2one('hr.employee', string="Employee") # Nils: Change?
+    employee_id = fields.Many2one('hr.employee', string="Coach")
+    department_id = fields.Many2one('hr.department')
     date_begin = fields.Datetime(string="Start Date", required=True)
     date_end = fields.Datetime(string="End Date", required=True)
     color = fields.Integer('Kanban Color Index')

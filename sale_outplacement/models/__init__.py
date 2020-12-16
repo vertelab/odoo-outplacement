@@ -22,3 +22,6 @@
 
 from . import project
 from . import outplacement
+from . import hr_department
+from . import product_product
+from . import mail_activity

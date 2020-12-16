@@ -20,6 +20,7 @@
 #
 ################################################################################
 
+from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 
 class Outplacement(models.Model):
@@ -99,7 +100,7 @@ class Outplacement(models.Model):
             'product_id': product.id,
             'order_id': order.id,
         })
-        _logger.warn('Nisse: outplacement %s' % order)        
+        _logger.warn('Nisse: outplacement %s' % order)
         outplacement = self.env['outplacement'].create({
             'name': data['ordernummer'],
             'departement_id': self._get_department_id(data),
@@ -121,6 +122,17 @@ class Outplacement(models.Model):
         self.env['project.task'].init_joint_planning_stage(outplacement.id)
         _logger.warn('Nisse: outplacement %s' % dir(outplacement))
 
+        MailActivity = self.env['mail.activity']
+        if product.is_suborder:
+            for activity in product.mail_activity_ids:
+                MailActivity.create({
+                    'res_id': self.id,
+                    'res_model': self._name,
+                    'activity_type_id': activity.activity_type_id,
+                    'date_deadline': fields.Date.today() + relativedelta(days=activity.due_days),
+                    'summary': activity.summary,
+                    'user_id': self.employee_id.user_id
+                })
         return data
 
     def action_project_task(self):

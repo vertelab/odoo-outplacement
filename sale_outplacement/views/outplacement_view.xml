@@ -7,9 +7,9 @@
             <field name="arch" type="xml">
                 <div name="button_box" position="inside">
                     <button name="action_project_task"
-                        class="oe_stat_button"
-                        icon="fa-list-alt"
-                        type="object">
+                            class="oe_stat_button"
+                            icon="fa-list-alt"
+                            type="object">
                         <field name="tasks_count" widget="statinfo" string="Tasks"/>
                     </button>
                 </div>
@@ -29,6 +29,5 @@
                 </group>
             </field>
         </record>
-
     </data>
 </odoo>

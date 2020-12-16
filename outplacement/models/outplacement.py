@@ -47,6 +47,17 @@ class Outplacement(models.Model):
         help="Small-sized photo of the employee. It is automatically "
              "resized as a 64x64px image, with aspect ratio preserved. "
              "Use this field anywhere a small image is required.")
+    partner_id = fields.Many2one('res.partner')
+    partner_name = fields.Char(related='partner_id.name')
+    booking_ref = fields.Char()
+    service_start_date = fields.Date()
+    service_end_date = fields.Date()
+    department_id = fields.Many2one('hr.department')
+    my_department = fields.Boolean(compute='_compute_my_department',
+                                   search='_search_my_department')
+    my_outplacement = fields.Boolean(compute='_compute_my_outplacement',
+                                     search='_search_my_outplacement')
+    sprakstod = fields.Char()
 
     # Nils: If image is removed this should be removed as well.
     @api.onchange('employee_id')
@@ -75,6 +86,32 @@ class Outplacement(models.Model):
         tools.image_resize_images(vals)
         res = super(Outplacement, self).write(vals)
         return res
+
+    def _compute_my_department(self):
+        pass
+
+    def _search_my_department(self, operator, value):
+        user_employee = self.env['hr.employee'].search([
+            ('user_id', '=', self.env.uid)
+        ], limit=1)
+        res = []
+        if user_employee and user_employee.department_id:
+            res = self.search([
+                ('department_id', '=', user_employee.department_id.id)]).ids
+        return [('id', operator, res)]
+
+    def _compute_my_outplacement(self):
+        pass
+
+    def _search_my_outplacement(self, operator, value):
+        user_employee = self.env['hr.employee'].search([
+            ('user_id', '=', self.env.uid)
+        ], limit=1)
+        res = []
+        if user_employee and user_employee.department_id:
+            res = self.search([
+                ('employee_id', '=', user_employee.id)]).ids
+        return [('id', operator, res)]
 
 
 class OutplacementStage(models.Model):

@@ -14,6 +14,7 @@
         'views/menu_item.xml',
         'views/outplacement_stage_view.xml',
         'views/outplacement_view.xml',
+        'views/hr_department_view.xml',
         'data/data.xml',
 
     ],

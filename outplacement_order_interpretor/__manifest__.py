@@ -30,7 +30,10 @@
     'license': 'AGPL-3',
     'website': 'https://www.n-development.com',
     "depends": [
+        'mail',
+        'hr',
         'project',
+        'task_interperator_ipf_client',
     ],
     'data': [
         'data/mail_data.xml',

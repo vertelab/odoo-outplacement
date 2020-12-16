@@ -23,10 +23,12 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 
+import logging
+_logger = logging.getLogger(__name__)
+
 class Outplacement(models.Model):
     _inherit = 'outplacement'
 
-    departement_id = fields.Many2one('hr.department')
     booking_ref = fields.Char()
     partner_id = fields.Many2one('res.partner')
     management_team_id = fields.Many2one('res.partner')
@@ -45,28 +47,19 @@ class Outplacement(models.Model):
             record.tasks_count = len(record.task_ids)
 
     @api.multi
-    def _get_partner(self, data):
-        partner = ResPartner = self.env['res.partner']
-        try:
-            partner = ResPartner.search([
-                ('customer_id', '=', data['sokande_id'])], limit=1)
-        except Exception:
-            pass
-        if not partner:
-            try:
-                partner = ResPartner.search([
-                    ('social_sec_nr_age', '=', data['personnummer'])], limit=1)
-            except Exception:
-                pass
-        if not partner:
-            partner = ResPartner.create({
+    def _get_partner_id(self, data):
+        partner=self.env['res.partner'].search(['|',
+                ('customer_id', '=', data['sokande_id']),
+                ('company_registry', '=', data['personnummer'])],limit=1)
+        if len(partner) == 0:
+            partner = self.env['res.partner'].create({
                 'name': data['personnummer'],
                 'customer_id': data['sokande_id'],
             })
-        return partner
+        return partner.id if partner else None
 
     @api.multi
-    def _get_management_team(self, data):
+    def _get_management_team_id(self, data):
         ResPartner = self.env['res.partner']
         partner = ResPartner.search([
             ('phone', '=', data['telefonnummer_handlaggargrupp'])
@@ -77,13 +70,15 @@ class Outplacement(models.Model):
                 'email': data['epost_handlaggargrupp'],
                 'phone': data['telefonnummer_handlaggargrupp'],
             })
-        return partner
+        return partner.id if partner else None
 
     @api.multi
-    def _get_department(self, data):
-        return self.env['hr.department'].search([
-            ('ka_ref', '=', data['utforande_verksamhet_id'])
-        ], limit=1)
+    def _get_department_id(self, data):
+        department = self.env['hr.department'].search(
+            [('ka_ref', '=', data.get('utforande_verksamhet_id',''))],
+            limit=1)
+        _logger.debug('Department: hr_department %s | %s' % (department,data.get('utforande_verksamhet_id')))
+        return department.id if department else None
 
     @api.multi
     def _get_skill(self, data):
@@ -95,15 +90,13 @@ class Outplacement(models.Model):
     def suborder_process_data(self, data):
         _logger.warn('Nisse: %s suborder_process_data outplacement' % data)
         data = super(Outplacement,self).suborder_process_data(data)
-        _logger.warn('Nisse: suborder_process_data outplacement after super')
-        partner = self._get_partner(data)
-        management_team = self._get_management_team(data)
-        department = self._get_department(data)
+        partner_id = self._get_partner_id(data)
+
         # ~ skill = self._get_skill(data)
         order = self.env['sale.order'].create({
             'origin': data['genomforande_referens'],
             'name': data['ordernummer'],
-            'partner_id': partner.id,
+            'partner_id': partner_id,
         })
         product = self.env.ref('sale_outplacement.product_suborder')
         task_ids = self.env['res.joint_planning'].search([])
@@ -111,11 +104,13 @@ class Outplacement(models.Model):
             'product_id': product.id,
             'order_id': order.id,
         })
-        self.env['outplacement'].create({
+        _logger.warn('Nisse: outplacement %s' % order)
+        outplacement = self.env['outplacement'].create({
             'name': data['ordernummer'],
-            'departement_id': department and department.id or False,
+            'departement_id': self._get_department_id(data),
             'booking_ref': data['boknings_id'],
-            'partner_id': partner.id,
+            'partner_id': partner_id,
+            'partner_id': 8,
             # ~ 'skill_id': skill and skill.id or False,
             'participitation_rate': data['deltagandegrad'],
             'service_start_date': data['startdatum_insats'],
@@ -124,20 +119,22 @@ class Outplacement(models.Model):
             'date_end': data['slutdatum_insats'],
             'order_close_date': data['slutdatum_avrop'],
             'file_reference_number': data['aktnummer_diariet'],
-            'management_team_id': management_team.id,
+            'management_team_id': self._get_management_team_id(data),
             'order_id': order.id,
             'task_ids': [(6, 0, task_ids)],
         })
-        MailActivity = self.env['mail.activity']
-        if product.is_suborder:
-            for activity in product.mail_activity_ids:
+        self.env['project.task'].init_joint_planning(outplacement.id)
+        self.env['project.task'].init_joint_planning_stage(outplacement.id)
+        _logger.warn('Nisse: outplacement %s' % dir(outplacement))
+
+        for activity in product.mail_activity_ids:
                 MailActivity.create({
-                    'res_id': self.id,
-                    'res_model': self._name,
+                    'res_id': outplacement.id,
+                    'res_model': outplacement._name,
                     'activity_type_id': activity.activity_type_id,
                     'date_deadline': fields.Date.today() + relativedelta(days=activity.due_days),
                     'summary': activity.summary,
-                    'user_id': self.employee_id.user_id
+                    'user_id': outplacement.employee_id.user_id
                 })
         return data
 
@@ -148,4 +145,5 @@ class Outplacement(models.Model):
             'view_type': 'form',
             'view_mode': 'tree,form',
             'res_model': 'product.task',
+            'context':  "{'default_outplacement_id': '%s'}" % self.id,
         }

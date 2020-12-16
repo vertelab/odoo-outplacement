@@ -34,14 +34,12 @@
         'sale',
         'res_joint_planning_af',
         'sale_suborder_ipf_server',
+        'l10n_se',
         'project'
     ],
     'data': [
-        'security/ir.model.access.csv',
         'data/product.xml',
         'views/outplacement_view.xml',
-        'views/hr_department_view.xml',
-        'views/product_product_views.xml',
     ],
     'installable': True,
     'images': [

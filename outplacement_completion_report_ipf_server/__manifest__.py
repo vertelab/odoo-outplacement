@@ -31,7 +31,7 @@
     'license': 'AGPL-3',
     'website': 'https://www.n-development.com',
     'depends': [
-        'base',
+        'partner_firstname',
         'web'
     ],
     'installable': True,

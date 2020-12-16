@@ -20,10 +20,16 @@
 #
 ################################################################################
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
-class HrDepartment(models.Model):
-    _inherit = 'hr.department'
+class ProjectTask(models.Model):
+    _name = 'product.task'
 
-    ka_ref = fields.Char('KA-Number')
+    outplacement_id = fields.Many2one('outplacement', 'Outplacement')
+    activity_id = fields.Many2one('res.joint_planning', 'Activity')
+    joint_planing_type = fields.Selection([
+        ('kvl', 'KVL'),
+        ('preplaning', 'Preplaning'),
+        ('endraport', 'Endraport'),
+    ], 'JP_Type')

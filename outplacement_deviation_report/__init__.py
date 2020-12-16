@@ -20,16 +20,4 @@
 #
 ################################################################################
 
-from odoo import fields, models
-
-
-class ProjectTask(models.Model):
-    _name = 'product.task'
-
-    outplacement_id = fields.Many2one('outplacement', 'Outplacement')
-    activity_id = fields.Many2one('res.joint_planning', 'Activity')
-    joint_planing_type = fields.Selection([
-        ('kvl', 'KVL'),
-        ('preplaning', 'Preplaning'),
-        ('endraport', 'Endraport'),
-    ], 'JP_Type')
+from . import wizards

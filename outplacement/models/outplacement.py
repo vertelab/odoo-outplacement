@@ -78,6 +78,78 @@ class Outplacement(models.Model):
         res = super(Outplacement, self).write(vals)
         return res
 
+    @api.multi
+    def _track_template(self, tracking):
+        # ~ res = super(Applicant, self)._track_template(tracking)
+        applicant = self[0]
+        changes, dummy = tracking[applicant.id]
+        if 'stage_id' in changes and applicant.stage_id.template_id:
+            res['stage_id'] = (applicant.stage_id.template_id, {
+                'auto_delete_message': True,
+                'subtype_id': self.env['ir.model.data'].xmlid_to_res_id('mail.mt_note'),
+                'notif_layout': 'mail.mail_notification_light'
+            })
+        return res
+
+    @api.multi
+    def _notify_get_reply_to(self, default=None, records=None, company=None, doc_names=None):
+        """ Override to set alias of applicants to their job definition if any. """
+        aliases = self.mapped('job_id')._notify_get_reply_to(default=default, records=None, company=company, doc_names=None)
+        res = {app.id: aliases.get(app.job_id.id) for app in self}
+        leftover = self.filtered(lambda rec: not rec.job_id)
+        if leftover:
+            res.update(super(Applicant, leftover)._notify_get_reply_to(default=default, records=None, company=company, doc_names=doc_names))
+        return res
+
+    @api.multi
+    def message_get_suggested_recipients(self):
+        recipients = super(Applicant, self).message_get_suggested_recipients()
+        for applicant in self:
+            if applicant.partner_id:
+                applicant._message_add_suggested_recipient(recipients, partner=applicant.partner_id, reason=_('Contact'))
+            elif applicant.email_from:
+                applicant._message_add_suggested_recipient(recipients, email=applicant.email_from, reason=_('Contact Email'))
+        return recipients
+
+    @api.model
+    def message_new(self, msg, custom_values=None):
+        """ Overrides mail_thread message_new that is called by the mailgateway
+            through message_process.
+            This override updates the document according to the email.
+        """
+        # remove default author when going through the mail gateway. Indeed we
+        # do not want to explicitly set user_id to False; however we do not
+        # want the gateway user to be responsible if no other responsible is
+        # found.
+        self = self.with_context(default_user_id=False)
+        val = msg.get('from').split('<')[0]
+        defaults = {
+            'name': msg.get('subject') or _("No Subject"),
+            'partner_name': val,
+            'email_from': msg.get('from'),
+            'email_cc': msg.get('cc'),
+            'partner_id': msg.get('author_id', False),
+        }
+        if msg.get('priority'):
+            defaults['priority'] = msg.get('priority')
+        if custom_values:
+            defaults.update(custom_values)
+        return super(Applicant, self).message_new(msg, custom_values=defaults)
+
+    def _message_post_after_hook(self, message, *args, **kwargs):
+        if self.email_from and not self.partner_id:
+            # we consider that posting a message with a specified recipient (not a follower, a specific one)
+            # on a document without customer means that it was created through the chatter using
+            # suggested recipients. This heuristic allows to avoid ugly hacks in JS.
+            new_partner = message.partner_ids.filtered(lambda partner: partner.email == self.email_from)
+            if new_partner:
+                self.search([
+                    ('partner_id', '=', False),
+                    ('email_from', '=', new_partner.email),
+                    ('stage_id.fold', '=', False)]).write({'partner_id': new_partner.id})
+        return super(Applicant, self)._message_post_after_hook(message, *args, **kwargs)
+
+
 
 class OutplacementStage(models.Model):
     _name = 'outplacement.stage'

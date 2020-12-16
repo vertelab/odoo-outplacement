@@ -21,26 +21,22 @@
 ################################################################################
 
 {
-    'name': 'Sale outplacement',
+    'name': 'Deviation Report',
     'version': '12.0.0.0.1',
-    'category': 'Tools',
-    'description': """Receives a suborder and automatically create sale.order 
-    and outplacement.outplacement objects.""",
+    'category': 'Mail',
+    'description': """Outplacement Deviation Report""",
+
     'author': "N-development",
     'license': 'AGPL-3',
     'website': 'https://www.n-development.com',
     'depends': [
-        'outplacement',
-        'sale',
-        'res_joint_planning_af',
-        'sale_suborder_ipf_server',
-        'l10n_se',
-        'project'
+        'project',
+        'partner_view_360',
+        'outplacement_deviationreport_ipf_client'
     ],
     'data': [
-        'data/product.xml',
-        'views/outplacement_view.xml',
-        'views/product_views.xml',
+        'wizards/deviation_report_wizard.xml',
+        'views/project_views.xml',
     ],
     'installable': True,
     'images': [

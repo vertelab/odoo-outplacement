@@ -20,30 +20,4 @@
 #
 ################################################################################
 
-{
-    'name': 'Sale outplacement',
-    'version': '12.0.0.0.1',
-    'category': 'Tools',
-    'description': """Receives a suborder and automatically create sale.order 
-    and outplacement.outplacement objects.""",
-    'author': "N-development",
-    'license': 'AGPL-3',
-    'website': 'https://www.n-development.com',
-    'depends': [
-        'outplacement',
-        'sale',
-        'res_joint_planning_af',
-        'sale_suborder_ipf_server',
-        'l10n_se',
-        'project'
-    ],
-    'data': [
-        'data/product.xml',
-        'views/outplacement_view.xml',
-        'views/product_views.xml',
-    ],
-    'installable': True,
-    'images': [
-        'static/description/img.png'
-    ],
-}
+from . import deviation_report_wizard

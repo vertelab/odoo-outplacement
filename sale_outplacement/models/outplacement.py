@@ -122,9 +122,8 @@ class Outplacement(models.Model):
             'order_id': order.id,
         })
         self.env['project.task'].init_joint_planning(outplacement.id)
-        self.env['project.task'].init_joint_planning_stage(outplacement.id)
+        self.env['project.task'].init_joint_planning_stages(outplacement.id)
         _logger.warn('Nisse: outplacement %s' % dir(outplacement))
-
         return data
 
     def action_project_task(self):
@@ -136,3 +135,11 @@ class Outplacement(models.Model):
             'res_model': 'product.task',
             'context':  "{'default_outplacement_id': '%s'}" % self.id,
         }
+
+
+
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+
+    customer_id = fields.Char(string='Cuhatomer Number', size=64, trim=True, )
+    

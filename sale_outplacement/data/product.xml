@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="product_suborder" model="product.product">
-        <field name="name">Product Suborder</field>
-        <field name="standard_price">1.0</field>
-        <field name="list_price">1.0</field>
-        <field name="type">consu</field>
-        <field name="uom_id" ref="uom.product_uom_unit"/>
-        <field name="uom_po_id" ref="uom.product_uom_unit"/>
-    </record>
+    <data noupdate="1">
+        <record id="suborder_mail_activity" model="mail.activity">
+            <field name="res_id">1</field>
+            <field name="res_model_id" ref="outplacement.model_outplacement"/>
+            <field name="activity_type_id" ref="mail.mail_activity_data_call"/>
+            <field name="summary">Meeting to go over pricing information.</field>
+            <field name="create_user_id" ref="base.user_admin"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+
+        <record id="product_suborder" model="product.product">
+            <field name="name">Product Suborder</field>
+            <field name="standard_price">1.0</field>
+            <field name="list_price">1.0</field>
+            <field name="type">consu</field>
+            <field name="is_suborder">True</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="mail_activity_ids" eval="[(4, ref('suborder_mail_activity'))]"/>
+        </record>
+    </data>
 </odoo>

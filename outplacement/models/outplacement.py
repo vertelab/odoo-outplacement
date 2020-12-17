@@ -1,10 +1,13 @@
 import base64
-import logging
 
 from odoo import api, fields, models, tools, SUPERUSER_ID
 from odoo import tools, _
 from odoo.exceptions import ValidationError, AccessError
 from odoo.modules.module import get_module_resource
+
+
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class Outplacement(models.Model):
@@ -21,13 +24,13 @@ class Outplacement(models.Model):
         return self.env['outplacement.stage'].search([('fold', '=', False)], limit=1)
 
     name = fields.Char(string="Name")
-    stage_id = fields.Many2one('outplacement.stage', strin="State",
+    stage_id = fields.Many2one(comodel_name='outplacement.stage', string="State",
                             ondelete='restrict', track_visibility='onchange', index=True, copy=False,
                             group_expand='_read_group_stage_ids',
                             default=lambda self: self._default_stage_id()
                             )
-    employee_id = fields.Many2one('hr.employee', string="Coach")
-    department_id = fields.Many2one('hr.department')
+    employee_id = fields.Many2one('hr.employee', string="Coach",group_expand='_read_group_employee_ids')
+    department_id = fields.Many2one('hr.department',group_expand='_read_group_department_ids')
     date_begin = fields.Datetime(string="Start Date", required=True)
     date_end = fields.Datetime(string="End Date", required=True)
     color = fields.Integer('Kanban Color Index')
@@ -54,7 +57,6 @@ class Outplacement(models.Model):
     booking_ref = fields.Char()
     service_start_date = fields.Date()
     service_end_date = fields.Date()
-    department_id = fields.Many2one('hr.department')
     my_department = fields.Boolean(compute='_compute_my_department',
                                    search='_search_my_department')
     my_outplacement = fields.Boolean(compute='_compute_my_outplacement',
@@ -73,9 +75,24 @@ class Outplacement(models.Model):
         return stages.search([], order=order)
 
     @api.model
-    def _read_group_employee_id(self, stages, domain, order):
+    def _read_group_employee_ids(self, employees, domain, order):
         """ Always display all stages """
-        return self['hr.employee'].search([], order=order)
+        _logger.warn('group by employee domain %s order %s' % (domain,order))
+        if ['my_department','=',True] in domain:
+            department = self.env['hr.employee'].search([('user_id','=',self.env.user.id)]).mapped('department_id')
+            department = department[0] if len(department) > 0 else None            
+            domain=['|',('department_id','=',department.id if department else None),('department_id','=',None)]
+        else:
+            domain=[]
+        _logger.warn('group by employee domain %s order %s' % (domain,order))
+        return employees.search(domain, order=order)
+
+    @api.model
+    def _read_group_department_ids(self, departments, domain, order):
+        """ Always display all stages """
+        _logger.warn('group by department domain %s order %s' % (domain,order))
+        return departments.search([], order=order)
+
 
     @api.model
     def create(self, vals):
@@ -89,8 +106,11 @@ class Outplacement(models.Model):
         res = super(Outplacement, self).write(vals)
         return res
 
+    @api.multi
     def _compute_my_department(self):
-        pass
+        department = self.env['hr.employee'].search([('user_id','=',self.env.user.id)]).mapped('department_id')
+        department = department[0] if len(department) > 0 else None
+        return self.filtered(lambda o: o.department_id == department)
 
     def _search_my_department(self, operator, value):
         user_employee = self.env['hr.employee'].search([
@@ -103,7 +123,9 @@ class Outplacement(models.Model):
         return [('id', operator, res)]
 
     def _compute_my_outplacement(self):
-        pass
+        coach = self.env['hr.employee'].search([('user_id','=',self.env.user.id)])
+        coach = coach[0] if len(coach) > 0 else None        
+        return self.filtered(lambda o: o.employee_id == coach)
 
     def _search_my_outplacement(self, operator, value):
         user_employee = self.env['hr.employee'].search([
@@ -118,10 +140,10 @@ class Outplacement(models.Model):
     @api.multi
     def _track_template(self, tracking):
         res = super(Outplacement, self)._track_template(tracking)
-        Outplacement = self[0]
-        changes, dummy = tracking[Outplacement.id]
-        if 'stage_id' in changes and Outplacement.stage_id.template_id:
-            res['stage_id'] = (Outplacement.stage_id.template_id, {
+        doc = self[0]
+        changes, dummy = tracking[doc.id]
+        if 'stage_id' in changes and doc.stage_id.template_id:
+            res['stage_id'] = (doc.stage_id.template_id, {
                 'auto_delete_message': True,
                 'subtype_id': self.env['ir.model.data'].xmlid_to_res_id('mail.mt_note'),
                 'notif_layout': 'mail.mail_notification_light'

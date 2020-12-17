@@ -93,11 +93,12 @@ class ClientConfig(models.Model):
 
     def get_headers(self):
         tracking_id = pycompat.text_type(uuid.uuid1())
+        ipf_system_id = self.env['ir.config_parameter'].get_param('ipf_system_id')
         headers = {
-            'x-amf-mediaType': "application/json",
+            'Content-Type': "application/json",
             'AF-TrackingId': tracking_id,
-            'AF-SystemId': "AF-SystemId",
-            'AF-EndUserId': "AF-EndUserId",
+            'AF-SystemId': ipf_system_id,
+            'AF-EndUserId': "*sys*",
             'AF-Environment': self.environment,
         }
         return headers

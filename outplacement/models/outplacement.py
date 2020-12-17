@@ -49,6 +49,17 @@ class Outplacement(models.Model):
         help="Small-sized photo of the employee. It is automatically "
              "resized as a 64x64px image, with aspect ratio preserved. "
              "Use this field anywhere a small image is required.")
+    partner_id = fields.Many2one('res.partner')
+    partner_name = fields.Char(related='partner_id.name')
+    booking_ref = fields.Char()
+    service_start_date = fields.Date()
+    service_end_date = fields.Date()
+    department_id = fields.Many2one('hr.department')
+    my_department = fields.Boolean(compute='_compute_my_department',
+                                   search='_search_my_department')
+    my_outplacement = fields.Boolean(compute='_compute_my_outplacement',
+                                     search='_search_my_outplacement')
+    sprakstod = fields.Char()
 
     # Nils: If image is removed this should be removed as well.
     @api.onchange('employee_id')
@@ -78,9 +89,35 @@ class Outplacement(models.Model):
         res = super(Outplacement, self).write(vals)
         return res
 
+    def _compute_my_department(self):
+        pass
+
+    def _search_my_department(self, operator, value):
+        user_employee = self.env['hr.employee'].search([
+            ('user_id', '=', self.env.uid)
+        ], limit=1)
+        res = []
+        if user_employee and user_employee.department_id:
+            res = self.search([
+                ('department_id', '=', user_employee.department_id.id)]).ids
+        return [('id', operator, res)]
+
+    def _compute_my_outplacement(self):
+        pass
+
+    def _search_my_outplacement(self, operator, value):
+        user_employee = self.env['hr.employee'].search([
+            ('user_id', '=', self.env.uid)
+        ], limit=1)
+        res = []
+        if user_employee and user_employee.department_id:
+            res = self.search([
+                ('employee_id', '=', user_employee.id)]).ids
+        return [('id', operator, res)]
+
     @api.multi
     def _track_template(self, tracking):
-        res = super(Applicant, self)._track_template(tracking)
+        res = super(Outplacement, self)._track_template(tracking)
         applicant = self[0]
         changes, dummy = tracking[applicant.id]
         if 'stage_id' in changes and applicant.stage_id.template_id:
@@ -98,12 +135,12 @@ class Outplacement(models.Model):
         res = {app.id: aliases.get(app.job_id.id) for app in self}
         leftover = self.filtered(lambda rec: not rec.job_id)
         if leftover:
-            res.update(super(Applicant, leftover)._notify_get_reply_to(default=default, records=None, company=company, doc_names=doc_names))
+            res.update(super(Outplacement, leftover)._notify_get_reply_to(default=default, records=None, company=company, doc_names=doc_names))
         return res
 
     @api.multi
     def message_get_suggested_recipients(self):
-        recipients = super(Applicant, self).message_get_suggested_recipients()
+        recipients = super(Outplacement, self).message_get_suggested_recipients()
         for applicant in self:
             if applicant.partner_id:
                 applicant._message_add_suggested_recipient(recipients, partner=applicant.partner_id, reason=_('Contact'))
@@ -134,7 +171,7 @@ class Outplacement(models.Model):
             defaults['priority'] = msg.get('priority')
         if custom_values:
             defaults.update(custom_values)
-        return super(Applicant, self).message_new(msg, custom_values=defaults)
+        return super(Outplacement, self).message_new(msg, custom_values=defaults)
 
     def _message_post_after_hook(self, message, *args, **kwargs):
         if self.email_from and not self.partner_id:
@@ -147,9 +184,7 @@ class Outplacement(models.Model):
                     ('partner_id', '=', False),
                     ('email_from', '=', new_partner.email),
                     ('stage_id.fold', '=', False)]).write({'partner_id': new_partner.id})
-        return super(Applicant, self)._message_post_after_hook(message, *args, **kwargs)
-
-
+        return super(Outplacement, self)._message_post_after_hook(message, *args, **kwargs)
 
 class OutplacementStage(models.Model):
     _name = 'outplacement.stage'

@@ -198,20 +198,18 @@ class MailActivity(models.Model):
         ("zu", "Zulu"),
         )
 
-    # ~ interpreter_language = fields.Selection(_lang_get, default=lambda self: self.env.lang)
-    interpreter_language = fields.Selection(selection=LANGUAGE_CODES)
-
-    # ~ interpreter_language = fields.Selection(_lang_get, default=lambda self: self.env.lang)
-    interpreter_language = fields.Selection(selection=LANGUAGE_CODES)
+    interpreter_language = fields.Selection(
+        selection=LANGUAGE_CODES,
+        string="Interpreter Language")
     interpreter_gender_preference = fields.Selection([
         ('male', 'Male'),
         ('female', 'Female'),
         ('no_preference', 'no preference'),
-    ])
+    ], string="Gender Preference")
     location_type = fields.Selection([
         ('on_premise', 'On premise'),
         ('telephone', 'Telephone'),
-    ], 'Location')
+    ], string='Location')
     time_start = fields.Datetime('Start Time')
     time_end = fields.Datetime('End Time')
     phone = fields.Char()

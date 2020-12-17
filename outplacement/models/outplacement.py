@@ -80,11 +80,11 @@ class Outplacement(models.Model):
 
     @api.multi
     def _track_template(self, tracking):
-        res = super(Applicant, self)._track_template(tracking)
-        applicant = self[0]
-        changes, dummy = tracking[applicant.id]
-        if 'stage_id' in changes and applicant.stage_id.template_id:
-            res['stage_id'] = (applicant.stage_id.template_id, {
+        res = super(Outplacement, self)._track_template(tracking)
+        Outplacement = self[0]
+        changes, dummy = tracking[Outplacement.id]
+        if 'stage_id' in changes and Outplacement.stage_id.template_id:
+            res['stage_id'] = (Outplacement.stage_id.template_id, {
                 'auto_delete_message': True,
                 'subtype_id': self.env['ir.model.data'].xmlid_to_res_id('mail.mt_note'),
                 'notif_layout': 'mail.mail_notification_light'
@@ -93,22 +93,22 @@ class Outplacement(models.Model):
 
     @api.multi
     def _notify_get_reply_to(self, default=None, records=None, company=None, doc_names=None):
-        """ Override to set alias of applicants to their job definition if any. """
+        """ Override to set alias of Outplacements to their job definition if any. """
         aliases = self.mapped('job_id')._notify_get_reply_to(default=default, records=None, company=company, doc_names=None)
         res = {app.id: aliases.get(app.job_id.id) for app in self}
         leftover = self.filtered(lambda rec: not rec.job_id)
         if leftover:
-            res.update(super(Applicant, leftover)._notify_get_reply_to(default=default, records=None, company=company, doc_names=doc_names))
+            res.update(super(Outplacement, leftover)._notify_get_reply_to(default=default, records=None, company=company, doc_names=doc_names))
         return res
 
     @api.multi
     def message_get_suggested_recipients(self):
-        recipients = super(Applicant, self).message_get_suggested_recipients()
-        for applicant in self:
-            if applicant.partner_id:
-                applicant._message_add_suggested_recipient(recipients, partner=applicant.partner_id, reason=_('Contact'))
-            elif applicant.email_from:
-                applicant._message_add_suggested_recipient(recipients, email=applicant.email_from, reason=_('Contact Email'))
+        recipients = super(Outplacement, self).message_get_suggested_recipients()
+        for Outplacement in self:
+            if Outplacement.partner_id:
+                Outplacement._message_add_suggested_recipient(recipients, partner=Outplacement.partner_id, reason=_('Contact'))
+            elif Outplacement.email_from:
+                Outplacement._message_add_suggested_recipient(recipients, email=Outplacement.email_from, reason=_('Contact Email'))
         return recipients
 
     @api.model
@@ -134,7 +134,7 @@ class Outplacement(models.Model):
             defaults['priority'] = msg.get('priority')
         if custom_values:
             defaults.update(custom_values)
-        return super(Applicant, self).message_new(msg, custom_values=defaults)
+        return super(Outplacement, self).message_new(msg, custom_values=defaults)
 
     def _message_post_after_hook(self, message, *args, **kwargs):
         if self.email_from and not self.partner_id:
@@ -147,7 +147,7 @@ class Outplacement(models.Model):
                     ('partner_id', '=', False),
                     ('email_from', '=', new_partner.email),
                     ('stage_id.fold', '=', False)]).write({'partner_id': new_partner.id})
-        return super(Applicant, self)._message_post_after_hook(message, *args, **kwargs)
+        return super(Outplacement, self)._message_post_after_hook(message, *args, **kwargs)
 
 
 

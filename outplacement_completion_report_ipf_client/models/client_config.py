@@ -94,7 +94,9 @@ class ClientConfig(models.Model):
 
     def get_headers(self):
         tracking_id = pycompat.text_type(uuid.uuid1())
-        ipf_system_id = self.env['ir.config_parameter'].get_param('ipf_system_id')
+        ipf_system_id = (
+            self.env["ir.config_parameter"].sudo().get_param("api_ipf.ipf_system_id")
+        )
         headers = {
             'Content-Type': "application/json",
             'AF-TrackingId': tracking_id,

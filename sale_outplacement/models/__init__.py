@@ -21,5 +21,6 @@
 ################################################################################
 
 from . import project
+from . import product
 from . import outplacement
 from . import mail_activity

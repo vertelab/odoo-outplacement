@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data noupdate="1">
+<!--
         <record id="suborder_mail_activity" model="mail.activity">
             <field name="res_id">1</field>
             <field name="res_model_id" ref="outplacement.model_outplacement"/>
@@ -9,6 +10,7 @@
             <field name="create_user_id" ref="base.user_admin"/>
             <field name="user_id" ref="base.user_admin"/>
         </record>
+-->
 
         <record id="product_suborder" model="product.product">
             <field name="name">Product Suborder</field>
@@ -18,7 +20,43 @@
             <field name="is_suborder">True</field>
             <field name="uom_id" ref="uom.product_uom_unit"/>
             <field name="uom_po_id" ref="uom.product_uom_unit"/>
+<!--
             <field name="mail_activity_ids" eval="[(4, ref('suborder_mail_activity'))]"/>
+-->
         </record>
+        
+        
+        <record id="ir_actions_test_outplacement" model="ir.actions.server">
+      <field name="name">Simulate Suborder from BAR</field>
+      <field name="type">ir.actions.server</field>
+      <field name="model_id" ref="sale.model_sale_order" />
+      <field name="binding_model_id" ref="sale.model_sale_order" />
+      <field name="state">code</field>
+      <field name="code">
+env['outplacement'].suborder_process_data({
+            "genomforande_referens": "100000123",
+            "utforande_verksamhet_id": "10009858",
+            "ordernummer": "MEET-34",
+            "tidigare_ordernummer": "MEET-23",
+            "boknings_id": "120615",
+            "personnummer": "191212121212",
+            "sokande_id": "majar8109",
+            "tjanstekod": "KVL",
+            "spar_kod": "10",
+            "sprakstod": "Tyska",
+            "deltagandegrad": 75,
+            "bokat_sfi": False,
+            "startdatum_insats": "2020-01-01",
+            "slutdatum_insats": "2020-12-31",
+            "startdatum_avrop": "2020-01-01",
+            "slutdatum_avrop": "2020-03-31",
+            "aktnummer_diariet": "Af-2020/0000 3075",
+            "telefonnummer_handlaggargrupp": "+46734176359",
+            "epost_handlaggargrupp": "test@test.com"
+        })
+      </field>
+    </record>
+        
+        
     </data>
 </odoo>

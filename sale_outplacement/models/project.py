@@ -31,22 +31,11 @@ class ProjectTask(models.Model):
                 'activity_id': task.id,
                 'name': task.name,
             })
-        
+
     @api.model
     def init_joint_planning_stages(self,outplacement_id):
-        for stage in self.env['project.task.type'].search([('is_outplacement','=',True)],order='sequence'):
+        for stage in self.env['project.task.type'].search([('is_outplacement','=',True)]):
             stage.outplacement_ids = [(4, outplacement_id)]
-
-            
-    @api.onchange('outplacement.id')
-    def _onchange_outplacement(self):
-        if self.outplacement_id:
-            if not self.parent_id and self.project_id.partner_id:
-                self.partner_id = self.project_id.partner_id
-            if self.project_id not in self.stage_id.project_ids:
-                self.stage_id = self.stage_find(self.project_id.id, [('fold', '=', False)])
-        else:
-            self.stage_id = False
 
 
 class ProjectTaskType(models.Model):

@@ -40,6 +40,7 @@
     'data': [
         'data/product.xml',
         'views/outplacement_view.xml',
+        'views/product_views.xml',
     ],
     'installable': True,
     'images': [

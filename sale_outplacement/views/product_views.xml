@@ -13,7 +13,16 @@
             </div>
             <notebook position="inside">
                 <page string="Suborder" name="suborder" attrs="{'invisible': [('is_suborder','=',False)]}">
-                    <field name="mail_activity_ids"/>
+                    <field name="mail_activity_ids">
+            <tree string="" editable="top">
+                          <field name="res_id" invisible="1"/>
+                          <field name="res_model_id" invisible="1"/>
+                          <field name="summary"/>
+                          <field name="summary"/>
+                          <field name="activity_type_id"/>
+                          <field name="due_days"/>
+                      </tree>
+                  </field>
                 </page>
             </notebook>
         </field>

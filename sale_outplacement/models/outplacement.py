@@ -95,7 +95,6 @@ class Outplacement(models.Model):
             'partner_id': partner_id,
         })
         product = self.env.ref('sale_outplacement.product_suborder')
-        task_ids = self.env['res.joint_planning'].search([])
         self.env['sale.order.line'].create({
             'product_id': product.id,
             'order_id': order.id,
@@ -117,21 +116,10 @@ class Outplacement(models.Model):
             'file_reference_number': data['aktnummer_diariet'],
             'management_team_id': self._get_management_team_id(data),
             'order_id': order.id,
-            'task_ids': [(6, 0, task_ids)],
         })
         self.env['project.task'].init_joint_planning(outplacement.id)
-        self.env['project.task'].init_joint_planning_stage(outplacement.id)
+        self.env['project.task'].init_joint_planning_stages(outplacement.id)
         _logger.warn('Nisse: outplacement %s' % dir(outplacement))
-
-        for activity in product.mail_activity_ids:
-                MailActivity.create({
-                    'res_id': outplacement.id,
-                    'res_model': outplacement._name,
-                    'activity_type_id': activity.activity_type_id,
-                    'date_deadline': fields.Date.today() + relativedelta(days=activity.due_days),
-                    'summary': activity.summary,
-                    'user_id': outplacement.employee_id.user_id
-                })
         return data
 
     def action_project_task(self):
@@ -143,3 +131,11 @@ class Outplacement(models.Model):
             'res_model': 'product.task',
             'context':  "{'default_outplacement_id': '%s'}" % self.id,
         }
+
+
+
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+
+    customer_id = fields.Char(string='Cuhatomer Number', size=64, trim=True, )
+    

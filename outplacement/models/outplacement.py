@@ -80,7 +80,7 @@ class Outplacement(models.Model):
 
     @api.multi
     def _track_template(self, tracking):
-        # ~ res = super(Applicant, self)._track_template(tracking)
+        res = super(Applicant, self)._track_template(tracking)
         applicant = self[0]
         changes, dummy = tracking[applicant.id]
         if 'stage_id' in changes and applicant.stage_id.template_id:

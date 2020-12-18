@@ -39,6 +39,7 @@
     ],
     'data': [
         'data/product.xml',
+        'data/project.xml',
         'views/outplacement_view.xml',
         'views/product_views.xml',
     ],

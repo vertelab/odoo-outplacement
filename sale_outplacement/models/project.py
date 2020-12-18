@@ -6,6 +6,7 @@ from odoo import tools, _
 from odoo.exceptions import ValidationError, AccessError
 from odoo.modules.module import get_module_resource
 
+_logger = logging.getLogger(__name__)
 
 class ProjectTask(models.Model):
     _inherit = 'project.task'
@@ -26,7 +27,7 @@ class ProjectTask(models.Model):
         for task in self.env['res.joint_planning'].search([],order='sequence'):
             self.env['project.task'].create({
                 'outplacement_id': outplacement_id,
-                'joint_planning_type': 'preplanning',
+                'joint_planing_type': 'preplaning',
                 'task_type': task.task_type,
                 'activity_id': task.id,
                 'name': task.name,
@@ -37,7 +38,12 @@ class ProjectTask(models.Model):
         for stage in self.env['project.task.type'].search([('is_outplacement','=',True)]):
             stage.outplacement_ids = [(4, outplacement_id)]
 
-
+    @api.model
+    def _read_group_stage_ids(self, stages, domain, order):
+        stages = super(ProjectTask,self)._read_group_stage_ids(stages, domain, order)
+        if 'outplacement_id' in domain:
+            return stages.search([('is_outplacement', '=', True)])
+        return stages
 class ProjectTaskType(models.Model):
     _inherit = 'project.task.type'
 

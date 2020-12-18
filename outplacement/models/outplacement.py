@@ -29,8 +29,23 @@ class Outplacement(models.Model):
                             group_expand='_read_group_stage_ids',
                             default=lambda self: self._default_stage_id()
                             )
-    employee_id = fields.Many2one('hr.employee', string="Coach",group_expand='_read_group_employee_ids')
-    department_id = fields.Many2one('hr.department',group_expand='_read_group_department_ids')
+    @api.model
+    def _read_group_employee_ids(self, employees, domain, order):
+        """ Always display all stages """
+        _logger.warn('group by employee domain %s order %s' % (domain,order))
+        if ['my_department','=',True] in domain:
+            department = self.env['hr.employee'].search(
+                [('user_id','=',self.env.user.id)],limit=1).mapped('department_id') or None
+            domain=['|',('department_id','=',department.id if department else None),('department_id','=',None)]
+        else:
+            domain=[]
+        _logger.warn('group by employee domain %s order %s' % (domain,order))
+        return employees.search(domain, order=order)
+    employee_id = fields.Many2one('hr.employee', string="Coach", group_expand='_read_group_employee_ids')
+    department_id = fields.Many2one('hr.department',
+                                    related="employee_id.department_id",
+                                    group_expand='_read_group_department_ids',
+                                    store=True)
     date_begin = fields.Datetime(string="Start Date", required=True)
     date_end = fields.Datetime(string="End Date", required=True)
     color = fields.Integer('Kanban Color Index')
@@ -74,18 +89,6 @@ class Outplacement(models.Model):
         """ Always display all stages """
         return stages.search([], order=order)
 
-    @api.model
-    def _read_group_employee_ids(self, employees, domain, order):
-        """ Always display all stages """
-        _logger.warn('group by employee domain %s order %s' % (domain,order))
-        if ['my_department','=',True] in domain:
-            department = self.env['hr.employee'].search([('user_id','=',self.env.user.id)]).mapped('department_id')
-            department = department[0] if len(department) > 0 else None            
-            domain=['|',('department_id','=',department.id if department else None),('department_id','=',None)]
-        else:
-            domain=[]
-        _logger.warn('group by employee domain %s order %s' % (domain,order))
-        return employees.search(domain, order=order)
 
     @api.model
     def _read_group_department_ids(self, departments, domain, order):

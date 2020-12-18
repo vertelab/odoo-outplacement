@@ -33,8 +33,8 @@ class Outplacement(models.Model):
     _inherit = "outplacement"
 
     jp_sent_date = fields.Date(string="Joint Planning Sent Date",
-                                            track_visibility='onchange',
-                                            help="Latest Sent Date for Joint Planning")
+                               track_visibility='onchange',
+                               help="Latest Sent Date for Joint Planning")
 
     
     def _compute_task_count(self):

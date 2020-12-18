@@ -122,17 +122,6 @@ class Outplacement(models.Model):
         _logger.warn('Nisse: outplacement %s' % dir(outplacement))
         return data
 
-    def action_project_task(self):
-        return {
-            'name': _('Product Task'),
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'tree,form',
-            'res_model': 'product.task',
-            'context':  "{'default_outplacement_id': '%s'}" % self.id,
-        }
-
-
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'

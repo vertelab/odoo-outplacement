@@ -14,7 +14,8 @@
             <div class="oe_title">
               <label for="name" class="oe_edit_only" />
               <h1>
-                <field name="name" required="True" />
+                <field name="partner_name"  />
+                <field name="partner_id" required="True"  class="oe_edit_only"   />
               </h1>
             </div>
             <group>
@@ -24,6 +25,8 @@
                 <field name="meeting_remote" />
               </group>
               <group>
+                <field name="name" />
+                <field name="booking_ref" />
                 <field name="date_begin" />
                 <field name="date_end" />
               </group>
@@ -125,6 +128,7 @@
           <field name="employee_id" />
           <field name="booking_ref" />
           <field name="partner_name" />
+          <field name="department_id" />
           <filter name="my_department" string="My Department" domain="[('my_department', '=', True)]"/>
           <filter name="my_outplacement" string="My Outplacement" domain="[('my_outplacement', '=', True)]"/>
           <group expand="0" string="Group By">

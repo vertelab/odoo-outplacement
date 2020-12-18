@@ -13,6 +13,7 @@
       <field name="name">Tasks</field>
       <field name="res_model">project.task</field>
       <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity</field>
+      <field name="domain">[('outplacement_id','=',active_id)]</field>
       <field name="context">
         {
         'search_default_outplacement_id': [active_id],

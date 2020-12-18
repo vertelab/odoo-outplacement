@@ -50,7 +50,7 @@
                 id="menu_res_joint_planning"
                 parent="outplacement.outplacement_configuration"
                 action="res_joint_planning_action"
-                name="Res Joint Planning"
+                name="Joint Planning"
                 groups="base.group_user"
                 sequence="5"/>
 

@@ -75,6 +75,8 @@ class Outplacement(models.Model):
     partner_city = fields.Char(related="partner_id.city")
     partner_state_id = fields.Many2one(related="partner_id.state_id")
     partner_country_id = fields.Many2one(related="partner_id.country_id")
+    partner_phone = fields.Char(string="Phone", related="partner_id.phone")
+    partner_email = fields.Char(string="Email", related="partner_id.email")
     booking_ref = fields.Char()
     service_start_date = fields.Date()
     service_end_date = fields.Date()

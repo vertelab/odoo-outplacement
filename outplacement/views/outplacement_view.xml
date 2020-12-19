@@ -29,6 +29,8 @@
                   <field name="partner_zip" placeholder="ZIP" class="o_address_zip"/>
                   <field name="partner_country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
                 </div>
+                <field name="partner_phone" />
+                <field name="partner_email" />
                 <field name="employee_id" />
                 <field name="department_id" />
                 <field name="meeting_remote" />

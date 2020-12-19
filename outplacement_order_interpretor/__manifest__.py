@@ -31,7 +31,7 @@
     'website': 'https://www.n-development.com',
     "depends": [
         'mail',
-        'hr',
+        'hr_timesheet',
         'project',
         'task_interperator_ipf_client',
     ],

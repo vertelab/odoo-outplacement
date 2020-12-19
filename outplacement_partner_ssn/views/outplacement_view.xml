@@ -4,7 +4,7 @@
         <field name="model">outplacement</field> 
         <field name="inherit_id" ref="outplacement.outplacement_form_view" />
         <field name="arch" type="xml">
-            <field name="employee_id" position="before">
+            <field name="partner_phone" position="before">
                 <field name="social_sec_nr"/> 
             </field>
         </field>

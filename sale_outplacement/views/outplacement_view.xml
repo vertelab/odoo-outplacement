@@ -8,7 +8,6 @@
                 <group position="after">
                     <group>
                         <group>
-                            <field name="booking_ref"/>
                             <field name="participitation_rate"/>
                             <field name="file_reference_number"/>
                         </group>

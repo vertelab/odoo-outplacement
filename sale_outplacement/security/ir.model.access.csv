@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_mail_activity_template,outplacement.access.user,sale_outplacement.model_mail_activity,base.group_user,1,1,1,1
+access_mail_activity_template,access_mail_activity_template,model_mail_activity_template,base.group_user,1,1,1,1

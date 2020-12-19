@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data noupdate="1">
-<!--
-        <record id="suborder_mail_activity" model="mail.activity">
-            <field name="res_id">1</field>
-            <field name="res_model_id" ref="outplacement.model_outplacement"/>
+        <record id="suborder_mail_activity" model="mail.activity.template">
             <field name="activity_type_id" ref="mail.mail_activity_data_call"/>
             <field name="summary">Meeting to go over pricing information.</field>
-            <field name="create_user_id" ref="base.user_admin"/>
-            <field name="user_id" ref="base.user_admin"/>
+            <field name="due_days" eval="5"/>
         </record>
--->
 
         <record id="product_suborder" model="product.product">
             <field name="name">Product Suborder</field>

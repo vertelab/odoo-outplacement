@@ -68,7 +68,7 @@ class Outplacement(models.Model):
              "resized as a 64x64px image, with aspect ratio preserved. "
              "Use this field anywhere a small image is required.")
     partner_id = fields.Many2one('res.partner')
-    partner_name = fields.Char(related='partner_id.name')
+    partner_name = fields.Char(related='partner_id.name', string='partner_name')
     booking_ref = fields.Char()
     service_start_date = fields.Date()
     service_end_date = fields.Date()

@@ -31,7 +31,6 @@
     'website': 'https://www.n-development.com',
     'depends': [
         'project',
-        'partner_view_360',
         'outplacement_deviationreport_ipf_client'
     ],
     'data': [

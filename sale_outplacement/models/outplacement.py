@@ -23,6 +23,7 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 
+
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -38,10 +39,28 @@ class Outplacement(models.Model):
     order_id = fields.Many2one('sale.order')
     tasks_count = fields.Integer(compute='_compute_tasks_count')
 
+    @api.onchange('employee_id')
+    def _employee_activites(self):
+        if self.employee_id:
+            self.env['mail.activity'].search(
+                ['&', 
+                 ('res_model_id.model', '=', self._name), 
+                 ('res_id', '=', self.id)]).unlink()
+            for activity in self.order_id.mapped('order_lines').filtered(lambda l: l.product_id.is_suborder == True).mapped('product_id.mail_activites'):
+                self.env['mail.activity'].create({
+                    'res_id': self.id,
+                    'res_model_id': self.env.ref('outplacement.model_outplacement').id,
+                    'summary': activity.summary,
+                    # ~ 'date':    fields.Datetime.to_string(fields.Datetime.from_string(values['date_from']) + timedelta(minutes = abs(minutes))),
+                    'user_id': self.employee_id.user_id.id if self.employee_id.user_id else None
+                })
+
+
+
     def _compute_tasks_count(self):
         for record in self:
             record.tasks_count = len(record.task_ids)
-
+{
     @api.multi
     def _get_partner_id(self, data):
         partner=self.env['res.partner'].search(['|',

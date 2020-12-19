@@ -2,16 +2,12 @@
 
 from odoo import models, fields
 
-
-class MailActivity(models.Model):
-    _inherit = "mail.activity"
-
-    due_days = fields.Integer()
-
-
-
 class MailActivityTemplate(models.Model):
     _name = "mail.activity.template"
 
     due_days = fields.Integer()
+    activity_type_id = fields.Many2one(comodel_name='mail.activity.type', 
+                                       string='Activity')
+    summary = fields.Char('Summary')
+
 

@@ -50,7 +50,8 @@ class Outplacement(models.Model):
     date_end = fields.Datetime(string="End Date", required=True)
     color = fields.Integer('Kanban Color Index')
     meeting_remote = fields.Selection(selection=[('no','On Premice'),('yes','Remote')],string='Meeting type')
-    
+    uniq_ref = fields.Char(string='Uniq Id', size=64, trim=True, )
+
     # TODO!
     # Nils: Remove Image as we have no image of the jobseeker?
     # image: all image fields are base64 encoded and PIL-supported
@@ -106,10 +107,12 @@ class Outplacement(models.Model):
 
 
     @api.model
+    @api.returns('self', lambda value: value.id)
     def create(self, vals):
-        tools.image_resize_images(vals)
-        employee = super(Outplacement, self).create(vals)
-        return employee
+        if not vals.get('uniq_ref'):
+            vals['uniq_ref'] = self.env['ir.sequence'].get('outplacement.uniqid')
+        return super(Outplacement, self).create(vals)
+        
 
     @api.multi
     def write(self, vals):
@@ -218,6 +221,7 @@ class Outplacement(models.Model):
                     ('email_from', '=', new_partner.email),
                     ('stage_id.fold', '=', False)]).write({'partner_id': new_partner.id})
         return super(Outplacement, self)._message_post_after_hook(message, *args, **kwargs)
+
 
 class OutplacementStage(models.Model):
     _name = 'outplacement.stage'

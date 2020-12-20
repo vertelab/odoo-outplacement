@@ -11,7 +11,11 @@ _logger = logging.getLogger(__name__)
 class ProjectTask(models.Model):
     _inherit = 'project.task'
 
-    outplacement_id = fields.Many2one(comodel_name='outplacement', String='Outplacement', index=True,default=lambda self: self.env.context.get('default_project_id'))
+    outplacement_id = fields.Many2one(
+        comodel_name='outplacement',
+        string='Outplacement',
+        index=True,
+        default=lambda self: self.env.context.get('default_project_id'))
     activity_id = fields.Many2one('res.joint_planning', 'Activity')
     joint_planing_type = fields.Selection([
         ('kvl', 'KVL'),
@@ -32,7 +36,7 @@ class ProjectTask(models.Model):
                 'activity_id': task.id,
                 'name': task.name,
                 'color': task.color,
-                'planned_hours': planned_hours,
+                'planned_hours': task.planned_hours,
             })
 
     @api.model

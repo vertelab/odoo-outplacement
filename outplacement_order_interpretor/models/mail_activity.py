@@ -265,3 +265,7 @@ class MailActivity(models.Model):
         if response.status_code == 200:
             data = json.loads(response.content.decode())
             self.booking_ref = data.get('tolkbokningId')
+            
+    @api.model
+    def cron_order_interpretator(self):
+        pass

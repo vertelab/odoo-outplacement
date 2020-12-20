@@ -209,7 +209,7 @@ class ClientConfig(models.Model):
             "genomforande_referens": outplacement.order_id.origin,
             "ordernummer": outplacement.order_id.name,
             "personnr": outplacement.partner_id.company_registry,
-            "unikt_id": "1321",
+            "unikt_id": outplacement.uniq_ref,
             "deltagare": {
                 "fornamn": outplacement.partner_id.firstname,
                 "efternamn": outplacement.partner_id.lastname,
@@ -219,7 +219,7 @@ class ClientConfig(models.Model):
             "innehall": []
         }
         for planned in self.env['res.joint_planning'].search([('send2server','=',True)],order=sequence):
-            task = outplacement.task_ids.filtered(lambda t: t.activity_id = planned.activity_id)
+            task = outplacement.task_ids.filtered(lambda t: t.activity_id == planned.activity_id)
             payload['innehall'].append({
                 'aktivitets_id': planned.activity_id,
                 'aktivitets_namn': task.activity_name if task else planned.activity_name,

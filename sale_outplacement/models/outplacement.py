@@ -141,7 +141,6 @@ class Outplacement(models.Model):
         _logger.warn('Nisse: outplacement %s' % dir(outplacement))
         return data
 
-
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 

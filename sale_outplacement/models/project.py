@@ -31,6 +31,7 @@ class ProjectTask(models.Model):
                 'task_type': task.task_type,
                 'activity_id': task.id,
                 'name': task.name,
+                'color': task.color,
             })
 
     @api.model
@@ -41,17 +42,24 @@ class ProjectTask(models.Model):
     @api.model
     def _read_group_stage_ids(self, stages, domain, order):
         stages = super(ProjectTask,self)._read_group_stage_ids(stages, domain, order)
-        if 'outplacement_id' in domain:
+        if [elem for elem in domain if 'outplacement_id' in elem]:
             return stages.search([('is_outplacement', '=', True)])
         return stages
+        
+        
 class ProjectTaskType(models.Model):
     _inherit = 'project.task.type'
 
     def _get_default_outplacement_ids(self):
         default_outplacement_id = self.env.context.get('default_outplacement_id')
         return [default_outplacement_id] if default_outplacement_id else None
-
-    outplacement_ids = fields.Many2many('outplacement', 'outplacement_task_type_rel', 'type_id', 'outplacement_id', string='Outplacement',
+        fields.Many2many(comodel_name='_',string='_') # relation|column1|column2
+    outplacement_ids = fields.Many2many(
+        comodel_name='outplacement',
+        relation='outplacement_task_type_rel',
+        column1='type_id', 
+        column2='outplacement_id',
+        string='Outplacement',
         default=_get_default_outplacement_ids)
     is_outplacement = fields.Boolean(string='Is Outplacement')
     

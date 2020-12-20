@@ -36,3 +36,4 @@ class ResJointPlanning(models.Model):
                                             ('optional', 'Optional'), ],
                                  string='Task Type', )
     activity_id = fields.Char(string="Activity ID")
+    color = fields.Integer(string='Color Index')

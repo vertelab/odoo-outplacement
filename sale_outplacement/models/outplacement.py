@@ -60,7 +60,7 @@ class Outplacement(models.Model):
     def _compute_tasks_count(self):
         for record in self:
             record.tasks_count = len(record.task_ids)
-{
+
     @api.multi
     def _get_partner_id(self, data):
         partner=self.env['res.partner'].search(['|',

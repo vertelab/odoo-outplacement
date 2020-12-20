@@ -6,6 +6,9 @@
             <field name="sequence">1</field>
             <field name="task_type">mandatory</field>
             <field name="activity_id">175</field>
+            <field name="color">3</field>
+            <field name="planned_hour">32.0</field>
+            <field name="send2server" eval="True"/>
         </record>
 
         <record id="joint_planning_2" model="res.joint_planning">

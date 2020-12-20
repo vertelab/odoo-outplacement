@@ -32,6 +32,7 @@ class ProjectTask(models.Model):
                 'activity_id': task.id,
                 'name': task.name,
                 'color': task.color,
+                'planned_hours': planned_hours,
             })
 
     @api.model

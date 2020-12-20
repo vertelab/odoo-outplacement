@@ -218,10 +218,11 @@ class ClientConfig(models.Model):
             "inskickad_datum": str(outplacement.jp_sent_date),
             "innehall": []
         }
-        for task in sorted(outplacement.task_ids, key=lambda field: field['activity_id']):
+        for planned in self.env['res.joint_planning'].search([('send2server','=',True)],order=sequence):
+            task = outplacement.task_ids.filtered(lambda t: t.activity_id = planned.activity_id)
             payload['innehall'].append({
-                'aktivitets_id': task.activity_id,
-                'aktivitets_namn': task.activity_name,
-                'beskrivning': task.name,
+                'aktivitets_id': planned.activity_id,
+                'aktivitets_namn': task.activity_name if task else planned.activity_name,
+                'beskrivning': task.description if task else '',
             })
         api.post_report(payload)

@@ -22,9 +22,11 @@
 
 {
     'name': 'Order Interpreter',
-    'version': '12.0.0.0.1',
+    'version': '12.0.0.2',
     'category': 'Project',
-    'description': """This module/update...""",
+    'description': """This module adds interpreter-functionality \n
+    v12.0.0.2 changed the languagecodes from a full list to Tolkportalens list. AFC-1586
+    """,
 
     'author': "N-development",
     'license': 'AGPL-3',

@@ -2,7 +2,7 @@ import base64
 
 from odoo import api, fields, models, tools, SUPERUSER_ID
 from odoo import tools, _
-from odoo.exceptions import ValidationError, AccessError
+from odoo.exceptions import ValidationError, AccessError, Warning
 from odoo.modules.module import get_module_resource
 
 
@@ -69,15 +69,15 @@ class Outplacement(models.Model):
              "resized as a 64x64px image, with aspect ratio preserved. "
              "Use this field anywhere a small image is required.")
     partner_id = fields.Many2one('res.partner')
-    partner_name = fields.Char(related='partner_id.name', string='Partner Name')
-    partner_street = fields.Char(related="partner_id.street")
-    partner_street2 = fields.Char(related="partner_id.street2")
-    partner_zip = fields.Char(related="partner_id.zip")
-    partner_city = fields.Char(related="partner_id.city")
-    partner_state_id = fields.Many2one(related="partner_id.state_id")
-    partner_country_id = fields.Many2one(related="partner_id.country_id")
-    partner_phone = fields.Char(string="Phone", related="partner_id.phone")
-    partner_email = fields.Char(string="Email", related="partner_id.email")
+    partner_name = fields.Char(related="partner_id.name", string="Partner name")
+    partner_street = fields.Char()
+    partner_street2 = fields.Char( )
+    partner_zip = fields.Char()
+    partner_city = fields.Char()
+    partner_state_id = fields.Many2one(comodel_name='res.country.state')
+    partner_country_id = fields.Many2one(comodel_name='res.country')
+    partner_phone = fields.Char(string="Phone" )
+    partner_email = fields.Char(string="Email" )
     booking_ref = fields.Char()
     service_start_date = fields.Date()
     service_end_date = fields.Date()
@@ -86,6 +86,54 @@ class Outplacement(models.Model):
     my_outplacement = fields.Boolean(compute='_compute_my_outplacement',
                                      search='_search_my_outplacement')
     sprakstod = fields.Char()
+
+    @api.onchange('partner_id')
+    def load_partner_values(self):
+        self.partner_street = self.partner_id.street
+        self.partner_street2 = self.partner_id.street2
+        self.partner_zip = self.partner_id.zip
+        self.partner_city = self.partner_id.city
+        self.partner_state_id = self.partner_id.state_id
+        self.partner_country_id = self.partner_id.country_id
+        self.partner_phone = self.partner_id.phone
+        self.partner_email = self.partner_id.email
+
+    @api.onchange('partner_street', 'partner_street2', 'partner_zip', 'partner_city', 'partner_phone', 'partner_email')
+    def set_partner_data(self):
+        if self.partner_id:
+            self.partner_id.write({
+                'street': self.partner_street,
+                'street2': self.partner_street2,
+                'zip': self.partner_zip,
+                'city': self.partner_city,
+                'phone': self.partner_phone,
+                'email': self.partner_email
+                })
+        else:
+            self.partner_street = False
+            self.partner_street2 = False
+            self.partner_zip = False
+            self.partner_city = False
+            self.partner_phone = False
+            self.partner_email = False
+            
+    @api.onchange('partner_state_id')
+    def set_partner_state(self):
+        if self.partner_id:
+            self.partner_id.write({'state_id': self.partner_state_id.id})
+        else:
+            self.partner_state_id = False
+           
+    @api.onchange('partner_country_id')
+    def set_partner_country(self):
+        if self.partner_id:
+            self.partner_id.write({'country_id': self.partner_country_id.id,})
+        else:
+            self.partner_country_id = False
+        self.partner_state_id = False
+
+    
+            
 
     # Nils: If image is removed this should be removed as well.
     @api.onchange('employee_id')

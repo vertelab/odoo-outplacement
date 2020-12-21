@@ -7,7 +7,7 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Desired jobs">
                 <group>
-                  <field name="job_ids" mode="tree" nolabel="1">
+                  <field name="job_ids" mode="tree" nolabel="1" attrs="{'invisible': [('partner_id', '=', False)]}">
                     <tree editable="bottom" string="Desired jobs" default_order="name">
                         <field name="ssyk_code"/> 
                         <field name="name"  options="{'no_create_edit': True}"/>

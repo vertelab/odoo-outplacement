@@ -34,6 +34,7 @@
     'depends': [
         'outplacement',
         'res_joint_planning_af',
+        'project',
         'outplacement_completion_report_ipf_client',
     ],
     'data': [

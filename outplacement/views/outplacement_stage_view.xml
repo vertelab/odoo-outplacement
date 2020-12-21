@@ -46,7 +46,7 @@
             parent="outplacement.outplacement_configuration"
             action="outplacement.outplacement_stage_action"
             name="Stages"
-            groups="base.group_user"
+            groups="outplacement.group_outplacement_admin"
             sequence="10"/>
 
     </data>

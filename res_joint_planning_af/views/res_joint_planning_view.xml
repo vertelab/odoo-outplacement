@@ -54,7 +54,7 @@
                 parent="outplacement.outplacement_configuration"
                 action="res_joint_planning_action"
                 name="Joint Planning"
-                groups="base.group_user"
+                groups="outplacement.group_outplacement_admin"
                 sequence="5"/>
 
     </data>

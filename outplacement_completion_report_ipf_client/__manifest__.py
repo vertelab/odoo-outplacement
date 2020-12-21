@@ -28,7 +28,7 @@
 
     'author': "N-development",
     'license': 'AGPL-3',
-    'website': 'https://www.n-development.com',
+    'website': 'https://vertel.se',
     'depends': ['res_joint_planning_af'],
     'data': [
         "security/ir.model.access.csv",

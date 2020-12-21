@@ -157,6 +157,6 @@
       <field name="view_type">form</field>
       <field name="view_mode">kanban,calendar,tree,form,pivot,activity</field>
     </record>
-    <menuitem id="menu_outplacement" parent="outplacement.parent_menu_outplacement" action="outplacement.outplacement_action" name="Outplacement" groups="base.group_user" sequence="5" />
+    <menuitem id="menu_outplacement" parent="outplacement.parent_menu_outplacement" action="outplacement.outplacement_action" name="Outplacement" groups="outplacement.group_outplacement_user_read" sequence="5" />
   </data>
 </odoo>

@@ -22,9 +22,9 @@
 
 {
     'name': 'Outplacement Invoice',
-    'version': '12.0.0.0.1',
-    'category': 'Project',
-    'description': """This module listen for new invoices from Raindance...""",
+    'version': '12.0.1.0.1',
+    'category': 'Outplacement',
+    'description': """This module listen for new invoices from Raindance.""",
 
     'author': "Vertel AB",
     'license': 'AGPL-3',

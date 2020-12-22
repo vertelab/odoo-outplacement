@@ -1,6 +1,6 @@
 {
     'name': 'Outplacement Jobs',
-    'version': '12.0.0.0.1',
+    'version': '12.0.1.1.0',
     'category': '',
     'description': """Partner Jobs """,
 

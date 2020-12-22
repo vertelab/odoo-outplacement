@@ -45,22 +45,38 @@ class Outplacement(models.Model):
     @api.onchange('sun_ids')
     def set_partner_sun_ids(self):
         if self.partner_id:
-            self.partner_id.write({})
+            self.partner_id.write({
+                'sun_ids': [(6,0,self.sun_ids._ids)]
+            })
+        else:
+            self.sun_ids = False
 
     @api.onchange('drivers_license_ids')
     def set_partner_drivers_license(self):
         if self.partner_id:
-            self.partner_id.write({})
+            self.partner_id.write({
+                'drivers_license_ids': [(6,0,self.drivers_license_ids._ids)]
+            })
+        else:
+            self.drivers_license_ids = False
 
     @api.onchange('cv')
     def set_partner_cv(self):
         if self.partner_id:
-            self.partner_id.write({})
+            self.partner_id.write({
+                'cv': self.cv
+            })
+        else:
+            self.cv = False
 
     @api.onchange('references')
     def set_partner_references(self):
         if self.partner_id:
-            self.partner_id.write({})
+            self.partner_id.write({
+                'references': self.references
+            })
+        else:
+            self.references = False
 
 
 

@@ -18,7 +18,7 @@
                 <field name="partner_id" required="True"  class="oe_edit_only"   />
               </h1>
             </div>
-            <group>
+            <group col="3">
               <group>
               <label for="street" string="Address"/>
               <div class="o_address_format" attrs="{'invisible': [('partner_id', '=', False)]}">
@@ -29,6 +29,8 @@
                   <field name="partner_zip" placeholder="ZIP" class="o_address_zip"/>
                   <field name="partner_country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
                 </div>
+              </group>
+              <group>
                 <field name="partner_phone" attrs="{'invisible': [('partner_id', '=', False)]}"/>
                 <field name="partner_email" attrs="{'invisible': [('partner_id', '=', False)]}"/>
                 <field name="employee_id" />

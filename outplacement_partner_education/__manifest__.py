@@ -1,6 +1,6 @@
 {
     'name': 'Outplacement Education',
-    'version': '12.0.0.0.1',
+    'version': '12.0.0.2.0',
     'category': '',
     'description': """Partner Education Level""",
 

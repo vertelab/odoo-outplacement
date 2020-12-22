@@ -41,8 +41,8 @@
                 <field name="name" />
                 <field name="booking_ref" />
                 <field name="uniq_ref" />
-                <field name="date_begin" />
-                <field name="date_end" />
+                <field name="date_begin" widget="date"/>
+                <field name="date_end" widget="date"/>
               </group>
             </group>
             <notebook />

@@ -18,17 +18,19 @@
                 <field name="partner_id" required="True"  class="oe_edit_only"   />
               </h1>
             </div>
-            <group>
+            <group col="3">
               <group>
               <label for="street" string="Address"/>
               <div class="o_address_format">
                   <field name="partner_street" placeholder="Street..." class="o_address_street" />
                   <field name="partner_street2" placeholder="Street 2..." class="o_address_street" />
                   <field name="partner_city" placeholder="City" class="o_address_city" />
-                  <field name="partner_state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True}"  context="{'partner_country_id': partner_country_id, 'partner_zip': partner_zip}"/>
+                  <field name="partner_state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True}"  context="{'country_id': country_id, 'zip': partner_zip}"/>
                   <field name="partner_zip" placeholder="ZIP" class="o_address_zip"/>
-                  <field name="partner_country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                  <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
                 </div>
+              </group>
+              <group>
                 <field name="partner_phone" />
                 <field name="partner_email" />
                 <field name="employee_id" />
@@ -39,8 +41,8 @@
                 <field name="name" />
                 <field name="booking_ref" />
                 <field name="uniq_ref" />
-                <field name="date_begin" />
-                <field name="date_end" />
+                <field name="date_begin" widget="date"/>
+                <field name="date_end" widget="date"/>
               </group>
             </group>
             <notebook />

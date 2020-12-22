@@ -20,11 +20,11 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ################################################################################
-
+# Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Res Joint Planning',
-    'version': '12.0.0.1',
-    'category': 'Human resources',
+    'version': '12.0.0.1.0',
+    'category': 'Outplacement',
     'description': """
 	 Module to handle outplacement (Avrop).
     """,

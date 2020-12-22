@@ -19,11 +19,11 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ################################################################################
-
+# Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'IPF CompletionReport Client',
-    'version': '12.0.0.0.1',
-    'category': 'Tools',
+    'version': '12.0.0.1.0',
+    'category': 'Outplacement',
     'description': """This module adds joint_planing (Gemensam planering) to Outplacement module.""",
 
     'author': "N-development",

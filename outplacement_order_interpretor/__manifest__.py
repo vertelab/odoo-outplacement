@@ -19,11 +19,11 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ################################################################################
-
+# Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Order Interpreter',
-    'version': '12.0.0.0.1',
-    'category': 'Project',
+    'version': '12.0.0.1.0',
+    'category': 'Outplacement',
     'description': """This module/update...""",
 
     'author': "N-development",

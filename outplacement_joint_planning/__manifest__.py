@@ -22,11 +22,11 @@
 ################################################################################
 
 {
-    'name': 'Joint Planning',
-    'version': '12.0.0.1',
-    'category': 'Human resources',
+    'name': 'Outplacement - Joint Planning ',
+    'version': '12.0.1.0.2',
+    'category': 'Coutplacement',
     'description': """
-	 Module to handle outplacement (Avrop).
+	 Module to handle the GUI for SubOrder (SV: Avrop ).
     """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',

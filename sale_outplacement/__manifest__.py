@@ -22,8 +22,8 @@
 
 {
     'name': 'Sale outplacement',
-    'version': '12.0.0.0.1',
-    'category': 'Tools',
+    'version': '12.0.1.0.1',
+    'category': 'Outplacement',
     'description': """Receives a suborder and automatically create sale.order 
     and outplacement.outplacement objects.""",
     'author': "N-development",

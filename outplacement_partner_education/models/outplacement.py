@@ -17,7 +17,8 @@ class Outplacement(models.Model):
     references_file_name = fields.Char()
     has_drivers_license = fields.Boolean(string="Has drivers license",
                                          compute='_compute_has_drivers_license') 
-    drivers_license_ids = fields.One2many(comodel_name='res.drivers_license', inverse_name='outplacement_id', string='Drivers license class')
+    drivers_license_ids = fields.One2many(comodel_name='res.drivers_license', 
+                            inverse_name='outplacement_id', string='Drivers license class')
     has_car = fields.Boolean(string="Has access to car")
 
     @api.onchange('education_level', 'foreign_education', 'foreign_education_approved', 'cv_file_name', 'references_file_name', 'has_car')
@@ -74,8 +75,6 @@ class Outplacement(models.Model):
             })
         else:
             self.references = False
-
-
 
     @api.one
     def _compute_has_drivers_license(self):

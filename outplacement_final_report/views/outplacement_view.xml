@@ -22,6 +22,9 @@
                     </group>
                 </page>
             </xpath>
+            <field name="date_end" position="after">
+                <field name="send_date"/>
+            </field>
         </field>
     </record>
 </odoo>

@@ -13,6 +13,8 @@ class Outplacement(models.Model):
     obstacle_reason = fields.Selection(related="obstacle_id.reason", readonly=False)
     obstacle_motivation = fields.Text(related="obstacle_id.motivation", readonly=False)
 
+    send_date = fields.Datetime(string="Final report send date")
+
 
 class OutplacementObstacle(models.Model):
     _name = "outplacement.obstacle"

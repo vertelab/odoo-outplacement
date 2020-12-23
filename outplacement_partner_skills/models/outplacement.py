@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Odoo, Open Source Management Solution, third party addon
-#    Copyright (C) 2004-2019 Vertel AB (<http://vertel.se>).
+#    Copyright (C) 2004-2021 Vertel AB (<http://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -30,9 +30,9 @@ class Outplacement(models.Model):
     skills = fields.Many2many('hr.skill', string="Skill")
     skill_id = fields.Char(string="Skill", related="skills.complete_name")
 
-    other_experiences = fields.Many2many('hr.other.experiences', string="Other Experience")
-    strengths = fields.Many2many('hr.strengths', string="Strengths")
-    interests = fields.Many2many('hr.interests', string="Interests")
+    other_experiences = fields.Many2many(comodel_name='outplacement.other_experiences', string="Other Experience")
+    strengths = fields.Many2many(comodel_name='outplacement.strengths', string="Strengths")
+    interests = fields.Many2many(comodel_name='outplacement.interests', string="Interests")
     partner_skill_ids = fields.One2many(
         string='Skills',
         comodel_name='hr.employee.skill',
@@ -56,21 +56,21 @@ class HrEmployee(models.Model):
 
 
 class OtherExperiences(models.Model):
-    _name = 'hr.other.experiences'
+    _name = 'outplacement.other_experiences'
     description = "Experiences"
 
     name = fields.Char(string="Experience")
 
 
 class Strengths(models.Model):
-    _name = 'hr.strengths'
+    _name = 'outplacement.strengths'
     description = "Strengths"
 
     name = fields.Char(string="Strengths")
 
 
 class Interests(models.Model):
-    _name = 'hr.interests'
+    _name = 'outplacement.interests'
     description = "Interests"
 
     name = fields.Char(string="Interests")

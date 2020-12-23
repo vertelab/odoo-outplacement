@@ -21,7 +21,7 @@
 
 {
     'name': 'Outplacement partner skills',
-    'version': '12.0.1.0',
+    'version': '12.0.2.0',
     'category': '',
     'description': """
 Adds skills to the Outplacement view
@@ -35,6 +35,7 @@ Adds skills to the Outplacement view
     'depends': ['outplacement',
                 'hr_skill',],
     'data': [
+        'security/ir.model.access.csv',
         'views/outplacement_skills_view.xml',
     ],
     'application': False,

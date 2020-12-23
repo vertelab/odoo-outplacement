@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Outplacement Social Security Number',
-    'version': '12.0.0.1.0',
+    'version': '12.0.0.2.0',
     'category': 'Outplacement',
     'description': """Partner Social Security Number""",
 

@@ -22,10 +22,9 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Outplacement Invoice',
-    'version': '12.0.0.1.0',
+    'version': '12.0.1.0.1',
     'category': 'Outplacement',
     'description': """This module listen for new invoices from Raindance...""",
-
     'author': "Vertel AB",
     'license': 'AGPL-3',
     'website': 'https://vertel.se',

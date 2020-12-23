@@ -23,10 +23,11 @@
 
 {
     'name': 'Outplacement',
-    'version': '12.0.0.1.0',
+    'version': '12.0.1.2.0',
     'category': 'Outplacement',
     'description': """
-	 Module to handle outplacement (Avrop).
+	 Module to handle outplacement (Avrop)\n
+	 v12.0.1.2.0 - changed version number to standard-format.\n
     """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',

@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Sale outplacement',
-    'version': '12.0.0.1.0',
+    'version': '12.0.1.0.1',
     'category': 'Outplacement',
     'description': """Receives a suborder and automatically create sale.order 
     and outplacement.outplacement objects.""",

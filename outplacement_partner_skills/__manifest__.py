@@ -1,10 +1,8 @@
-
-# -*- coding: UTF-8 -*-
-
-################################################################################
+# -*- coding: utf-8 -*-
+##############################################################################
 #
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2019 N-Development (<https://n-development.com>).
+#    Odoo, Open Source Management Solution, third party addon
+#    Copyright (C) 2004-2019 Vertel AB (<http://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,27 +17,26 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-################################################################################
-# Version format OdooMajor.OdooMinor.Major.Minor.Patch
+##############################################################################
+
 {
-    'name': 'Outplacement - Joint Planning',
-    'version': '12.0.1.0.2',
-    'category': 'Outplacement',
+    'name': 'Outplacement partner skills',
+    'version': '12.0.1.0',
+    'category': '',
     'description': """
-	 Module to handle the GUI for SubOrder (SV: Avrop ).
-    """,
+Adds skills to the Outplacement view
+================================================================================================
+- Lägg till en modul för kompetenser - AFC-1152
+- This module adds a tab with skills to the contact-card based partner_skills
+""",
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': [
-        'outplacement',
-        'res_joint_planning_af',
-        'project',
-        'outplacement_completion_report_ipf_client',
-    ],
+    'depends': ['outplacement',
+                'hr_skill',],
     'data': [
-        'views/outplacement_view.xml',
-
+        'views/outplacement_skills_view.xml',
     ],
+    'application': False,
     'installable': True,
 }

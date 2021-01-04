@@ -1,6 +1,6 @@
 <odoo>
     <record id="view_partner_form" model="ir.ui.view">
-        <field name="name">outplacement.view.form.inherit.jobs</field>
+        <field name="name">outplacement.view.form.inherit.final.report</field>
         <field name="model">outplacement</field> 
         <field name="inherit_id" ref="outplacement.outplacement_form_view" />
         <field name="arch" type="xml">
@@ -10,6 +10,12 @@
                         <field name="obstacle_id"/>
                         <field name="obstacle_reason"/>
                         <field name="obstacle_motivation"/>
+                        <field name="status"/>
+                        <field name="late"/>
+                        <field name="interruption"/>
+                        <field name="incomplete"/>
+                        <field name="main_goal_id"/>
+                        <field name="alternative_goal_id"/>
                     </group>
                     <group>
                         <field name="study_visit_ids" mode="tree" nolabel="1">
@@ -23,8 +29,115 @@
                 </page>
             </xpath>
             <field name="date_end" position="after">
+                <field name="report_date"/>
                 <field name="send_date"/>
             </field>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="view_outplacement_goal_form">
+        <field name="name">outplacement.goal.form</field>
+        <field name="model">outplacement.goal</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="field_of_work"/>
+                    <field name="job"/>
+                    <field name="job_description"/>
+                    <field name="motivation"/>
+                    <field name="free_text"/>
+                    <field name="step_ids" widget="many2many_tags"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_outplacement_goal_step_form">
+        <field name="name">outplacement.goal.step.form</field>
+        <field name="model">outplacement.goal.step</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name"/>
+                    <field name="step_type"/>
+                    <field name="completing_effort_id"/>
+                    <field name="level"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_outplacement_goal_step_completing_effort_form">
+        <field name="name">outplacement.goal.step.completing_effort.form</field>
+        <field name="model">outplacement.goal.step.completing_effort</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="effort_type"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_outplacement_obstacle_form">
+        <field name="name">outplacement.obstacle.form</field>
+        <field name="model">outplacement.obstacle</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="reason"/>
+                    <field name="motivation"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_outplacement_study_visit_form">
+        <field name="name">outplacement.study_visit.form</field>
+        <field name="model">outplacement.study_visit</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name"/>
+                    <field name="visit_type"/>
+                    <field name="reasoning"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="outplacement_study_visit_action_window">
+        <field name="name">Outplacement study visit</field>
+        <field name="res_model">outplacement.study_visit</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="outplacement_obstacle_action_window">
+        <field name="name">Outplacement obstacle</field>
+        <field name="res_model">outplacement.obstacle</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="outplacement_goal_step_completing_effort_action_window">
+        <field name="name">Outplacement goal step completing effort</field>
+        <field name="res_model">outplacement.goal.step.completing_effort</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="outplacement_goal_step_action_window">
+        <field name="name">Outplacement goal step</field>
+        <field name="res_model">outplacement.goal.step</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="outplacement_goal_action_window">
+        <field name="name">Outplacement goal</field>
+        <field name="res_model">outplacement.goal</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    </record>
+
 </odoo>

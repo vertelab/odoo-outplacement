@@ -21,7 +21,7 @@
 ################################################################################
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
-    'name': 'IPF CompletionReport Client',
+    'name': 'IPF Final Report Client',
     'version': '12.0.0.1.0',
     'category': 'Outplacement',
     'description': """This module adds joint_planing (Gemensam planering) to Outplacement module.""",
@@ -29,7 +29,7 @@
     'author': "N-development",
     'license': 'AGPL-3',
     'website': 'https://vertel.se',
-    'depends': ['res_joint_planning_af'],
+    'depends': ['res_joint_planning_af', 'outplacement_final_report'],
     'data': [
         "security/ir.model.access.csv",
         'views/client_config_views.xml',

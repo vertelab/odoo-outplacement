@@ -262,7 +262,7 @@ class ClientConfig(models.Model):
                 "efternamn": outplacement.employee_id.lastname,
                 "signatur": "" #check for signature, which field?
             },
-            "innehall": [],
+            "innehall": [], #filled with data below
             "avbrott": "true", #new field? hardcode to false?
             "ofullstandig": "false", #new field? hardcode to false?
             "huvudmal": {  #taken from ssyk, desired jobs?
@@ -282,7 +282,7 @@ class ClientConfig(models.Model):
                     "slutdatum": "2020-12-22"
                 }]
             },
-            "alternativ_mal": { #same as above, separate field
+            "alternativ_mal": { #same as above, separate field for relations
                 "yrkesomrade": "Hotell & Restaurang",
                 "yrke": "Kock",
                 "arbetsuppgifter_beskrivning": "Lagar mat",
@@ -295,7 +295,7 @@ class ClientConfig(models.Model):
                 "slutdatum": "2020-12-22"
                 }]
             },
-            "studiebesok": [],
+            "studiebesok": [], #filled with data below
             "hinder": {
                 "orsak_typ": outplacement.obstacle_id.reason,
                 "motivering": outplacement.obstacle_id.motivation

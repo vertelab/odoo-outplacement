@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record id="suborder_mail_activity" model="mail.activity.template">
             <field name="activity_type_id" ref="mail.mail_activity_data_call"/>
             <field name="summary">Meeting to go over pricing information.</field>
@@ -31,6 +31,13 @@
 env['outplacement'].create_suborder_process_data()
       </field>
     </record>
+        
+    <record id="mail_activity_product_1" model="mail.activity.template">
+      <field name="summary">Genomför gemensam planering</field>
+      <field name="due_days" eval="15"/>
+      <field name="activity_type_id" ref="mail.mail_activity_data_todo" />
+      <field name="product_id" ref="product_suborder" />
+    </record>        
         
         
     </data>

@@ -231,10 +231,11 @@ class Outplacement(models.Model):
                 self.env['mail.activity'].create({
                         'res_id': record.id,
                         'res_model': record._name,
-                        'activity_type_id': activity.activity_type_id,
+                        'res_model_id': self.env['ir.model'].search([('model', '=', record._name)]).id,
+                        'activity_type_id': activity.activity_type_id.id,
                         'date_deadline': fields.Date.today() + relativedelta(days=activity.due_days),
                         'summary': activity.summary,
-                        'user_id': record.employee_id.user_id
+                        'user_id': record.employee_id.user_id.id,
                 })
 
 

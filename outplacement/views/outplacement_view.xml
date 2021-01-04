@@ -90,6 +90,7 @@
           <field name="partner_name" />
           <field name="my_department" />
           <field name="my_outplacement" />
+          <field name="name" />
           <templates>
             <t t-name="kanban-box">
               <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
@@ -111,6 +112,7 @@
                   <!--                                    <li t-if="record.work_location.raw_value"><field name="work_location"/></li>-->
                   <!--                                </ul>-->
                   <div class="o_kanban_record_body">
+                    <field name="name"/><br/>
                     <field name="booking_ref"/><br/>
                     <field name="service_start_date"/><br/>
                     <field name="service_end_date"/><br/>

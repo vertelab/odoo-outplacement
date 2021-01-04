@@ -39,7 +39,6 @@ class Outplacement(models.Model):
         inverse_name='partner_id',
     )
 
-
 class PartnerSkill(models.Model):
     _inherit = 'hr.employee.skill'
 

@@ -20,7 +20,12 @@
 #
 ################################################################################
 
+
+import datetime # Used in test
 from dateutil.relativedelta import relativedelta
+import random # Used in test
+import string # Used in test
+
 from odoo import api, fields, models, _
 
 
@@ -65,11 +70,12 @@ class Outplacement(models.Model):
     def _get_partner_id(self, data):
         partner=self.env['res.partner'].search(['|',
                 ('customer_id', '=', data['sokande_id']),
-                ('company_registry', '=', data['personnummer'])],limit=1)
+                ('social_sec_nr', '=', data['personnummer'])],limit=1)
         if len(partner) == 0:
             partner = self.env['res.partner'].create({
                 'name': data['personnummer'],
                 'customer_id': data['sokande_id'],
+                'social_sec_nr': data['personnummer'],
             })
         return partner.id if partner else None
 
@@ -103,7 +109,6 @@ class Outplacement(models.Model):
 
     @api.model
     def suborder_process_data(self, data):
-        _logger.warn('Nisse: %s suborder_process_data outplacement' % data)
         data = super(Outplacement,self).suborder_process_data(data)
         partner_id = self._get_partner_id(data)
 
@@ -118,13 +123,11 @@ class Outplacement(models.Model):
             'product_id': product.id,
             'order_id': order.id,
         })
-        _logger.warn('Nisse: outplacement %s' % order)
         outplacement = self.env['outplacement'].create({
             'name': data['ordernummer'],
             'department_id': self._get_department_id(data),
             'booking_ref': data['boknings_id'],
             'partner_id': partner_id,
-            'partner_id': 8,
             # ~ 'skill_id': skill and skill.id or False,
             'participitation_rate': data['deltagandegrad'],
             'service_start_date': data['startdatum_insats'],
@@ -140,6 +143,37 @@ class Outplacement(models.Model):
         self.env['project.task'].init_joint_planning_stages(outplacement.id)
         _logger.warn('Nisse: outplacement %s' % dir(outplacement))
         return data
+
+    @api.model
+    def create_suborder_process_data(self):
+        _logger.warn('NILS: HERE')
+        self.suborder_process_data({
+            "genomforande_referens": ''.join(random.sample(string.digits, k=10)),
+            "utforande_verksamhet_id": "10009858",
+            "ordernummer": "MEET-" + ''.join(random.sample(string.digits, k=3)),
+            "tidigare_ordernummer": "MEET-23",
+            "boknings_id": ''.join(random.sample(string.digits, k=6)),
+            "personnummer": "19701212" + ''.join(random.sample(string.digits, k=4)),
+            "sokande_id": ''.join(random.sample(string.ascii_lowercase, k=5)) + 
+                          ''.join(random.sample(string.digits, k=4)),
+            "tjanstekod": "KVL",
+            "spar_kod": "10",
+            "sprakstod": "Tyska",
+            "deltagandegrad": 75,
+            "bokat_sfi": False,
+            "startdatum_insats": '%s' % datetime.date.today(),
+            "slutdatum_insats": str(datetime.date.today()+datetime.timedelta(days=365)),
+            "startdatum_avrop": str(datetime.date.today()),
+            "slutdatum_avrop": str(datetime.date.today()+datetime.timedelta(days=90)),
+            "aktnummer_diariet": "Af-2021/0000 " +
+                                 ''.join(random.sample(string.digits, k=4)),
+            "telefonnummer_handlaggargrupp": "+46734176359",
+            "epost_handlaggargrupp": ''.join(random.sample(string.digits, k=4)) + "@test.com"
+        }
+        
+        )
+
+
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'

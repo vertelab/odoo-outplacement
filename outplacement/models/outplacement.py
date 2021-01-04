@@ -1,5 +1,6 @@
 import base64
 
+from dateutils import relativedelta
 from odoo import api, fields, models, tools, SUPERUSER_ID
 from odoo import tools, _
 from odoo.exceptions import ValidationError, AccessError
@@ -221,6 +222,20 @@ class Outplacement(models.Model):
                     ('email_from', '=', new_partner.email),
                     ('stage_id.fold', '=', False)]).write({'partner_id': new_partner.id})
         return super(Outplacement, self)._message_post_after_hook(message, *args, **kwargs)
+
+    @api.model
+    def create_activities(self, record):
+        product = record.order_id.order_line.mapped('product_id').filtered(lambda p: p.is_suborder)
+        if product:
+            for activity in product.mail_activity_ids:
+                self.env['mail.activity'].create({
+                        'res_id': record.id,
+                        'res_model': record._name,
+                        'activity_type_id': activity.activity_type_id,
+                        'date_deadline': fields.Date.today() + relativedelta(days=activity.due_days),
+                        'summary': activity.summary,
+                        'user_id': record.employee_id.user_id
+                })
 
 
 class OutplacementStage(models.Model):

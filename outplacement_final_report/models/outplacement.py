@@ -27,8 +27,8 @@ class Outplacement(models.Model):
 class OutplacementGoal(models.Model):
     _name = "outplacement.goal"
 
-    field_of_work = fields.Many2one(comodel_name="res.ssyk", string="Field of work")
-    job = fields.Many2one(comodel_name="res.ssyk", string="Job title") #selection should be limited to search ilike field_of_work.code
+    field_of_work_id = fields.Many2one(comodel_name="res.ssyk", string="Field of work") #return codes for these two
+    job_id = fields.Many2one(comodel_name="res.ssyk", string="Job title") #selection should be limited to search ilike field_of_work.code
     job_description = fields.Char(string="Job description")
     motivation = fields.Selection(selection=[('other', 'Other')], string="Motivation") #needs values
     free_text = fields.Text(string="Free text") #should only be used if motivation is "other"

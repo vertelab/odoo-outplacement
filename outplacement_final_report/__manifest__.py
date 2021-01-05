@@ -8,7 +8,7 @@
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['outplacement'],
+    'depends': ['outplacement', 'res_sun', 'res_ssyk'],
     'data': [
         'views/outplacement_view.xml',
         'security/ir.model.access.csv'

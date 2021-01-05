@@ -60,7 +60,8 @@
                 <group>
                     <field name="name"/>
                     <field name="step_type"/>
-                    <field name="completing_effort_id"/>
+                    <field name="complementing_effort_type"/>
+                    <field name="complementing_effort_description"/>
                     <field name="level"/>
                     <field name="start_date"/>
                     <field name="end_date"/>

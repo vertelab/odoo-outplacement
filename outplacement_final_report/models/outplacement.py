@@ -37,6 +37,7 @@ class OutplacementGoal(models.Model):
 class OutplacementGoalStep(models.Model):
     _name = "outplacement.goal.step"
 
+    #step type should be a series of boolean fields, but due to current API behaviour will be a selection field
     step_type = fields.Selection(selection=[('study', 'Studera'),('regular education','Reguljär utbildning'),('fitting complementing efforts','Lämpliga kompletterande insatser'),('other','Other')], string="Type") #needs values
     complementing_effort_type = fields.Selection(string="Complementing effort type", selection=[('study motivating effort','Studiemotiverande insats'),('prepare for work','Rusta inför arbete'),('match to work','Matcha till arbete'),('evaluate ability to work','Utreda arbetsförmågan'),('partake in education/internship/validation','Delta i en arbetsmarknadsutbildning/Praktik/Validering'),('Swedish studies in chosen field','Svenskastudier inom valt område'),('translation of grades','Översättning av betyg'),('evaluation and complementation of foreign education','Bedömning och komplettering av utländsk utbildning'),('other','Other')]) #might be better as a selection field
     complementing_effort_description = fields.Char(string="Complementing effort") #this and the field above should only be visible if fitting complementing efforts is chosen #

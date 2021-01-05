@@ -250,7 +250,7 @@ class ClientConfig(models.Model):
             "unikt_id": outplacement.uniq_ref,
             "inskickad_datum": str(outplacement.jp_sent_date),
             "rapportering_datum": outplacement.report_date, 
-            "status": "10",
+            "status": outplacement.status,
             "sent_inskickad": outplacement.late, 
             "innehall": [], #filled with data below
             "avbrott": outplacement.interruption, 
@@ -297,10 +297,10 @@ class ClientConfig(models.Model):
                     "startdatum": step_id.start_date,
                     "slutdatum": step_id.end_date
                 }
-                if step_id.completing_effort_id:
-                    step["kompletterande_insats"] = {
-                        "typ": step_id.completing_effort_id.effort_type
-                    }
+                step["kompletterande_insats"] = {
+                    "typ": step_id.complementing_effort_type,
+                    "fritext": step_id.complementing_effort_description
+                }
                 payload['huvudmal']['steg'].append(step)
         goal_id = outplacement.alternative_goal_id
         if goal_id:
@@ -324,10 +324,10 @@ class ClientConfig(models.Model):
                     "startdatum": step_id.start_date,
                     "slutdatum": step_id.end_date
                 }
-                if step_id.completing_effort_id:
-                    step["kompletterande_insats"] = {
-                        "typ": step_id.completing_effort_id.effort_type
-                    }
+                step["kompletterande_insats"] = {
+                    "typ": step_id.complementing_effort_type,
+                    "fritext": step_id.complementing_effort_description
+                }
                 payload['alternativ_mal']['steg'].append(step)
                
         for planned in self.env['res.joint_planning'].search([('send2server','=',True)],order=sequence):

@@ -1,6 +1,5 @@
 import base64
 
-from dateutils import relativedelta
 from datetime import timedelta
 from odoo import api, fields, models, tools, SUPERUSER_ID
 from odoo import tools, _

@@ -38,7 +38,7 @@ class OutplacementGoalStep(models.Model):
     _name = "outplacement.goal.step"
 
     step_type = fields.Selection(selection=[('placeholder', 'placeholder')], string="Type") #needs values
-    completing_effort_id = fields.Many2one(string="Completing effort", comodel_name="outplacement.goal.step.completing_effort") #I really don't get this one
+    completing_effort_id = fields.Many2one(string="Completing effort", comodel_name="outplacement.goal.step.completing_effort") #might be better as a selection field
     name = fields.Char(string="Name")
     level = fields.Char(string="Level") #selection field maybe?
     start_date = fields.Datetime(string="Start date")

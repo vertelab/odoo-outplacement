@@ -249,58 +249,87 @@ class ClientConfig(models.Model):
             "personnr": outplacement.partner_id.company_registry,
             "unikt_id": outplacement.uniq_ref,
             "inskickad_datum": str(outplacement.jp_sent_date),
-            "rapportering_datum": "2020-12-22", #send_date? New field?
-            "status": "10", #10 = Approved, 20 = NotApproved, 30 = In-Progress, 40 = Rejected, 50 = Cancelled, 60 = Sent. New field?
-            "sent_inskickad":"false", #new field?
-            "deltagare": {
+            "rapportering_datum": outplacement.report_date, 
+            "status": "10",
+            "sent_inskickad": outplacement.late, 
+            "innehall": [], #filled with data below
+            "avbrott": outplacement.interruption, 
+            "ofullstandig": outplacement.incomplete,
+            "studiebesok": [], #filled with data below
+        }
+        if outplacement.partner_id:
+            payload["deltagare"] = {
                 "fornamn": outplacement.partner_id.firstname,
                 "efternamn": outplacement.partner_id.lastname,
                 "deltog_per_distans": outplacement.meeting_remote
             },
-            "ansvarig_handledare": {
+        if outplacement.employee_id:
+            payload["ansvarig_handledare"] = {
                 "fornamn": outplacement.employee_id.firstname,
                 "efternamn": outplacement.employee_id.lastname,
-                "signatur": "" #check for signature, which field?
-            },
-            "innehall": [], #filled with data below
-            "avbrott": "true", #new field? hardcode to false?
-            "ofullstandig": "false", #new field? hardcode to false?
-            "huvudmal": {  #taken from ssyk, desired jobs?
-                "yrkesomrade": "Hotell & Restaurang", 
-                "yrke": "Kock", 
-                "arbetsuppgifter_beskrivning": "Lagar mat",
-                "val_av_huvudmal_motivering": "Annat", #new field?
-                "fritext": "Används vid val_av_huvudmal_motivering Annat", #new field?
-                "steg": [{ #new model?
-                    "typ": "Studera",
-                    "kompletterande_insats": {
-                        "typ": "Studiemotiverande insats"
-                    },
-                    "namn": "",
-                    "niva": "",
-                    "startdatum": "2020-12-22",
-                    "slutdatum": "2020-12-22"
-                }]
-            },
-            "alternativ_mal": { #same as above, separate field for relations
-                "yrkesomrade": "Hotell & Restaurang",
-                "yrke": "Kock",
-                "arbetsuppgifter_beskrivning": "Lagar mat",
-                "val_av_alternativ_mal_motivering": "Matchar deltagarens intressen",
-                "steg": [{
-                "typ": "Studera",
-                "namn": "",
-                "niva": "",
-                "startdatum": "2020-12-22",
-                "slutdatum": "2020-12-22"
-                }]
-            },
-            "studiebesok": [], #filled with data below
-            "hinder": {
-                "orsak_typ": outplacement.obstacle_id.reason,
-                "motivering": outplacement.obstacle_id.motivation
             }
-        }
+            if outplacement.employee_id.user_id:
+                payload["ansvarig_handledare"]["signatur"] = outplacement.employee_id.user_id.login
+        if outplacement.obstacle_id:
+            payload["hinder"] = {
+                "orsak_typ": outplacement.obstacle_id.reason,
+                "motivering": outplacement.obstacle_id.motivation 
+            }
+        goal_id = outplacement.main_goal_id
+        if goal_id:
+            payload["huvudmal"] = { 
+                "arbetsuppgifter_beskrivning": goal_id.job_description,
+                "val_av_huvudmal_motivering": goal_id.motivation, #new field?
+                "fritext": goal_id.free_text, #new field?
+                "steg": []
+            }
+            if goal_id.field_of_work_id:
+                payload["huvudmal"]["yrkesomrade"] = goal_id.field_of_work_id
+
+            if goal_id.job_id:
+                payload["huvudmal"]["yrke"] = goal_id.job_id
+
+            for step_id in goal_id:
+                step = {
+                    "typ": step_id.step_type,
+                    "namn": step_id.name,
+                    "niva": step_id.level,
+                    "startdatum": step_id.start_date,
+                    "slutdatum": step_id.end_date
+                }
+                if step_id.completing_effort_id:
+                    step["kompletterande_insats"] = {
+                        "typ": step_id.completing_effort_id.effort_type
+                    }
+                payload['huvudmal']['steg'].append(step)
+        goal_id = outplacement.alternative_goal_id
+        if goal_id:
+            payload["alternativ_mal"] = { 
+                "arbetsuppgifter_beskrivning": goal_id.job_description,
+                "val_av_huvudmal_motivering": goal_id.motivation, #new field?
+                "fritext": goal_id.free_text, #new field?
+                "steg": []
+            }
+            if goal_id.field_of_work_id:
+                payload["alternativ_mal"]["yrkesomrade"] = goal_id.field_of_work_id
+
+            if goal_id.job_id:
+                payload["alternativ_mal"]["yrke"] = goal_id.job_id
+
+            for step_id in goal_id:
+                step = {
+                    "typ": step_id.step_type,
+                    "namn": step_id.name,
+                    "niva": step_id.level,
+                    "startdatum": step_id.start_date,
+                    "slutdatum": step_id.end_date
+                }
+                if step_id.completing_effort_id:
+                    step["kompletterande_insats"] = {
+                        "typ": step_id.completing_effort_id.effort_type
+                    }
+                payload['alternativ_mal']['steg'].append(step)
+               
         for planned in self.env['res.joint_planning'].search([('send2server','=',True)],order=sequence):
             task = outplacement.task_ids.filtered(lambda t: t.activity_id == planned.activity_id)
             payload['innehall'].append({

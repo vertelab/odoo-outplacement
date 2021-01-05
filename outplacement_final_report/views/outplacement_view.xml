@@ -138,6 +138,4 @@
         <field name="view_mode">form</field>
     </record>
 
-    </record>
-
 </odoo>

@@ -10,7 +10,8 @@
     'website': 'http://www.vertel.se',
     'depends': ['outplacement'],
     'data': [
-        'views/outplacement_view.xml'
+        'views/outplacement_view.xml',
+        'security/ir.model.access.csv'
     ],
     'installable': True,
 }

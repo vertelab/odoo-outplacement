@@ -1,6 +1,7 @@
 import base64
 
 from dateutils import relativedelta
+from datetime import timedelta
 from odoo import api, fields, models, tools, SUPERUSER_ID
 from odoo import tools, _
 from odoo.exceptions import ValidationError, AccessError
@@ -233,7 +234,8 @@ class Outplacement(models.Model):
                         'res_model': record._name,
                         'res_model_id': self.env['ir.model'].search([('model', '=', record._name)]).id,
                         'activity_type_id': activity.activity_type_id.id,
-                        'date_deadline': fields.Date.today() + relativedelta(days=activity.due_days),
+                        'date_deadline': fields.Date.today() + timedelta(days=activity.due_days),
+                        #'date_deadline': fields.Date.today() + relativedelta(days=activity.due_days),
                         'summary': activity.summary,
                         'user_id': record.employee_id.user_id.id,
                 })

@@ -21,11 +21,11 @@
 ################################################################################
 
 {
-    'name': 'IPF Report Client',
-    'version': '12.0.0.0.1',
+    'name': 'IPF Deviation Report Client',
+    'version': '12.0.1.0.1',
     'category': 'hr',
     'description': """
-
+    API to submit deviation (SV: Avvikelse) report.
 """,
 
     'author': "N-development",

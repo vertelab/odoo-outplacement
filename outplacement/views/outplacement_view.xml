@@ -41,8 +41,6 @@
                 <field name="name" />
                 <field name="booking_ref" />
                 <field name="uniq_ref" />
-                <field name="date_begin" widget="date"/>
-                <field name="date_end" widget="date"/>
               </group>
             </group>
             <notebook />
@@ -129,7 +127,7 @@
       <field name="name">Outplacement</field>
       <field name="model">outplacement</field>
       <field name="arch" type="xml">
-        <calendar string="Leads Generation" date_start="date_begin" date_stop="date_end" quick_add="False" color="employee_id">
+        <calendar string="Leads Generation" date_start="service_start_date" date_stop="service_end_date" quick_add="False" color="employee_id">
           <field name="name" />
           <field name="employee_id" />
         </calendar>

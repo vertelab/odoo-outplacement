@@ -47,8 +47,6 @@ class Outplacement(models.Model):
                                     related="employee_id.department_id",
                                     group_expand='_read_group_department_ids',
                                     store=True)
-    date_begin = fields.Datetime(string="Start Date", required=True)
-    date_end = fields.Datetime(string="End Date", required=True)
     color = fields.Integer('Kanban Color Index')
     meeting_remote = fields.Selection(selection=[('no','On Premice'),('yes','Remote')],string='Meeting type')
     uniq_ref = fields.Char(string='Uniq Id', size=64, trim=True, )

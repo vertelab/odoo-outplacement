@@ -1,30 +1,29 @@
 # -*- coding: UTF-8 -*-
 
-################################################################################
-#
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2019 N-Development (<https://n-development.com>).
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-################################################################################
+###############################################################################
+#                                                                             #
+#    OpenERP, Open Source Management Solution                                 #
+#    Copyright (C) 2019 N-Development (<https://n-development.com>).          #
+#                                                                             #
+#    This program is free software: you can redistribute it and/or modify     #
+#    it under the terms of the GNU Affero General Public License as           #
+#    published by the Free Software Foundation, either version 3 of the       #
+#    License, or (at your option) any later version.                          #
+#                                                                             #
+#    This program is distributed in the hope that it will be useful,          #
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of           #
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            #
+#    GNU Affero General Public License for more details.                      #
+#                                                                             #
+#    You should have received a copy of the GNU Affero General Public License #
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.    #
+#                                                                             #
+###############################################################################
 
 
-import datetime # Used in test
-from dateutil.relativedelta import relativedelta
-import random # Used in test
-import string # Used in test
+import datetime  # Used in test
+import random  # Used in test
+import string  # Used in test
 
 from odoo import api, fields, models, _
 
@@ -32,16 +31,19 @@ from odoo import api, fields, models, _
 import logging
 _logger = logging.getLogger(__name__)
 
+
 class Outplacement(models.Model):
     _inherit = 'outplacement'
 
-    management_team_id = fields.Many2one('res.partner')
-    # ~ skill_id = fields.Many2one('hr.skill')
+    management_team_id = fields.Many2one(comodel_name='hr.employee',
+                                         string='Management team')
+    skill_id = fields.Many2one('hr.skill')
     participitation_rate = fields.Integer()
+    order_start_date = fields.Date()
     order_close_date = fields.Date()
     file_reference_number = fields.Char()
-    task_ids = fields.Many2many('project.task', string='Tasks')
-    order_id = fields.Many2one('sale.order')
+    task_ids = fields.Many2many(comodel_name='project.task', string='Tasks')
+    order_id = fields.Many2one(comodel_name='sale.order')
     tasks_count = fields.Integer(compute='_compute_tasks_count')
 
     @api.onchange('employee_id')
@@ -51,16 +53,17 @@ class Outplacement(models.Model):
                 ['&', 
                  ('res_model_id.model', '=', self._name), 
                  ('res_id', '=', self.id)]).unlink()
-            for activity in self.order_id.mapped('order_lines').filtered(lambda l: l.product_id.is_suborder == True).mapped('product_id.mail_activites'):
+            for activity in self.order_id.mapped('order_lines').filtered(
+                lambda l: l.product_id.is_suborder == True).mapped(
+                    'product_id.mail_activites'):
                 self.env['mail.activity'].create({
                     'res_id': self.id,
-                    'res_model_id': self.env.ref('outplacement.model_outplacement').id,
+                    'res_model_id': self.env.ref(
+                        'outplacement.model_outplacement').id,
                     'summary': activity.summary,
                     # ~ 'date':    fields.Datetime.to_string(fields.Datetime.from_string(values['date_from']) + timedelta(minutes = abs(minutes))),
                     'user_id': self.employee_id.user_id.id if self.employee_id.user_id else None
                 })
-
-
 
     def _compute_tasks_count(self):
         for record in self:
@@ -68,9 +71,10 @@ class Outplacement(models.Model):
 
     @api.multi
     def _get_partner_id(self, data):
-        partner=self.env['res.partner'].search(['|',
-                ('customer_id', '=', data['sokande_id']),
-                ('social_sec_nr', '=', data['personnummer'])],limit=1)
+        partner = self.env['res.partner'].search([
+            '|',
+            ('customer_id', '=', data['sokande_id']),
+            ('social_sec_nr', '=', data['personnummer'])], limit=1)
         if len(partner) == 0:
             partner = self.env['res.partner'].create({
                 'name': data['personnummer'],
@@ -81,38 +85,36 @@ class Outplacement(models.Model):
 
     @api.multi
     def _get_management_team_id(self, data):
-        ResPartner = self.env['res.partner']
-        partner = ResPartner.search([
-            ('phone', '=', data['telefonnummer_handlaggargrupp'])
-        ])
-        if not partner:
-            ResPartner.create({
+        employee = self.env['hr.employee'].search(
+            [('work_phone', '=', data['telefonnummer_handlaggargrupp'])], limit=1)
+
+        if not employee:
+            employee = self.env['hr.employee'].create({
                 'name': data['epost_handlaggargrupp'],
-                'email': data['epost_handlaggargrupp'],
-                'phone': data['telefonnummer_handlaggargrupp'],
+                'work_email': data['epost_handlaggargrupp'],
+                'work_phone': data['telefonnummer_handlaggargrupp']
             })
-        return partner.id if partner else None
+        return employee.id if employee else None
 
     @api.multi
     def _get_department_id(self, data):
         department = self.env['hr.department'].search(
-            [('ka_ref', '=', data.get('utforande_verksamhet_id',''))],
+            [('ka_ref', '=', data.get('utforande_verksamhet_id', ''))],
             limit=1)
-        _logger.debug('Department: hr_department %s | %s' % (department,data.get('utforande_verksamhet_id')))
+        _logger.debug('Department: hr_department %s | %s' % (department, data.get('utforande_verksamhet_id')))
         return department.id if department else None
 
     @api.multi
     def _get_skill(self, data):
         return self.env['hr.skill'].search([
-            ('name', '=', data['tjanstekod'])
-        ], limit=1)
+            ('name', '=', data['tjanstekod'])], limit=1)
 
     @api.model
     def suborder_process_data(self, data):
-        data = super(Outplacement,self).suborder_process_data(data)
+        data = super(Outplacement, self).suborder_process_data(data)
         partner_id = self._get_partner_id(data)
 
-        # ~ skill = self._get_skill(data)
+        skill = self._get_skill(data)
         order = self.env['sale.order'].create({
             'origin': data['genomforande_referens'],
             'name': data['ordernummer'],
@@ -128,12 +130,11 @@ class Outplacement(models.Model):
             'department_id': self._get_department_id(data),
             'booking_ref': data['boknings_id'],
             'partner_id': partner_id,
-            # ~ 'skill_id': skill and skill.id or False,
+            'skill_id': skill.id if skill else None,
             'participitation_rate': data['deltagandegrad'],
             'service_start_date': data['startdatum_insats'],
             'service_end_date': data['slutdatum_insats'],
-            'date_begin': data['startdatum_insats'],
-            'date_end': data['slutdatum_insats'],
+            'order_start_date': data['startdatum_avrop'],
             'order_close_date': data['slutdatum_avrop'],
             'file_reference_number': data['aktnummer_diariet'],
             'management_team_id': self._get_management_team_id(data),
@@ -141,12 +142,10 @@ class Outplacement(models.Model):
         })
         self.env['project.task'].init_joint_planning(outplacement.id)
         self.env['project.task'].init_joint_planning_stages(outplacement.id)
-        _logger.warn('Nisse: outplacement %s' % dir(outplacement))
         return data
 
     @api.model
     def create_suborder_process_data(self):
-        _logger.warn('NILS: HERE')
         self.suborder_process_data({
             "genomforande_referens": ''.join(random.sample(string.digits, k=10)),
             "utforande_verksamhet_id": "10009858",
@@ -154,7 +153,7 @@ class Outplacement(models.Model):
             "tidigare_ordernummer": "MEET-23",
             "boknings_id": ''.join(random.sample(string.digits, k=6)),
             "personnummer": "19701212" + ''.join(random.sample(string.digits, k=4)),
-            "sokande_id": ''.join(random.sample(string.ascii_lowercase, k=5)) + 
+            "sokande_id": ''.join(random.sample(string.ascii_lowercase, k=5)) +
                           ''.join(random.sample(string.digits, k=4)),
             "tjanstekod": "KVL",
             "spar_kod": "10",
@@ -178,5 +177,5 @@ class Outplacement(models.Model):
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    customer_id = fields.Char(string='Cuhatomer Number', size=64, trim=True, )
+    customer_id = fields.Char(string='Customer Number', size=64, trim=True, )
     

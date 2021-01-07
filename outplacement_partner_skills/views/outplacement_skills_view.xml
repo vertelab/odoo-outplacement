@@ -4,7 +4,7 @@
         <field name="model">outplacement</field>
         <field name="inherit_id" ref="outplacement.outplacement_form_view"/>
         <field name="arch" type="xml">
-            <field name="date_end" position="after">
+            <field name="uniq_ref" position="after">
                 <field name="skills" widget="many2many_tags"/>
             </field>
             <xpath expr="//notebook" position="inside">

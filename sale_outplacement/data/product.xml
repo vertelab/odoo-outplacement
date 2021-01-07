@@ -1,44 +1,37 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data noupdate="0">
-        <record id="suborder_mail_activity" model="mail.activity.template">
-            <field name="activity_type_id" ref="mail.mail_activity_data_call"/>
-            <field name="summary">Meeting to go over pricing information.</field>
-            <field name="due_days" eval="5"/>
-        </record>
-
-        <record id="product_suborder" model="product.product">
-            <field name="name">Product Suborder</field>
-            <field name="standard_price">1.0</field>
-            <field name="list_price">1.0</field>
-            <field name="type">consu</field>
-            <field name="is_suborder">True</field>
-            <field name="uom_id" ref="uom.product_uom_unit"/>
-            <field name="uom_po_id" ref="uom.product_uom_unit"/>
-<!--
-            <field name="mail_activity_ids" eval="[(4, ref('suborder_mail_activity'))]"/>
--->
-        </record>
-        
-        
-        <record id="ir_actions_test_outplacement" model="ir.actions.server">
+  <data noupdate="0">
+    <record id="product_suborder" model="product.product">
+      <field name="name">Product Suborder</field>
+      <field name="standard_price">1.0</field>
+      <field name="list_price">1.0</field>
+      <field name="type">consu</field>
+      <field name="is_suborder">True</field>
+      <field name="uom_id" ref="uom.product_uom_unit" />
+      <field name="uom_po_id" ref="uom.product_uom_unit" />
+      <!--
+           <field name="mail_activity_ids" eval="[(4, ref('suborder_mail_activity'))]"/>
+      -->
+    </record>
+    <record id="ir_actions_test_outplacement" model="ir.actions.server">
       <field name="name">Simulate Suborder from BAR</field>
       <field name="type">ir.actions.server</field>
       <field name="model_id" ref="sale.model_sale_order" />
       <field name="binding_model_id" ref="sale.model_sale_order" />
       <field name="state">code</field>
-      <field name="code">
-env['outplacement'].create_suborder_process_data()
-      </field>
+      <field name="code">env['outplacement'].create_suborder_process_data()</field>
     </record>
-        
+    <record id="suborder_mail_activity" model="mail.activity.template">
+      <field name="activity_type_id" ref="mail.mail_activity_data_call" />
+      <field name="summary">Meeting to go over pricing information.</field>
+      <field name="due_days" eval="5" />
+      <field name="product_id" ref="product_suborder" />
+    </record>
     <record id="mail_activity_product_1" model="mail.activity.template">
       <field name="summary">Genomför gemensam planering</field>
-      <field name="due_days" eval="15"/>
+      <field name="due_days" eval="15" />
       <field name="activity_type_id" ref="mail.mail_activity_data_todo" />
       <field name="product_id" ref="product_suborder" />
-    </record>        
-        
-        
-    </data>
+    </record>
+  </data>
 </odoo>

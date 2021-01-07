@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="outplacement.outplacement_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <page string="Final report">
+                <page string="Final report" name="final_report">
                     <group>
                         <field name="obstacle_id"/>
                         <field name="obstacle_reason"/>

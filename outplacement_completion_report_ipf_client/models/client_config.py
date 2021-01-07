@@ -1,31 +1,32 @@
 # -*- coding: UTF-8 -*-
 
-################################################################################
-#
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2019 N-Development (<https://n-development.com>).
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-################################################################################
+########################################################################
+#                                                                      #
+#    OpenERP, Open Source Management Solution                          #
+#    Copyright (C) 2019 N-Development (<https://n-development.com>).   #
+#                                                                      #
+#    This program is free software: you can redistribute it and/or     #
+#    modify it under the terms of the GNU Affero General Public        #
+#    License as published by the Free Software Foundation, either      #
+#    version 3 of the License, or (at your option) any later version.  #
+#                                                                      #
+#    This program is distributed in the hope that it will be useful,   #
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of    #
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the     #
+#    GNU Affero General Public License for more details.               #
+#                                                                      #
+#    You should have received a copy of the GNU Affero General Public  #
+#    License along with this program.  If not, see                     #
+#    <http://www.gnu.org/licenses/>.                                   #
+#                                                                      #
+########################################################################
 
 from odoo.tools import pycompat
 import json
 import uuid
 import logging
 import requests
-from odoo import api, http, models, tools, SUPERUSER_ID, fields
+from odoo import api, models, fields
 
 _logger = logging.getLogger(__name__)
 
@@ -95,7 +96,8 @@ class ClientConfig(models.Model):
     def get_headers(self):
         tracking_id = pycompat.text_type(uuid.uuid1())
         ipf_system_id = (
-            self.env["ir.config_parameter"].sudo().get_param("api_ipf.ipf_system_id")
+            self.env["ir.config_parameter"].sudo().get_param(
+                "api_ipf.ipf_system_id")
         )
         headers = {
             'Content-Type': "application/json",
@@ -197,7 +199,6 @@ class ClientConfig(models.Model):
 
     @api.model
     def post_request(self, outplacement, res_joint_planning_af_recordset):
-        res_join = res_joint_planning_af_recordset
         api = self.get_api()
         if 'department_ref' in outplacement.department_id:
             dep_id = outplacement.department_id.department_ref
@@ -218,11 +219,14 @@ class ClientConfig(models.Model):
             "inskickad_datum": str(outplacement.jp_sent_date),
             "innehall": []
         }
-        for planned in self.env['res.joint_planning'].search([('send2server','=',True)],order=sequence):
-            task = outplacement.task_ids.filtered(lambda t: t.activity_id == planned.activity_id)
+        for planned in self.env['res.joint_planning'].search(
+                [('send2server', '=', True)], order="sequence"):
+            task = outplacement.task_ids.filtered(
+                lambda t: t.activity_id == planned.activity_id)
             payload['innehall'].append({
                 'aktivitets_id': planned.activity_id,
-                'aktivitets_namn': task.activity_name if task else planned.activity_name,
+                'aktivitets_namn': (task.activity_name
+                                    if task else planned.activity_name),
                 'beskrivning': task.description if task else '',
             })
         api.post_report(payload)

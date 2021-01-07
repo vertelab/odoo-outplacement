@@ -9,7 +9,7 @@
     'author': "Vertel AB",
     'license': 'AGPL-3',
     'website': 'https://vertel.se',
-    'depends': ['outplacement'],
+    'depends': ['outplacement', 'res_joint_planning_af'],
     'data': [
         "security/ir.model.access.csv",
         'views/client_config_views.xml',

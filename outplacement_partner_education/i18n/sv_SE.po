@@ -48,7 +48,7 @@ msgstr "Utländsk utbildning"
 #. module: outplacement_partner_education
 #: model:ir.model.fields,field_description:outplacement_partner_education.field_outplacement__foreign_education_approved
 msgid "Foreign education approved"
-msgstr "Utländsk utbildning bedömd av berörd instans"
+msgstr "Bekräftad utländsk utbildning"
 
 #. module: outplacement_partner_education
 #: model:ir.model.fields,field_description:outplacement_partner_education.field_outplacement__has_car

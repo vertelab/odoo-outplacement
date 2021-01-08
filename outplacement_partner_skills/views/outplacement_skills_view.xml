@@ -12,7 +12,7 @@
                     <group>
                         <field name="partner_skill_ids" nolabel="1">
                             <tree editable="bottom">
-                                <field name="skill_id"/>
+                                <field name="skill_id"  string="Skill"/>
                                 <field name="level" widget="priority"/>
                             </tree>
                         </field>

@@ -62,7 +62,7 @@
                     <field name="step_type"/>
                     <field name="complementing_effort_type"/>
                     <field name="complementing_effort_description"/>
-                    <field name="level"/>
+                    <field name="sun_id"/>
                     <field name="start_date"/>
                     <field name="end_date"/>
                 </group>

@@ -204,13 +204,21 @@ class ClientConfig(models.Model):
             dep_id = outplacement.department_id.department_ref
         else:
             dep_id = outplacement.department_id.ka_ref
+        # Add version handling to unik_id (unique id)
+        unikt_id = outplacement.uniq_ref.split('-')
+        if len(unikt_id) == 1:
+            unikt_id = unikt_id[0] + '-0'
+        else:
+            unikt_id = f'{unikt_id[0]}-{int(unikt_id[1])+1}'
+        outplacement.write({'uniq_ref': unikt_id})
+
         payload = {
             "utforande_verksamhets_id": dep_id,
             "avrops_id": outplacement.name,
             "genomforande_referens": outplacement.order_id.origin,
             "ordernummer": outplacement.order_id.name,
             "personnr": outplacement.partner_id.company_registry,
-            "unikt_id": outplacement.uniq_ref,
+            "unikt_id": unikt_id,
             "deltagare": {
                 "fornamn": outplacement.partner_id.firstname,
                 "efternamn": outplacement.partner_id.lastname,

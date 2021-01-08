@@ -226,7 +226,7 @@ class ClientConfig(models.Model):
             payload['innehall'].append({
                 'aktivitets_id': planned.activity_id,
                 'aktivitets_namn': (task.activity_name
-                                    if task else planned.activity_name),
+                                    if task else planned.name),
                 'beskrivning': task.description if task else '',
             })
         api.post_report(payload)

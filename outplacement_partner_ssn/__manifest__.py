@@ -31,7 +31,8 @@
     'website': 'http://www.vertel.se',
     'depends': ['partner_ssn', 'outplacement'],
     'data': [
-        'views/outplacement_view.xml'
+        'views/outplacement_view.xml',
+        'views/ir_actions_server_view.xml'
     ],
     'installable': True,
     'application': False,

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0-20201022\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-08 10:46+0000\n"
-"PO-Revision-Date: 2021-01-08 10:46+0000\n"
+"POT-Creation-Date: 2021-01-08 14:30+0000\n"
+"PO-Revision-Date: 2021-01-08 14:30+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -104,6 +104,7 @@ msgstr "Samarbetspartner"
 #: model:ir.model.fields,field_description:outplacement_partner_skills.field_hr_employee__skill
 #: model:ir.model.fields,field_description:outplacement_partner_skills.field_outplacement__skill_id
 #: model:ir.model.fields,field_description:outplacement_partner_skills.field_outplacement__skills
+#: model_terms:ir.ui.view,arch_db:outplacement_partner_skills.outplacement_form_view_skill
 msgid "Skill"
 msgstr "Kompetens"
 
@@ -111,7 +112,7 @@ msgstr "Kompetens"
 #: model:ir.model.fields,field_description:outplacement_partner_skills.field_outplacement__partner_skill_ids
 #: model_terms:ir.ui.view,arch_db:outplacement_partner_skills.outplacement_form_view_skill
 msgid "Skills"
-msgstr "Kompetenser"
+msgstr "Kompetens"
 
 #. module: outplacement_partner_skills
 #: model:ir.model.fields,field_description:outplacement_partner_skills.field_outplacement__strengths

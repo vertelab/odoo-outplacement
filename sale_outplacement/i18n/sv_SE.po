@@ -214,7 +214,7 @@ msgstr ""
 
 #. module: sale_outplacement
 #: model:ir.model.fields,field_description:sale_outplacement.field_outplacement__skill_id
-msgid "Skill"
+msgid "Skills"
 msgstr "Kompetens"
 
 #. module: sale_outplacement

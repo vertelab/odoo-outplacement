@@ -1,9 +1,7 @@
 import base64
 
 from datetime import timedelta
-from odoo import api, fields, models, tools, SUPERUSER_ID
-from odoo import tools, _
-from odoo.exceptions import ValidationError, AccessError
+from odoo import api, fields, models, tools, _
 from odoo.modules.module import get_module_resource
 
 
@@ -18,26 +16,33 @@ class Outplacement(models.Model):
 
     @api.model
     def _default_image(self):
-        image_path = get_module_resource('outplacement', 'static/src/img', 'default_image.png')
-        return tools.image_resize_image_big(base64.b64encode(open(image_path, 'rb').read()))
+        image_path = get_module_resource(
+            'outplacement', 'static/src/img', 'default_image.png')
+        return tools.image_resize_image_big(
+            base64.b64encode(open(image_path, 'rb').read()))
 
     def _default_stage_id(self):
-        return self.env['outplacement.stage'].search([('fold', '=', False)], limit=1)
+        return self.env['outplacement.stage'].search(
+            [('fold', '=', False)], limit=1)
 
     name = fields.Char(string="Name")
-    stage_id = fields.Many2one(comodel_name='outplacement.stage', string="State",
-                            ondelete='restrict', track_visibility='onchange', index=True, copy=False,
-                            group_expand='_read_group_stage_ids',
-                            default=lambda self: self._default_stage_id()
-                            )
+    stage_id = fields.Many2one(comodel_name='outplacement.stage',
+                               string="State",
+                               ondelete='restrict',
+                               track_visibility='onchange',
+                               index=True, copy=False,
+                               group_expand='_read_group_stage_ids',
+                               default=lambda self: self._default_stage_id()
+                               )
+    
     @api.model
     def _read_group_employee_ids(self, employees, domain, order):
         """ Always display all stages """
-        _logger.warn('group by employee domain %s order %s' % (domain,order))
-        if ['my_department','=',True] in domain:
+        _logger.warn('group by employee domain %s order %s' % (domain, order))
+        if ['my_department', '=', True] in domain:
             department = self.env['hr.employee'].search(
-                [('user_id','=',self.env.user.id)],limit=1).mapped('department_id') or None
-            domain=['|',('department_id','=',department.id if department else None),('department_id','=',None)]
+                [('user_id', '=', self.env.user.id)], limit=1).mapped('department_id') or None
+            domain=['|', ('department_id', '=', department.id if department else None), ('department_id', '=', None)]
         else:
             domain=[]
         _logger.warn('group by employee domain %s order %s' % (domain,order))
@@ -97,21 +102,19 @@ class Outplacement(models.Model):
         """ Always display all stages """
         return stages.search([], order=order)
 
-
     @api.model
     def _read_group_department_ids(self, departments, domain, order):
         """ Always display all stages """
         _logger.warn('group by department domain %s order %s' % (domain,order))
         return departments.search([], order=order)
 
-
     @api.model
     @api.returns('self', lambda value: value.id)
     def create(self, vals):
         if not vals.get('uniq_ref'):
-            vals['uniq_ref'] = self.env['ir.sequence'].get('outplacement.uniqid')
+            vals['uniq_ref'] = self.env['ir.sequence'].get(
+                'outplacement.uniqid')
         return super(Outplacement, self).create(vals)
-        
 
     @api.multi
     def write(self, vals):
@@ -121,7 +124,8 @@ class Outplacement(models.Model):
 
     @api.multi
     def _compute_my_department(self):
-        department = self.env['hr.employee'].search([('user_id','=',self.env.user.id)]).mapped('department_id')
+        department = self.env['hr.employee'].search(
+            [('user_id', '=', self.env.user.id)]).mapped('department_id')
         department = department[0] if len(department) > 0 else None
         return self.filtered(lambda o: o.department_id == department)
 

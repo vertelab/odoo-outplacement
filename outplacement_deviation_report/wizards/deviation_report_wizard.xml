@@ -32,8 +32,7 @@
         </field>
     </record>
 
-    <record model="ir.actions.act_window"
-            id="deviation_report_action">
+    <record model="ir.actions.act_window" id="deviation_report_action">
         <field name="name">Deviation Report</field>
         <field name="res_model">outplacement.deviation.report.wizard</field>
         <field name="view_mode">form</field>

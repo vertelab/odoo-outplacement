@@ -30,12 +30,12 @@
     'license': 'AGPL-3',
     'website': 'https://www.n-development.com',
     'depends': [
-        'project',
+        'outplacement',
         'outplacement_deviationreport_ipf_client'
     ],
     'data': [
         'wizards/deviation_report_wizard.xml',
-        'views/project_views.xml',
+        'views/outplacement_view.xml',
     ],
     'installable': True,
     'images': [

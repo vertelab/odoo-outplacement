@@ -14,7 +14,7 @@ class DeviationReportWizard(models.TransientModel):
     social_sec_nr = fields.Char(string="Social security number")
     first_name = fields.Char()
     last_name = fields.Char()
-    responsible_id = fields.Many2one('res.users')
+    responsible_id = fields.Char()
     company_name = fields.Char()
     user_id = fields.Many2one('res.users', default=lambda self: self.env.user)
     deviation_reason = fields.Text()
@@ -22,6 +22,11 @@ class DeviationReportWizard(models.TransientModel):
     deviation_allday = fields.Boolean()
     deviation_timestart = fields.Float()
     deviation_timeend = fields.Float()
+    expected_time_start = fields.Float()
+    expected_time_end = fields.Float()
+    activity_handling_company_name = fields.Char()
+    activity_handling_company_id = fields.Char()
+    reponsible_signature = fields.Char()
 
     @api.model
     def default_get(self, fields_list):
@@ -30,22 +35,14 @@ class DeviationReportWizard(models.TransientModel):
         if ctx.get('active_id') and ctx.get('active_model'):
             active_record = self.env[ctx['active_model']].browse(
                 ctx['active_id'])
-            if 'user_id' in active_record:
-                partner = active_record.user_id.partner_id
-                if 'firstname' in partner and 'lastname' in partner:
-                    first_name, last_name = partner.firstname, partner.lastname
-                elif 'first_name' in partner and 'last_name' in partner:
-                    first_name = partner.first_name
-                    last_name = partner.last_name
-                else:
-                    first_name, last_name = _partner_split_name(
-                        partner.name)
-                resp_id = partner.user_id and partner.user_id.id or False
+            partner = active_record.partner_id
+            if partner:
+                first_name, last_name = _partner_split_name(partner.name)
                 res.update({
                     "first_name": first_name,
                     "last_name": last_name,
-                    'responsible_id': resp_id,
-                    'company_name': self.user_id.company_id.name,
+                    'responsible_id': self.env.user.email,
+                    'company_name': partner.parent_id and partner.parent_id.name or '',
                 })
             res['deviation_date'] = fields.Date.today()
         return res
@@ -75,7 +72,8 @@ class DeviationReportWizard(models.TransientModel):
                 "efternamn": self.last_name,
             },
             "ansvarig_arbetsformedlare": {
-                "funktionsbrevlada": self.responsible_id.email
+                "funktionsbrevlada": self.responsible_id.email,
+                "signatur": self.reponsible_signature,
             },
             "leverantor": {
                 "leverantorsnamn": self.company_name,
@@ -85,14 +83,22 @@ class DeviationReportWizard(models.TransientModel):
                     "efternamn":
                         _partner_split_name(self.user_id.partner_id.name)[1]
                 },
-                "kanummer": "10009858"
+                "kanummer": "10009858",
+                "utforande_verksamhet": {
+                    "namn": self.activity_handling_company_name,
+                    "utforande_verksamhet_id": self.activity_handling_company_id,
+                },
             },
             "franvaro": {
                 "orsak": self.deviation_reason,
                 "datum": str(self.deviation_date),
                 "heldag": self.deviation_allday,
                 "starttid": self.float_to_time(self.deviation_timestart),
-                "sluttid": self.float_to_time(self.deviation_timeend)
+                "sluttid": self.float_to_time(self.deviation_timeend),
+                "forvantad_narvaro": {
+                    "starttid": self.expected_time_start,
+                    "sluttid": self.expected_time_end,
+                },
             }
         }
         querystring = {"client_secret": api.client_secret,

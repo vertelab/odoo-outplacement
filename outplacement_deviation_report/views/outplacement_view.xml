@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_task_form2_inherit_deviation_report" model="ir.ui.view">
-        <field name="name">project.task.form.inherit</field>
-        <field name="model">project.task</field>
-        <field name="inherit_id" ref="project.view_task_form2"/>
+    <record id="outplacement_form_view_deviation_report" model="ir.ui.view">
+        <field name="name">outplacement.form.inherit</field>
+        <field name="model">outplacement</field>
+        <field name="inherit_id" ref="outplacement.outplacement_form_view"/>
         <field name="arch" type="xml">
             <header position="inside">
                 <button name="%(deviation_report_action)d"

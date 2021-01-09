@@ -30,7 +30,6 @@
     'website': 'https://vertel.se',
     "depends": [
         'outplacement',
-        'api_odooxml',
     ],
     'data': [
         'data/data.xml',

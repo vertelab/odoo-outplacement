@@ -70,18 +70,6 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="view_outplacement_goal_step_completing_effort_form">
-        <field name="name">outplacement.goal.step.completing_effort.form</field>
-        <field name="model">outplacement.goal.step.completing_effort</field>
-        <field name="arch" type="xml">
-            <form>
-                <group>
-                    <field name="effort_type"/>
-                </group>
-            </form>
-        </field>
-    </record>
-
     <record model="ir.ui.view" id="view_outplacement_obstacle_form">
         <field name="name">outplacement.obstacle.form</field>
         <field name="model">outplacement.obstacle</field>
@@ -118,12 +106,6 @@
     <record model="ir.actions.act_window" id="outplacement_obstacle_action_window">
         <field name="name">Outplacement obstacle</field>
         <field name="res_model">outplacement.obstacle</field>
-        <field name="view_mode">form</field>
-    </record>
-
-    <record model="ir.actions.act_window" id="outplacement_goal_step_completing_effort_action_window">
-        <field name="name">Outplacement goal step completing effort</field>
-        <field name="res_model">outplacement.goal.step.completing_effort</field>
         <field name="view_mode">form</field>
     </record>
 

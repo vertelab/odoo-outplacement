@@ -62,7 +62,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:outplacement_partner_skills.field_outplacement__interests
 #: model:ir.model.fields,field_description:outplacement_partner_skills.field_outplacement_interests__name
 msgid "Interests"
-msgstr ""
+msgstr "Intressen"
 
 #. module: outplacement_partner_skills
 #: model:ir.model.fields,field_description:outplacement_partner_skills.field_outplacement_interests____last_update

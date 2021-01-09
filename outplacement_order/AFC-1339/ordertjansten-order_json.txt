@@ -1,0 +1,1941 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Ordertjansten Order",
+    "description": "TBD",
+    "version": "v1",
+    "contact": {
+      "url": "https://confluence.ams.se/pages/viewpage.action?pageId=35172674",
+      "name": "Team Pecunia",
+      "email": "0200itteampecuniautvecklare@arbetsformedlingen.se"
+    }
+  },
+  "host": "eu1.anypoint.mulesoft.com",
+  "basePath": "/mocking/api/v1/links/aba160e0-53de-4e8a-8436-fc7107981b08/",
+  "schemes": [
+    "https"
+  ],
+  "tags": [
+    {
+      "name": "order-controller",
+      "description": "Order Controller"
+    }
+  ],
+  "paths": {
+    "/order": {
+      "get": {
+        "operationId": "searchOrdersUsingGET",
+        "summary": "Sök efter ordrar med angivna parametrar",
+        "tags": [
+          "order-controller"
+        ],
+        "deprecated": false,
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "pageNo",
+            "description": "pageNo",
+            "required": false,
+            "in": "query",
+            "default": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "pageSize",
+            "required": false,
+            "in": "query",
+            "default": 25,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "slutDatum",
+            "description": "slutDatum",
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "name": "orderstatus",
+            "description": "orderstatus",
+            "required": false,
+            "in": "query",
+            "enum": [
+              "AVBRUTEN",
+              "PRELIMINAR",
+              "DEFINITIV",
+              "MAKULERAD",
+              "LEVERERAD",
+              "KLAR"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "startDatum",
+            "description": "startDatum",
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "name": "avtalsId",
+            "description": "avtalsId",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "client_id",
+            "description": "The client ID identifying the calling client. Used for analytics and authentication.",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "client_secret",
+            "description": "The client secret authenticating that the calling client is whom it say it is.",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "AF-TrackingId",
+            "description": "Used to track a request between systems. Must be created by the originating system and forwarded by all parties. The format is a GUID.",
+            "required": true,
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "AF-SystemId",
+            "description": "Unique identifier for the calling system.",
+            "required": true,
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "AF-EndUserId",
+            "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+            "required": false,
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "AF-Environment",
+            "description": "Identifies which IPF environment the client is intending to call. The purpose is to avoid calling the wrong environment, for example production environment from a test environment.",
+            "required": true,
+            "in": "header",
+            "enum": [
+              "U1",
+              "I1",
+              "T1",
+              "T2",
+              "PROD"
+            ],
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Hittade ordrar",
+            "headers": {
+              "AF-TrackingId": {
+                "type": "string"
+              },
+              "AF-SystemId": {
+                "description": "Unique identifier for the responding system.",
+                "type": "string"
+              },
+              "AF-ResponseTime": {
+                "description": "The time it took for the system to process the request in milliseconds.",
+                "type": "integer"
+              },
+              "AF-Confidentiality": {
+                "description": "The level of confidentiality the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Correctness": {
+                "description": "The level of correctness the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Availability": {
+                "description": "The level of availability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Traceability": {
+                "description": "The level of traceability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-EndUserId": {
+                "x-amf-required": false,
+                "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+                "type": "string"
+              }
+            },
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "example": [
+                {
+                  "avropsId": "string",
+                  "orderId": "string",
+                  "slutDatum": "2020-10-27",
+                  "startDatum": "2020-10-27",
+                  "status": "AVBRUTEN",
+                  "totalbelopp": "string",
+                  "utforandeverksamhetNamn": "string"
+                }
+              ],
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PartialOrderResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Fel format på order-id",
+            "headers": {
+              "AF-TrackingId": {
+                "type": "string"
+              },
+              "AF-SystemId": {
+                "description": "Unique identifier for the responding system.",
+                "type": "string"
+              },
+              "AF-ResponseTime": {
+                "description": "The time it took for the system to process the request in milliseconds.",
+                "type": "integer"
+              },
+              "AF-Confidentiality": {
+                "description": "The level of confidentiality the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Correctness": {
+                "description": "The level of correctness the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Availability": {
+                "description": "The level of availability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Traceability": {
+                "description": "The level of traceability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-EndUserId": {
+                "x-amf-required": false,
+                "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+                "type": "string"
+              }
+            },
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ipfBaseError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden",
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ipfSimpleError"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "AF-TrackingId": {
+                "type": "string"
+              },
+              "AF-SystemId": {
+                "description": "Unique identifier for the responding system.",
+                "type": "string"
+              },
+              "AF-ResponseTime": {
+                "description": "The time it took for the system to process the request in milliseconds.",
+                "type": "integer"
+              },
+              "AF-Confidentiality": {
+                "description": "The level of confidentiality the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Correctness": {
+                "description": "The level of correctness the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Availability": {
+                "description": "The level of availability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Traceability": {
+                "description": "The level of traceability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-EndUserId": {
+                "x-amf-required": false,
+                "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+                "type": "string"
+              }
+            },
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ipfBaseError"
+            }
+          },
+          "500": {
+            "description": "Serverfel",
+            "headers": {
+              "AF-TrackingId": {
+                "type": "string"
+              },
+              "AF-SystemId": {
+                "description": "Unique identifier for the responding system.",
+                "type": "string"
+              },
+              "AF-ResponseTime": {
+                "description": "The time it took for the system to process the request in milliseconds.",
+                "type": "integer"
+              },
+              "AF-Confidentiality": {
+                "description": "The level of confidentiality the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Correctness": {
+                "description": "The level of correctness the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Availability": {
+                "description": "The level of availability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Traceability": {
+                "description": "The level of traceability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-EndUserId": {
+                "x-amf-required": false,
+                "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+                "type": "string"
+              }
+            },
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ipfBaseError"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createOrderUsingPOST",
+        "summary": "Skapa en ny inköpsorder",
+        "tags": [
+          "order-controller"
+        ],
+        "deprecated": false,
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "client_id",
+            "description": "The client ID identifying the calling client. Used for analytics and authentication.",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "client_secret",
+            "description": "The client secret authenticating that the calling client is whom it say it is.",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "AF-TrackingId",
+            "description": "Used to track a request between systems. Must be created by the originating system and forwarded by all parties. The format is a GUID.",
+            "required": true,
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "AF-SystemId",
+            "description": "Unique identifier for the calling system.",
+            "required": true,
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "AF-EndUserId",
+            "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+            "required": false,
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "AF-Environment",
+            "description": "Identifies which IPF environment the client is intending to call. The purpose is to avoid calling the wrong environment, for example production environment from a test environment.",
+            "required": true,
+            "in": "header",
+            "enum": [
+              "U1",
+              "I1",
+              "T1",
+              "T2",
+              "PROD"
+            ],
+            "type": "string"
+          },
+          {
+            "x-amf-mediaType": "application/json",
+            "in": "body",
+            "name": "generated",
+            "schema": {
+              "$ref": "#/definitions/InkopsorderDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/InkopsorderResponse"
+            }
+          },
+          "201": {
+            "description": "Inköpsorder skapad",
+            "headers": {
+              "AF-TrackingId": {
+                "type": "string"
+              },
+              "AF-SystemId": {
+                "description": "Unique identifier for the responding system.",
+                "type": "string"
+              },
+              "AF-ResponseTime": {
+                "description": "The time it took for the system to process the request in milliseconds.",
+                "type": "integer"
+              },
+              "AF-Confidentiality": {
+                "description": "The level of confidentiality the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Correctness": {
+                "description": "The level of correctness the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Availability": {
+                "description": "The level of availability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Traceability": {
+                "description": "The level of traceability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-EndUserId": {
+                "x-amf-required": false,
+                "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+                "type": "string"
+              }
+            },
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/InkopsorderResponse"
+            }
+          },
+          "400": {
+            "description": "Fel i inköpsorderobjektet",
+            "headers": {
+              "AF-TrackingId": {
+                "type": "string"
+              },
+              "AF-SystemId": {
+                "description": "Unique identifier for the responding system.",
+                "type": "string"
+              },
+              "AF-ResponseTime": {
+                "description": "The time it took for the system to process the request in milliseconds.",
+                "type": "integer"
+              },
+              "AF-Confidentiality": {
+                "description": "The level of confidentiality the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Correctness": {
+                "description": "The level of correctness the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Availability": {
+                "description": "The level of availability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Traceability": {
+                "description": "The level of traceability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-EndUserId": {
+                "x-amf-required": false,
+                "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+                "type": "string"
+              }
+            },
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ipfBaseError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden",
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ipfSimpleError"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "AF-TrackingId": {
+                "type": "string"
+              },
+              "AF-SystemId": {
+                "description": "Unique identifier for the responding system.",
+                "type": "string"
+              },
+              "AF-ResponseTime": {
+                "description": "The time it took for the system to process the request in milliseconds.",
+                "type": "integer"
+              },
+              "AF-Confidentiality": {
+                "description": "The level of confidentiality the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Correctness": {
+                "description": "The level of correctness the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Availability": {
+                "description": "The level of availability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Traceability": {
+                "description": "The level of traceability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-EndUserId": {
+                "x-amf-required": false,
+                "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+                "type": "string"
+              }
+            },
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ipfBaseError"
+            }
+          },
+          "500": {
+            "description": "Serverfel",
+            "headers": {
+              "AF-TrackingId": {
+                "type": "string"
+              },
+              "AF-SystemId": {
+                "description": "Unique identifier for the responding system.",
+                "type": "string"
+              },
+              "AF-ResponseTime": {
+                "description": "The time it took for the system to process the request in milliseconds.",
+                "type": "integer"
+              },
+              "AF-Confidentiality": {
+                "description": "The level of confidentiality the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Correctness": {
+                "description": "The level of correctness the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Availability": {
+                "description": "The level of availability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Traceability": {
+                "description": "The level of traceability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-EndUserId": {
+                "x-amf-required": false,
+                "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+                "type": "string"
+              }
+            },
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ipfBaseError"
+            }
+          }
+        }
+      }
+    },
+    "/order/{orderId}": {
+      "get": {
+        "operationId": "getOrderUsingGET",
+        "summary": "Hämta order med angivet id",
+        "tags": [
+          "order-controller"
+        ],
+        "deprecated": false,
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "client_id",
+            "description": "The client ID identifying the calling client. Used for analytics and authentication.",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "client_secret",
+            "description": "The client secret authenticating that the calling client is whom it say it is.",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "orderId",
+            "description": "orderId",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          },
+          {
+            "name": "AF-TrackingId",
+            "description": "Used to track a request between systems. Must be created by the originating system and forwarded by all parties. The format is a GUID.",
+            "required": true,
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "AF-SystemId",
+            "description": "Unique identifier for the calling system.",
+            "required": true,
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "AF-EndUserId",
+            "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+            "required": false,
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "AF-Environment",
+            "description": "Identifies which IPF environment the client is intending to call. The purpose is to avoid calling the wrong environment, for example production environment from a test environment.",
+            "required": true,
+            "in": "header",
+            "enum": [
+              "U1",
+              "I1",
+              "T1",
+              "T2",
+              "PROD"
+            ],
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Hittade inköpsorder",
+            "headers": {
+              "AF-TrackingId": {
+                "type": "string"
+              },
+              "AF-SystemId": {
+                "description": "Unique identifier for the responding system.",
+                "type": "string"
+              },
+              "AF-ResponseTime": {
+                "description": "The time it took for the system to process the request in milliseconds.",
+                "type": "integer"
+              },
+              "AF-Confidentiality": {
+                "description": "The level of confidentiality the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Correctness": {
+                "description": "The level of correctness the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Availability": {
+                "description": "The level of availability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Traceability": {
+                "description": "The level of traceability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-EndUserId": {
+                "x-amf-required": false,
+                "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+                "type": "string"
+              }
+            },
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/FullInkopsorderResponse"
+            }
+          },
+          "400": {
+            "description": "Fel format på order-id",
+            "headers": {
+              "AF-TrackingId": {
+                "type": "string"
+              },
+              "AF-SystemId": {
+                "description": "Unique identifier for the responding system.",
+                "type": "string"
+              },
+              "AF-ResponseTime": {
+                "description": "The time it took for the system to process the request in milliseconds.",
+                "type": "integer"
+              },
+              "AF-Confidentiality": {
+                "description": "The level of confidentiality the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Correctness": {
+                "description": "The level of correctness the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Availability": {
+                "description": "The level of availability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Traceability": {
+                "description": "The level of traceability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-EndUserId": {
+                "x-amf-required": false,
+                "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+                "type": "string"
+              }
+            },
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ipfBaseError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden",
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ipfSimpleError"
+            }
+          },
+          "404": {
+            "description": "Hittade inte order-id",
+            "headers": {
+              "AF-TrackingId": {
+                "type": "string"
+              },
+              "AF-SystemId": {
+                "description": "Unique identifier for the responding system.",
+                "type": "string"
+              },
+              "AF-ResponseTime": {
+                "description": "The time it took for the system to process the request in milliseconds.",
+                "type": "integer"
+              },
+              "AF-Confidentiality": {
+                "description": "The level of confidentiality the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Correctness": {
+                "description": "The level of correctness the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Availability": {
+                "description": "The level of availability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Traceability": {
+                "description": "The level of traceability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-EndUserId": {
+                "x-amf-required": false,
+                "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+                "type": "string"
+              }
+            },
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ipfBaseError"
+            }
+          },
+          "500": {
+            "description": "Serverfel",
+            "headers": {
+              "AF-TrackingId": {
+                "type": "string"
+              },
+              "AF-SystemId": {
+                "description": "Unique identifier for the responding system.",
+                "type": "string"
+              },
+              "AF-ResponseTime": {
+                "description": "The time it took for the system to process the request in milliseconds.",
+                "type": "integer"
+              },
+              "AF-Confidentiality": {
+                "description": "The level of confidentiality the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Correctness": {
+                "description": "The level of correctness the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Availability": {
+                "description": "The level of availability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Traceability": {
+                "description": "The level of traceability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-EndUserId": {
+                "x-amf-required": false,
+                "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+                "type": "string"
+              }
+            },
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ipfBaseError"
+            }
+          }
+        }
+      }
+    },
+    "/order/{orderNummer}": {
+      "patch": {
+        "operationId": "patchOrderUsingPATCH",
+        "summary": "Uppdatera attribut i inköpsorder",
+        "tags": [
+          "order-controller"
+        ],
+        "deprecated": false,
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "client_id",
+            "description": "The client ID identifying the calling client. Used for analytics and authentication.",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "client_secret",
+            "description": "The client secret authenticating that the calling client is whom it say it is.",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "orderNummer",
+            "description": "orderNummer",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          },
+          {
+            "name": "AF-SystemId",
+            "description": "Unique identifier for the calling system.",
+            "required": true,
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "AF-EndUserId",
+            "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+            "required": false,
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "AF-Environment",
+            "description": "Identifies which IPF environment the client is intending to call. The purpose is to avoid calling the wrong environment, for example production environment from a test environment.",
+            "required": true,
+            "in": "header",
+            "enum": [
+              "U1",
+              "I1",
+              "T1",
+              "T2",
+              "PROD"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "AF-TrackingId",
+            "description": "Used to track a request between systems. Must be created by the originating system and forwarded by all parties. The format is a GUID.",
+            "required": true,
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "Tidstampel",
+            "description": "Tracking Id",
+            "required": true,
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "x-amf-mediaType": "application/json",
+            "in": "body",
+            "name": "generated",
+            "schema": {
+              "$ref": "#/definitions/PatchInkopsorderDTO"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Attribut i inköpsorder ändrat",
+            "headers": {
+              "AF-TrackingId": {
+                "type": "string"
+              },
+              "AF-SystemId": {
+                "description": "Unique identifier for the responding system.",
+                "type": "string"
+              },
+              "AF-ResponseTime": {
+                "description": "The time it took for the system to process the request in milliseconds.",
+                "type": "integer"
+              },
+              "AF-Confidentiality": {
+                "description": "The level of confidentiality the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Correctness": {
+                "description": "The level of correctness the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Availability": {
+                "description": "The level of availability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Traceability": {
+                "description": "The level of traceability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-EndUserId": {
+                "x-amf-required": false,
+                "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "description": "Fel i patch-inköpsorder-objektet",
+            "headers": {
+              "AF-TrackingId": {
+                "type": "string"
+              },
+              "AF-SystemId": {
+                "description": "Unique identifier for the responding system.",
+                "type": "string"
+              },
+              "AF-ResponseTime": {
+                "description": "The time it took for the system to process the request in milliseconds.",
+                "type": "integer"
+              },
+              "AF-Confidentiality": {
+                "description": "The level of confidentiality the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Correctness": {
+                "description": "The level of correctness the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Availability": {
+                "description": "The level of availability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Traceability": {
+                "description": "The level of traceability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-EndUserId": {
+                "x-amf-required": false,
+                "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+                "type": "string"
+              }
+            },
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ipfBaseError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden",
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ipfSimpleError"
+            }
+          },
+          "500": {
+            "description": "Server fel",
+            "headers": {
+              "AF-TrackingId": {
+                "type": "string"
+              },
+              "AF-SystemId": {
+                "description": "Unique identifier for the responding system.",
+                "type": "string"
+              },
+              "AF-ResponseTime": {
+                "description": "The time it took for the system to process the request in milliseconds.",
+                "type": "integer"
+              },
+              "AF-Confidentiality": {
+                "description": "The level of confidentiality the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Correctness": {
+                "description": "The level of correctness the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Availability": {
+                "description": "The level of availability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Traceability": {
+                "description": "The level of traceability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-EndUserId": {
+                "x-amf-required": false,
+                "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+                "type": "string"
+              }
+            },
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ipfBaseError"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "AF-TrackingId": {
+                "type": "string"
+              },
+              "AF-SystemId": {
+                "description": "Unique identifier for the responding system.",
+                "type": "string"
+              },
+              "AF-ResponseTime": {
+                "description": "The time it took for the system to process the request in milliseconds.",
+                "type": "integer"
+              },
+              "AF-Confidentiality": {
+                "description": "The level of confidentiality the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Correctness": {
+                "description": "The level of correctness the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Availability": {
+                "description": "The level of availability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-Traceability": {
+                "description": "The level of traceability the responding system requires the data to be handled with.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              },
+              "AF-EndUserId": {
+                "x-amf-required": false,
+                "description": "Identifies the calling enduser as authenticated by the calling system. Should only be used for tracing not authorization.",
+                "type": "string"
+              }
+            },
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ipfBaseError"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "PartialOrderResponse": {
+      "title": "PartialOrderResponse",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "avropsId": {
+          "type": "string"
+        },
+        "orderId": {
+          "type": "string"
+        },
+        "slutDatum": {
+          "type": "string",
+          "format": "date"
+        },
+        "startDatum": {
+          "type": "string",
+          "format": "date"
+        },
+        "status": {
+          "enum": [
+            "AVBRUTEN",
+            "PRELIMINAR",
+            "DEFINITIV",
+            "MAKULERAD",
+            "LEVERERAD",
+            "KLAR"
+          ],
+          "type": "string"
+        },
+        "totalbelopp": {
+          "type": "string"
+        },
+        "utforandeverksamhetNamn": {
+          "type": "string"
+        }
+      }
+    },
+    "ipfBaseError": {
+      "description": "A base definition for error messages on the IPF platform. All APIs SHOULD conform to this definition.\nThis definition can be exteded if needed, either by \"subclassing\" and adding extra fields/structures or by adding additional information in the cause.error field. Another option is to redefine the cause.error field type.\n",
+      "example": {
+        "error_id": "77506961-60e4-42be-aff6-123ca6d4eea3",
+        "message": "Datafel",
+        "cause": {
+          "system": "EIS",
+          "code": "1002",
+          "message": "Systemanvändaren får ej se den arbetssökandes uppgifter",
+          "error": [
+            {
+              "falt": null,
+              "felkod": 1002,
+              "operation": null,
+              "kravnummer": null,
+              "meddelande": "Systemanvändaren får ej se den arbetssökandes uppgifter",
+              "valideringsregelTyp": null,
+              "valideringsregelvarde": null,
+              "entitetTyp": null,
+              "entitetId": null
+            }
+          ]
+        }
+      },
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "error_id": {
+          "$ref": "#/definitions/error_id"
+        },
+        "message": {
+          "description": "A message describing the error in a way that is usable for the caller and provide help on how they should solve it.",
+          "type": "string"
+        },
+        "cause": {
+          "description": "Optional information about the cause of the error. This can be information from the backend system.",
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "system": {
+              "description": "Name or identity of the system or component where the error occured.",
+              "type": "string"
+            },
+            "code": {
+              "description": "Optional error or status code from the original system.",
+              "type": "string"
+            },
+            "message": {
+              "description": "The original error message from the original system.",
+              "type": "string"
+            },
+            "error": {
+              "description": "The original error from the original system. This field is intended to be used as an extension point and can contain any JSON type"
+            }
+          }
+        }
+      }
+    },
+    "ipfSimpleError": {
+      "description": "This is used by client_id enforcement Policy",
+      "example": {
+        "error": "missing_client_secret",
+        "description": "client_secret is missing"
+      },
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "error",
+        "description"
+      ],
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "InkopsorderDTO": {
+      "title": "InkopsorderDTO",
+      "example": {
+        "avrop": {
+          "avropsId": "avropsid_1",
+          "diarieaktnummer": "d-334f",
+          "slutdatum": "2020-12-30",
+          "startdatum": "2020-10-01"
+        },
+        "beslut": {
+          "beslutnummer": 0,
+          "slutdatum": "2020-12-30",
+          "startdatum": "2020-10-01",
+          "uppfoljningskategori": "KVR-V",
+          "uppfoljningskategorikod": "U036"
+        },
+        "bestallare": "bestallaren",
+        "bestallning": {
+          "omfattning": {
+            "anvisningsgrad": 0,
+            "omfattningsgrad": 0,
+            "slutdatum": "2021-01-31",
+            "startdatum": "2020-06-01",
+            "styck": 0
+          },
+          "spar": {
+            "kod": "SP1",
+            "namn": "Spår 1",
+            "sprak": "SE"
+          },
+          "tjanst": {
+            "kod": "A013",
+            "namn": "Karriärvägledning"
+          }
+        },
+        "bokningsId": 127523,
+        "forsakringskassaSamarbete": true,
+        "kontering": {
+          "kostnadsstalle": "X75",
+          "projektkod": "Projekt 1"
+        },
+        "leverantor": {
+          "utforande_verksamhet_id": "A-10000000"
+        }
+      },
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "avrop": {
+          "$ref": "#/definitions/AvropDTO"
+        },
+        "beslut": {
+          "$ref": "#/definitions/BeslutDTO"
+        },
+        "bestallare": {
+          "example": {
+            "strict": false,
+            "value": "bestallaren"
+          },
+          "type": "string"
+        },
+        "bestallning": {
+          "$ref": "#/definitions/BestallningDTO"
+        },
+        "bokningsId": {
+          "example": {
+            "strict": false,
+            "value": 127523
+          },
+          "type": "integer",
+          "format": "int64"
+        },
+        "forsakringskassaSamarbete": {
+          "example": {
+            "strict": false,
+            "value": true
+          },
+          "type": "boolean"
+        },
+        "kontering": {
+          "$ref": "#/definitions/KonteringDTO"
+        },
+        "leverantor": {
+          "$ref": "#/definitions/LeverantorDTO"
+        }
+      }
+    },
+    "InkopsorderResponse": {
+      "title": "InkopsorderResponse",
+      "example": {
+        "ordernummer": "MEET-2"
+      },
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "orderNummer": {
+          "type": "string"
+        }
+      }
+    },
+    "FullInkopsorderResponse": {
+      "title": "FullInkopsorderResponse",
+      "example": {
+        "artikelList": [
+          {
+            "enhet": "string",
+            "finansieringskod": "string",
+            "forvantatAPris": "string",
+            "forvantatAntal": 0,
+            "id": 0,
+            "kontokod": "string",
+            "miaPrisDefinitionTyp": "string",
+            "namn": "string",
+            "nuvarandeAPris": "string",
+            "nuvarandeAntal": 0,
+            "tlrId": 0,
+            "verksamhetskod": "string"
+          }
+        ],
+        "avrop": {
+          "avropsId": "avropsid_1",
+          "diarieaktnummer": "d-334f",
+          "slutdatum": "2020-12-30",
+          "startdatum": "2020-10-01"
+        },
+        "avtal": {
+          "benamning": "string",
+          "diarieaktnummer": "string"
+        },
+        "beslut": {
+          "beslutnummer": 0,
+          "slutdatum": "2020-12-30",
+          "startdatum": "2020-10-01",
+          "uppfoljningskategori": "KVR-V",
+          "uppfoljningskategorikod": "U036"
+        },
+        "bestallare": "string",
+        "bestallning": {
+          "omfattning": {
+            "anvisningsgrad": 0,
+            "omfattningsgrad": 0,
+            "slutdatum": "2021-01-31",
+            "startdatum": "2020-06-01",
+            "styck": 0
+          },
+          "spar": {
+            "kod": "SP1",
+            "namn": "Spår 1",
+            "sprak": "SE"
+          },
+          "tjanst": {
+            "kod": "A013",
+            "namn": "Karriärvägledning"
+          }
+        },
+        "bokningsId": 0,
+        "definitivDatum": "2020-10-27",
+        "forsakringskassaSamarbete": true,
+        "kostnadsstalle": "string",
+        "lastUpdated": "2020-10-27T08:54:09.613Z",
+        "leverantor": {
+          "fakturaadress": "string",
+          "konto": "string",
+          "leverantorsId": "string",
+          "leverantorsNamn": "string",
+          "organistationsNummer": "string",
+          "ort": "string",
+          "postnummer": "string",
+          "utforande_verksamhet_id": "string",
+          "utforandeverksamhetNamn": "string"
+        },
+        "orderId": "string",
+        "orderstatus": "AVBRUTEN",
+        "projektkod": "string",
+        "tidigareOrderId": 0
+      },
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "artikelList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ArtikelDTO"
+          }
+        },
+        "avrop": {
+          "$ref": "#/definitions/AvropDTO"
+        },
+        "avtal": {
+          "$ref": "#/definitions/AvtalDTO"
+        },
+        "beslut": {
+          "$ref": "#/definitions/BeslutDTO"
+        },
+        "bestallare": {
+          "type": "string"
+        },
+        "bestallning": {
+          "$ref": "#/definitions/BestallningDTO"
+        },
+        "bokningsId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "definitivDatum": {
+          "type": "string",
+          "format": "date"
+        },
+        "forsakringskassaSamarbete": {
+          "type": "boolean"
+        },
+        "kostnadsstalle": {
+          "type": "string"
+        },
+        "lastUpdated": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "leverantor": {
+          "$ref": "#/definitions/LeverantorResponse"
+        },
+        "orderId": {
+          "type": "string"
+        },
+        "orderstatus": {
+          "enum": [
+            "AVBRUTEN",
+            "PRELIMINAR",
+            "DEFINITIV",
+            "MAKULERAD",
+            "LEVERERAD",
+            "KLAR"
+          ],
+          "type": "string"
+        },
+        "projektkod": {
+          "type": "string"
+        },
+        "tidigareOrderId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "PatchInkopsorderDTO": {
+      "title": "PatchInkopsorderDTO",
+      "example": {
+        "status": "DEFINITIV"
+      },
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "error_id": {
+      "description": "Identifies the request that this response belongs to. This should be the same id as the one sent in the AF-TrackingId header.",
+      "type": "string"
+    },
+    "AvropDTO": {
+      "title": "AvropDTO",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "avropsId": {
+          "example": {
+            "strict": false,
+            "value": "avropsid_1"
+          },
+          "type": "string"
+        },
+        "diarieaktnummer": {
+          "example": {
+            "strict": false,
+            "value": "d-334f"
+          },
+          "type": "string"
+        },
+        "slutdatum": {
+          "example": {
+            "strict": false,
+            "value": "2020-12-30"
+          },
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10
+        },
+        "startdatum": {
+          "example": {
+            "strict": false,
+            "value": "2020-10-01"
+          },
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10
+        }
+      }
+    },
+    "BeslutDTO": {
+      "title": "BeslutDTO",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "beslutnummer"
+      ],
+      "properties": {
+        "beslutnummer": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "slutdatum": {
+          "example": {
+            "strict": false,
+            "value": "2020-12-30"
+          },
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10
+        },
+        "startdatum": {
+          "example": {
+            "strict": false,
+            "value": "2020-10-01"
+          },
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10
+        },
+        "uppfoljningskategori": {
+          "description": "E.g. JOB, UGA or KVR-V",
+          "example": {
+            "strict": false,
+            "value": "KVR-V"
+          },
+          "type": "string"
+        },
+        "uppfoljningskategorikod": {
+          "description": "E.g. U001, U003 or U036",
+          "example": {
+            "strict": false,
+            "value": "U036"
+          },
+          "type": "string"
+        }
+      }
+    },
+    "BestallningDTO": {
+      "title": "BestallningDTO",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "omfattning": {
+          "$ref": "#/definitions/OmfattningDTO"
+        },
+        "spar": {
+          "$ref": "#/definitions/SparDTO"
+        },
+        "tjanst": {
+          "$ref": "#/definitions/TjanstDTO"
+        }
+      }
+    },
+    "KonteringDTO": {
+      "title": "KonteringDTO",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "kostnadsstalle": {
+          "example": {
+            "strict": false,
+            "value": "X75"
+          },
+          "type": "string"
+        },
+        "projektkod": {
+          "example": {
+            "strict": false,
+            "value": "Projekt 1"
+          },
+          "type": "string"
+        }
+      }
+    },
+    "LeverantorDTO": {
+      "title": "LeverantorDTO",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "utforande_verksamhet_id": {
+          "example": {
+            "strict": false,
+            "value": "A-10000000"
+          },
+          "type": "string"
+        }
+      }
+    },
+    "AvtalDTO": {
+      "title": "AvtalDTO",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "benamning": {
+          "type": "string"
+        },
+        "diarieaktnummer": {
+          "type": "string"
+        }
+      }
+    },
+    "LeverantorResponse": {
+      "title": "LeverantorResponse",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "fakturaadress": {
+          "type": "string"
+        },
+        "konto": {
+          "type": "string"
+        },
+        "leverantorsId": {
+          "type": "string"
+        },
+        "leverantorsNamn": {
+          "type": "string"
+        },
+        "organistationsNummer": {
+          "type": "string"
+        },
+        "ort": {
+          "type": "string"
+        },
+        "postnummer": {
+          "type": "string"
+        },
+        "utforande_verksamhet_id": {
+          "type": "string"
+        },
+        "utforandeverksamhetNamn": {
+          "type": "string"
+        }
+      }
+    },
+    "ArtikelDTO": {
+      "title": "ArtikelDTO",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "enhet": {
+          "type": "string"
+        },
+        "finansieringskod": {
+          "type": "string"
+        },
+        "forvantatAPris": {
+          "type": "string"
+        },
+        "forvantatAntal": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "kontokod": {
+          "type": "string"
+        },
+        "miaPrisDefinitionTyp": {
+          "type": "string"
+        },
+        "namn": {
+          "type": "string"
+        },
+        "nuvarandeAPris": {
+          "type": "string"
+        },
+        "nuvarandeAntal": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tlrId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "verksamhetskod": {
+          "type": "string"
+        }
+      }
+    },
+    "OmfattningDTO": {
+      "title": "OmfattningDTO",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "anvisningsgrad": {
+          "example": {
+            "strict": false,
+            "value": 0
+          },
+          "type": "integer",
+          "format": "int32"
+        },
+        "omfattningsgrad": {
+          "example": {
+            "strict": false,
+            "value": 0
+          },
+          "type": "integer",
+          "format": "int32"
+        },
+        "slutdatum": {
+          "example": {
+            "strict": false,
+            "value": "2021-01-31"
+          },
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10
+        },
+        "startdatum": {
+          "example": {
+            "strict": false,
+            "value": "2020-06-01"
+          },
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10
+        },
+        "styck": {
+          "example": {
+            "strict": false,
+            "value": 0
+          },
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "SparDTO": {
+      "title": "SparDTO",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "kod": {
+          "example": {
+            "strict": false,
+            "value": "SP1"
+          },
+          "type": "string"
+        },
+        "namn": {
+          "example": {
+            "strict": false,
+            "value": "Spår 1"
+          },
+          "type": "string"
+        },
+        "sprak": {
+          "example": {
+            "strict": false,
+            "value": "SE"
+          },
+          "type": "string"
+        }
+      }
+    },
+    "TjanstDTO": {
+      "title": "TjanstDTO",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "kod": {
+          "example": {
+            "strict": false,
+            "value": "A013"
+          },
+          "type": "string"
+        },
+        "namn": {
+          "example": {
+            "strict": false,
+            "value": "Karriärvägledning"
+          },
+          "type": "string"
+        }
+      }
+    }
+  }
+}

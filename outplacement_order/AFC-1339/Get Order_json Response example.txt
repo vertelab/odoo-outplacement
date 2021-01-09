@@ -1,0 +1,88 @@
+{
+  "orderId": "MEET-1",
+  "bestallare": "bestallaren",
+  "tidigareOrderId": null,
+  "bokningsId": 127523,
+  "definitivDatum": null,
+  "lastUpdated": "2020-11-02T15:48:11.256465",
+  "orderstatus": "PRELIMINAR",
+  "forsakringskassaSamarbete": true,
+  "kostnadsstalle": "X75",
+  "projektkod": "Projekt 1",
+  "avrop": {
+    "avropsId": "avropsid_3",
+    "startdatum": "2020-10-01",
+    "slutdatum": "2020-12-30",
+    "diarieaktnummer": "d-334f"
+  },
+  "avtal": {
+    "benamning": "Lots",
+    "diarieaktnummer": "AUTO"
+  },
+  "artikelList": [
+    {
+      "id": 2,
+      "tlrId": 166,
+      "namn": "Startersättning",
+      "miaPrisDefinitionTyp": "1",
+      "nuvarandeAntal": 1,
+      "forvantatAntal": 1,
+      "enhet": "2",
+      "nuvarandeAPris": "2000",
+      "forvantatAPris": "2000",
+      "kontokod": "7944",
+      "verksamhetskod": "542601",
+      "finansieringskod": "70227"
+    },
+    {
+      "id": 1,
+      "tlrId": 167,
+      "namn": "Slutersättning",
+      "miaPrisDefinitionTyp": "1",
+      "nuvarandeAntal": 1,
+      "forvantatAntal": 1,
+      "enhet": "2",
+      "nuvarandeAPris": "7000",
+      "forvantatAPris": "7000",
+      "kontokod": "7944",
+      "verksamhetskod": "542601",
+      "finansieringskod": "70227"
+    }
+  ],
+  "bestallning": {
+    "tjanst": {
+      "kod": "A013",
+      "namn": "Karriärvägledning"
+    },
+    "spar": {
+      "kod": "SP1",
+      "namn": "Spår 1",
+      "sprak": "SE"
+    },
+    "omfattning": {
+      "startdatum": "2020-06-01",
+      "slutdatum": "2021-01-31",
+      "styck": 0,
+      "anvisningsgrad": 0,
+      "omfattningsgrad": 0
+    }
+  },
+  "beslut": {
+    "beslutnummer": 0,
+    "uppfoljningskategori": "KVR-V",
+    "uppfoljningskategorikod": "U036",
+    "startdatum": "2020-10-01",
+    "slutdatum": "2020-12-30"
+  },
+  "leverantor": {
+    "konto": "5113-0581",
+    "ort": "Lund",
+    "postnummer": "22007",
+    "fakturaadress": "Box 1067",
+    "leverantorsId": "mock",
+    "leverantorsNamn": "AB Salgaria",
+    "organistationsNummer": "5560401563",
+    "utforandeverksamhetNamn": "LOTS-Test10000000",
+    "utforande_verksamhet_id": "10000000"
+  }
+}

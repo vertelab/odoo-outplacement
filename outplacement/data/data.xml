@@ -1,17 +1,34 @@
 <odoo>
   <data noupdate="0">
-    <record id="in_progress_stage" model="outplacement.stage">
-      <field name="name">In Progress</field>
+      
+    <record id="stage_preleminar" model="outplacement.stage">
+      <field name="name">Draft</field>
       <field name="sequence">10</field>
     </record>
-    <record id="next_stage_stage" model="outplacement.stage">
-      <field name="name">Next Stage</field>
+    <record id="stage_definitiv" model="outplacement.stage">
+      <field name="name">Confirm</field>
       <field name="sequence">20</field>
     </record>
-    <record id="blocked_stage" model="outplacement.stage">
-      <field name="name">Blocked</field>
+    <record id="stage_in_progress" model="outplacement.stage">
+      <field name="name">In Progress</field>
       <field name="sequence">30</field>
     </record>
+    <record id="stage_done" model="outplacement.stage">
+      <field name="name">Done</field>
+      <field name="sequence">40</field>
+    </record>
+
+    <record id="stage_avbruten" model="outplacement.stage">
+      <field name="name">Cancel</field>
+      <field name="sequence">50</field>
+    </record>
+    <record id="stage_avbruten_levererad" model="outplacement.stage">
+      <field name="name">Cancel_confirmed</field>
+      <field name="sequence">60</field>
+    </record>
+
+
+
     <record id="ir_actions_start_outplacement" model="ir.actions.server">
       <field name="name">Start outplacement</field>
       <field name="type">ir.actions.server</field>

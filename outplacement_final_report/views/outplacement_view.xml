@@ -28,7 +28,7 @@
                     </group>
                 </page>
             </xpath>
-            <field name="date_end" position="after">
+            <field name="uniq_ref" position="after">
                 <field name="report_date"/>
                 <field name="send_date"/>
             </field>

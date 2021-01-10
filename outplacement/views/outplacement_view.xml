@@ -45,8 +45,6 @@
                 <field name="late"/>
                 <field name="interruption"/>
                 <field name="incomplete"/>
-                <field name="report_date"/>
-                <field name="send_date"/>
               </group>
             </group>
             <notebook />

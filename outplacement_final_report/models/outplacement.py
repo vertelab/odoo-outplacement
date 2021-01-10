@@ -14,21 +14,9 @@ class Outplacement(models.Model):
 
     obstacle_reason = fields.Selection(related="obstacle_id.reason", readonly=False)
     obstacle_motivation = fields.Text(related="obstacle_id.motivation", readonly=False)
-
+    
     send_date = fields.Datetime(string="Final report send date")
-
     report_date = fields.Datetime(string="Reporting date")
-    status = fields.Selection(string="status", selection=[
-        ('10', 'Approved'), 
-        ('20', 'Not approved'), 
-        ('30', 'In-Progress'), 
-        ('40', 'Rejected'), 
-        ('50', 'Cancelled'), 
-        ('60', 'Sent')
-        ])
-    late = fields.Boolean(string="Sent late")
-    interruption = fields.Boolean(string="Interrupted")
-    incomplete = fields.Boolean(string="Incomplete")
 
     main_goal_id = fields.Many2one(comodel_name="outplacement.goal")
     alternative_goal_id = fields.Many2one(comodel_name="outplacement.goal")

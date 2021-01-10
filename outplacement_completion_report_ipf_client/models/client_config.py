@@ -132,62 +132,22 @@ class ClientConfig(models.Model):
             "avrops_id": "A000000398768",
             "genomforande_referens": "100000123",
             "ordernummer": "MEET-1",
-            "personnr": "197608277278",
+            "personnr": "199910103028",
             "unikt_id": "1321",
             "deltagare": {
                 "fornamn": "John",
                 "efternamn": "Doe",
                 "deltog_per_distans": "yes"
             },
-            "inskickad_datum": "2020-08-20",
-            "status": "SENT",
-            "innehall": [
-                {
-                    "aktivitets_id": "1",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test"
-                },
-                {
-                    "aktivitets_id": "2",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 2"
-                },
-                {
-                    "aktivitets_id": "3",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 3"
-                },
-                {
-                    "aktivitets_id": "4",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 4"
-                },
-                {
-                    "aktivitets_id": "5",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 5"
-                },
-                {
-                    "aktivitets_id": "6",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 6"
-                },
-                {
-                    "aktivitets_id": "7",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 7"
-                },
-                {
-                    "aktivitets_id": "8",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 8"
-                },
-                {
-                    "aktivitets_id": "9",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 9"
-                }
-            ]
+            "inskickad_datum": "2020-11-25",
+            "status": "10",
+            "ofullstandig": "true",
+            "sent_inskickad": "false",
+            "innehall": [{
+                "aktivitets_id": "176",
+                "aktivitets_namn":"test",
+                "beskrivning":"test"
+            }]
         }
 
         response = self.post_report(payload)
@@ -217,14 +177,17 @@ class ClientConfig(models.Model):
             "avrops_id": outplacement.name,
             "genomforande_referens": outplacement.order_id.origin,
             "ordernummer": outplacement.order_id.name,
-            "personnr": outplacement.partner_id.company_registry,
+            "personnr": outplacement.partner_id.social_sec_nr,
             "unikt_id": unikt_id,
             "deltagare": {
                 "fornamn": outplacement.partner_id.firstname,
                 "efternamn": outplacement.partner_id.lastname,
-                "deltog_per_distans": outplacement.meeting_remote
+                "deltog_per_distans": "yes" if outplacement.meeting_remote else "no"
             },
             "inskickad_datum": str(outplacement.jp_sent_date),
+            "status": outplacement.status,
+            "ofullstandig": "true" if outplacement.incomplete else "false",
+            "sent_inskickad": "true" if outplacement.late else "false",
             "innehall": []
         }
         for planned in self.env['res.joint_planning'].search(
@@ -232,7 +195,7 @@ class ClientConfig(models.Model):
             task = outplacement.task_ids.filtered(
                 lambda t: t.activity_id == planned.activity_id)
             payload['innehall'].append({
-                'aktivitets_id': planned.activity_id,
+                'aktivitets_id': planned.activity_id, #takes only specific 3 long numbers like 176
                 'aktivitets_namn': (task.activity_name
                                     if task else planned.name),
                 'beskrivning': task.description if task else '',

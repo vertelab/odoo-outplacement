@@ -56,6 +56,18 @@ class Outplacement(models.Model):
     meeting_remote = fields.Selection(selection=[('no','On Premice'),('yes','Remote')],string='Meeting type')
     uniq_ref = fields.Char(string='Uniq Id', size=64, trim=True, )
 
+    status = fields.Selection(string="status", selection=[
+        ('10', 'Approved'), 
+        ('20', 'Not approved'), 
+        ('30', 'In-Progress'), 
+        ('40', 'Rejected'), 
+        ('50', 'Cancelled'), 
+        ('60', 'Sent')
+        ])
+    late = fields.Boolean(string="Sent late")
+    interruption = fields.Boolean(string="Interrupted")
+    incomplete = fields.Boolean(string="Incomplete")
+
     # TODO!
     # Nils: Remove Image as we have no image of the jobseeker?
     # image: all image fields are base64 encoded and PIL-supported

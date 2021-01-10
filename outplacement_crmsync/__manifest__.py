@@ -29,7 +29,7 @@
     'license': 'AGPL-3',
     'website': 'https://vertel.se',
     "depends": [
-        'outplacement',
+        'outplacement_partner_ssn',
     ],
     'data': [
         'data/data.xml',

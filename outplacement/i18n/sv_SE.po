@@ -430,7 +430,7 @@ msgstr "Etapper"
 #. module: outplacement
 #: model:ir.actions.server,name:outplacement.ir_actions_start_outplacement
 msgid "Start outplacement"
-msgstr ""
+msgstr "Starta deltagande"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__partner_state_id

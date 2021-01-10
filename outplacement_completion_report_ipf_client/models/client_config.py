@@ -186,8 +186,8 @@ class ClientConfig(models.Model):
             },
             "inskickad_datum": str(outplacement.jp_sent_date),
             "status": outplacement.status,
-            "ofullstandig": "true" if outplacement.incomplete else "false",
-            "sent_inskickad": "true" if outplacement.late else "false",
+            "ofullstandig": "true" if outplacement.incomplete else "false",
+            "sent_inskickad": "true" if outplacement.late else "false",
             "innehall": []
         }
         for planned in self.env['res.joint_planning'].search(

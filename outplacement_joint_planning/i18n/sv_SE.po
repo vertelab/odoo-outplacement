@@ -46,7 +46,7 @@ msgstr ""
 #. module: outplacement_joint_planning
 #: model:ir.actions.server,name:outplacement_joint_planning.ir_actions_server_send_gp_to_bar
 msgid "Send GP to BAR"
-msgstr ""
+msgstr "Skicka gemensam planering till BÄR"
 
 #. module: outplacement_joint_planning
 #: model:ir.model.fields,field_description:outplacement_joint_planning.field_outplacement__task_count

@@ -257,7 +257,7 @@ class OutplacementStage(models.Model):
     _name = 'outplacement.stage'
     _description = 'Outplacement Stage'
 
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Name", translate=True)
     sequence = fields.Integer(string="Sequence")
     fold = fields.Boolean(string="Fold")
     template_id = fields.Many2one('mail.template', string="Mail Template")

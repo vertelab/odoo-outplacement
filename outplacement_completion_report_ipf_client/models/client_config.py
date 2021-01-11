@@ -162,8 +162,10 @@ class ClientConfig(models.Model):
         api = self.get_api()
         if 'department_ref' in outplacement.department_id:
             dep_id = outplacement.department_id.department_ref
+            _logger.info("using department_ref %s" % outplacement.department_id.department_ref)
         else:
             dep_id = outplacement.department_id.ka_ref
+            _logger.info("using ka_ref %s" % outplacement.department_id.ka_ref)
         # Add version handling to unik_id (unique id)
         unikt_id = outplacement.uniq_ref.split('-')
         if len(unikt_id) == 1:

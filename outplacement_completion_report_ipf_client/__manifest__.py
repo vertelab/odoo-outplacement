@@ -29,7 +29,7 @@
     'author': "N-development",
     'license': 'AGPL-3',
     'website': 'https://vertel.se',
-    'depends': ['res_joint_planning_af'],
+    'depends': ['res_joint_planning_af', 'partner_firstname'],
     'data': [
         "security/ir.model.access.csv",
         'views/client_config_views.xml',

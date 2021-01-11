@@ -41,6 +41,10 @@
                 <field name="name" />
                 <field name="booking_ref" />
                 <field name="uniq_ref" />
+                <field name="status"/>
+                <field name="late"/>
+                <field name="interruption"/>
+                <field name="incomplete"/>
               </group>
             </group>
             <notebook />

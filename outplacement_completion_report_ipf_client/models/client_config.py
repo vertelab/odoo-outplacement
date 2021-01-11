@@ -132,61 +132,58 @@ class ClientConfig(models.Model):
             "avrops_id": "A000000398768",
             "genomforande_referens": "100000123",
             "ordernummer": "MEET-1",
-            "personnr": "197608277278",
+            "personnr": "199910103028",
             "unikt_id": "1321",
             "deltagare": {
                 "fornamn": "John",
                 "efternamn": "Doe",
                 "deltog_per_distans": "yes"
             },
-            "inskickad_datum": "2020-08-20",
-            "status": "SENT",
+            "inskickad_datum": "2020-11-25",
+            "status": "10",
+            "ofullstandig": "true",
+            "sent_inskickad": "false",
             "innehall": [
                 {
-                    "aktivitets_id": "1",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test"
+                "aktivitets_id": "176",
+                "aktivitets_namn":"test",
+                "beskrivning":"test"
                 },
                 {
-                    "aktivitets_id": "2",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 2"
+                "aktivitets_id": "177",
+                "aktivitets_namn":"test",
+                "beskrivning":"test"
                 },
                 {
-                    "aktivitets_id": "3",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 3"
+                "aktivitets_id": "178",
+                "aktivitets_namn":"test",
+                "beskrivning":"test"
                 },
                 {
-                    "aktivitets_id": "4",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 4"
+                "aktivitets_id": "179",
+                "aktivitets_namn":"test",
+                "beskrivning":"test"
                 },
                 {
-                    "aktivitets_id": "5",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 5"
+                "aktivitets_id": "180",
+                "aktivitets_namn":"test",
+                "beskrivning":"test"
                 },
                 {
-                    "aktivitets_id": "6",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 6"
+                "aktivitets_id": "181",
+                "aktivitets_namn":"test",
+                "beskrivning":"test"
                 },
                 {
-                    "aktivitets_id": "7",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 7"
+                "aktivitets_id": "182",
+                "aktivitets_namn":"test",
+                "beskrivning":"test"
                 },
                 {
-                    "aktivitets_id": "8",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 8"
+                "aktivitets_id": "183",
+                "aktivitets_namn":"test",
+                "beskrivning":"test"
                 },
-                {
-                    "aktivitets_id": "9",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 9"
-                }
             ]
         }
 
@@ -202,8 +199,10 @@ class ClientConfig(models.Model):
         api = self.get_api()
         if 'department_ref' in outplacement.department_id:
             dep_id = outplacement.department_id.department_ref
+            _logger.info("using department_ref %s" % outplacement.department_id.department_ref)
         else:
             dep_id = outplacement.department_id.ka_ref
+            _logger.info("using ka_ref %s" % outplacement.department_id.ka_ref)
         # Add version handling to unik_id (unique id)
         unikt_id = outplacement.uniq_ref.split('-')
         if len(unikt_id) == 1:
@@ -217,7 +216,7 @@ class ClientConfig(models.Model):
             "avrops_id": outplacement.name,
             "genomforande_referens": outplacement.order_id.origin,
             "ordernummer": outplacement.order_id.name,
-            "personnr": outplacement.partner_id.company_registry,
+            "personnr": outplacement.partner_id.social_sec_nr,
             "unikt_id": unikt_id,
             "deltagare": {
                 "fornamn": outplacement.partner_id.firstname,
@@ -225,14 +224,18 @@ class ClientConfig(models.Model):
                 "deltog_per_distans": outplacement.meeting_remote
             },
             "inskickad_datum": str(outplacement.jp_sent_date),
+            "status": outplacement.stage_id.sequence,
+            "ofullstandig": "true" if outplacement.incomplete else "false",
+            "sent_inskickad": "true" if outplacement.late else "false",
             "innehall": []
         }
         for planned in self.env['res.joint_planning'].search(
                 [('send2server', '=', True)], order="sequence"):
+            _logger.info("send2server for %s %s" % (planned.activity_id, planned.send2server))
             task = outplacement.task_ids.filtered(
                 lambda t: t.activity_id == planned.activity_id)
             payload['innehall'].append({
-                'aktivitets_id': planned.activity_id,
+                'aktivitets_id': planned.activity_id, #takes only 176-183
                 'aktivitets_namn': (task.activity_name
                                     if task else planned.name),
                 'beskrivning': task.description if task else '',

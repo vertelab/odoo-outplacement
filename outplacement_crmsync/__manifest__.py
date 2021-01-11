@@ -3,7 +3,6 @@
 ################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2019 N-Development (<https://n-development.com>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as

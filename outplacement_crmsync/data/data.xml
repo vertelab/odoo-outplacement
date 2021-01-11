@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+    <record id="ir_actions_update_jobseeker_respartner" model="ir.actions.server">
+      <field name="name">Get JobSeeker from CRM</field>
+      <field name="type">ir.actions.server</field>
+      <field name="model_id" ref="outplacement.model_outplacement" />
+      <field name="binding_model_id" ref="outplacement.model_outplacement" />
+      <field name="state">code</field>
+      <field name="code">record.partner_id.get_jobseeker_data()</field>
+    </record>
+    <record id="ir_actions_update_jobseeker" model="ir.actions.server">
+      <field name="name">Get JobSeeker (outplacement) from CRM</field>
+      <field name="type">ir.actions.server</field>
+      <field name="model_id" ref="outplacement.model_outplacement" />
+      <field name="binding_model_id" ref="outplacement.model_outplacement" />
+      <field name="state">code</field>
+      <field name="code">record.get_jobseeker_data()</field>
+    </record>
+    </data>
+</odoo>

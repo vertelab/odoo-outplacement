@@ -73,3 +73,4 @@ class Interests(models.Model):
     description = "Interests"
 
     name = fields.Char(string="Interests")
+

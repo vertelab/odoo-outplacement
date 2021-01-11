@@ -37,7 +37,6 @@ class AccountInvoice(models.Model):
             res_partner = self.env['res.partner'].search(
                 [('company_registry', '=', org_nr)], limit=1)
             if not len(res_partner):
-                _logger.warn('HERE')
                 name = party['cac:PartyName']['cbc:Name']
                 org_nr = party['cac:PartyIdentification']['cac:ID']
                 street = party['cac:Address']['cbc:Postbox']

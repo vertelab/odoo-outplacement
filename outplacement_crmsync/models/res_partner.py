@@ -38,7 +38,7 @@ class crm_server(object):
 class Outplacement(models.Model):
     _inherit = 'outplacement'
 
-    @api.one
+    @api.multi
     def get_jobseeker_fields(self):
         return ['name', 'street', 'comment']
 

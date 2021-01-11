@@ -41,4 +41,6 @@ class Outplacement(models.Model):
                 outplacement.order_id.status = 'cancel'
             else:
                 pass
-                
+        
+
+

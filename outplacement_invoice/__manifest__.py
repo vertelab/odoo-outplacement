@@ -35,6 +35,7 @@
     'data': [
         'data/cron.xml',
     ],
+    'demo': ['data/test.xml'],
     'installable': True,
     'images': [
         'static/description/img.png'

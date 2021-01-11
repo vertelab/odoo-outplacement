@@ -29,11 +29,6 @@ from odoo import api, http, models, tools, SUPERUSER_ID, fields
 
 _logger = logging.getLogger(__name__)
 
-
-class ApfApiError(Exception):
-    pass
-
-
 class ClientConfig(models.Model):
     _name = 'ipf.report.client.config'
     _rec_name = 'url'
@@ -44,13 +39,13 @@ class ClientConfig(models.Model):
                                 required=True)
     client_id = fields.Char(string='Client ID',
                             required=True)
-    environment = fields.Selection(selection=[('u1', 'U1'),
-                                              ('i1', 'I1'),
-                                              ('t1', 'IT'),
-                                              ('t2', 'T2'),
-                                              ('prod', 'PROD'), ],
+    environment = fields.Selection(selection=[('U1', 'U1'),
+                                              ('I1', 'I1'),
+                                              ('T1', 'IT'),
+                                              ('T2', 'T2'),
+                                              ('PROD', 'PROD'), ],
                                    string='Environment',
-                                   default='u1',
+                                   default='U1',
                                    required=True)
     request_history_ids = fields.One2many('ipf.report.request.history',
                                           'config_id',
@@ -63,14 +58,14 @@ class ClientConfig(models.Model):
                                     url=url,
                                     data=payload,
                                     headers=headers,
-                                    params=params)
+                                    params=params,
+                                    verify=False)
         self.create_request_history(method=method,
                                     url=url,
                                     response=response,
                                     payload=payload,
                                     headers=headers,
                                     params=params)
-
         return response
 
     def create_request_history(self, method, url, response, payload=False,
@@ -83,17 +78,31 @@ class ClientConfig(models.Model):
                   'response_headers': response.headers,
                   'params': params,
                   'response_code': response.status_code}
-        values.update(message=json.loads(response.content))
+        try:
+            values.update(message=json.loads(response.content))
+        except json.decoder.JSONDecodeError:
+            pass
         self.env['ipf.report.request.history'].create(values)
 
     def get_headers(self):
         tracking_id = pycompat.text_type(uuid.uuid1())
+        ipf_system_id = (
+            self.env["ir.config_parameter"].sudo().get_param(
+                "api_ipf.ipf_system_id")
+        )
+        tracking_id = pycompat.text_type(uuid.uuid1())
+
+        # Usually we take the systemid from the configuration parameters,
+        # but this api is AFCRM instead of AFDAFA 
         headers = {
             'x-amf-mediaType': "application/json",
             'AF-TrackingId': tracking_id,
-            'AF-SystemId': "AF-SystemId",
+            'AF-SystemId': "AFCRM",
             'AF-EndUserId': "AF-EndUserId",
             'AF-Environment': self.environment,
+            'Accept': '*/*',
+            'Content-Type': 'application/json',
+            'Connection': 'keep-alive'
         }
         return headers
 
@@ -109,15 +118,15 @@ class ClientConfig(models.Model):
         querystring = {"client_secret": self.client_secret,
                        "client_id": self.client_id}
 
-        url = self.get_url('v1/genomforande-avvikelserapport-created')
+        url = self.get_url("")
         response = self.request_call(
             method="POST",
             url=url,
             payload=json.dumps(payload),
             headers=self.get_headers(),
             params=querystring)
-        if response.status_code != 200:
-            raise ApfApiError(response.text)
+
+        # TODO: Handle response in a nice way, everyting not an 201 is an error.
         return response
 
     def testing_post_report(self):
@@ -125,28 +134,39 @@ class ClientConfig(models.Model):
             "genomforande_referens": "123456789",
             "id": "4aaaad4f-b2e0-4a99-b9a0-06bab83bf069",
             "datum_for_rapportering": "2020-11-04",
+            "tjanstekod": "A013",
             "arbetssokande": {
                 "personnummer": "191212121212",
                 "fornamn": "Test",
                 "efternamn": "Testsson"
             },
             "ansvarig_arbetsformedlare": {
-                "funktionsbrevlada": "test@test.se"
+                "funktionsbrevlada": "test@test.se",
+                "signatur": "xxerw"
             },
             "leverantor": {
-                "leverantorsnamn": "test",
+                "namn": "test",
+                "leverantor_id": "2767362",
                 "rapportor": {
-                    "fornamn": "fornamn",
-                    "efternamn": "efternamn"
+                "fornamn": "fornamn",
+                "efternamn": "efternamn"
                 },
-                "kanummer": "10009858"
+                "utforande_verksamhet": {
+                "namn": "test",
+                "utforande_verksamhet_id": "10011118"
+                }
             },
             "franvaro": {
-                "orsak": "Sjuk",
+                "avvikelseorsakskod": "15",
                 "datum": "2020-11-04",
                 "heldag": True,
                 "starttid": "08:00",
+                "sluttid": "17:00",
+                "forvantad_narvaro": {
+                "starttid": "08:00",
                 "sluttid": "17:00"
+                },
+                "motivation":"text"
             }
         }
         response = self.post_report(payload)

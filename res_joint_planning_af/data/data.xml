@@ -2,7 +2,7 @@
     <data>
 
         <record id="joint_planning_1" model="res.joint_planning">
-            <field name="name">Gruppskapande aktiviteter</field>
+            <field name="name">Genomför kartläggning</field>
             <field name="sequence">1</field>
             <field name="task_type">optional</field>
             <field name="activity_id">175</field>
@@ -112,7 +112,7 @@
         </record>
 
         <record id="joint_planning_12" model="res.joint_planning">
-            <field name="name">Studiebesök utbildningsanordnare</field>
+            <field name="name">Studiebesök utbildningsanordnare. Ej avslutad grundskola</field>
             <field name="sequence">1</field>
             <field name="task_type">mandatory</field>
             <field name="activity_id">179</field>

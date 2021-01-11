@@ -23,10 +23,11 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Res Joint Planning',
-    'version': '12.0.0.1.0',
+    'version': '12.0.0.1.1',
     'category': 'Outplacement',
     'description': """
-	 Module to handle outplacement (Avrop).
+	 Module to handle outplacement (Avrop).\n
+	 This module handles the Activity template (project.task)
     """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',

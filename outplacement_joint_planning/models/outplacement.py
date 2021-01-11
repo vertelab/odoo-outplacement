@@ -36,11 +36,12 @@ class Outplacement(models.Model):
                                track_visibility='onchange',
                                help="Latest Sent Date for Joint Planning")
 
-    
     def _compute_task_count(self):
         for outplacement in self:
-            outplacement.task_count = self.env['project.task'].search_count([('outplacement_id','=',outplacement.id)])
-    task_count = fields.Integer(compute='_compute_task_count', string="Task Count")
+            outplacement.task_count = self.env['project.task'].search_count(
+                [('outplacement_id', '=', outplacement.id)])
+    task_count = fields.Integer(
+        compute='_compute_task_count', string="Task Count")
 
     @api.model
     def send_gp_to_bar(self):
@@ -54,4 +55,3 @@ class Outplacement(models.Model):
             outplacement.jp_sent_date = date.today()
             joint_plannings = self.env['res.joint_planning'].search([])
             client.post_request(outplacement, joint_plannings)
-

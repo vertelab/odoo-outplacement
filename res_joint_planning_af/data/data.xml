@@ -2,8 +2,8 @@
     <data>
 
         <record id="joint_planning_1" model="res.joint_planning">
-            <field name="name">Genomför kartläggning</field>
-            <field name="sequence">1</field>
+            <field name="name">1.0 Genomför kartläggning</field>
+            <field name="sequence">10</field>
             <field name="task_type">optional</field>
             <field name="activity_id">175</field>
             <field name="color">3</field>
@@ -12,8 +12,8 @@
         </record>
 
         <record id="joint_planning_2" model="res.joint_planning">
-            <field name="name">Val och framtidsplanering - deltagarens karriärplan</field>
-            <field name="sequence">1</field>
+            <field name="name">2.0 Val och framtidsplanering - deltagarens karriärplan</field>
+            <field name="sequence">20</field>
             <field name="task_type">mandatory</field>
             <field name="activity_id">176</field>
             <field name="color">3</field>
@@ -22,8 +22,8 @@
         </record>
 
         <record id="joint_planning_3" model="res.joint_planning">
-            <field name="name">Individuella karriärsvägledningssamtal</field>
-            <field name="sequence">1</field>
+            <field name="name">3.0 Individuella karriärsvägledningssamtal</field>
+            <field name="sequence">30</field>
             <field name="task_type">mandatory</field>
             <field name="activity_id">177</field>
             <field name="color">3</field>
@@ -32,8 +32,8 @@
         </record>
 
         <record id="joint_planning_4" model="res.joint_planning">
-            <field name="name">Stöd till att bli antagen till kommunens insatser</field>
-            <field name="sequence">1</field>
+            <field name="name">4.0 Stöd till att bli antagen till kommunens insatser</field>
+            <field name="sequence">40</field>
             <field name="task_type">mandatory</field>
             <field name="activity_id">178</field>
             <field name="color">3</field>
@@ -42,8 +42,8 @@
         </record>
 
         <record id="joint_planning_5" model="res.joint_planning">
-            <field name="name">Självständigt arbete</field>
-            <field name="sequence">1</field>
+            <field name="name">5.0 Självständigt arbete</field>
+            <field name="sequence">50</field>
             <field name="task_type">optional</field>
             <field name="activity_id">186</field>
             <field name="color">3</field>
@@ -52,8 +52,8 @@
         </record>
 
         <record id="joint_planning_6" model="res.joint_planning">
-            <field name="name">Studiebesök arbetsplatser</field>
-            <field name="sequence">1</field>
+            <field name="name">6.0 Studiebesök arbetsplatser</field>
+            <field name="sequence">60</field>
             <field name="task_type">mandatory</field>
             <field name="activity_id">180</field>
             <field name="color">3</field>
@@ -62,8 +62,8 @@
         </record>
 
         <record id="joint_planning_7" model="res.joint_planning">
-            <field name="name">Möte med förebilder</field>
-            <field name="sequence">1</field>
+            <field name="name">7.0 Möte med förebilder</field>
+            <field name="sequence">70</field>
             <field name="task_type">mandatory</field>
             <field name="activity_id">181</field>
             <field name="color">3</field>
@@ -72,8 +72,8 @@
         </record>
 
         <record id="joint_planning_8" model="res.joint_planning">
-            <field name="name">Kunskap om arbetsmarknad, utbildningsvägar, studiefinansiering, omvärldsbev.</field>
-            <field name="sequence">1</field>
+            <field name="name">8.0 Kunskap om arbetsmarknad, utbildningsvägar, studiefinansiering, omvärldsbev.</field>
+            <field name="sequence">80</field>
             <field name="task_type">mandatory</field>
             <field name="activity_id">182</field>
             <field name="color">3</field>
@@ -82,8 +82,8 @@
         </record>
 
         <record id="joint_planning_9" model="res.joint_planning">
-            <field name="name">Hälsa och stresshantering i förhållande till arbete och studier</field>
-            <field name="sequence">1</field>
+            <field name="name">9.0 Hälsa och stresshantering i förhållande till arbete och studier</field>
+            <field name="sequence">90</field>
             <field name="task_type">mandatory</field>
             <field name="activity_id">183</field>
             <field name="color">10</field>
@@ -92,8 +92,8 @@
         </record>
 
         <record id="joint_planning_10" model="res.joint_planning">
-            <field name="name">Rättigheter och skyldigheter i arbetslivet</field>
-            <field name="sequence">1</field>
+            <field name="name">10.0 Rättigheter och skyldigheter i arbetslivet</field>
+            <field name="sequence">100</field>
             <field name="task_type">optional</field>
             <field name="activity_id">184</field>
             <field name="color">10</field>
@@ -102,8 +102,8 @@
         </record>
 
         <record id="joint_planning_11" model="res.joint_planning">
-            <field name="name">Digital kompetens</field>
-            <field name="sequence">1</field>
+            <field name="name">11.0 Digital kompetens</field>
+            <field name="sequence">110</field>
             <field name="task_type">optional</field>
             <field name="activity_id">185</field>
             <field name="color">10</field>
@@ -112,8 +112,8 @@
         </record>
 
         <record id="joint_planning_12" model="res.joint_planning">
-            <field name="name">Studiebesök utbildningsanordnare. Ej avslutad grundskola</field>
-            <field name="sequence">1</field>
+            <field name="name">12.0 Studiebesök utbildningsanordnare. Ej avslutad grundskola</field>
+            <field name="sequence">120</field>
             <field name="task_type">mandatory</field>
             <field name="activity_id">179</field>
             <field name="color">10</field>
@@ -122,8 +122,8 @@
         </record>
 
         <record id="joint_planning_13" model="res.joint_planning">
-            <field name="name">Studiebesök utbildningsanordnare</field>
-            <field name="sequence">1</field>
+            <field name="name">13.0 Studiebesök utbildningsanordnare</field>
+            <field name="sequence">130</field>
             <field name="task_type">optional</field>
             <field name="activity_id">187</field>
             <field name="color">10</field>

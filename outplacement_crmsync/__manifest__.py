@@ -3,7 +3,6 @@
 ################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2020 Vertel AB (<https://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -21,21 +20,21 @@
 ################################################################################
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
-    'name': 'Outplacement Jobs',
-    'version': '12.0.0.2.0',
+    'name': 'Outplacement CRM Sync',
+    'version': '12.0.1.0.1',
     'category': 'Outplacement',
-    'description': """Partner Jobs """,
-
+    'description': """This module sync data to CRM ...""",
     'author': "Vertel AB",
     'license': 'AGPL-3',
-    'website': 'http://www.vertel.se',
-    'depends': ['partner_desired_jobs', 'outplacement',],
+    'website': 'https://vertel.se',
+    "depends": [
+        'outplacement_partner_ssn',
+    ],
     'data': [
-        'views/outplacement_view.xml'
+        'data/data.xml',
     ],
     'installable': True,
-    'application': False,
-
     'images': [
+        'static/description/img.png'
     ],
 }

@@ -3,7 +3,6 @@
 ################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2020 Vertel AB (<https://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,23 +18,5 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ################################################################################
-# Version format OdooMajor.OdooMinor.Major.Minor.Patch
-{
-    'name': 'Outplacement Jobs',
-    'version': '12.0.0.2.0',
-    'category': 'Outplacement',
-    'description': """Partner Jobs """,
 
-    'author': "Vertel AB",
-    'license': 'AGPL-3',
-    'website': 'http://www.vertel.se',
-    'depends': ['partner_desired_jobs', 'outplacement',],
-    'data': [
-        'views/outplacement_view.xml'
-    ],
-    'installable': True,
-    'application': False,
-
-    'images': [
-    ],
-}
+from . import outplacement

@@ -229,7 +229,7 @@ class ClientConfig(models.Model):
             "unikt_id": outplacement.uniq_ref,
             "inskickad_datum": str(outplacement.jp_sent_date),
             "rapportering_datum": outplacement.report_date, 
-            "status": outplacement.status,
+            "status": outplacement.stage_id.sequence,
             "sent_inskickad": outplacement.late, 
             "innehall": [], #filled with data below
             "avbrott": outplacement.interruption, 

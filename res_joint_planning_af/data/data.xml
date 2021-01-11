@@ -4,11 +4,11 @@
         <record id="joint_planning_1" model="res.joint_planning">
             <field name="name">Gruppskapande aktiviteter</field>
             <field name="sequence">1</field>
-            <field name="task_type">mandatory</field>
+            <field name="task_type">optional</field>
             <field name="activity_id">175</field>
             <field name="color">3</field>
             <field name="planned_hours">32.0</field>
-            <field name="send2server" eval="True"/>
+            <field name="send2server" eval="False"/>
         </record>
 
         <record id="joint_planning_2" model="res.joint_planning">
@@ -44,11 +44,11 @@
         <record id="joint_planning_5" model="res.joint_planning">
             <field name="name">Självständigt arbete</field>
             <field name="sequence">1</field>
-            <field name="task_type">mandatory</field>
+            <field name="task_type">optional</field>
             <field name="activity_id">186</field>
             <field name="color">3</field>
             <field name="planned_hours">32.0</field>
-            <field name="send2server" eval="True"/>
+            <field name="send2server" eval="False"/>
         </record>
 
         <record id="joint_planning_6" model="res.joint_planning">
@@ -114,11 +114,11 @@
         <record id="joint_planning_12" model="res.joint_planning">
             <field name="name">Studiebesök utbildningsanordnare</field>
             <field name="sequence">1</field>
-            <field name="task_type">optional</field>
+            <field name="task_type">mandatory</field>
             <field name="activity_id">179</field>
             <field name="color">10</field>
             <field name="planned_hours">32.0</field>
-            <field name="send2server" eval="False"/>
+            <field name="send2server" eval="True"/>
         </record>
 
         <record id="joint_planning_13" model="res.joint_planning">

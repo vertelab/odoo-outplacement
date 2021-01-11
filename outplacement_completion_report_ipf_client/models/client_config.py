@@ -221,10 +221,10 @@ class ClientConfig(models.Model):
             "deltagare": {
                 "fornamn": outplacement.partner_id.firstname,
                 "efternamn": outplacement.partner_id.lastname,
-                "deltog_per_distans": "yes" if outplacement.meeting_remote else "no"
+                "deltog_per_distans": outplacement.meeting_remote
             },
             "inskickad_datum": str(outplacement.jp_sent_date),
-            "status": outplacement.status,
+            "status": outplacement.stage_id.sequence,
             "ofullstandig": "true" if outplacement.incomplete else "false",
             "sent_inskickad": "true" if outplacement.late else "false",
             "innehall": []

@@ -1,28 +1,50 @@
 # -*- coding: utf-8 -*-
-
+"""
+Adds functions to handle invoices from Raindance server.
+"""
 import base64
 import logging
 import xmltodict
 
-from odoo import api, models, fields, tools, _
-
+from odoo import api, models, fields
+from odoo.addons.outplacement_invoice.static.svefaktura import SVEFAKTURA
 _logger = logging.getLogger(__name__)
 
 
 class AccountInvoice(models.Model):
+    """Handle Invoices from Raindance."""
     _inherit = "account.invoice"
     raindance_ref = fields.Char(string='Raindance ID')
 
     @api.model
     def cron_outplacement_invoice(self):
+        """Cron job entry point."""
+        self.outplacement_invoice(silent=True)
+
+    @api.model
+    def outplacement_invoice(self, silent=False):
+        """Get invoices from raindance and proccess them."""
         raindance = 'api.raindance.client.config'
+        if raindance not in self.env:
+            return
+        if not self.env[raindance].verify_config_is_set():
+            msg = 'Raindance Config is not set, cannot continue.'
+            _logger.warn(msg)
+            if not silent:
+                raise Warning(msg)
+            return
+        supplier_id = self.env['outplacement'].department_id.department_ref
         for invoice_ref in self.env[raindance].get_invoices(
-                supplier_id=None, date=None):
+                supplier_id=supplier_id, date=None):
             for invoice in self.env[raindance].get_invoice(invoice_ref):
                 self.create_invoice(invoice)
 
     @api.model
     def create_invoice(self, invoice):
+        '''
+        Process invoice in the format svefaktura.
+        Takes a dict with the key svefaktura.
+        '''
         sf = invoice.get('svefaktura')
         if sf:
             sf = xmltodict.parse(sf)
@@ -83,3 +105,7 @@ class AccountInvoice(models.Model):
                      'name': description,
                      'price_unit': price,
                      'quantity': quantity})
+
+    def test_data(self):
+        """Returns svefaktura dict with testdata."""
+        return {'svefaktura': SVEFAKTURA}

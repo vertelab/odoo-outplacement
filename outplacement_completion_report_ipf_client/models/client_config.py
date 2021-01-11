@@ -143,11 +143,48 @@ class ClientConfig(models.Model):
             "status": "10",
             "ofullstandig": "true",
             "sent_inskickad": "false",
-            "innehall": [{
+            "innehall": [
+                {
                 "aktivitets_id": "176",
                 "aktivitets_namn":"test",
                 "beskrivning":"test"
-            }]
+                },
+                {
+                "aktivitets_id": "177",
+                "aktivitets_namn":"test",
+                "beskrivning":"test"
+                },
+                {
+                "aktivitets_id": "178",
+                "aktivitets_namn":"test",
+                "beskrivning":"test"
+                },
+                {
+                "aktivitets_id": "179",
+                "aktivitets_namn":"test",
+                "beskrivning":"test"
+                },
+                {
+                "aktivitets_id": "180",
+                "aktivitets_namn":"test",
+                "beskrivning":"test"
+                },
+                {
+                "aktivitets_id": "181",
+                "aktivitets_namn":"test",
+                "beskrivning":"test"
+                },
+                {
+                "aktivitets_id": "182",
+                "aktivitets_namn":"test",
+                "beskrivning":"test"
+                },
+                {
+                "aktivitets_id": "183",
+                "aktivitets_namn":"test",
+                "beskrivning":"test"
+                },
+            ]
         }
 
         response = self.post_report(payload)
@@ -194,10 +231,11 @@ class ClientConfig(models.Model):
         }
         for planned in self.env['res.joint_planning'].search(
                 [('send2server', '=', True)], order="sequence"):
+            _logger.info("send2server for %s %s" % (planned.activity_id, planned.send2server))
             task = outplacement.task_ids.filtered(
                 lambda t: t.activity_id == planned.activity_id)
             payload['innehall'].append({
-                'aktivitets_id': planned.activity_id, #takes only specific 3 long numbers like 176
+                'aktivitets_id': planned.activity_id, #takes only 176-183
                 'aktivitets_namn': (task.activity_name
                                     if task else planned.name),
                 'beskrivning': task.description if task else '',

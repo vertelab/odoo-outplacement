@@ -1,5 +1,5 @@
 <odoo>
-    <record id="view_partner_form" model="ir.ui.view">
+    <record id="view_outplacement_form" model="ir.ui.view">
         <field name="name">outplacement.view.form.inherit.ssn</field>
         <field name="model">outplacement</field> 
         <field name="inherit_id" ref="outplacement.outplacement_form_view" />

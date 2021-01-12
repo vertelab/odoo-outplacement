@@ -128,12 +128,12 @@ class ClientConfig(models.Model):
 
     def test_post_report(self):
         payload = {
-            "utforande_verksamhets_id": "10009858",
-            "avrops_id": "A000000398768",
-            "genomforande_referens": "100000123",
+            "utforande_verksamhets_id": "10011119",
+            "avrops_id": "A000000428847",
+            "genomforande_referens": "100003568",
             "ordernummer": "MEET-1",
             "personnr": "199910103028",
-            "unikt_id": "1321",
+            "unikt_id": "1111-3",
             "deltagare": {
                 "fornamn": "John",
                 "efternamn": "Doe",
@@ -145,45 +145,40 @@ class ClientConfig(models.Model):
             "sent_inskickad": "false",
             "innehall": [
                 {
-                "aktivitets_id": "176",
-                "aktivitets_namn":"test",
-                "beskrivning":"test"
+                    "aktivitets_id": "176",
+                    "aktivitets_namn": "Val och framtidsplanering - deltagarens karriärplan",
+                    "beskrivning": "Coach's comment"
                 },
                 {
-                "aktivitets_id": "177",
-                "aktivitets_namn":"test",
-                "beskrivning":"test"
+                    "aktivitets_id": "177",
+                    "aktivitets_namn": "Individuella karriärsvägledningssamtal",
+                    "beskrivning": "Coach's comment"
                 },
                 {
-                "aktivitets_id": "178",
-                "aktivitets_namn":"test",
-                "beskrivning":"test"
+                    "aktivitets_id": "178",
+                    "aktivitets_namn": "Stöd till att bli antagen till kommunens insatser",
+                    "beskrivning": "Coach's comment"
                 },
                 {
-                "aktivitets_id": "179",
-                "aktivitets_namn":"test",
-                "beskrivning":"test"
+                    "aktivitets_id": "179",
+                    "aktivitets_namn": "Studiebesök utbildningsanordnare",
+                    "beskrivning": "Coach's comment"
                 },
                 {
-                "aktivitets_id": "180",
-                "aktivitets_namn":"test",
-                "beskrivning":"test"
+                    "aktivitets_id": "180",
+                    "aktivitets_namn": "Studiebesök arbetsplatser",
+                    "beskrivning": "Coach's comment"
                 },
                 {
-                "aktivitets_id": "181",
-                "aktivitets_namn":"test",
-                "beskrivning":"test"
+                    "aktivitets_id": "181",
+                    "aktivitets_namn": "Möte med förebilder.",
+                    "beskrivning": "Coach's comment"
                 },
                 {
-                "aktivitets_id": "182",
-                "aktivitets_namn":"test",
-                "beskrivning":"test"
-                },
-                {
-                "aktivitets_id": "183",
-                "aktivitets_namn":"test",
-                "beskrivning":"test"
-                },
+                    "aktivitets_id": "182",
+                    "aktivitets_namn": "Kunskap om arbetsmarknad, utbildningsvägar, studiefinansiering, omvärldsbev.",
+                    "beskrivning": "Coach's comment"
+                }
             ]
         }
 

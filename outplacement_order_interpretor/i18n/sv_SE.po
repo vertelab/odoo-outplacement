@@ -106,7 +106,7 @@ msgstr ""
 #. module: outplacement_order_interpretor
 #: model:mail.activity.type,name:outplacement_order_interpretor.order_interpreter
 msgid "Order Interpreter"
-msgstr ""
+msgstr "Beställ tolk"
 
 #. module: outplacement_order_interpretor
 #: model:ir.model.fields,field_description:outplacement_order_interpretor.field_mail_activity__phone

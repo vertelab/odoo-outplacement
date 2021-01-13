@@ -37,6 +37,7 @@
         'hr_timesheet',
         'project',
         'task_interperator_ipf_client',
+        'outplacement',
     ],
     'data': [
         'data/mail_data.xml',

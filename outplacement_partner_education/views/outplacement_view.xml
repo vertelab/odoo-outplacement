@@ -15,8 +15,8 @@
                             <field name="foreign_education_approved"/>
                             <field name="cv_file_name" invisible="1"/>
                             <field name="cv" filename="cv_file_name"/>
-                            <field name="references_file_name" invisible="1"/>
-                            <field name="references" filename="cv_file_name"/>
+<!--                             <field name="references_file_name" invisible="1"/>
+                            <field name="references" filename="cv_file_name"/> -->
                         </group>
                         <group>
                             <field name="drivers_license_ids"

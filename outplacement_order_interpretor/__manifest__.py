@@ -43,6 +43,7 @@
         'data/cron.xml',
         'views/mail_activity_views.xml',
         'views/res_partner_view.xml',
+        'views/outplacement_view.xml',
     ],
     'installable': True,
     'images': [

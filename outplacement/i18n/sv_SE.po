@@ -552,3 +552,32 @@ msgstr "Postnummer"
 msgid "Zip"
 msgstr "Postnummer"
 
+#. module: outplacement
+#: model:ir.model.fields,field_description:outplacement.field_outplacement__late
+msgid "Sent late"
+msgstr "Skickad sent"
+
+#. module: outplacement
+#: model:ir.model.fields,field_description:outplacement.field_outplacement__interruption
+msgid "Interrupted"
+msgstr "Avbruten"
+
+#. module: outplacement
+#: model:ir.model.fields,field_description:outplacement.field_outplacement__incomplete
+msgid "Incomplete"
+msgstr "Ej komplett"
+
+#. module: outplacement
+#: model:outplacement.stage,name:outplacement.approvec_stage
+msgid "Approved"
+msgstr "Godkänd"
+
+#. module: outplacement
+#: model:outplacement.stage,name:outplacement.not_approved_stage
+msgid "Not approved"
+msgstr "Ej Godkänd"
+
+#. module: outplacement
+#: model:outplacement.stage,name:outplacement.in-progress_stage
+msgid "In-Progress"
+msgstr "Pågår"

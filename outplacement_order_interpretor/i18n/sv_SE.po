@@ -142,5 +142,5 @@ msgstr "Postnummer"
 #: selection:mail.activity,interpreter_gender_preference:0
 #: selection:res.partner,interpreter_gender_preference:0
 msgid "no preference"
-msgstr ""
+msgstr "Ingen preferens"
 

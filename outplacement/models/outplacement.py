@@ -212,9 +212,15 @@ class Outplacement(models.Model):
         recipients = super(Outplacement, self).message_get_suggested_recipients()
         for Outplacement in self:
             if Outplacement.partner_id:
-                Outplacement._message_add_suggested_recipient(recipients, partner=Outplacement.partner_id, reason=_('Contact'))
+                Outplacement._message_add_suggested_recipient(
+                    recipients,
+                    partner=Outplacement.partner_id,
+                    reason=_('Contact'))
             elif Outplacement.email_from:
-                Outplacement._message_add_suggested_recipient(recipients, email=Outplacement.email_from, reason=_('Contact Email'))
+                Outplacement._message_add_suggested_recipient(
+                    recipients,
+                    email=Outplacement.email_from,
+                    reason=_('Contact Email'))
         return recipients
 
     @api.model
@@ -240,32 +246,41 @@ class Outplacement(models.Model):
             defaults['priority'] = msg.get('priority')
         if custom_values:
             defaults.update(custom_values)
-        return super(Outplacement, self).message_new(msg, custom_values=defaults)
+        return super(Outplacement, self).message_new(msg,
+                                                     custom_values=defaults)
 
     def _message_post_after_hook(self, message, *args, **kwargs):
         if self.email_from and not self.partner_id:
-            # we consider that posting a message with a specified recipient (not a follower, a specific one)
-            # on a document without customer means that it was created through the chatter using
-            # suggested recipients. This heuristic allows to avoid ugly hacks in JS.
-            new_partner = message.partner_ids.filtered(lambda partner: partner.email == self.email_from)
+            # we consider that posting a message with a specified
+            # recipient (not a follower, a specific one) on a document
+            # without customer means that it was created through the
+            # chatter using suggested recipients. This heuristic allows
+            # to avoid ugly hacks in JS.
+            new_partner = message.partner_ids.filtered(
+                lambda partner: partner.email == self.email_from)
             if new_partner:
                 self.search([
                     ('partner_id', '=', False),
                     ('email_from', '=', new_partner.email),
-                    ('stage_id.fold', '=', False)]).write({'partner_id': new_partner.id})
-        return super(Outplacement, self)._message_post_after_hook(message, *args, **kwargs)
+                    ('stage_id.fold', '=', False)]).write(
+                        {'partner_id': new_partner.id})
+        return super(Outplacement, self)._message_post_after_hook(
+            message, *args, **kwargs)
 
     @api.model
     def create_activities(self, record):
-        product = record.order_id.order_line.mapped('product_id').filtered(lambda p: p.is_suborder)
+        product = record.order_id.order_line.mapped('product_id').filtered(
+            lambda p: p.is_suborder)
         if product:
             for activity in product.mail_activity_ids:
                 self.env['mail.activity'].create({
                         'res_id': record.id,
                         'res_model': record._name,
-                        'res_model_id': self.env['ir.model'].search([('model', '=', record._name)]).id,
+                        'res_model_id': self.env['ir.model'].search(
+                            [('model', '=', record._name)]).id,
                         'activity_type_id': activity.activity_type_id.id,
-                        'date_deadline': fields.Date.today() + timedelta(days=activity.due_days),
+                        'date_deadline': (fields.Date.today() +
+                                          timedelta(days=activity.due_days)),
                         'summary': activity.summary,
                         'user_id': record.employee_id.user_id.id,
                 })

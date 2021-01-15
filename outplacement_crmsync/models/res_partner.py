@@ -105,8 +105,8 @@ class Outplacement(models.Model):
             #
             # outplacement_education
             #
-            'sun_ids': [(6,_,[c.id for c in self.env['res.sun'].search([('code','in',partner.sun_ids.mapped('code'))])])],
-            'education_level': [(6,_,[e.id for e in self.env['res.partner.education_level'].search([('name','in',partner.education_level.mapped('name'))])])],
+            'sun_ids': [(6,0,[c.id for c in self.env['res.sun'].search([('code','in',partner.sun_ids.mapped('code'))])])],
+            'education_level': [(6,0,[e.id for e in self.env['res.partner.education_level'].search([('name','in',partner.education_level.mapped('name'))])])],
             'foreign_education': partner.foreign_education,
             'foreign_education_approved': partner.foreign_education_approved,
             'cv': partner.cv,
@@ -114,10 +114,10 @@ class Outplacement(models.Model):
             'references': partner.references,
             'references_file_name': partner.references_file_name,
             'has_drivers_license': partner.has_drivers_license,
-            'drivers_license_ids': [(6,_,[e.id for e in self.env['res.drivers_license'].search([('name','in',partner.drivers_license_ids.mapped('name'))])])],
+            'drivers_license_ids': [(6,0,[e.id for e in self.env['res.drivers_license'].search([('name','in',partner.drivers_license_ids.mapped('name'))])])],
             'has_car': partner.has_car,
             # ~ # jobs
-            'job_ids': [(6,_,[e.id for e in self.env['res.jobs'].search([('name','in',partner.job_ids.mapped('name'))])])],
+            'job_ids': [(6,0,[e.id for e in self.env['res.jobs'].search([('name','in',partner.job_ids.mapped('name'))])])],
             # skills
                 # ~ skills = fields.Many2many('hr.skill', string="Skill")
     # ~ skill_id = fields.Char(string="Skill", related="skills.complete_name")

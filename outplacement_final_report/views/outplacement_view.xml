@@ -9,13 +9,11 @@
                     <group>
                         <field name="obstacle_id"/>
                         <field name="obstacle_reason"/>
-                        <field name="obstacle_motivation"/>
-                        <field name="status"/>
-                        <field name="late"/>
-                        <field name="interruption"/>
-                        <field name="incomplete"/>
+                        <field name="obstacle_motivation"/>                    
                         <field name="main_goal_id"/>
                         <field name="alternative_goal_id"/>
+                        <field name="report_date"/>
+                        <field name="send_date"/>
                     </group>
                     <group>
                         <field name="study_visit_ids" mode="tree">
@@ -27,11 +25,7 @@
                         </field>
                     </group>
                 </page>
-            </xpath>
-            <field name="uniq_ref" position="after">
-                <field name="report_date"/>
-                <field name="send_date"/>
-            </field>
+            </xpath>               
         </field>
     </record>
 

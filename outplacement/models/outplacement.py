@@ -55,6 +55,10 @@ class Outplacement(models.Model):
     color = fields.Integer('Kanban Color Index')
     meeting_remote = fields.Selection(selection=[('no','On Premice'),('yes','Remote')],string='Meeting type')
     uniq_ref = fields.Char(string='Uniq Id', size=64, trim=True, )
+    
+    late = fields.Boolean(string="Sent late")
+    interruption = fields.Boolean(string="Interrupted")
+    incomplete = fields.Boolean(string="Incomplete")
 
     # TODO!
     # Nils: Remove Image as we have no image of the jobseeker?

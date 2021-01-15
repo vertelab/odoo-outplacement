@@ -13,9 +13,9 @@
                             <field name='management_team_id'/>
                         </group>
                         <group>
+                            <field name="order_start_date"/>
                             <field name="service_start_date"/>
                             <field name="service_end_date"/>
-                            <field name="order_start_date"/>
                             <field name="order_close_date"/>
                         </group>
                     </group>

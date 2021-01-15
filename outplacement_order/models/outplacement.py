@@ -42,5 +42,3 @@ class Outplacement(models.Model):
             else:
                 pass
         
-
-

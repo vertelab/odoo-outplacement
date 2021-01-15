@@ -28,8 +28,15 @@ import string  # Used in test
 from odoo import api, fields, models, _
 
 
+
 import logging
 _logger = logging.getLogger(__name__)
+
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+
+    outplacement_id = fields.Many2one(comodel_name='outplacement') 
+
 
 
 class Outplacement(models.Model):
@@ -140,6 +147,7 @@ class Outplacement(models.Model):
             'management_team_id': self._get_management_team_id(data),
             'order_id': order.id,
         })
+        order.outplacement_id = outplacement.id
         self.env['project.task'].init_joint_planning(outplacement.id)
         self.env['project.task'].init_joint_planning_stages(outplacement.id)
         return data
@@ -178,4 +186,3 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     customer_id = fields.Char(string='Customer Number', size=64, trim=True, )
-    

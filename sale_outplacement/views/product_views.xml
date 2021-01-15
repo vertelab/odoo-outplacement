@@ -11,6 +11,9 @@
                     <label for="is_suborder"/>
                 </div>
             </div>
+            <field name="categ_id" position='after'>
+                <field name="tlr_ref"/>
+            </field>
             <notebook position="inside">
                 <page string="Suborder" name="suborder" attrs="{'invisible': [('is_suborder','=',False)]}">
                     <field name="mail_activity_ids">

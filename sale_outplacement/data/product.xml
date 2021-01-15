@@ -33,5 +33,16 @@
       <field name="activity_type_id" ref="mail.mail_activity_data_todo" />
       <field name="product_id" ref="product_suborder" />
     </record>
+    
+    
+    <record id="ir_actions_update_order_from_ordertjansten" model="ir.actions.server">
+      <field name="name">Uppdatera_order_från_Ordertjänsten</field>
+      <field name="type">ir.actions.server</field>
+      <field name="model_id" ref="sale.model_sale_order" />
+      <field name="binding_model_id" ref="sale.model_sale_order" />
+      <field name="state">code</field>
+      <field name="code">record.update_order_from_ordertjansten()</field>
+    </record>
+    
   </data>
 </odoo>

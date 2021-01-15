@@ -37,6 +37,7 @@
         'l10n_se',
         'project',
         'hr_skill',
+        'partner_ssn',
     ],
     'data': [
         'data/product.xml',
@@ -44,6 +45,7 @@
         'views/outplacement_view.xml',
         'views/product_views.xml',
         'views/project_views.xml',
+        'views/sale_views.xml',
         'security/ir.model.access.csv',
     ],
     'installable': True,

@@ -41,6 +41,7 @@
         'outplacement_partner_education',
         'outplacement_partner_jobs',
         # ~ 'outplacement_partner_skills',
+        'partner_firstname',
     ],
     'data': [
         'data/data.xml',

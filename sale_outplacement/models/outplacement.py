@@ -57,8 +57,8 @@ class Outplacement(models.Model):
     def _employee_activites(self):
         if self.employee_id:
             self.env['mail.activity'].search(
-                ['&', 
-                 ('res_model_id.model', '=', self._name), 
+                ['&',
+                 ('res_model_id.model', '=', self._name),
                  ('res_id', '=', self.id)]).unlink()
             for activity in self.order_id.mapped('order_lines').filtered(
                 lambda l: l.product_id.is_suborder == True).mapped(
@@ -92,8 +92,14 @@ class Outplacement(models.Model):
 
     @api.multi
     def _get_management_team_id(self, data):
+<<<<<<< HEAD
         management_team = self.env['res.partner'].search(
             [('email', '=', data['telefonnummer_handlaggargrupp'])], limit=1)
+=======
+        employee = self.env['hr.employee'].search(
+            [('work_phone', '=', data['telefonnummer_handlaggargrupp'])],
+            limit=1)
+>>>>>>> AFC-1659-Deviationreport fixes
 
         if not management_team:
             management_team = self.env['res.partner'].create({
@@ -108,7 +114,8 @@ class Outplacement(models.Model):
         department = self.env['performing.operation'].search(
             [('ka_nr', '=', data.get('utforande_verksamhet_id', ''))],
             limit=1)
-        _logger.debug('Department: hr_department %s | %s' % (department, data.get('utforande_verksamhet_id')))
+        _logger.debug('Department: hr_department %s | %s' % (
+            department, data.get('utforande_verksamhet_id')))
         return department.id if department else None
 
     @api.multi
@@ -169,16 +176,17 @@ class Outplacement(models.Model):
             "deltagandegrad": 75,
             "bokat_sfi": False,
             "startdatum_insats": '%s' % datetime.date.today(),
-            "slutdatum_insats": str(datetime.date.today()+datetime.timedelta(days=365)),
+            "slutdatum_insats": str(
+                datetime.date.today()+datetime.timedelta(days=365)),
             "startdatum_avrop": str(datetime.date.today()),
-            "slutdatum_avrop": str(datetime.date.today()+datetime.timedelta(days=90)),
+            "slutdatum_avrop": str(
+                datetime.date.today()+datetime.timedelta(days=90)),
             "aktnummer_diariet": "Af-2021/0000 " +
                                  ''.join(random.sample(string.digits, k=4)),
             "telefonnummer_handlaggargrupp": "+46734176359",
-            "epost_handlaggargrupp": ''.join(random.sample(string.digits, k=4)) + "@test.com"
-        }
-        
-        )
+            "epost_handlaggargrupp": ''.join(
+                random.sample(string.digits, k=4)) + "@test.com"
+            })
 
 
 

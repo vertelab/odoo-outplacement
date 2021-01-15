@@ -42,7 +42,7 @@ class SaleOrder(models.Model):
 class Outplacement(models.Model):
     _inherit = 'outplacement'
 
-    management_team_id = fields.Many2one(comodel_name='hr.employee',
+    management_team_id = fields.Many2one(comodel_name='res.partner',
                                          string='Management team')
     skill_id = fields.Many2one('hr.skill')
     participitation_rate = fields.Integer()
@@ -92,16 +92,16 @@ class Outplacement(models.Model):
 
     @api.multi
     def _get_management_team_id(self, data):
-        employee = self.env['hr.employee'].search(
-            [('work_phone', '=', data['telefonnummer_handlaggargrupp'])], limit=1)
+        management_team = self.env['res.partner'].search(
+            [('email', '=', data['telefonnummer_handlaggargrupp'])], limit=1)
 
-        if not employee:
-            employee = self.env['hr.employee'].create({
+        if not management_team:
+            management_team = self.env['res.partner'].create({
                 'name': data['epost_handlaggargrupp'],
-                'work_email': data['epost_handlaggargrupp'],
-                'work_phone': data['telefonnummer_handlaggargrupp']
+                'email': data['epost_handlaggargrupp'],
+                'phone': data['telefonnummer_handlaggargrupp']
             })
-        return employee.id if employee else None
+        return management_team.id if management_team else None
 
     @api.multi
     def _get_department_id(self, data):

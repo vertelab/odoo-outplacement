@@ -34,28 +34,34 @@ class Outplacement(models.Model):
                                group_expand='_read_group_stage_ids',
                                default=lambda self: self._default_stage_id()
                                )
-    
+
     @api.model
     def _read_group_employee_ids(self, employees, domain, order):
         """ Always display all stages """
         _logger.warn('group by employee domain %s order %s' % (domain, order))
         if ['my_department', '=', True] in domain:
             department = self.env['hr.employee'].search(
-                [('user_id', '=', self.env.user.id)], limit=1).mapped('department_id') or None
-            domain=['|', ('department_id', '=', department.id if department else None), ('department_id', '=', None)]
+                [('user_id', '=', self.env.user.id)], limit=1).mapped(
+                    'department_id') or None
+            domain = ['|', ('department_id', '=',
+                            department.id if department else None),
+                      ('department_id', '=', None)]
         else:
-            domain=[]
-        _logger.warn('group by employee domain %s order %s' % (domain,order))
+            domain = []
+        _logger.warn('group by employee domain %s order %s' % (domain, order))
         return employees.search(domain, order=order)
-    employee_id = fields.Many2one('hr.employee', string="Coach", group_expand='_read_group_employee_ids')
+    employee_id = fields.Many2one(
+        'hr.employee', string="Coach", group_expand='_read_group_employee_ids')
     department_id = fields.Many2one('hr.department',
                                     related="employee_id.department_id",
                                     group_expand='_read_group_department_ids',
                                     store=True)
     color = fields.Integer('Kanban Color Index')
-    meeting_remote = fields.Selection(selection=[('no','On Premice'),('yes','Remote')],string='Meeting type')
+    meeting_remote = fields.Selection(selection=[('no', 'On Premice'),
+                                                 ('yes', 'Remote')],
+                                      string='Meeting type')
     uniq_ref = fields.Char(string='Uniq Id', size=64, trim=True, )
-    
+
     late = fields.Boolean(string="Sent late")
     interruption = fields.Boolean(string="Interrupted")
     incomplete = fields.Boolean(string="Incomplete")
@@ -65,7 +71,8 @@ class Outplacement(models.Model):
     # image: all image fields are base64 encoded and PIL-supported
     image = fields.Binary(
         "Photo", default=_default_image, attachment=True,
-        help="This field holds the image used as photo for the employee, limited to 1024x1024px.")
+        help="This field holds the image used as photo for the employee, "
+        "limited to 1024x1024px.")
     image_medium = fields.Binary(
         "Medium-sized photo", attachment=True,
         help="Medium-sized photo of the employee. It is automatically "
@@ -77,15 +84,22 @@ class Outplacement(models.Model):
              "resized as a 64x64px image, with aspect ratio preserved. "
              "Use this field anywhere a small image is required.")
     partner_id = fields.Many2one('res.partner')
-    partner_name = fields.Char(related='partner_id.name', string='Partner Name', readonly=False)
+    partner_name = fields.Char(
+        related='partner_id.name', string='Partner Name', readonly=False)
     partner_street = fields.Char(related="partner_id.street", readonly=False)
     partner_street2 = fields.Char(related="partner_id.street2", readonly=False)
     partner_zip = fields.Char(related="partner_id.zip", readonly=False)
     partner_city = fields.Char(related="partner_id.city", readonly=False)
-    partner_state_id = fields.Many2one(related="partner_id.state_id", readonly=False)
-    country_id = fields.Many2one(related="partner_id.country_id", readonly=False) #because of a strange bug with partner_state_id this field must have this name
-    partner_phone = fields.Char(string="Phone", related="partner_id.phone", readonly=False)
-    partner_email = fields.Char(string="Email", related="partner_id.email", readonly=False)
+    partner_state_id = fields.Many2one(
+        related="partner_id.state_id", readonly=False)
+    # Because of a strange bug with partner_state_id this field must
+    # have this name.
+    country_id = fields.Many2one(
+        related="partner_id.country_id", readonly=False)
+    partner_phone = fields.Char(
+        string="Phone", related="partner_id.phone", readonly=False)
+    partner_email = fields.Char(
+        string="Email", related="partner_id.email", readonly=False)
     booking_ref = fields.Char()
     service_start_date = fields.Date()
     service_end_date = fields.Date()
@@ -109,7 +123,8 @@ class Outplacement(models.Model):
     @api.model
     def _read_group_department_ids(self, departments, domain, order):
         """ Always display all stages """
-        _logger.warn('group by department domain %s order %s' % (domain,order))
+        _logger.warn('group by department domain %s order %s' % (domain,
+                                                                 order))
         return departments.search([], order=order)
 
     @api.model
@@ -144,8 +159,9 @@ class Outplacement(models.Model):
         return [('id', operator, res)]
 
     def _compute_my_outplacement(self):
-        coach = self.env['hr.employee'].search([('user_id','=',self.env.user.id)])
-        coach = coach[0] if len(coach) > 0 else None        
+        coach = self.env['hr.employee'].search(
+            [('user_id', '=', self.env.user.id)])
+        coach = coach[0] if len(coach) > 0 else None
         return self.filtered(lambda o: o.employee_id == coach)
 
     def _search_my_outplacement(self, operator, value):
@@ -166,19 +182,29 @@ class Outplacement(models.Model):
         if 'stage_id' in changes and doc.stage_id.template_id:
             res['stage_id'] = (doc.stage_id.template_id, {
                 'auto_delete_message': True,
-                'subtype_id': self.env['ir.model.data'].xmlid_to_res_id('mail.mt_note'),
+                'subtype_id':
+                    self.env['ir.model.data'].xmlid_to_res_id('mail.mt_note'),
                 'notif_layout': 'mail.mail_notification_light'
             })
         return res
 
     @api.multi
-    def _notify_get_reply_to(self, default=None, records=None, company=None, doc_names=None):
-        """ Override to set alias of Outplacements to their job definition if any. """
-        aliases = self.mapped('job_id')._notify_get_reply_to(default=default, records=None, company=company, doc_names=None)
+    def _notify_get_reply_to(
+            self, default=None, records=None, company=None, doc_names=None):
+        """
+        Override to set alias of Outplacements to their job definition
+        if any.
+        """
+        aliases = self.mapped('job_id')._notify_get_reply_to(default=default,
+                                                             records=None,
+                                                             company=company,
+                                                             doc_names=None)
         res = {app.id: aliases.get(app.job_id.id) for app in self}
         leftover = self.filtered(lambda rec: not rec.job_id)
         if leftover:
-            res.update(super(Outplacement, leftover)._notify_get_reply_to(default=default, records=None, company=company, doc_names=doc_names))
+            res.update(super(Outplacement, leftover)._notify_get_reply_to(
+                default=default, records=None,
+                company=company, doc_names=doc_names))
         return res
 
     @api.multi

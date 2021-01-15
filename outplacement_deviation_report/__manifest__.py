@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2019 N-Development (<https://n-development.com>).
@@ -18,7 +18,7 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-################################################################################
+###############################################################################
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Deviation Report',
@@ -31,7 +31,7 @@
     'website': 'https://www.n-development.com',
     'depends': [
         'outplacement',
-        'outplacement_deviationreport_ipf_client'
+        'outplacement_deviationreport_ipf_client',
     ],
     'data': [
         'wizards/deviation_report_wizard.xml',

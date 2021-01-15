@@ -9,7 +9,7 @@
                     <group>
                         <field name="obstacle_id"/>
                         <field name="obstacle_reason"/>
-                        <field name="obstacle_motivation"/>                    
+                        <field name="obstacle_motivation"/>
                         <field name="main_goal_id"/>
                         <field name="alternative_goal_id"/>
                         <field name="report_date"/>
@@ -25,7 +25,7 @@
                         </field>
                     </group>
                 </page>
-            </xpath>               
+            </xpath>
         </field>
     </record>
 

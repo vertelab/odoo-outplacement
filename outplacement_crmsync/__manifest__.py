@@ -37,7 +37,6 @@
     'license': 'AGPL-3',
     'website': 'https://vertel.se',
     "depends": [
-        'outplacement_partner_ssn',
         'outplacement_partner_education',
         'outplacement_partner_jobs',
         # ~ 'outplacement_partner_skills',

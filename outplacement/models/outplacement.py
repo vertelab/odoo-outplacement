@@ -86,6 +86,7 @@ class Outplacement(models.Model):
     country_id = fields.Many2one(related="partner_id.country_id", readonly=False) #because of a strange bug with partner_state_id this field must have this name
     partner_phone = fields.Char(string="Phone", related="partner_id.phone", readonly=False)
     partner_email = fields.Char(string="Email", related="partner_id.email", readonly=False)
+    partner_social_sec_nr = fields.Char(string="Social security number", related="partner_id.social_sec_nr", readonly=False)	
     booking_ref = fields.Char()
     service_start_date = fields.Date()
     service_end_date = fields.Date()

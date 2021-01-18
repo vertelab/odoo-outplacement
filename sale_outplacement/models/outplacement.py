@@ -105,8 +105,8 @@ class Outplacement(models.Model):
 
     @api.multi
     def _get_department_id(self, data):
-        department = self.env['hr.department'].search(
-            [('ka_ref', '=', data.get('utforande_verksamhet_id', ''))],
+        department = self.env['performing.operation'].search(
+            [('ka_nr', '=', data.get('utforande_verksamhet_id', ''))],
             limit=1)
         _logger.debug('Department: hr_department %s | %s' % (department, data.get('utforande_verksamhet_id')))
         return department.id if department else None

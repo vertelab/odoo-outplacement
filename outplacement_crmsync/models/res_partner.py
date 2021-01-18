@@ -195,16 +195,24 @@ class Outplacement(models.Model):
         partner = xmlrpc.common.env['res.partner'].browse(
             xmlrpc.common.env['res.partner'].search([('email','=',self.management_team_id.email)],limit=1))
             # ~ xmlrpc.common.env['res.partner'].search([('id','=',26)],limit=1))
-            
-        self.management_team_id.write({
-            'name': partner.name,
-            'street': partner.street,
-            'street2': partner.street2,
-            'zip': partner.zip,
-            'city': partner.city,
-            'phone': partner.phone,
-            'email': partner.email,
-        }) 
+        if self.management_team_id._name == 'hr.employee':
+            self.management_team_id.write({
+                    'first_name': partner.first_name,
+                    'last_name': partner.last_name,
+                    'work_phone': partner.phone,
+                    'work_email': partner.email,
+                })
+        else:
+            self.management_team_id.write({
+                    'first_name': partner.first_name,
+                    'last_name': partner.last_name,
+                    'street': partner.street,
+                    'street2': partner.street2,
+                    'zip': partner.zip,
+                    'city': partner.city,
+                    'phone': partner.phone,
+                    'email': partner.email,
+                })
 
 
 class ResPartner(models.Model):

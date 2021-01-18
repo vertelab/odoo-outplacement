@@ -35,7 +35,7 @@
                 <field name="partner_phone" />
                 <field name="partner_email" />
                 <field name="employee_id" />
-                <field name="department_id" />
+                <field name="performing_operation_id" />
                 <field name="meeting_remote" />
               </group>
               <group>
@@ -65,7 +65,7 @@
           <field name="partner_name" />
           <field name="booking_ref" />
           <field name="employee_id" />
-          <field name="department_id" />
+          <field name="performing_operation_id" />
           <field name="stage_id" />
         </tree>
       </field>
@@ -90,7 +90,7 @@
           <field name="message_ids" />
           <field name="message_needaction_counter" />
           <field name="partner_name" />
-          <field name="my_department" />
+          <field name="my_performing_operation" />
           <field name="my_outplacement" />
           <field name="name" />
           <templates>
@@ -146,11 +146,11 @@
           <field name="employee_id" />
           <field name="booking_ref" />
           <field name="partner_name" />
-          <field name="department_id" />
-          <filter name="my_department" string="My Department" domain="[('my_department', '=', True)]"/>
+          <field name="performing_operation_id" />
+          <filter name="my_performing_operation" string="My Performing Operation" domain="[('my_performing_operation', '=', True)]"/>
           <filter name="my_outplacement" string="My Outplacement" domain="[('my_outplacement', '=', True)]"/>
           <group expand="0" string="Group By">
-            <filter string="Department" name="department" context="{'group_by': 'department_id'}"/>
+            <filter string="Performing Operation" name="performing_operation" context="{'group_by': 'performing_operation_id'}"/>
             <filter string="Employee" name="employee" context="{'group_by': 'employee_id'}"/>
             <filter string="Stage" name="stage" context="{'group_by': 'stage_id'}"/>
           </group>

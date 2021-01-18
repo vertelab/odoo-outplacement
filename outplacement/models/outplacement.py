@@ -30,14 +30,14 @@ class Outplacement(models.Model):
         """ Always display all employees in users performing_operation """
         _logger.warn('group by employee domain %s order %s' % (domain, order))
         if ['my_performing_operation', '=', True] in domain:
-            performing_operation = self.env['performing.operation'].search(
-                [('user_id', '=', self.env.user.id)], limit=1).mapped('performing_operation_id') or None
-            domain=['|', ('performing_operation_ids', 'in', self.performing_operation_id.id)]
+            domain = ['|', ('performing_operation_ids',
+                            'in',
+                            self.performing_operation_id.id)]
         else:
-            domain=[]
-        _logger.warn('group by employee domain %s order %s' % (domain,order))
+            domain = []
+        _logger.warn('group by employee domain %s order %s' % (domain, order))
         return employees.search(domain, order=order)
-    
+
     name = fields.Char(string="Name")
     stage_id = fields.Many2one(comodel_name='outplacement.stage',
                                string="State",
@@ -148,10 +148,12 @@ class Outplacement(models.Model):
         user_employee = self.env['hr.employee'].search([
             ('user_id', '=', self.env.uid)
         ], limit=1)
+        _logger.warn('search_my_outplcament %s' % user_employee)
         res = []
-        if user_employee and user_employee.performant_operation_id:
+        if user_employee:
             res = self.search([
                 ('employee_id', '=', user_employee.id)]).ids
+            return [('id',"in",res)]
         return [('id', operator, res)]
 
     @api.multi

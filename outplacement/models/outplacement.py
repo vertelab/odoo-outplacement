@@ -25,16 +25,6 @@ class Outplacement(models.Model):
         return self.env['outplacement.stage'].search(
             [('fold', '=', False)], limit=1)
 
-    name = fields.Char(string="Name")
-    stage_id = fields.Many2one(comodel_name='outplacement.stage',
-                               string="State",
-                               ondelete='restrict',
-                               track_visibility='onchange',
-                               index=True, copy=False,
-                               group_expand='_read_group_stage_ids',
-                               default=lambda self: self._default_stage_id()
-                               )
-    
     @api.model
     def _read_group_employee_ids(self, employees, domain, order):
         """ Always display all stages """
@@ -47,15 +37,25 @@ class Outplacement(models.Model):
             domain=[]
         _logger.warn('group by employee domain %s order %s' % (domain,order))
         return employees.search(domain, order=order)
+    
+    name = fields.Char(string="Name")
+    stage_id = fields.Many2one(comodel_name='outplacement.stage',
+                               string="State",
+                               ondelete='restrict',
+                               track_visibility='onchange',
+                               index=True, copy=False,
+                               group_expand='_read_group_stage_ids',
+                               default=lambda self: self._default_stage_id()
+                               )
     employee_id = fields.Many2one('hr.employee', string="Coach", group_expand='_read_group_employee_ids')
     department_id = fields.Many2one('hr.department',
                                     related="employee_id.department_id",
                                     group_expand='_read_group_department_ids',
                                     store=True)
     color = fields.Integer('Kanban Color Index')
-    meeting_remote = fields.Selection(selection=[('no','On Premice'),('yes','Remote')],string='Meeting type')
-    uniq_ref = fields.Char(string='Uniq Id', size=64, trim=True, )
-    
+    meeting_remote = fields.Selection(selection=[('no', 'On Premice'), ('yes', 'Remote')], string='Meeting type')
+    uniq_ref = fields.Char(string='Uniq Id', size=64, trim=True)
+    performing_operation_id = fields.Many2one(comodel_name='performing.operation', string='Performing Operation')
     late = fields.Boolean(string="Sent late")
     interruption = fields.Boolean(string="Interrupted")
     incomplete = fields.Boolean(string="Incomplete")
@@ -86,7 +86,6 @@ class Outplacement(models.Model):
     country_id = fields.Many2one(related="partner_id.country_id", readonly=False) #because of a strange bug with partner_state_id this field must have this name
     partner_phone = fields.Char(string="Phone", related="partner_id.phone", readonly=False)
     partner_email = fields.Char(string="Email", related="partner_id.email", readonly=False)
-    partner_social_sec_nr = fields.Char(string="Social security number", related="partner_id.social_sec_nr", readonly=False)
     booking_ref = fields.Char()
     service_start_date = fields.Date()
     service_end_date = fields.Date()

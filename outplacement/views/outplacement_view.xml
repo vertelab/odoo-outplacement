@@ -163,6 +163,44 @@
       <field name="view_type">form</field>
       <field name="view_mode">kanban,calendar,tree,form,pivot,activity</field>
     </record>
-    <menuitem id="menu_outplacement" parent="outplacement.parent_menu_outplacement" action="outplacement.outplacement_action" name="Outplacement" groups="outplacement.group_outplacement_user_read" sequence="5" />
+    <menuitem id="menu_outplacement" parent="parent_menu_outplacement" action="outplacement_action" name="Outplacement" groups="group_outplacement_user_read" sequence="5" />
+    <record id="performing_operation_form" model="ir.ui.view">
+      <field name="name">performing.operation.form</field>
+      <field name="model">performing.operation</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <div class="oe_title">
+              <label for="name" class="oe_edit_only" />
+              <h1>
+                <field name="name"  />
+              </h1>
+            </div>
+            <group>
+                <field name="ka_nr" />
+            </group>
+            <label for="partner_ids" />
+            <field name="partner_ids" />
+          </sheet>
+        </form>
+      </field>
+    </record>
+    <record id="performing_operation_tree" model="ir.ui.view">
+      <field name="name">performing.operation.tree</field>
+      <field name="model">performing.operation</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name" />
+          <field name="ka_nr" />
+        </tree>
+      </field>
+    </record>
+    <record id="action_performing_operation" model="ir.actions.act_window">
+      <field name="name">Performing Operation</field>
+      <field name="res_model">performing.operation</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_performing_operation" parent="parent_menu_outplacement" action="action_performing_operation" name="Performing Operations" groups="outplacement.group_outplacement_user_read" sequence="20" />
   </data>
 </odoo>

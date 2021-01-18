@@ -105,11 +105,11 @@ class Outplacement(models.Model):
 
     @api.multi
     def _get_department_id(self, data):
-        department = self.env['hr.department'].search(
+        performant_operation = self.env['performant_operation'].search(
             [('ka_ref', '=', data.get('utforande_verksamhet_id', ''))],
             limit=1)
-        _logger.debug('Department: hr_department %s | %s' % (department, data.get('utforande_verksamhet_id')))
-        return department.id if department else None
+        _logger.debug('Department: hr_department %s | %s' % (performant_operation, data.get('utforande_verksamhet_id')))
+        return performant_operation.id if performant_operation else None
 
     @api.multi
     def _get_skill(self, data):
@@ -134,7 +134,7 @@ class Outplacement(models.Model):
         })
         outplacement = self.env['outplacement'].create({
             'name': data['ordernummer'],
-            'department_id': self._get_department_id(data),
+            'performing_operation_id': self._get_department_id(data),
             'booking_ref': data['boknings_id'],
             'partner_id': partner_id,
             'skill_id': skill.id if skill else None,

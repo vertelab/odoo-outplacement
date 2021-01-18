@@ -27,12 +27,12 @@ class Outplacement(models.Model):
 
     @api.model
     def _read_group_employee_ids(self, employees, domain, order):
-        """ Always display all stages """
+        """ Always display all employees in users performing_operation """
         _logger.warn('group by employee domain %s order %s' % (domain, order))
-        if ['my_department', '=', True] in domain:
-            department = self.env['hr.employee'].search(
-                [('user_id', '=', self.env.user.id)], limit=1).mapped('department_id') or None
-            domain=['|', ('department_id', '=', department.id if department else None), ('department_id', '=', None)]
+        if ['my_performing_operation', '=', True] in domain:
+            performing_operation = self.env['performing.operation'].search(
+                [('user_id', '=', self.env.user.id)], limit=1).mapped('performing_operation_id') or None
+            domain=['|', ('performing_operation_ids', 'in', self.performing_operation_id.id)]
         else:
             domain=[]
         _logger.warn('group by employee domain %s order %s' % (domain,order))
@@ -48,14 +48,10 @@ class Outplacement(models.Model):
                                default=lambda self: self._default_stage_id()
                                )
     employee_id = fields.Many2one('hr.employee', string="Coach", group_expand='_read_group_employee_ids')
-    department_id = fields.Many2one('hr.department',
-                                    related="employee_id.department_id",
-                                    group_expand='_read_group_department_ids',
-                                    store=True)
     color = fields.Integer('Kanban Color Index')
     meeting_remote = fields.Selection(selection=[('no', 'On Premice'), ('yes', 'Remote')], string='Meeting type')
     uniq_ref = fields.Char(string='Uniq Id', size=64, trim=True)
-    performing_operation_id = fields.Many2one(comodel_name='performing.operation', string='Performing Operation')
+    performing_operation_id = fields.Many2one(comodel_name='performing.operation', string='Performing Operation', group_expand='_read_group_performing_operation_ids',)
     late = fields.Boolean(string="Sent late")
     interruption = fields.Boolean(string="Interrupted")
     incomplete = fields.Boolean(string="Incomplete")
@@ -90,8 +86,8 @@ class Outplacement(models.Model):
     booking_ref = fields.Char()
     service_start_date = fields.Date()
     service_end_date = fields.Date()
-    my_department = fields.Boolean(compute='_compute_my_department',
-                                   search='_search_my_department')
+    my_performing_operation = fields.Boolean(compute='_compute_my_performing_operation',
+                                   search='_search_my_performing_operation')
     my_outplacement = fields.Boolean(compute='_compute_my_outplacement',
                                      search='_search_my_outplacement')
     sprakstod = fields.Char()
@@ -108,10 +104,10 @@ class Outplacement(models.Model):
         return stages.search([], order=order)
 
     @api.model
-    def _read_group_department_ids(self, departments, domain, order):
+    def _read_group_performing_operation_ids(self, performing_operation, domain, order):
         """ Always display all stages """
-        _logger.warn('group by department domain %s order %s' % (domain,order))
-        return departments.search([], order=order)
+        _logger.warn('group by performing_operation_ids %s order %s' % (domain,order))
+        return performing_operation.search([], order=order)
 
     @api.model
     @api.returns('self', lambda value: value.id)
@@ -128,20 +124,19 @@ class Outplacement(models.Model):
         return res
 
     @api.multi
-    def _compute_my_department(self):
-        department = self.env['hr.employee'].search(
-            [('user_id', '=', self.env.user.id)]).mapped('department_id')
-        department = department[0] if len(department) > 0 else None
-        return self.filtered(lambda o: o.department_id == department)
+    def _compute_my_performing_operation(self):
+        return self.env.user.performing_operation_ids
+        # ~ performing_operation_ids  = elf.env.user.ids
+        # ~ department = department[0] if len(department) > 0 else None
+        # ~ return self.filtered(lambda o: o.department_id == department)
 
-    def _search_my_department(self, operator, value):
+    def _search_my_performing_operation(self, operator, value):
         user_employee = self.env['hr.employee'].search([
             ('user_id', '=', self.env.uid)
         ], limit=1)
         res = []
-        if user_employee and user_employee.department_id:
-            res = self.search([
-                ('department_id', '=', user_employee.department_id.id)]).ids
+        if user_employee and user_employee.performing_operation_ids:
+            res = user_employee.performing_operation_ids.mapped('id')
         return [('id', operator, res)]
 
     def _compute_my_outplacement(self):
@@ -154,7 +149,7 @@ class Outplacement(models.Model):
             ('user_id', '=', self.env.uid)
         ], limit=1)
         res = []
-        if user_employee and user_employee.department_id:
+        if user_employee and user_employee.performant_operation_id:
             res = self.search([
                 ('employee_id', '=', user_employee.id)]).ids
         return [('id', operator, res)]

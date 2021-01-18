@@ -39,7 +39,7 @@
       <field name="model">outplacement</field>
       <field name="inherit_id" ref="outplacement.outplacement_form_view" />
       <field name="arch" type="xml">
-        <xpath expr="//field[@name='department_id']" position="after">
+        <xpath expr="//field[@name='performing_operation_id']" position="after">
           <field name="jp_sent_date" required="False" />
         </xpath>
         <div name="button_box" position="inside">

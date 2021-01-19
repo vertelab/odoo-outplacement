@@ -34,18 +34,21 @@ class DeviationReportWizard(models.TransientModel):
         readonly=True)
     user_id = fields.Many2one(
         'res.users', default=lambda self: self.env.user, readonly=True)
-    deviation_code = fields.Selection(selection=[
-        ("15", "Sjuk"),
-        ("16", "Arbete"),
-        ("17", "Okänd orsak"),
-        ("18", "Annan känd orsak"),
-        ("19", "Tackat nej till insats eller aktivitet"),
-        ("20", "Tackat nej till erbjudet arbete"),
-        ("21", " Kunde inte tillgodogöra sig programmet "),
-        ("22", "Misskött sig eller stört verksamheten"),
-        ("26", "VAB"),
-        ("27", "Utbildning"),
-        ])
+    deviation_code = fields.Selection(
+        selection=[
+            ("_", "***Frånvaro***"),
+            ("15", "Sjuk"),
+            ("16", "Arbete"),
+            ("26", "VAB"),
+            ("27", "Utbildning"),
+            ("_", "***Avvikelse***"),
+            ("17", "Okänd orsak"),
+            ("18", "Annan känd orsak"),
+            ("19", "Tackat nej till insats eller aktivitet"),
+            ("20", "Tackat nej till erbjudet arbete"),
+            ("21", "Kunde inte tillgodogöra sig programmet"),
+            ("22", "Misskött sig eller stört verksamheten"),
+            ])
     deviation_reason = fields.Text()
     deviation_date = fields.Date(default=lambda self: fields.Date.today())
     deviation_allday = fields.Boolean()

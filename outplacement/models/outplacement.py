@@ -47,11 +47,17 @@ class Outplacement(models.Model):
                                group_expand='_read_group_stage_ids',
                                default=lambda self: self._default_stage_id()
                                )
-    employee_id = fields.Many2one('hr.employee', string="Coach", group_expand='_read_group_employee_ids')
+    employee_id = fields.Many2one(
+        'hr.employee', string="Coach", group_expand='_read_group_employee_ids')
     color = fields.Integer('Kanban Color Index')
-    meeting_remote = fields.Selection(selection=[('no', 'On Premice'), ('yes', 'Remote')], string='Meeting type')
+    meeting_remote = fields.Selection(selection=[('no', 'On Premice'),
+                                                 ('yes', 'Remote')],
+                                      string='Meeting type')
     uniq_ref = fields.Char(string='Uniq Id', size=64, trim=True)
-    performing_operation_id = fields.Many2one(comodel_name='performing.operation', string='Performing Operation', group_expand='_read_group_performing_operation_ids',)
+    performing_operation_id = fields.Many2one(
+        comodel_name='performing.operation',
+        string='Performing Operation',
+        group_expand='_read_group_performing_operation_ids',)
     late = fields.Boolean(string="Sent late")
     interruption = fields.Boolean(string="Interrupted")
     incomplete = fields.Boolean(string="Incomplete")
@@ -61,7 +67,8 @@ class Outplacement(models.Model):
     # image: all image fields are base64 encoded and PIL-supported
     image = fields.Binary(
         "Photo", default=_default_image, attachment=True,
-        help="This field holds the image used as photo for the employee, limited to 1024x1024px.")
+        help="This field holds the image used as photo for the employee, "
+             "limited to 1024x1024px.")
     image_medium = fields.Binary(
         "Medium-sized photo", attachment=True,
         help="Medium-sized photo of the employee. It is automatically "
@@ -73,21 +80,32 @@ class Outplacement(models.Model):
              "resized as a 64x64px image, with aspect ratio preserved. "
              "Use this field anywhere a small image is required.")
     partner_id = fields.Many2one('res.partner')
-    partner_name = fields.Char(related='partner_id.name', string='Partner Name', readonly=False)
+    partner_name = fields.Char(
+        related='partner_id.name', string='Partner Name', readonly=False)
     partner_street = fields.Char(related="partner_id.street", readonly=False)
     partner_street2 = fields.Char(related="partner_id.street2", readonly=False)
     partner_zip = fields.Char(related="partner_id.zip", readonly=False)
     partner_city = fields.Char(related="partner_id.city", readonly=False)
-    partner_state_id = fields.Many2one(related="partner_id.state_id", readonly=False)
-    country_id = fields.Many2one(related="partner_id.country_id", readonly=False) #because of a strange bug with partner_state_id this field must have this name
-    partner_phone = fields.Char(string="Phone", related="partner_id.phone", readonly=False)
-    partner_email = fields.Char(string="Email", related="partner_id.email", readonly=False)
-    partner_social_sec_nr = fields.Char(string="Social security number", related="partner_id.social_sec_nr", readonly=False)	
+    partner_state_id = fields.Many2one(
+        related="partner_id.state_id", readonly=False)
+    # Because of a strange bug with partner_state_id this field must
+    # have this name.
+    country_id = fields.Many2one(
+        related="partner_id.country_id", readonly=False)
+    partner_phone = fields.Char(
+        string="Phone", related="partner_id.phone", readonly=False)
+    partner_email = fields.Char(
+        string="Email", related="partner_id.email", readonly=False)
+    partner_social_sec_nr = fields.Char(
+        string="Social security number",
+        related="partner_id.social_sec_nr",
+        readonly=False)
     booking_ref = fields.Char()
     service_start_date = fields.Date()
     service_end_date = fields.Date()
-    my_performing_operation = fields.Boolean(compute='_compute_my_performing_operation',
-                                   search='_search_my_performing_operation')
+    my_performing_operation = fields.Boolean(
+        compute='_compute_my_performing_operation',
+        search='_search_my_performing_operation')
     my_outplacement = fields.Boolean(compute='_compute_my_outplacement',
                                      search='_search_my_outplacement')
     sprakstod = fields.Char()
@@ -104,9 +122,11 @@ class Outplacement(models.Model):
         return stages.search([], order=order)
 
     @api.model
-    def _read_group_performing_operation_ids(self, performing_operation, domain, order):
+    def _read_group_performing_operation_ids(
+            self, performing_operation, domain, order):
         """ Always display all stages """
-        _logger.warn('group by performing_operation_ids %s order %s' % (domain,order))
+        _logger.warn('group by performing_operation_ids %s order %s' % (
+            domain, order))
         return performing_operation.search([], order=order)
 
     @api.model
@@ -140,8 +160,9 @@ class Outplacement(models.Model):
         return [('id', operator, res)]
 
     def _compute_my_outplacement(self):
-        coach = self.env['hr.employee'].search([('user_id','=',self.env.user.id)])
-        coach = coach[0] if len(coach) > 0 else None        
+        coach = self.env['hr.employee'].search(
+            [('user_id', '=', self.env.user.id)])
+        coach = coach[0] if len(coach) > 0 else None
         return self.filtered(lambda o: o.employee_id == coach)
 
     def _search_my_outplacement(self, operator, value):
@@ -153,7 +174,7 @@ class Outplacement(models.Model):
         if user_employee:
             res = self.search([
                 ('employee_id', '=', user_employee.id)]).ids
-            return [('id',"in",res)]
+            return [('id', "in", res)]
         return [('id', operator, res)]
 
     @api.multi
@@ -164,29 +185,48 @@ class Outplacement(models.Model):
         if 'stage_id' in changes and doc.stage_id.template_id:
             res['stage_id'] = (doc.stage_id.template_id, {
                 'auto_delete_message': True,
-                'subtype_id': self.env['ir.model.data'].xmlid_to_res_id('mail.mt_note'),
+                'subtype_id': self.env['ir.model.data'].xmlid_to_res_id(
+                    'mail.mt_note'),
                 'notif_layout': 'mail.mail_notification_light'
             })
         return res
 
     @api.multi
-    def _notify_get_reply_to(self, default=None, records=None, company=None, doc_names=None):
-        """ Override to set alias of Outplacements to their job definition if any. """
-        aliases = self.mapped('job_id')._notify_get_reply_to(default=default, records=None, company=company, doc_names=None)
+    def _notify_get_reply_to(
+            self, default=None, records=None, company=None, doc_names=None):
+        """
+        Override to set alias of Outplacements to their job definition
+        if any.
+        """
+        aliases = self.mapped('job_id')._notify_get_reply_to(default=default,
+                                                             records=None,
+                                                             company=company,
+                                                             doc_names=None)
         res = {app.id: aliases.get(app.job_id.id) for app in self}
         leftover = self.filtered(lambda rec: not rec.job_id)
         if leftover:
-            res.update(super(Outplacement, leftover)._notify_get_reply_to(default=default, records=None, company=company, doc_names=doc_names))
+            res.update(super(Outplacement, leftover)._notify_get_reply_to(
+                default=default,
+                records=None,
+                company=company,
+                doc_names=doc_names))
         return res
 
     @api.multi
     def message_get_suggested_recipients(self):
-        recipients = super(Outplacement, self).message_get_suggested_recipients()
+        recipients = super(
+            Outplacement, self).message_get_suggested_recipients()  # noqa: F823,E501 (Odoomagic, Outplacement do exist.)
         for Outplacement in self:
             if Outplacement.partner_id:
-                Outplacement._message_add_suggested_recipient(recipients, partner=Outplacement.partner_id, reason=_('Contact'))
+                Outplacement._message_add_suggested_recipient(
+                    recipients,
+                    partner=Outplacement.partner_id,
+                    reason=_('Contact'))
             elif Outplacement.email_from:
-                Outplacement._message_add_suggested_recipient(recipients, email=Outplacement.email_from, reason=_('Contact Email'))
+                Outplacement._message_add_suggested_recipient(
+                    recipients,
+                    email=Outplacement.email_from,
+                    reason=_('Contact Email'))
         return recipients
 
     @api.model
@@ -212,32 +252,41 @@ class Outplacement(models.Model):
             defaults['priority'] = msg.get('priority')
         if custom_values:
             defaults.update(custom_values)
-        return super(Outplacement, self).message_new(msg, custom_values=defaults)
+        return super(Outplacement, self).message_new(
+            msg, custom_values=defaults)
 
     def _message_post_after_hook(self, message, *args, **kwargs):
         if self.email_from and not self.partner_id:
-            # we consider that posting a message with a specified recipient (not a follower, a specific one)
-            # on a document without customer means that it was created through the chatter using
-            # suggested recipients. This heuristic allows to avoid ugly hacks in JS.
-            new_partner = message.partner_ids.filtered(lambda partner: partner.email == self.email_from)
+            # we consider that posting a message with a specified
+            # recipient (not a follower, a specific one) on a document
+            # without customer means that it was created through the
+            # chatter using suggested recipients. This heuristic allows
+            # to avoid ugly hacks in JS.
+            new_partner = message.partner_ids.filtered(
+                lambda partner: partner.email == self.email_from)
             if new_partner:
                 self.search([
                     ('partner_id', '=', False),
                     ('email_from', '=', new_partner.email),
-                    ('stage_id.fold', '=', False)]).write({'partner_id': new_partner.id})
-        return super(Outplacement, self)._message_post_after_hook(message, *args, **kwargs)
+                    ('stage_id.fold', '=', False)]).write(
+                        {'partner_id': new_partner.id})
+        return super(Outplacement, self)._message_post_after_hook(
+            message, *args, **kwargs)
 
     @api.model
     def create_activities(self, record):
-        product = record.order_id.order_line.mapped('product_id').filtered(lambda p: p.is_suborder)
+        product = record.order_id.order_line.mapped('product_id').filtered(
+            lambda p: p.is_suborder)
         if product:
             for activity in product.mail_activity_ids:
                 self.env['mail.activity'].create({
                         'res_id': record.id,
                         'res_model': record._name,
-                        'res_model_id': self.env['ir.model'].search([('model', '=', record._name)]).id,
+                        'res_model_id': self.env['ir.model'].search(
+                            [('model', '=', record._name)]).id,
                         'activity_type_id': activity.activity_type_id.id,
-                        'date_deadline': fields.Date.today() + timedelta(days=activity.due_days),
+                        'date_deadline': fields.Date.today() + timedelta(
+                            days=activity.due_days),
                         'summary': activity.summary,
                         'user_id': record.employee_id.user_id.id,
                 })

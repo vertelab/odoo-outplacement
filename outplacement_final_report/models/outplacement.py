@@ -12,8 +12,13 @@ class Outplacement(models.Model):
     study_visit_ids = fields.Many2many(comodel_name="outplacement.study_visit")
     obstacle_id = fields.Many2one(comodel_name="outplacement.obstacle")
 
-    obstacle_reason = fields.Selection(related="obstacle_id.reason", readonly=False)
-    obstacle_motivation = fields.Text(related="obstacle_id.motivation", readonly=False)
+    obstacle_reason = fields.Selection([
+        ('loan', 'Kan inte ta studielån'), 
+        ('sickness', 'På grund utav sjukdom'), 
+        ('economy', 'På grund utav ekonomisk situation'), 
+        ('other', 'Annat')
+        ])
+    obstacle_motivation = fields.Text(string="Motivation")
     
     send_date = fields.Datetime(string="Final report send date")
     report_date = fields.Datetime(string="Reporting date")
@@ -62,19 +67,6 @@ class OutplacementGoalStep(models.Model):
     sun_id = fields.Many2one(string="Educaiton Level", comodel_name="res.sun")
     start_date = fields.Datetime(string="Start date")
     end_date = fields.Datetime(string="End date")
-    
-
-
-class OutplacementObstacle(models.Model):
-    _name = "outplacement.obstacle"
-    
-    reason = fields.Selection([
-        ('loan', 'Kan inte ta studielån'), 
-        ('sickness', 'På grund utav sjukdom'), 
-        ('economy', 'På grund utav ekonomisk situation'), 
-        ('other', 'Annat')
-        ])
-    motivation = fields.Text(string="Motivation")
 
 class OutplacementStudyVisit(models.Model):
     _name = "outplacement.study_visit"

@@ -231,10 +231,10 @@ class ClientConfig(models.Model):
             "rapportering_datum": outplacement.report_date, 
             "status": outplacement.stage_id.sequence,
             "sent_inskickad": outplacement.late, 
-            "innehall": [], #filled with data below
+            "innehall": [], # filled with data below
             "avbrott": outplacement.interruption, 
             "ofullstandig": outplacement.incomplete,
-            "studiebesok": [], #filled with data below
+            "studiebesok": [], # filled with data below
         }
         if outplacement.partner_id:
             payload["deltagare"] = {
@@ -249,10 +249,10 @@ class ClientConfig(models.Model):
             }
             if outplacement.employee_id.user_id:
                 payload["ansvarig_handledare"]["signatur"] = outplacement.employee_id.user_id.login
-        if outplacement.obstacle_id:
+        if outplacement.obstacle_reason:
             payload["hinder"] = {
-                "orsak_typ": outplacement.obstacle_id.reason,
-                "motivering": outplacement.obstacle_id.motivation 
+                "orsak_typ": outplacement.obstacle_reason,
+                "motivering": outplacement.obstacle_motivation 
             }
         goal_id = outplacement.main_goal_id
         if goal_id:

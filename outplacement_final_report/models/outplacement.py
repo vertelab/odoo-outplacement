@@ -10,8 +10,7 @@ class Outplacement(models.Model):
     _inherit = 'outplacement'
 
     study_visit_ids = fields.Many2many(comodel_name="outplacement.study_visit")
-    obstacle_id = fields.Many2one(comodel_name="outplacement.obstacle")
-
+    
     obstacle_reason = fields.Selection([
         ('loan', 'Kan inte ta studielån'), 
         ('sickness', 'På grund utav sjukdom'), 

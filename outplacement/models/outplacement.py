@@ -250,8 +250,8 @@ class Outplacement(models.Model):
             defaults['priority'] = msg.get('priority')
         if custom_values:
             defaults.update(custom_values)
-        return super(Outplacement, self).message_new(msg,
-                                                     custom_values=defaults)
+        return super(Outplacement, self).message_new(
+            msg, custom_values=defaults)
 
     def _message_post_after_hook(self, message, *args, **kwargs):
         if self.email_from and not self.partner_id:
@@ -283,8 +283,8 @@ class Outplacement(models.Model):
                         'res_model_id': self.env['ir.model'].search(
                             [('model', '=', record._name)]).id,
                         'activity_type_id': activity.activity_type_id.id,
-                        'date_deadline': fields.Date.today() + timedelta
-                        (days=activity.due_days),
+                        'date_deadline': fields.Date.today() + timedelta(
+                            days=activity.due_days),
                         'summary': activity.summary,
                         'user_id': record.employee_id.user_id.id,
                 })

@@ -12,6 +12,8 @@ _logger = logging.getLogger(__name__)
 class ProjectTask(models.Model):
     _inherit = "project.task"
 
+    start_date = fields.Datetime(string="Start date")
+    instructions = fields.Text(string="Instructions", readonly=True)
     outplacement_id = fields.Many2one(
         comodel_name="outplacement",
         string="Outplacement",
@@ -59,7 +61,8 @@ class ProjectTask(models.Model):
                     "color": task.color,
                     "planned_hours": task.planned_hours,
                     "stage_id": stage_optional.id if task.task_type == "optional" else stage_todo.id,
-                    "sequence": task.sequence
+                    "sequence": task.sequence,
+                    "instructions": task.instructions
                 }
             )
 

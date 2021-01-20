@@ -3,7 +3,7 @@ import logging
 
 from odoo import api, fields, models, tools, SUPERUSER_ID
 from odoo import tools, _
-from odoo.exceptions import ValidationError, AccessError
+from odoo.exceptions import ValidationError, AccessError, Warning
 from odoo.modules.module import get_module_resource
 
 _logger = logging.getLogger(__name__)
@@ -39,6 +39,16 @@ class ProjectTask(models.Model):
     @api.model
     def init_joint_planning(self, outplacement_id):
         for task in self.env["res.joint_planning"].search([], order="sequence"):
+            stage_todo = self.env['project.task.type'].search([('name','=','To Do')])[0]
+            stage_optional = self.env['project.task.type'].search([('name','=','Optional')])[0]
+            stage_done = self.env['project.task.type'].search([('name','=','Done')])[0]
+
+            if not stage_todo:
+                stage_todo = self.env['project.task.type'].create({'name': 'To Do'})
+            if not stage_optional:
+                stage_optional = self.env['project.task.type'].create({'name': 'Optional'})
+            if not stage_done:
+                stage_optional = self.env['project.task.type'].create({'name': 'Done'})
             self.env["project.task"].create(
                 {
                     "outplacement_id": outplacement_id,
@@ -48,6 +58,7 @@ class ProjectTask(models.Model):
                     "name": task.name,
                     "color": task.color,
                     "planned_hours": task.planned_hours,
+                    "stage_id": stage_optional.id if task.task_type == "optional" else stage_todo.id
                 }
             )
 
@@ -64,6 +75,54 @@ class ProjectTask(models.Model):
         if [elem for elem in domain if "outplacement_id" in elem]:
             return stages.search([("is_outplacement", "=", True)])
         return stages
+    
+    @api.constrains("stage_id")
+    def constrain_stage_id(self):
+        stage_optional = self.env['project.task.type'].search([('name','=','Optional')])[0]
+        stage_todo = self.env['project.task.type'].create({'name': 'To Do'})[0]
+        if self.task_type == "mandatory" and self.stage_id == stage_optional.id:
+            self.stage_id = stage_todo.id
+            raise ValidationError(
+                _("%s is a required task and can not be made optional.") 
+                % self.name)
+        elif self.task_type == "optional" and (self.stage_id == stage_todo.id and not self.child_ids):
+            self.stage_id = stage_optional.id
+            raise Warning(_("An optional task with no sub-tasks can't be made required"))
+        elif self.task_type == "optional" and (self.stage_id == stage_todo.id and self.child_ids):
+            for child in self.child_ids:
+                if child.stage_id == stage_todo.id:
+                    self.stage_id = stage_todo.id
+                    raise Warning(_("An optional task with sub-tasks"
+                                    "in To Do stage can't be made optional"
+                                    "until the required sub-tasks are done"))
+        elif not self.task_type and (self.stage_id == stage_todo.id or self.stage_id == stage_optional.id):
+            self.stage_id == False
+            raise ValidationError(_("You are not allowed to add new required or optional tasks."))
+        
+    @api.depends("stage_id")
+    def move_children(self):
+        stage_done = self.env['project.task.type'].search([('name','=','Done')])[0]
+        if self.stage_id == stage_done.id:
+            for child in self.child_ids: 
+                # close task here (how?)
+                child.stage_id = stage_done.id
+    
+    @api.multi
+    def unlink(self):
+        for task in self:
+            if task.task_type == "mandatory":
+                raise Warning(_('You are not allowed to remove requred tasks'))
+        return models.Model.unlink(self)
+    
+    @api.model
+    def create(self, vals):
+        stage_todo = self.env['project.task.type'].create({'name': 'To Do'})[0]
+        if vals.get('parent_id'):
+            vals['stage_id'] = stage_todo.id
+        task = super(ProjectTask, self).create(vals)
+        return task
+            
+            
 
 
 class ProjectTaskType(models.Model):

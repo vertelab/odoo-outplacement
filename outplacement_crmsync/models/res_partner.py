@@ -105,10 +105,7 @@ class Outplacement(models.Model):
             #
             # outplacement_education
             #
-            'sun_ids': [(6,0,[c.id for c in self.env['res.sun'].search([('code','in',partner.sun_ids.mapped('code'))])])],
-            'education_level': [(6,0,[e.id for e in self.env['res.partner.education_level'].search([('name','in',partner.education_level.mapped('name'))])])],
-            'foreign_education': partner.foreign_education,
-            'foreign_education_approved': partner.foreign_education_approved,
+            'education_ids': [(6,0,[e.id for e in self.env['res.partner.education'].search([('sun_id','in',partner.education_ids.mapped('sun_id'))])])],
             'cv': partner.cv,
             'cv_file_name': partner.cv_file_name,
             'references': partner.references,

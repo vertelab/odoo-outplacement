@@ -1,9 +1,12 @@
 import json
+import logging
 import pprint
 import uuid
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, Warning
+
+_logger = logging.getLogger(__name__)
 
 
 class DeviationReportWizard(models.TransientModel):
@@ -14,27 +17,48 @@ class DeviationReportWizard(models.TransientModel):
         string='Outplacement',
         default=lambda self: self.env['outplacement'].browse(
             self.env.context.get('active_id')))
+    company_id = fields.Many2one(
+        string='Company ID',
+        comodel_name='res.company',
+        default=lambda self: self.env['res.company'].search([], limit=1),
+        readonly=True)
+    order_id = fields.Char(string='Order ID',
+                           readonly=True,
+                           related="outplacement_id.order_id.origin")
     uniq_ref = fields.Char(string='Unique ID',
                            default=lambda self: str(uuid.uuid4()))
+    # ToDo!: Fix social sec number.
     social_sec_nr = fields.Char(string="Social security number",
-                                default='Replace when working',
+                                default='197012126821',
                                 readonly=True)
-    # Replace with outplacement_id.first_name and last_name when its
-    # implemented.
-    first_name = fields.Char(related="outplacement_id.partner_name",
-                             readonly=True,
-                             string='First name')
-    last_name = fields.Char(related="outplacement_id.partner_name",
-                            readonly=True,
-                            string='Last name')
-    responsible_id = fields.Many2one(related="outplacement_id.employee_id",
-                                     readonly=True)
-    company_name = fields.Char(
-        related="outplacement_id.department_id.company_id.name",
+    jobseeker_name = fields.Char(string='Name',
+                                 related="outplacement_id.partner_name",
+                                 readonly=True)
+    responsible_id = fields.Many2one(
+        related="outplacement_id.management_team_id",
+        readonly=True)
+    # responsible_signature = fields.Char(
+    #      related="outplacement_id.management_team_id.af_signature",
+    #      readonly=True,
+    #      string='Responsible superviser')
+    performing_operation_name = fields.Char(
+        related="outplacement_id.performing_operation_id.name",
+        readonly=True)
+    performing_operation_nr = fields.Integer(
+        related="outplacement_id.performing_operation_id.ka_nr",
         readonly=True)
     user_id = fields.Many2one(
         'res.users', default=lambda self: self.env.user, readonly=True)
+    deviation_reason = fields.Text()
+    deviation_date = fields.Date(default=lambda self: fields.Date.today())
+    deviation_allday = fields.Boolean()
+    deviation_timestart = fields.Float(default=8.0)
+    deviation_timeend = fields.Float(default=17.0)
+    expected_time_start = fields.Float(default=8.0)
+    expected_time_end = fields.Float(default=17.0)
     deviation_code = fields.Selection(
+        required=True,
+        string='Deviation Type',
         selection=[
             ("_", "***Frånvaro***"),
             ("15", "Sjuk"),
@@ -49,19 +73,6 @@ class DeviationReportWizard(models.TransientModel):
             ("21", "Kunde inte tillgodogöra sig programmet"),
             ("22", "Misskött sig eller stört verksamheten"),
             ])
-    deviation_reason = fields.Text()
-    deviation_date = fields.Date(default=lambda self: fields.Date.today())
-    deviation_allday = fields.Boolean()
-    deviation_timestart = fields.Float()
-    deviation_timeend = fields.Float()
-    expected_time_start = fields.Float()
-    expected_time_end = fields.Float()
-    activity_handling_company_name = fields.Char()
-    activity_handling_company_id = fields.Char()
-    reponsible_signature = fields.Char(
-        related="outplacement_id.management_team.af_signature",
-        readonly=True,
-        string='Responsible superviser')
 
     @api.model
     def float_to_time(self, value):
@@ -74,49 +85,67 @@ class DeviationReportWizard(models.TransientModel):
             return '-%02d:%02d' % (hours, minutes)
         return '%02d:%02d' % (hours, minutes)
 
+    @api.model
+    def start_time(self):
+        if self.deviation_allday:
+            return self.float_to_time(self.expected_time_start)
+        return self.float_to_time(self.deviation_timestart)
+
+    @api.model
+    def end_time(self):
+        if self.deviation_allday:
+            return self.float_to_time(self.expected_time_end)
+        return self.float_to_time(self.deviation_timeend)
+
     def action_send(self):
+        if self.deviation_code == '_':
+            raise Warning(_("Deviation type has to be set to something "
+                            "other than a header"))
         api = self.env['ipf.report.client.config'].search([], limit=1)
         if not api:
             raise UserError(_('Configuration not found'))
         payload = {
-            "genomforande_referens": "outplacement.order_id.origin",
+            "genomforande_referens": self.order_id,
             "id": self.uniq_ref,
+            "tjanstekod": "A013",
             "datum_for_rapportering": str(self.deviation_date),
             "arbetssokande": {
                 "personnummer": self.social_sec_nr,
-                "fornamn": self.first_name,
-                "efternamn": self.last_name,
+                "fornamn": self.outplacement_id.partner_id.firstname or '',
+                "efternamn": self.outplacement_id.partner_id.lastname or '',
             },
             "ansvarig_arbetsformedlare": {
                 "funktionsbrevlada": self.responsible_id.email,
-                "signatur": self.reponsible_signature,
+                "signatur": "Dummy",
             },
             "leverantor": {
-                "leverantorsnamn": self.company_name,
+                "namn": self.company_id.name,
+                # Replace with self.company_id.tlr_supplier_ref
+                "leverantor_id": self.company_id.partner_id.legacy_no,
                 "rapportor": {
-                    "fornamn": self.first_name,
-                    "efternamn": self.last_name,
+                    "fornamn": self.user_id.firstname or '',
+                    "efternamn": self.user_id.lastname or '',
                     },
-                "kanummer": self.department_id,
                 "utforande_verksamhet": {
-                    "namn": self.activity_handling_company_name,
+                    "namn": self.performing_operation_name,
                     "utforande_verksamhet_id":
-                        self.activity_handling_company_id,
+                        str(self.performing_operation_nr),
                         },
             },
             "franvaro": {
-                "orsak": self.deviation_code,
+                "avvikelseorsakskod": self.deviation_code,
                 "datum": str(self.deviation_date),
                 "heldag": self.deviation_allday,
-                "starttid": self.float_to_time(self.deviation_timestart),
-                "sluttid": self.float_to_time(self.deviation_timeend),
+                "starttid": self.start_time(),
+                "sluttid": self.end_time(),
                 "forvantad_narvaro": {
-                    "starttid": self.expected_time_start,
-                    "sluttid": self.expected_time_end,
+                    "starttid": self.float_to_time(self.expected_time_start),
+                    "sluttid": self.float_to_time(self.expected_time_end),
                     },
+                "motivering": self.deviation_reason or ''
                 },
-            "motivering": self.deviation_reason
         }
+        _logger.warn(pprint.pformat(payload))
         querystring = {"client_secret": api.client_secret,
                        "client_id": api.client_id}
         url = api.get_url('v1/genomforande-avvikelserapport-created')
@@ -126,7 +155,9 @@ class DeviationReportWizard(models.TransientModel):
             payload=json.dumps(payload),
             headers=api.get_headers(),
             params=querystring)
-        if response.status_code != 200:
+        if response.status_code not in (200, 201):
+            _logger.warning(response.text)
+            _logger.warning(response.status_code)
             raise UserError(_('Bad request'))
         self.outplacement_id.message_post(
             body=f'Deviation report\n{pprint.pformat(payload)}\nResponse:'

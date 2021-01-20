@@ -32,6 +32,10 @@
     'depends': [
         'outplacement',
         'outplacement_deviationreport_ipf_client',
+        'af_security',
+        'sale_outplacement',
+        'partner_legacy_id',
+        'partner_firstname',
     ],
     'data': [
         'wizards/deviation_report_wizard.xml',

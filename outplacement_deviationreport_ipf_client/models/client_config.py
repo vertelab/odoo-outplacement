@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2019 N-Development (<https://n-development.com>).
@@ -18,14 +18,14 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-################################################################################
+###############################################################################
 
 from odoo.tools import pycompat
 import json
 import uuid
 import logging
 import requests
-from odoo import api, http, models, tools, SUPERUSER_ID, fields
+from odoo import api, models, fields
 
 _logger = logging.getLogger(__name__)
 
@@ -44,13 +44,13 @@ class ClientConfig(models.Model):
                                 required=True)
     client_id = fields.Char(string='Client ID',
                             required=True)
-    environment = fields.Selection(selection=[('u1', 'U1'),
-                                              ('i1', 'I1'),
-                                              ('t1', 'IT'),
-                                              ('t2', 'T2'),
-                                              ('prod', 'PROD'), ],
+    environment = fields.Selection(selection=[('U1', 'U1'),
+                                              ('I1', 'I1'),
+                                              ('T1', 'T1'),
+                                              ('T2', 'T2'),
+                                              ('PROD', 'PROD'), ],
                                    string='Environment',
-                                   default='u1',
+                                   default='U1',
                                    required=True)
     request_history_ids = fields.One2many('ipf.report.request.history',
                                           'config_id',
@@ -63,7 +63,8 @@ class ClientConfig(models.Model):
                                     url=url,
                                     data=payload,
                                     headers=headers,
-                                    params=params)
+                                    params=params,
+                                    verify=False)
         self.create_request_history(method=method,
                                     url=url,
                                     response=response,
@@ -83,13 +84,14 @@ class ClientConfig(models.Model):
                   'response_headers': response.headers,
                   'params': params,
                   'response_code': response.status_code}
-        values.update(message=json.loads(response.content))
+        if response.status_code not in (200, 201):
+            values.update(message=json.loads(response.content))
         self.env['ipf.report.request.history'].create(values)
 
     def get_headers(self):
         tracking_id = pycompat.text_type(uuid.uuid1())
         headers = {
-            'x-amf-mediaType': "application/json",
+            'Content-Type': "application/json",
             'AF-TrackingId': tracking_id,
             'AF-SystemId': "AF-SystemId",
             'AF-EndUserId': "AF-EndUserId",
@@ -149,4 +151,4 @@ class ClientConfig(models.Model):
                 "sluttid": "17:00"
             }
         }
-        response = self.post_report(payload)
+        return self.post_report(payload)

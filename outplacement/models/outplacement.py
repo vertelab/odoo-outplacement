@@ -88,6 +88,7 @@ class Outplacement(models.Model):
     partner_city = fields.Char(related="partner_id.city", readonly=False)
     partner_state_id = fields.Many2one(related="partner_id.state_id",
                                        readonly=False)
+    email_from = fields.Char(related="partner_id.email")
     # Because of a strange bug with partner_state_id this field must
     # have this name.
     country_id = fields.Many2one(related="partner_id.country_id",
@@ -147,9 +148,6 @@ class Outplacement(models.Model):
     @api.multi
     def _compute_my_performing_operation(self):
         return self.env.user.performing_operation_ids
-        # ~ performing_operation_ids  = elf.env.user.ids
-        # ~ department = department[0] if len(department) > 0 else None
-        # ~ return self.filtered(lambda o: o.department_id == department)
 
     def _search_my_performing_operation(self, operator, value):
         user_employee = self.env['hr.employee'].search([
@@ -192,41 +190,42 @@ class Outplacement(models.Model):
             })
         return res
 
-    @api.multi
-    def _notify_get_reply_to(
-            self, default=None, records=None, company=None, doc_names=None):
-        """
-        Override to set alias of Outplacements to their job definition
-        if any.
-        """
-        aliases = self.mapped('job_id')._notify_get_reply_to(default=default,
-                                                             records=None,
-                                                             company=company,
-                                                             doc_names=None)
-        res = {app.id: aliases.get(app.job_id.id) for app in self}
-        leftover = self.filtered(lambda rec: not rec.job_id)
-        if leftover:
-            res.update(super(Outplacement, leftover)._notify_get_reply_to(
-                default=default, records=None,
-                company=company, doc_names=doc_names))
-        return res
+    # This crashes, who uses this?, can it be removed?
+    # @api.multi
+    # def _notify_get_reply_to(
+    #         self, default=None, records=None, company=None, doc_names=None):
+    #     """
+    #     Override to set alias of Outplacements to their job definition
+    #     if any.
+    #     """
+    #     aliases = self.mapped('job_ids')._notify_get_reply_to(default=default,
+    #                                                          records=None,
+    #                                                          company=company,
+    #                                                          doc_names=None)
+    #     res = {app.id: aliases.get(app.job_id.id) for app in self}
+    #     leftover = self.filtered(lambda rec: not rec.job_id)
+    #     if leftover:
+    #         res.update(super(Outplacement, leftover)._notify_get_reply_to(
+    #             default=default, records=None,
+    #             company=company, doc_names=doc_names))
+    #     return res
 
-    @api.multi
-    def message_get_suggested_recipients(self):
-        recipients = super(
-            Outplacement, self).message_get_suggested_recipients()
-        for Outplacement in self:
-            if Outplacement.partner_id:
-                Outplacement._message_add_suggested_recipient(
-                    recipients,
-                    partner=Outplacement.partner_id,
-                    reason=_('Contact'))
-            elif Outplacement.email_from:
-                Outplacement._message_add_suggested_recipient(
-                    recipients,
-                    email=Outplacement.email_from,
-                    reason=_('Contact Email'))
-        return recipients
+    # @api.multi
+    # def message_get_suggested_recipients(self):
+    #     recipients = super(
+    #         Outplacement, self).message_get_suggested_recipients()
+    #     for outplacement in self:
+    #         if outplacement.partner_id:
+    #             outplacement._message_add_suggested_recipient(
+    #                 recipients,
+    #                 partner=outplacement.partner_id,
+    #                 reason=_('Contact'))
+    #         elif outplacement.email_from:
+    #             outplacement._message_add_suggested_recipient(
+    #                 recipients,
+    #                 email=outplacement.email_from,
+    #                 reason=_('Contact Email'))
+    #     return recipients
 
     @api.model
     def message_new(self, msg, custom_values=None):

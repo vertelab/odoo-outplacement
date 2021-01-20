@@ -185,6 +185,38 @@ class Outplacement(models.Model):
         }) 
 
     @api.one
+    def get_jobseeker_dataV(self):
+        FIELDS = ['title', 'ref', 'lang', 'vat', 'comment',
+                  'active', 'customer', 'supplier', 'employee', 'function',
+                  'type', 'street', 'street2', 'zip', 'city','email', 
+                  'phone', 'mobile', 'is_company', 'color','company_name', 
+                  'firstname', 'lastname', 'name', 'additional_info', 
+                  'education_level', 'foreign_education', 'foreign_education_approved', 
+                  'cv', 'cv_file_name', 'references', 'references_file_name',
+                  'has_car', 'email_formatted', 'company_type', 'contact_address', 
+                  'age']
+        xmlrpc = crm_serverII(self.env)
+        rec = xmlrpc.common.env['res.partner'].partnersyncCrm2DafaSSN(self.partner_social_sec_nr)
+        raise Warning({f:rec['partner'][f] for f in FIELDS})
+        raise Warning({f:dict(rec['partner'])[f] for f in FIELDS})
+        self.write({f:rec['partner'][f] for f in FIELDS})
+        # education_ids
+        for code,level,foreign,approved in res['education_ids']:
+            self.education_ids = [4,0,(self.env['res.sun'].search([('code','=',code)],limit=1)[0].id,
+                                       self.env['res.education.level'].search([('name','=',level)],limit=1)[0].id,
+                                       foreign,approved)]
+        # drivers_license_ids
+        self.drivers_license_ids = [(6,0,[e.id for e in self.env['res.drivers_license'].search([('name','in',res['drivers_license_ids'])])])]
+        # job_ids
+        for code,level,length,approved in res['job_ids']:
+            self.job_ids = [4,0,(self.env['res.ssyk'].search([('code','=',code)],limit=1)[0].id,
+                                 self.env['res.education.level'].search([('name','=',level)],limit=1)[0].id,
+                                 length,approved)]
+
+
+
+
+    @api.one
     def get_af_management_team(self):
         """
         Test update management team

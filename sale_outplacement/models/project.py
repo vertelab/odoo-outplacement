@@ -58,7 +58,8 @@ class ProjectTask(models.Model):
                     "name": task.name,
                     "color": task.color,
                     "planned_hours": task.planned_hours,
-                    "stage_id": stage_optional.id if task.task_type == "optional" else stage_todo.id
+                    "stage_id": stage_optional.id if task.task_type == "optional" else stage_todo.id,
+                    "sequence": task.sequence
                 }
             )
 
@@ -118,7 +119,12 @@ class ProjectTask(models.Model):
     def create(self, vals):
         stage_todo = self.env['project.task.type'].create({'name': 'To Do'})[0]
         if vals.get('parent_id'):
+            parent = self.env['project.task'].browse(vals['parent_id'])
             vals['stage_id'] = stage_todo.id
+            # with the current handling of sequence this only allows a total of 9 sub-tasks
+            # before things start to act a bit weird.
+            # If we need more then sequence should be changed in res_joint_planning_af/data/data.xml
+            vals['sequence'] = parent.sequence + len(parent.child_ids)
         task = super(ProjectTask, self).create(vals)
         return task
             

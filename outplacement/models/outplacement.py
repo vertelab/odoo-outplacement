@@ -111,6 +111,12 @@ class Outplacement(models.Model):
     my_outplacement = fields.Boolean(compute='_compute_my_outplacement',
                                      search='_search_my_outplacement')
     sprakstod = fields.Char()
+    
+    show_2nd_line = fields.Boolean(compute="_compute_readonly")
+    
+    @api.one
+    def _compute_readonly(self):
+        self.show_2nd_line = not self.env.user.has_group("base_user_groups_dafa.2_line_support")
 
     # Nils: If image is removed this should be removed as well.
     @api.onchange('employee_id')

@@ -147,7 +147,6 @@ class DeviationReportWizard(models.TransientModel):
                 "motivering": self.deviation_reason or ''
                 },
         }
-        _logger.warn(pprint.pformat(payload))
         querystring = {"client_secret": api.client_secret,
                        "client_id": api.client_id}
         url = api.get_url('v1/genomforande-avvikelserapport-created')

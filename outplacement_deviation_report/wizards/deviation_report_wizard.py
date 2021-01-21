@@ -27,16 +27,17 @@ class DeviationReportWizard(models.TransientModel):
                            related="outplacement_id.order_id.origin")
     uniq_ref = fields.Char(string='Unique ID',
                            default=lambda self: str(uuid.uuid4()))
-    # ToDo!: Fix social sec number.
-    social_sec_nr = fields.Char(string="Social security number",
-                                default='197012126821',
-                                readonly=True)
+    social_sec_nr = fields.Char(
+        string="Social security number",
+        related='outplacement_id.partner_social_sec_nr',
+        readonly=True)
     jobseeker_name = fields.Char(string='Name',
                                  related="outplacement_id.partner_name",
                                  readonly=True)
     responsible_id = fields.Many2one(
         related="outplacement_id.management_team_id",
         readonly=True)
+    # Awaits external fix of AF_Security
     # responsible_signature = fields.Char(
     #      related="outplacement_id.management_team_id.af_signature",
     #      readonly=True,
@@ -110,12 +111,13 @@ class DeviationReportWizard(models.TransientModel):
             "tjanstekod": "A013",
             "datum_for_rapportering": str(self.deviation_date),
             "arbetssokande": {
-                "personnummer": self.social_sec_nr,
+                "personnummer": self.social_sec_nr.replace('-', ''),
                 "fornamn": self.outplacement_id.partner_id.firstname or '',
                 "efternamn": self.outplacement_id.partner_id.lastname or '',
             },
             "ansvarig_arbetsformedlare": {
                 "funktionsbrevlada": self.responsible_id.email,
+                # Fix when AF_Security fix is in.
                 "signatur": "Dummy",
             },
             "leverantor": {

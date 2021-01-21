@@ -39,3 +39,4 @@ class ResJointPlanning(models.Model):
     color = fields.Integer(string='Color Index')
     planned_hours = fields.Float("Planned Hours", help='It is the time planned to achieve the task. If this document has sub-tasks, it means the time needed to achieve this tasks and its childs.',track_visibility='onchange')
     send2server = fields.Boolean(string='Send to Server')
+    instructions = fields.Text(string="Instructions", readonly=True)

@@ -38,7 +38,7 @@
     <field name="model">project.task</field>
     <field name="inherit_id" ref="project.view_task_tree2" />
     <field name="arch" type="xml">
-      <field name="planned_hours" position="before">
+      <field name="user_id" position="after">
         <field name="start_date"/>
         <field name="date_deadline"/>
       </field>

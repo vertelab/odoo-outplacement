@@ -51,7 +51,7 @@ class Outplacement(models.Model):
         'hr.employee', string="Coach", group_expand='_read_group_employee_ids')
     color = fields.Integer('Kanban Color Index')
     meeting_remote = fields.Selection(string='Meeting type',
-                                      selection=[('no', 'On Premice'),
+                                      selection=[('no', 'On Premise'),
                                                  ('yes', 'Remote')],)
     uniq_ref = fields.Char(string='Uniq Id', size=64, trim=True)
     performing_operation_id = fields.Many2one(

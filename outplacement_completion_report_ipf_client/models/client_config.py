@@ -215,7 +215,7 @@ class ClientConfig(models.Model):
 
         payload = {
             "utforande_verksamhets_id": str(dep_id),
-            "avrops_id": outplacement.name,
+            "avrops_id": "A000000000000",
             "genomforande_referens": outplacement.order_id.origin,
             "ordernummer": outplacement.order_id.name,
             "personnr": outplacement.partner_id.social_sec_nr.replace('-',''),

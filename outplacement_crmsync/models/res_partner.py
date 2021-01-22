@@ -4,6 +4,7 @@ from xmlrpc.client import ServerProxy
 from odoo import api, fields, models
 from odoo.exceptions import Warning
 import odoorpc
+import pprint
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -197,21 +198,36 @@ class Outplacement(models.Model):
                   'age']
         xmlrpc = crm_serverII(self.env)
         rec = xmlrpc.common.env['res.partner'].partnersyncCrm2DafaSSN(self.partner_social_sec_nr)
-        raise Warning({f:rec['partner'][f] for f in FIELDS})
-        raise Warning({f:dict(rec['partner'])[f] for f in FIELDS})
-        self.write({f:rec['partner'][f] for f in FIELDS})
+        self.partner_id.write({f:rec['partner'][f] for f in FIELDS})
         # education_ids
-        for code,level,foreign,approved in res['education_ids']:
-            self.education_ids = [4,0,(self.env['res.sun'].search([('code','=',code)],limit=1)[0].id,
-                                       self.env['res.education.level'].search([('name','=',level)],limit=1)[0].id,
+        self.partner_id.education_ids = [(6,0,[])]
+        for code,level,foreign,approved in rec['education_ids']:
+            self.partner_id.education_ids = [0,0,(self.env['res.sun'].search([('code','=',code)],limit=1)[0].id,
+                                       self.env['res.partner.education_level'].search([('name','=',level)],limit=1)[0].id,
                                        foreign,approved)]
         # drivers_license_ids
-        self.drivers_license_ids = [(6,0,[e.id for e in self.env['res.drivers_license'].search([('name','in',res['drivers_license_ids'])])])]
+        self.partner_id.drivers_license_ids = [(6,0,[e.id for e in self.env['res.drivers_license'].search([('name','in',rec['drivers_license_ids'])])])]
         # job_ids
-        for code,level,length,approved in res['job_ids']:
-            self.job_ids = [4,0,(self.env['res.ssyk'].search([('code','=',code)],limit=1)[0].id,
-                                 self.env['res.education.level'].search([('name','=',level)],limit=1)[0].id,
-                                 length,approved)]
+        self.partner_id.job_ids = [(6,0,[])]
+        for code,level,length,approved,experience in rec['job_ids']:
+            _logger.warn('code %s %s,level %s %s,length %s,approved %s,experience %s' % (
+                    code,self.env['res.ssyk'].search([('code','=',code)],limit=1)[0],
+                    level,self.env['res.partner.education_level'].search([('name','=',level)],limit=1)[0].id,
+                    length,approved,experience))
+            # ~ self.env['res.partner.jobs'].create({
+                    # ~ 'partner_id': self.id,
+                    # ~ 'ssyk_code' : self.env['res.ssyk'].search([('code','=',code)],limit=1)[0],
+                    
+                # ~ })
+            
+            
+            # ~ self.partner_id.job_ids = [0,0,(self.env['res.ssyk'].search([('code','=',code)],limit=1)[0],
+                                 # ~ self.env['res.partner.education_level'].search([('name','=',level)],limit=1)[0],
+                                 # ~ length,approved,experience)]
+
+        # ~ self.partner_id.job_ids = [0,0,(self.env['res.ssyk'].search([('code','=','5')],limit=1)[0],
+                                        # ~ self.env['res.partner.education_level'].search([('name','=','5')],limit=1)[0],3,True,True)]
+        
 
 
 

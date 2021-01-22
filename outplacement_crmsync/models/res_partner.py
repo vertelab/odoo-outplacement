@@ -202,23 +202,37 @@ class Outplacement(models.Model):
         # education_ids
         self.partner_id.education_ids = [(6,0,[])]
         for code,level,foreign,approved in rec['education_ids']:
-            self.partner_id.education_ids = [0,0,(self.env['res.sun'].search([('code','=',code)],limit=1)[0].id,
-                                       self.env['res.partner.education_level'].search([('name','=',level)],limit=1)[0].id,
-                                       foreign,approved)]
+            self.partner_id.education_ids = [(0,0,{
+                'sun_id': self.env['res.sun'].search([('code','=',code)],limit=1)[0].id,
+                'education_level_id': self.env['res.partner.education.education_level'].search([('name','=',level)],limit=1)[0].id,
+                'foreign_education': foreign,
+                'foreign_education_approved': approved))]
         # drivers_license_ids
         self.partner_id.drivers_license_ids = [(6,0,[e.id for e in self.env['res.drivers_license'].search([('name','in',rec['drivers_license_ids'])])])]
         # job_ids
         self.partner_id.job_ids = [(6,0,[])]
-        for code,level,length,approved,experience in rec['job_ids']:
-            _logger.warn('code %s %s,level %s %s,length %s,approved %s,experience %s' % (
-                    code,self.env['res.ssyk'].search([('code','=',code)],limit=1)[0],
-                    level,self.env['res.partner.education_level'].search([('name','=',level)],limit=1)[0].id,
-                    length,approved,experience))
-            # ~ self.env['res.partner.jobs'].create({
-                    # ~ 'partner_id': self.id,
-                    # ~ 'ssyk_code' : self.env['res.ssyk'].search([('code','=',code)],limit=1)[0],
-                    
-                # ~ })
+        for ssyk_code,exp_length,exp,edu,sun_code,edu_lvl,edu_f,edu_fa in rec['job_ids']:
+            _logger.warn('ssyk code %s %s,exp lenght %s,exp %s,edu %s' % (
+                    ssyk_code,self.env['res.ssyk'].search([('code','=',ssyk_code)],limit=1)[0],
+                    exp_length, exp, edu))
+            values = {
+                    'partner_id': self.id,
+                    'ssyk_id' : self.env['res.ssyk'].search([('code','=',code)],limit=1)[0],
+                    'experience_length': exp_length,
+                    'education': edu,
+                    'experience': exp
+                }
+            sun_id = self.env['res.sun'].search([('code', '=', sun_code)], limit=1)[0]
+            edu_level = self.env['res.partner.education.eduation_level'].search([('name', '=',edu_lvl)], limit=1)[0]
+            education_id = self.env['res.partner.education'].search([('partner_id','=',self.id),
+                                                                    ('sun_id','=',sun_id.id),
+                                                                    ('education_level_id','=',edu_level.id),
+                                                                    ('foreign_education','=',edu_f),
+                                                                    ('foreign_education_approved','=',edu_fa)], limit=1)[0]
+            _logger.warn('sun code %s %s, edu level %s %s, edu_f %s, edu_fa %s, education %s' % (
+                    sun_code,sun_id, edu_lvl, edu_level, edu_f, edu_fa, education_id))
+            values['education_id'] = education_id.id
+            self.partner_id.job_ids = [(0,0, values)]
             
             
             # ~ self.partner_id.job_ids = [0,0,(self.env['res.ssyk'].search([('code','=',code)],limit=1)[0],

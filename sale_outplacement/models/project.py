@@ -8,9 +8,10 @@ from odoo.modules.module import get_module_resource
 
 _logger = logging.getLogger(__name__)
 
-
+xmlid_module = '__outplacement__'
 class ProjectTask(models.Model):
     _inherit = "project.task"
+
 
     start_date = fields.Datetime(string="Start date")
     instructions = fields.Text(string="Instructions", readonly=True)
@@ -41,16 +42,37 @@ class ProjectTask(models.Model):
     @api.model
     def init_joint_planning(self, outplacement_id):
         for task in self.env["res.joint_planning"].search([], order="sequence"):
-            stage_todo = self.env['project.task.type'].search([('name','=','To Do')])[0]
-            stage_optional = self.env['project.task.type'].search([('name','=','Optional')])[0]
-            stage_done = self.env['project.task.type'].search([('name','=','Done')])[0]
+            stage_todo = self.env.ref(".".join([xmlid_module, 'stage_todo']))
+            stage_optional = self.env.ref(".".join([xmlid_module, 'stage_optional']))
+            stage_done = self.env.ref(".".join([xmlid_module, 'stage_done']))
 
             if not stage_todo:
                 stage_todo = self.env['project.task.type'].create({'name': 'To Do'})
+                external_xmlid = ".".join([xmlid_module, 'stage_todo'])
+                self.env['ir.model.data'].create({
+                            'name': external_xmlid.split('.')[1],
+                            'module': external_xmlid.split('.')[0],
+                            'model': stage_todo._name,
+                            'res_id': stage_todo.id
+                            })
             if not stage_optional:
                 stage_optional = self.env['project.task.type'].create({'name': 'Optional'})
+                external_xmlid = ".".join([xmlid_module, 'stage_optional'])
+                self.env['ir.model.data'].create({
+                            'name': external_xmlid.split('.')[1],
+                            'module': external_xmlid.split('.')[0],
+                            'model': stage_optional._name,
+                            'res_id': stage_optional.id
+                            })
             if not stage_done:
-                stage_optional = self.env['project.task.type'].create({'name': 'Done'})
+                stage_done = self.env['project.task.type'].create({'name': 'Done'})
+                external_xmlid = ".".join([xmlid_module, 'stage_done'])
+                self.env['ir.model.data'].create({
+                            'name': external_xmlid.split('.')[1],
+                            'module': external_xmlid.split('.')[0],
+                            'model': stage_done._name,
+                            'res_id': stage_done.id
+                            })
             self.env["project.task"].create(
                 {
                     "outplacement_id": outplacement_id,
@@ -82,31 +104,31 @@ class ProjectTask(models.Model):
     
     @api.constrains("stage_id")
     def constrain_stage_id(self):
-        stage_optional = self.env['project.task.type'].search([('name','=','Optional')])[0]
-        stage_todo = self.env['project.task.type'].create({'name': 'To Do'})[0]
-        if self.task_type == "mandatory" and self.stage_id == stage_optional.id:
+        stage_todo = self.env.ref(".".join([xmlid_module, 'stage_todo']))
+        stage_optional = self.env.ref(".".join([xmlid_module, 'stage_optional']))
+        if self.task_type == "mandatory" and self.stage_id.id == stage_optional.id:
             self.stage_id = stage_todo.id
             raise ValidationError(
                 _("%s is a required task and can not be made optional.") 
                 % self.name)
-        elif self.task_type == "optional" and (self.stage_id == stage_todo.id and not self.child_ids):
+        elif self.task_type == "optional" and (self.stage_id.id == stage_todo.id and not self.child_ids):
             self.stage_id = stage_optional.id
             raise Warning(_("An optional task with no sub-tasks can't be made required"))
-        elif self.task_type == "optional" and (self.stage_id == stage_todo.id and self.child_ids):
+        elif self.task_type == "optional" and (self.stage_id.id == stage_todo.id and self.child_ids):
             for child in self.child_ids:
                 if child.stage_id == stage_todo.id:
                     self.stage_id = stage_todo.id
                     raise Warning(_("An optional task with sub-tasks"
                                     "in To Do stage can't be made optional"
                                     "until the required sub-tasks are done"))
-        elif not self.task_type and (self.stage_id == stage_todo.id or self.stage_id == stage_optional.id):
+        elif not self.task_type and (self.stage_id.id == stage_todo.id or self.stage_id.id == stage_optional.id):
             self.stage_id == False
             raise ValidationError(_("You are not allowed to add new required or optional tasks."))
         
     @api.depends("stage_id")
     def move_children(self):
-        stage_done = self.env['project.task.type'].search([('name','=','Done')])[0]
-        if self.stage_id == stage_done.id:
+        stage_done = self.env.ref(".".join([xmlid_module, 'stage_done']))
+        if self.stage_id.id == stage_done.id:
             for child in self.child_ids: 
                 # close task here (how?)
                 child.stage_id = stage_done.id

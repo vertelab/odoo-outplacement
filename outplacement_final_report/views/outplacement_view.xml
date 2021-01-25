@@ -83,12 +83,6 @@
         <field name="view_mode">form</field>
     </record>
 
-    <record model="ir.actions.act_window" id="outplacement_obstacle_action_window">
-        <field name="name">Outplacement obstacle</field>
-        <field name="res_model">outplacement.obstacle</field>
-        <field name="view_mode">form</field>
-    </record>
-
     <record model="ir.actions.act_window" id="outplacement_goal_step_action_window">
         <field name="name">Outplacement goal step</field>
         <field name="res_model">outplacement.goal.step</field>

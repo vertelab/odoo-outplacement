@@ -25,18 +25,16 @@ import datetime  # Used in test
 import random  # Used in test
 import string  # Used in test
 
-from odoo import api, fields, models, _
-
-
+from odoo import api, fields, models
 
 import logging
 _logger = logging.getLogger(__name__)
 
+
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    outplacement_id = fields.Many2one(comodel_name='outplacement') 
-
+    outplacement_id = fields.Many2one(comodel_name='outplacement')
 
 
 class Outplacement(models.Model):
@@ -57,19 +55,18 @@ class Outplacement(models.Model):
     def _employee_activites(self):
         if self.employee_id:
             self.env['mail.activity'].search(
-                ['&', 
-                 ('res_model_id.model', '=', self._name), 
+                ['&',
+                 ('res_model_id.model', '=', self._name),
                  ('res_id', '=', self.id)]).unlink()
             for activity in self.order_id.mapped('order_lines').filtered(
-                lambda l: l.product_id.is_suborder == True).mapped(
+                "product_id.is_suborder").mapped(
                     'product_id.mail_activites'):
                 self.env['mail.activity'].create({
                     'res_id': self.id,
                     'res_model_id': self.env.ref(
                         'outplacement.model_outplacement').id,
                     'summary': activity.summary,
-                    # ~ 'date':    fields.Datetime.to_string(fields.Datetime.from_string(values['date_from']) + timedelta(minutes = abs(minutes))),
-                    'user_id': self.employee_id.user_id.id if self.employee_id.user_id else None
+                    'user_id': self.employee_id.user_id.id if self.employee_id.user_id else None  # noqa:E501
                 })
 
     def _compute_tasks_count(self):
@@ -105,10 +102,11 @@ class Outplacement(models.Model):
 
     @api.multi
     def _get_department_id(self, data):
-        department = self.env['hr.department'].search(
-            [('ka_ref', '=', data.get('utforande_verksamhet_id', ''))],
+        department = self.env['performing.operation'].search(
+            [('ka_nr', '=', data.get('utforande_verksamhet_id', ''))],
             limit=1)
-        _logger.debug('Department: hr_department %s | %s' % (department, data.get('utforande_verksamhet_id')))
+        _logger.debug('Department: hr_department %s | %s' % (
+            department, data.get('utforande_verksamhet_id')))
         return department.id if department else None
 
     @api.multi
@@ -134,7 +132,7 @@ class Outplacement(models.Model):
         })
         outplacement = self.env['outplacement'].create({
             'name': data['ordernummer'],
-            'department_id': self._get_department_id(data),
+            'performing_operation_id': self._get_department_id(data),
             'booking_ref': data['boknings_id'],
             'partner_id': partner_id,
             'skill_id': skill.id if skill else None,
@@ -155,12 +153,15 @@ class Outplacement(models.Model):
     @api.model
     def create_suborder_process_data(self):
         self.suborder_process_data({
-            "genomforande_referens": ''.join(random.sample(string.digits, k=10)),
+            "genomforande_referens": ''.join(
+                random.sample(string.digits, k=9)),
             "utforande_verksamhet_id": "10009858",
-            "ordernummer": "MEET-" + ''.join(random.sample(string.digits, k=3)),
+            "ordernummer": "MEET-" + ''.join(
+                random.sample(string.digits, k=3)),
             "tidigare_ordernummer": "MEET-23",
             "boknings_id": ''.join(random.sample(string.digits, k=6)),
-            "personnummer": "19701212" + ''.join(random.sample(string.digits, k=4)),
+            "personnummer": "19701212" + ''.join(
+                random.sample(string.digits, k=4)),
             "sokande_id": ''.join(random.sample(string.ascii_lowercase, k=5)) +
                           ''.join(random.sample(string.digits, k=4)),
             "tjanstekod": "KVL",
@@ -169,17 +170,17 @@ class Outplacement(models.Model):
             "deltagandegrad": 75,
             "bokat_sfi": False,
             "startdatum_insats": '%s' % datetime.date.today(),
-            "slutdatum_insats": str(datetime.date.today()+datetime.timedelta(days=365)),
+            "slutdatum_insats": str(
+                datetime.date.today()+datetime.timedelta(days=365)),
             "startdatum_avrop": str(datetime.date.today()),
-            "slutdatum_avrop": str(datetime.date.today()+datetime.timedelta(days=90)),
+            "slutdatum_avrop": str(
+                datetime.date.today()+datetime.timedelta(days=90)),
             "aktnummer_diariet": "Af-2021/0000 " +
                                  ''.join(random.sample(string.digits, k=4)),
             "telefonnummer_handlaggargrupp": "+46734176359",
-            "epost_handlaggargrupp": ''.join(random.sample(string.digits, k=4)) + "@test.com"
-        }
-        
-        )
-
+            "epost_handlaggargrupp": ''.join(
+                random.sample(string.digits, k=4)) + "@test.com"
+            })
 
 
 class ResPartner(models.Model):

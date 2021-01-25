@@ -27,6 +27,7 @@ import uuid
 import logging
 import requests
 from odoo import api, models, fields
+from odoo.exceptions import Warning
 
 _logger = logging.getLogger(__name__)
 
@@ -192,12 +193,18 @@ class ClientConfig(models.Model):
     @api.model
     def post_request(self, outplacement, res_joint_planning_af_recordset):
         api = self.get_api()
-        if 'department_ref' in outplacement.department_id:
-            dep_id = outplacement.department_id.department_ref
-            _logger.info("using department_ref %s" % outplacement.department_id.department_ref)
+        if 'department_ref' in outplacement.performing_operation_id:
+            dep_id = outplacement.performing_operation_id.ka_nr
+            # _logger.info("using department_ref %s" % outplacement.performing_operation_id.ka_nr)
         else:
-            dep_id = outplacement.department_id.ka_ref
-            _logger.info("using ka_ref %s" % outplacement.department_id.ka_ref)
+            dep_id = outplacement.performing_operation_id.ka_nr
+            _logger.info("using ka_ref %s" % outplacement.performing_operation_id.ka_nr)
+
+        if not outplacement.meeting_remote:
+            raise Warning("Meeting type for outplacement not set.")
+        if not dep_id:
+            raise Warning("KA nr. not set on performing operation.")
+
         # Add version handling to unik_id (unique id)
         unikt_id = outplacement.uniq_ref.split('-')
         if len(unikt_id) == 1:
@@ -207,11 +214,11 @@ class ClientConfig(models.Model):
         outplacement.write({'uniq_ref': unikt_id})
 
         payload = {
-            "utforande_verksamhets_id": dep_id,
-            "avrops_id": outplacement.name,
+            "utforande_verksamhets_id": str(dep_id),
+            "avrops_id": "A000000000000",
             "genomforande_referens": outplacement.order_id.origin,
             "ordernummer": outplacement.order_id.name,
-            "personnr": outplacement.partner_id.social_sec_nr,
+            "personnr": outplacement.partner_id.social_sec_nr.replace('-',''),
             "unikt_id": unikt_id,
             "deltagare": {
                 "fornamn": outplacement.partner_id.firstname,
@@ -219,7 +226,7 @@ class ClientConfig(models.Model):
                 "deltog_per_distans": outplacement.meeting_remote
             },
             "inskickad_datum": str(outplacement.jp_sent_date),
-            "status": outplacement.stage_id.sequence,
+            "status": str(outplacement.stage_id.sequence),
             "ofullstandig": "true" if outplacement.incomplete else "false",
             "sent_inskickad": "true" if outplacement.late else "false",
             "innehall": []

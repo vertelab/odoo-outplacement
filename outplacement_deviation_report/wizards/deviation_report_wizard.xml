@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <data>
-
     <record model="ir.ui.view" id="deviation_report_form">
         <field name="name">Deviation Report</field>
         <field name="model">outplacement.deviation.report.wizard</field>
@@ -9,19 +8,22 @@
             <form>
                 <group>
                     <group>
-                        <field name="first_name"/>
-                        <field name="last_name"/>
+                        <field name="outplacement_id" invisible="1"/>
+                        <field name="jobseeker_name"/>
                         <field name="social_sec_nr"/>
                         <field name="responsible_id"/>
-                        <field name="company_name"/>
+                        <field name="company_id"/>
                         <field name="user_id"/>
                     </group>
                     <group>
                         <field name="deviation_date"/>
                         <field name="deviation_allday"/>
-                        <field name="deviation_timestart" widget="float_time"/>
-                        <field name="deviation_timeend" widget="float_time"/>
-                        <field name="deviation_reason"/>
+                        <field name="deviation_timestart" widget="float_time" attrs="{'invisible': [('deviation_allday', '=', True)]}"/>
+                        <field name="deviation_timeend" widget="float_time" attrs="{'invisible': [('deviation_allday', '=', True)]}"/>
+                        <field name="expected_time_start" widget="float_time"/>
+                        <field name="expected_time_end" widget="float_time"/>
+                        <field name='deviation_code'/>
+                        <field name="deviation_reason" attrs="{'required': [('deviation_code', 'in', ['18', '20', '21', '22'])]}"/>
                     </group>
                 </group>
                  <footer>
@@ -31,7 +33,6 @@
             </form>
         </field>
     </record>
-
     <record model="ir.actions.act_window" id="deviation_report_action">
         <field name="name">Deviation Report</field>
         <field name="res_model">outplacement.deviation.report.wizard</field>

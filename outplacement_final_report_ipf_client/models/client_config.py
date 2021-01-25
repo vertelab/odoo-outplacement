@@ -5,7 +5,7 @@ import json
 import uuid
 import logging
 import requests
-from odoo import api, http, models, tools, SUPERUSER_ID, fields
+from odoo import api, models, fields
 
 _logger = logging.getLogger(__name__)
 
@@ -75,7 +75,8 @@ class ClientConfig(models.Model):
     def get_headers(self):
         tracking_id = pycompat.text_type(uuid.uuid1())
         ipf_system_id = (
-            self.env["ir.config_parameter"].sudo().get_param("api_ipf.ipf_system_id")
+            self.env["ir.config_parameter"].sudo().get_param(
+                "api_ipf.ipf_system_id")
         )
         headers = {
             'Content-Type': "application/json",
@@ -115,7 +116,7 @@ class ClientConfig(models.Model):
             "inskickad_datum": "2020-12-22",
             "rapportering_datum": "2020-12-22",
             "status": "10",
-            "sent_inskickad":"false",
+            "sent_inskickad": "false",
             "deltagare": {
                 "fornamn": "testperson",
                 "efternamn": "testson",
@@ -188,11 +189,11 @@ class ClientConfig(models.Model):
                 "arbetsuppgifter_beskrivning": "Lagar mat",
                 "val_av_alternativ_mal_motivering": "Matchar deltagarens intressen",
                 "steg": [{
-                "typ": "Studera",
-                "namn": "",
-                "niva": "",
-                "startdatum": "2020-12-22",
-                "slutdatum": "2020-12-22"
+                    "typ": "Studera",
+                    "namn": "",
+                    "niva": "",
+                    "startdatum": "2020-12-22",
+                    "slutdatum": "2020-12-22"
                 }]
             },
             "studiebesok": [{
@@ -228,13 +229,13 @@ class ClientConfig(models.Model):
             "personnr": outplacement.partner_id.company_registry,
             "unikt_id": outplacement.uniq_ref,
             "inskickad_datum": str(outplacement.jp_sent_date),
-            "rapportering_datum": outplacement.report_date, 
+            "rapportering_datum": outplacement.report_date,
             "status": outplacement.stage_id.sequence,
-            "sent_inskickad": outplacement.late, 
-            "innehall": [], # filled with data below
-            "avbrott": outplacement.interruption, 
+            "sent_inskickad": outplacement.late,
+            "innehall": [],  # filled with data below.
+            "avbrott": outplacement.interruption,
             "ofullstandig": outplacement.incomplete,
-            "studiebesok": [], # filled with data below
+            "studiebesok": [],  # filled with data below
         }
         if outplacement.partner_id:
             payload["deltagare"] = {
@@ -248,7 +249,8 @@ class ClientConfig(models.Model):
                 "efternamn": outplacement.employee_id.lastname,
             }
             if outplacement.employee_id.user_id:
-                payload["ansvarig_handledare"]["signatur"] = outplacement.employee_id.user_id.login
+                payload["ansvarig_handledare"]["signatur"] = \
+                    outplacement.employee_id.user_id.login
         if outplacement.obstacle_reason:
             payload["hinder"] = {
                 "orsak_typ": outplacement.obstacle_reason,
@@ -256,10 +258,10 @@ class ClientConfig(models.Model):
             }
         goal_id = outplacement.main_goal_id
         if goal_id:
-            payload["huvudmal"] = { 
+            payload["huvudmal"] = {
                 "arbetsuppgifter_beskrivning": goal_id.job_description,
-                "val_av_huvudmal_motivering": goal_id.motivation, #new field?
-                "fritext": goal_id.free_text, #new field?
+                "val_av_huvudmal_motivering": goal_id.motivation,  # new field?
+                "fritext": goal_id.free_text,  # new field?
                 "steg": []
             }
             if goal_id.field_of_work_id:
@@ -283,14 +285,15 @@ class ClientConfig(models.Model):
                 payload['huvudmal']['steg'].append(step)
         goal_id = outplacement.alternative_goal_id
         if goal_id:
-            payload["alternativ_mal"] = { 
+            payload["alternativ_mal"] = {
                 "arbetsuppgifter_beskrivning": goal_id.job_description,
-                "val_av_huvudmal_motivering": goal_id.motivation, #new field?
-                "fritext": goal_id.free_text, #new field?
+                "val_av_huvudmal_motivering": goal_id.motivation,  # new field?
+                "fritext": goal_id.free_text,  # new field?
                 "steg": []
             }
             if goal_id.field_of_work_id:
-                payload["alternativ_mal"]["yrkesomrade"] = goal_id.field_of_work_id
+                payload["alternativ_mal"]["yrkesomrade"] = \
+                    goal_id.field_of_work_id
 
             if goal_id.job_id:
                 payload["alternativ_mal"]["yrke"] = goal_id.job_id
@@ -308,18 +311,21 @@ class ClientConfig(models.Model):
                     "fritext": step_id.complementing_effort_description
                 }
                 payload['alternativ_mal']['steg'].append(step)
-               
-        for planned in self.env['res.joint_planning'].search([('send2server','=',True)],order=sequence):
-            task = outplacement.task_ids.filtered(lambda t: t.activity_id == planned.activity_id)
+
+        for planned in self.env['res.joint_planning'].search(
+                [('send2server', '=', True)], order='sequence'):
+            task = outplacement.task_ids.filtered(
+                lambda t: t.activity_id == planned.activity_id)
             payload['innehall'].append({
                 'aktivitets_id': planned.activity_id,
-                'aktivitets_namn': task.activity_name if task else planned.activity_name,
+                'aktivitets_namn': (task.activity_name if task else
+                                    planned.activity_name),
                 'beskrivning': task.description if task else '',
             })
         for study_visit in outplacement.study_visit_ids:
             payload['studiebesok'].append({
                 "namn": study_visit.name,
                 "typ": study_visit.visit_type,
-                "motivering": study_visit.reasoning 
+                "motivering": study_visit.reasoning
             })
         return api.post_report(payload)

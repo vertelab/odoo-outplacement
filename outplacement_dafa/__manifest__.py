@@ -22,27 +22,19 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 
 {
-    'name': 'Outplacement',
-    'version': '12.0.1.2.1',
+    'name': 'Outplacement DAFA',
+    'version': '12.0.1.0.0',
     'category': 'Outplacement',
     'description': """
-	 Module to handle outplacement (Avrop)\n
-	 v12.0.1.2.0 - changed version number to standard-format.\n
-	 v12.0.1.2.1 - AFC-1116 Changes due to Performing Operations.\n
+	 Module to handle outplacement (Avrop) for Arbetsförmedlingen DAFA\n
     """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['base', 'hr', 'mail','partner_ssn'],
+    'depends': ['sale_outplacement', 'auth_user_rights_wizard'],
     'data': [
-        'security/outplacement_security.xml',
-        'security/ir.model.access.csv',
-        'views/menu_item.xml',
-        'views/outplacement_stage_view.xml',
-        'views/outplacement_view.xml',
-        'views/hr_department_view.xml',
-        'views/res_partner_view.xml',
-        'data/data.xml',
+        'views/hr_employee_view.xml',
+        
     ],
     'installable': True,
 }

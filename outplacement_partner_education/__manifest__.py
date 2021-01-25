@@ -30,7 +30,7 @@
     'author': "Vertel AB",
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['partner_education_views', 'outplacement'],
+    'depends': ['partner_education', 'outplacement'],
     'data': [
         'views/outplacement_view.xml'
     ],

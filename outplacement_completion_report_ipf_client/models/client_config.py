@@ -27,6 +27,7 @@ import uuid
 import logging
 import requests
 from odoo import api, models, fields
+from odoo.exceptions import Warning
 
 _logger = logging.getLogger(__name__)
 
@@ -128,64 +129,56 @@ class ClientConfig(models.Model):
 
     def test_post_report(self):
         payload = {
-            "utforande_verksamhets_id": "10009858",
-            "avrops_id": "A000000398768",
-            "genomforande_referens": "100000123",
+            "utforande_verksamhets_id": "10011119",
+            "avrops_id": "A000000428847",
+            "genomforande_referens": "100003568",
             "ordernummer": "MEET-1",
-            "personnr": "197608277278",
-            "unikt_id": "1321",
+            "personnr": "199910103028",
+            "unikt_id": "1111-3",
             "deltagare": {
                 "fornamn": "John",
                 "efternamn": "Doe",
                 "deltog_per_distans": "yes"
             },
-            "inskickad_datum": "2020-08-20",
-            "status": "SENT",
+            "inskickad_datum": "2020-11-25",
+            "status": "10",
+            "ofullstandig": "true",
+            "sent_inskickad": "false",
             "innehall": [
                 {
-                    "aktivitets_id": "1",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test"
+                    "aktivitets_id": "176",
+                    "aktivitets_namn": "Val och framtidsplanering - deltagarens karriärplan",
+                    "beskrivning": "Coach's comment"
                 },
                 {
-                    "aktivitets_id": "2",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 2"
+                    "aktivitets_id": "177",
+                    "aktivitets_namn": "Individuella karriärsvägledningssamtal",
+                    "beskrivning": "Coach's comment"
                 },
                 {
-                    "aktivitets_id": "3",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 3"
+                    "aktivitets_id": "178",
+                    "aktivitets_namn": "Stöd till att bli antagen till kommunens insatser",
+                    "beskrivning": "Coach's comment"
                 },
                 {
-                    "aktivitets_id": "4",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 4"
+                    "aktivitets_id": "179",
+                    "aktivitets_namn": "Studiebesök utbildningsanordnare",
+                    "beskrivning": "Coach's comment"
                 },
                 {
-                    "aktivitets_id": "5",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 5"
+                    "aktivitets_id": "180",
+                    "aktivitets_namn": "Studiebesök arbetsplatser",
+                    "beskrivning": "Coach's comment"
                 },
                 {
-                    "aktivitets_id": "6",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 6"
+                    "aktivitets_id": "181",
+                    "aktivitets_namn": "Möte med förebilder.",
+                    "beskrivning": "Coach's comment"
                 },
                 {
-                    "aktivitets_id": "7",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 7"
-                },
-                {
-                    "aktivitets_id": "8",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 8"
-                },
-                {
-                    "aktivitets_id": "9",
-                    "aktivitets_namn": "KVL",
-                    "beskrivning": "test 9"
+                    "aktivitets_id": "182",
+                    "aktivitets_namn": "Kunskap om arbetsmarknad, utbildningsvägar, studiefinansiering, omvärldsbev.",
+                    "beskrivning": "Coach's comment"
                 }
             ]
         }
@@ -200,10 +193,18 @@ class ClientConfig(models.Model):
     @api.model
     def post_request(self, outplacement, res_joint_planning_af_recordset):
         api = self.get_api()
-        if 'department_ref' in outplacement.department_id:
-            dep_id = outplacement.department_id.department_ref
+        if 'department_ref' in outplacement.performing_operation_id:
+            dep_id = outplacement.performing_operation_id.ka_nr
+            # _logger.info("using department_ref %s" % outplacement.performing_operation_id.ka_nr)
         else:
-            dep_id = outplacement.department_id.ka_ref
+            dep_id = outplacement.performing_operation_id.ka_nr
+            _logger.info("using ka_ref %s" % outplacement.performing_operation_id.ka_nr)
+
+        if not outplacement.meeting_remote:
+            raise Warning("Meeting type for outplacement not set.")
+        if not dep_id:
+            raise Warning("KA nr. not set on performing operation.")
+
         # Add version handling to unik_id (unique id)
         unikt_id = outplacement.uniq_ref.split('-')
         if len(unikt_id) == 1:
@@ -213,11 +214,11 @@ class ClientConfig(models.Model):
         outplacement.write({'uniq_ref': unikt_id})
 
         payload = {
-            "utforande_verksamhets_id": dep_id,
-            "avrops_id": outplacement.name,
+            "utforande_verksamhets_id": str(dep_id),
+            "avrops_id": "A000000000000",
             "genomforande_referens": outplacement.order_id.origin,
             "ordernummer": outplacement.order_id.name,
-            "personnr": outplacement.partner_id.company_registry,
+            "personnr": outplacement.partner_id.social_sec_nr.replace('-',''),
             "unikt_id": unikt_id,
             "deltagare": {
                 "fornamn": outplacement.partner_id.firstname,
@@ -225,14 +226,18 @@ class ClientConfig(models.Model):
                 "deltog_per_distans": outplacement.meeting_remote
             },
             "inskickad_datum": str(outplacement.jp_sent_date),
+            "status": str(outplacement.stage_id.sequence),
+            "ofullstandig": "true" if outplacement.incomplete else "false",
+            "sent_inskickad": "true" if outplacement.late else "false",
             "innehall": []
         }
         for planned in self.env['res.joint_planning'].search(
                 [('send2server', '=', True)], order="sequence"):
+            _logger.info("send2server for %s %s" % (planned.activity_id, planned.send2server))
             task = outplacement.task_ids.filtered(
                 lambda t: t.activity_id == planned.activity_id)
             payload['innehall'].append({
-                'aktivitets_id': planned.activity_id,
+                'aktivitets_id': planned.activity_id, #takes only 176-183
                 'aktivitets_namn': (task.activity_name
                                     if task else planned.name),
                 'beskrivning': task.description if task else '',

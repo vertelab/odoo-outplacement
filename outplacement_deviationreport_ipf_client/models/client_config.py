@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2019 N-Development (<https://n-development.com>).
@@ -18,14 +18,14 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-################################################################################
+###############################################################################
 
 from odoo.tools import pycompat
 import json
 import uuid
 import logging
 import requests
-from odoo import api, http, models, tools, SUPERUSER_ID, fields
+from odoo import api, models, fields
 
 _logger = logging.getLogger(__name__)
 
@@ -41,7 +41,7 @@ class ClientConfig(models.Model):
                             required=True)
     environment = fields.Selection(selection=[('U1', 'U1'),
                                               ('I1', 'I1'),
-                                              ('T1', 'IT'),
+                                              ('T1', 'T1'),
                                               ('T2', 'T2'),
                                               ('PROD', 'PROD'), ],
                                    string='Environment',
@@ -78,10 +78,9 @@ class ClientConfig(models.Model):
                   'response_headers': response.headers,
                   'params': params,
                   'response_code': response.status_code}
-        try:
+
+        if response.status_code not in (200, 201):
             values.update(message=json.loads(response.content))
-        except json.decoder.JSONDecodeError:
-            pass
         self.env['ipf.report.request.history'].create(values)
 
     def get_headers(self):
@@ -95,10 +94,10 @@ class ClientConfig(models.Model):
         # Usually we take the systemid from the configuration parameters,
         # but this api is AFCRM instead of AFDAFA 
         headers = {
-            'x-amf-mediaType': "application/json",
+            'Content-Type': "application/json",
             'AF-TrackingId': tracking_id,
             'AF-SystemId': "AFCRM",
-            'AF-EndUserId': "AF-EndUserId",
+            'AF-EndUserId': "*sys*",
             'AF-Environment': self.environment,
             'Accept': '*/*',
             'Content-Type': 'application/json',
@@ -169,4 +168,4 @@ class ClientConfig(models.Model):
                 "motivation":"text"
             }
         }
-        response = self.post_report(payload)
+        return self.post_report(payload)

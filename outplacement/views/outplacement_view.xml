@@ -24,23 +24,27 @@
               <div class="o_address_format">
                   <field name="partner_street" placeholder="Street..." class="o_address_street" />
                   <field name="partner_street2" placeholder="Street 2..." class="o_address_street" />
-                  <field name="partner_zip" placeholder="ZIP" class="o_address_zip"/>  
+                  <field name="partner_zip" placeholder="ZIP" class="o_address_zip" style="margin-right: 1em;"/>  
                   <field name="partner_city" placeholder="City" class="o_address_city" />
                   <field name="partner_state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True}"  context="{'country_id': country_id, 'zip': partner_zip}"/>
                   <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
                 </div>
               </group>
               <group>
+                <field name="partner_social_sec_nr"/> 
                 <field name="partner_phone" />
                 <field name="partner_email" />
                 <field name="employee_id" />
-                <field name="department_id" />
+                <field name="performing_operation_id" />
                 <field name="meeting_remote" />
               </group>
               <group>
                 <field name="name" />
                 <field name="booking_ref" />
                 <field name="uniq_ref" />
+                <field name="late"/>
+                <field name="interruption"/>
+                <field name="incomplete"/>
               </group>
             </group>
             <notebook />
@@ -61,7 +65,7 @@
           <field name="partner_name" />
           <field name="booking_ref" />
           <field name="employee_id" />
-          <field name="department_id" />
+          <field name="performing_operation_id" />
           <field name="stage_id" />
         </tree>
       </field>
@@ -86,7 +90,7 @@
           <field name="message_ids" />
           <field name="message_needaction_counter" />
           <field name="partner_name" />
-          <field name="my_department" />
+          <field name="my_performing_operation" />
           <field name="my_outplacement" />
           <field name="name" />
           <templates>
@@ -142,11 +146,11 @@
           <field name="employee_id" />
           <field name="booking_ref" />
           <field name="partner_name" />
-          <field name="department_id" />
-          <filter name="my_department" string="My Department" domain="[('my_department', '=', True)]"/>
+          <field name="performing_operation_id" />
+          <filter name="my_performing_operation" string="My Performing Operation" domain="[('my_performing_operation', '=', True)]"/>
           <filter name="my_outplacement" string="My Outplacement" domain="[('my_outplacement', '=', True)]"/>
           <group expand="0" string="Group By">
-            <filter string="Department" name="department" context="{'group_by': 'department_id'}"/>
+            <filter string="Performing Operation" name="performing_operation" context="{'group_by': 'performing_operation_id'}"/>
             <filter string="Employee" name="employee" context="{'group_by': 'employee_id'}"/>
             <filter string="Stage" name="stage" context="{'group_by': 'stage_id'}"/>
           </group>
@@ -159,6 +163,44 @@
       <field name="view_type">form</field>
       <field name="view_mode">kanban,calendar,tree,form,pivot,activity</field>
     </record>
-    <menuitem id="menu_outplacement" parent="outplacement.parent_menu_outplacement" action="outplacement.outplacement_action" name="Outplacement" groups="outplacement.group_outplacement_user_read" sequence="5" />
+    <menuitem id="menu_outplacement" parent="parent_menu_outplacement" action="outplacement_action" name="Outplacement" groups="group_outplacement_user_read" sequence="5" />
+    <record id="performing_operation_form" model="ir.ui.view">
+      <field name="name">performing.operation.form</field>
+      <field name="model">performing.operation</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <div class="oe_title">
+              <label for="name" class="oe_edit_only" />
+              <h1>
+                <field name="name"  />
+              </h1>
+            </div>
+            <group>
+                <field name="ka_nr" />
+            </group>
+            <label for="partner_ids" />
+            <field name="partner_ids" />
+          </sheet>
+        </form>
+      </field>
+    </record>
+    <record id="performing_operation_tree" model="ir.ui.view">
+      <field name="name">performing.operation.tree</field>
+      <field name="model">performing.operation</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name" />
+          <field name="ka_nr" />
+        </tree>
+      </field>
+    </record>
+    <record id="action_performing_operation" model="ir.actions.act_window">
+      <field name="name">Performing Operation</field>
+      <field name="res_model">performing.operation</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_performing_operation" parent="parent_menu_outplacement" action="action_performing_operation" name="Performing Operations" groups="outplacement.group_outplacement_user_read" sequence="20" />
   </data>
 </odoo>

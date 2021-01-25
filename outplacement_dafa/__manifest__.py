@@ -2,7 +2,7 @@
 
 ################################################################################
 #
-#    OpenERP, Open Source Management Solution
+#    Odoo, Open Source Management Solution
 #    Copyright (C) 2020 Vertel AB (<https://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,23 +20,21 @@
 #
 ################################################################################
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
-{
-    'name': 'Outplacement Social Security Number',
-    'version': '12.0.0.2.0',
-    'category': 'Outplacement',
-    'description': """Partner Social Security Number""",
 
-    'author': "Vertel AB",
+{
+    'name': 'Outplacement DAFA',
+    'version': '12.0.1.0.0',
+    'category': 'Outplacement',
+    'description': """
+	 Module to handle outplacement (Avrop) for Arbetsförmedlingen DAFA\n
+    """,
+    'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['partner_ssn', 'outplacement'],
+    'depends': ['sale_outplacement', 'auth_user_rights_wizard'],
     'data': [
-        'views/outplacement_view.xml',
-        'views/ir_actions_server_view.xml'
+        'views/hr_employee_view.xml',
+        
     ],
     'installable': True,
-    'application': False,
-
-    'images': [
-    ],
 }

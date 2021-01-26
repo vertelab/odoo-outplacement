@@ -55,7 +55,7 @@ class MailActivity(models.Model):
     def create(self, vals):
         record = super(MailActivity, self).create(vals)
         order_interpreter = self.env.ref(
-            'outplacement_order_interpretor.order_interpreter').id
+            'outplacement_order_interpreter.order_interpreter').id
         if record.activity_type_id.id == order_interpreter:
             try:
                 resp = self.env[

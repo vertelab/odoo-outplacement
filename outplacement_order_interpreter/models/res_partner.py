@@ -11,7 +11,7 @@ class ResPartner(models.Model):
         return self.env['res.lang'].get_installed().append(('en_US',
                                                             'American'))
     interpreter_language = fields.Many2one(
-        comodel_name='res.iterpreter.language',
+        comodel_name='res.interpreter.language',
         string='Interperator Language')
     interpreter_gender_preference = fields.Selection([
         ('male', 'Male'),

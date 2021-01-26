@@ -47,7 +47,7 @@
         'views/res_partner_view.xml',
         'views/outplacement_view.xml',
     ],
-    'installable': False,
+    'installable': True,
     'images': [
         'static/description/img.png'
     ],

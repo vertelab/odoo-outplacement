@@ -50,9 +50,9 @@ class Outplacement(models.Model):
     employee_id = fields.Many2one(
         'hr.employee', string="Coach", group_expand='_read_group_employee_ids')
     color = fields.Integer('Kanban Color Index')
-    meeting_remote = fields.Selection(selection=[('no', 'On Premice'),
-                                                 ('yes', 'Remote')],
-                                      string='Meeting type')
+    meeting_remote = fields.Selection(string='Meeting type',
+                                      selection=[('no', 'On Premise'),
+                                                 ('yes', 'Remote')],)
     uniq_ref = fields.Char(string='Uniq Id', size=64, trim=True)
     performing_operation_id = fields.Many2one(
         comodel_name='performing.operation',
@@ -68,7 +68,7 @@ class Outplacement(models.Model):
     image = fields.Binary(
         "Photo", default=_default_image, attachment=True,
         help="This field holds the image used as photo for the employee, "
-             "limited to 1024x1024px.")
+        "limited to 1024x1024px.")
     image_medium = fields.Binary(
         "Medium-sized photo", attachment=True,
         help="Medium-sized photo of the employee. It is automatically "
@@ -86,20 +86,22 @@ class Outplacement(models.Model):
     partner_street2 = fields.Char(related="partner_id.street2", readonly=False)
     partner_zip = fields.Char(related="partner_id.zip", readonly=False)
     partner_city = fields.Char(related="partner_id.city", readonly=False)
-    partner_state_id = fields.Many2one(
-        related="partner_id.state_id", readonly=False)
+    partner_state_id = fields.Many2one(related="partner_id.state_id",
+                                       readonly=False)
+    email_from = fields.Char(related="partner_id.email")
     # Because of a strange bug with partner_state_id this field must
     # have this name.
-    country_id = fields.Many2one(
-        related="partner_id.country_id", readonly=False)
-    partner_phone = fields.Char(
-        string="Phone", related="partner_id.phone", readonly=False)
-    partner_email = fields.Char(
-        string="Email", related="partner_id.email", readonly=False)
-    partner_social_sec_nr = fields.Char(
-        string="Social security number",
-        related="partner_id.social_sec_nr",
-        readonly=False)
+    country_id = fields.Many2one(related="partner_id.country_id",
+                                 readonly=False)
+    partner_phone = fields.Char(string="Phone",
+                                related="partner_id.phone",
+                                readonly=False)
+    partner_email = fields.Char(string="Email",
+                                related="partner_id.email",
+                                readonly=False)
+    partner_social_sec_nr = fields.Char(string="Social security number",
+                                        related="partner_id.social_sec_nr",
+                                        readonly=False)
     booking_ref = fields.Char()
     service_start_date = fields.Date()
     service_end_date = fields.Date()
@@ -109,6 +111,12 @@ class Outplacement(models.Model):
     my_outplacement = fields.Boolean(compute='_compute_my_outplacement',
                                      search='_search_my_outplacement')
     sprakstod = fields.Char()
+    
+    show_2nd_line = fields.Boolean(compute="_compute_readonly")
+    
+    @api.one
+    def _compute_readonly(self):
+        self.show_2nd_line = not self.env.user.has_group("base_user_groups_dafa.2_line_support")
 
     # Nils: If image is removed this should be removed as well.
     @api.onchange('employee_id')
@@ -125,8 +133,8 @@ class Outplacement(models.Model):
     def _read_group_performing_operation_ids(
             self, performing_operation, domain, order):
         """ Always display all stages """
-        _logger.warn('group by performing_operation_ids %s order %s' % (
-            domain, order))
+        _logger.warn('group by performing_operation_ids %s order %s'
+                     % (domain, order))
         return performing_operation.search([], order=order)
 
     @api.model
@@ -146,9 +154,6 @@ class Outplacement(models.Model):
     @api.multi
     def _compute_my_performing_operation(self):
         return self.env.user.performing_operation_ids
-        # ~ performing_operation_ids  = elf.env.user.ids
-        # ~ department = department[0] if len(department) > 0 else None
-        # ~ return self.filtered(lambda o: o.department_id == department)
 
     def _search_my_performing_operation(self, operator, value):
         user_employee = self.env['hr.employee'].search([
@@ -185,49 +190,48 @@ class Outplacement(models.Model):
         if 'stage_id' in changes and doc.stage_id.template_id:
             res['stage_id'] = (doc.stage_id.template_id, {
                 'auto_delete_message': True,
-                'subtype_id': self.env['ir.model.data'].xmlid_to_res_id(
-                    'mail.mt_note'),
+                'subtype_id':
+                    self.env['ir.model.data'].xmlid_to_res_id('mail.mt_note'),
                 'notif_layout': 'mail.mail_notification_light'
             })
         return res
 
-    @api.multi
-    def _notify_get_reply_to(
-            self, default=None, records=None, company=None, doc_names=None):
-        """
-        Override to set alias of Outplacements to their job definition
-        if any.
-        """
-        aliases = self.mapped('job_id')._notify_get_reply_to(default=default,
-                                                             records=None,
-                                                             company=company,
-                                                             doc_names=None)
-        res = {app.id: aliases.get(app.job_id.id) for app in self}
-        leftover = self.filtered(lambda rec: not rec.job_id)
-        if leftover:
-            res.update(super(Outplacement, leftover)._notify_get_reply_to(
-                default=default,
-                records=None,
-                company=company,
-                doc_names=doc_names))
-        return res
+    # This crashes, who uses this?, can it be removed?
+    # @api.multi
+    # def _notify_get_reply_to(
+    #         self, default=None, records=None, company=None, doc_names=None):
+    #     """
+    #     Override to set alias of Outplacements to their job definition
+    #     if any.
+    #     """
+    #     aliases = self.mapped('job_ids')._notify_get_reply_to(default=default,
+    #                                                          records=None,
+    #                                                          company=company,
+    #                                                          doc_names=None)
+    #     res = {app.id: aliases.get(app.job_id.id) for app in self}
+    #     leftover = self.filtered(lambda rec: not rec.job_id)
+    #     if leftover:
+    #         res.update(super(Outplacement, leftover)._notify_get_reply_to(
+    #             default=default, records=None,
+    #             company=company, doc_names=doc_names))
+    #     return res
 
-    @api.multi
-    def message_get_suggested_recipients(self):
-        recipients = super(
-            Outplacement, self).message_get_suggested_recipients()  # noqa: F823,E501 (Odoomagic, Outplacement do exist.)
-        for Outplacement in self:
-            if Outplacement.partner_id:
-                Outplacement._message_add_suggested_recipient(
-                    recipients,
-                    partner=Outplacement.partner_id,
-                    reason=_('Contact'))
-            elif Outplacement.email_from:
-                Outplacement._message_add_suggested_recipient(
-                    recipients,
-                    email=Outplacement.email_from,
-                    reason=_('Contact Email'))
-        return recipients
+    # @api.multi
+    # def message_get_suggested_recipients(self):
+    #     recipients = super(
+    #         Outplacement, self).message_get_suggested_recipients()
+    #     for outplacement in self:
+    #         if outplacement.partner_id:
+    #             outplacement._message_add_suggested_recipient(
+    #                 recipients,
+    #                 partner=outplacement.partner_id,
+    #                 reason=_('Contact'))
+    #         elif outplacement.email_from:
+    #             outplacement._message_add_suggested_recipient(
+    #                 recipients,
+    #                 email=outplacement.email_from,
+    #                 reason=_('Contact Email'))
+    #     return recipients
 
     @api.model
     def message_new(self, msg, custom_values=None):

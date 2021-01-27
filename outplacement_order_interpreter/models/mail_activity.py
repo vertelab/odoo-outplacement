@@ -78,6 +78,8 @@ class MailActivity(models.Model):
             data = json.loads(response.content.decode())
             self.booking_ref = data.get('tolkbokningId')
 
+    # ToDo: Poll Tolkportalen to get status of open orders and update
+    #       status.
     @api.model
     def cron_order_interpreter(self):
         pass

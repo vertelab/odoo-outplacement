@@ -44,7 +44,7 @@ class ProjectTask(models.Model):
         for task in self.env["res.joint_planning"].search([], order="sequence"):
             try:
                 stage_todo = self.env.ref(".".join([xmlid_module, 'stage_todo']))
-            except:
+            except ValueError:
                 stage_todo = self.env['project.task.type'].create({
                     'name': 'To Do',
                     'is_outplacement': True,
@@ -58,7 +58,7 @@ class ProjectTask(models.Model):
                             })
             try:
                 stage_optional = self.env.ref(".".join([xmlid_module, 'stage_optional']))
-            except:
+            except ValueError:
                 stage_optional = self.env['project.task.type'].create({
                     'name': 'Optional',
                     'is_outplacement': True,
@@ -72,7 +72,7 @@ class ProjectTask(models.Model):
                             })
             try:
                 stage_done = self.env.ref(".".join([xmlid_module, 'stage_done']))
-            except:
+            except ValueError:
                 stage_done = self.env['project.task.type'].create({
                     'name': 'Done',
                     'is_outplacement': True,

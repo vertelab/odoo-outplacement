@@ -138,7 +138,7 @@ att utföra på en föränderlig arbetsmarknad där nya kompetenskrav och yrken 
             <field name="activity_id">183</field>
             <field name="color">9</field>
             <field name="planned_hours">32.0</field>
-            <field name="send2server" eval="False"/>
+            <field name="send2server" eval="True"/>
             <field name="instructions">I grupp diskuteras hälsa och stresshantering samt vikten av fysisk aktivitet i förhållande till arbete och
 studier. Information ska ges om vilket stöd som finns förknippat till våld i nära relationer.
 </field>

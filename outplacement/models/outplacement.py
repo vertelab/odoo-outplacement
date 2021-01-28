@@ -1,4 +1,5 @@
 import base64
+import uuid
 
 from datetime import timedelta
 from odoo import api, fields, models, tools, _
@@ -111,12 +112,13 @@ class Outplacement(models.Model):
     my_outplacement = fields.Boolean(compute='_compute_my_outplacement',
                                      search='_search_my_outplacement')
     sprakstod = fields.Char()
-    
+
     show_2nd_line = fields.Boolean(compute="_compute_readonly")
-    
+
     @api.one
     def _compute_readonly(self):
-        self.show_2nd_line = not self.env.user.has_group("base_user_groups_dafa.2_line_support")
+        self.show_2nd_line = not self.env.user.has_group(
+            "base_user_groups_dafa.2_line_support")
 
     # Nils: If image is removed this should be removed as well.
     @api.onchange('employee_id')
@@ -141,8 +143,7 @@ class Outplacement(models.Model):
     @api.returns('self', lambda value: value.id)
     def create(self, vals):
         if not vals.get('uniq_ref'):
-            vals['uniq_ref'] = self.env['ir.sequence'].get(
-                'outplacement.uniqid')
+            vals['uniq_ref'] = str(uuid.uuid4())
         return super(Outplacement, self).create(vals)
 
     @api.multi

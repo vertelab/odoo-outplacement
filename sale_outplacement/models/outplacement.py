@@ -150,6 +150,7 @@ class Outplacement(models.Model):
         self.env['project.task'].init_joint_planning_stages(outplacement.id)
         return data
 
+    # For test. ToDo: Rename with a test in function name.
     @api.model
     def create_suborder_process_data(self):
         self.suborder_process_data({

@@ -45,7 +45,10 @@ class ProjectTask(models.Model):
             try:
                 stage_todo = self.env.ref(".".join([xmlid_module, 'stage_todo']))
             except:
-                stage_todo = self.env['project.task.type'].create({'name': 'To Do'})
+                stage_todo = self.env['project.task.type'].create({
+                    'name': 'To Do',
+                    'is_outplacement': True,
+                    })
                 external_xmlid = ".".join([xmlid_module, 'stage_todo'])
                 self.env['ir.model.data'].create({
                             'name': external_xmlid.split('.')[1],   
@@ -56,7 +59,10 @@ class ProjectTask(models.Model):
             try:
                 stage_optional = self.env.ref(".".join([xmlid_module, 'stage_optional']))
             except:
-                stage_optional = self.env['project.task.type'].create({'name': 'Optional'})
+                stage_optional = self.env['project.task.type'].create({
+                    'name': 'Optional',
+                    'is_outplacement': True,
+                    })
                 external_xmlid = ".".join([xmlid_module, 'stage_optional'])
                 self.env['ir.model.data'].create({
                             'name': external_xmlid.split('.')[1],
@@ -67,7 +73,10 @@ class ProjectTask(models.Model):
             try:
                 stage_done = self.env.ref(".".join([xmlid_module, 'stage_done']))
             except:
-                stage_done = self.env['project.task.type'].create({'name': 'Done'})
+                stage_done = self.env['project.task.type'].create({
+                    'name': 'Done',
+                    'is_outplacement': True,
+                    })
                 external_xmlid = ".".join([xmlid_module, 'stage_done'])
                 self.env['ir.model.data'].create({
                             'name': external_xmlid.split('.')[1],

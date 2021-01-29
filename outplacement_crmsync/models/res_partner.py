@@ -203,7 +203,9 @@ class Outplacement(models.Model):
                 'sun_id': self.env['res.sun'].search([('code','=',code)],limit=1)[0].id,
                 'education_level_id': self.env['res.partner.education.education_level'].search([('name','=',level)],limit=1)[0].id,
                 'foreign_education': foreign,
-                'foreign_education_approved': approved))]
+                'foreign_education_approved': approved
+                })]
+
         # drivers_license_ids
         self.partner_id.drivers_license_ids = [(6,0,[e.id for e in self.env['res.drivers_license'].search([('name','in',rec['drivers_license_ids'])])])]
         # job_ids

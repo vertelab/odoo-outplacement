@@ -223,7 +223,7 @@ class Outplacement(models.Model):
                 }
             sun_id = self.env['res.sun'].search([('code', '=', sun_code)], limit=1)[0]
             edu_level = self.env['res.partner.education.eduation_level'].search([('name', '=',edu_lvl)], limit=1)[0]
-            education_id = self.env['res.partner.education'].search([('partner_id','=',self.id),
+            education_id = self.env['res.partner.education'].search([('partner_id','=',self.partner_id.id),
                                                                     ('sun_id','=',sun_id.id),
                                                                     ('education_level_id','=',edu_level.id),
                                                                     ('foreign_education','=',edu_f),

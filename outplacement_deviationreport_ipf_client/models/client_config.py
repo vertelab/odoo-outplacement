@@ -79,7 +79,9 @@ class ClientConfig(models.Model):
                   'params': params,
                   'response_code': response.status_code}
 
-        if response.status_code not in (200, 201):
+        if response.status_code == 404:
+            pass
+        elif response.status_code not in (200, 201):
             values.update(message=json.loads(response.content))
         self.env['ipf.report.request.history'].create(values)
 

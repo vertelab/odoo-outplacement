@@ -1,0 +1,4 @@
+id,name,is_outplacement
+__outplacement__.stage_todo,To Do,True
+__outplacement__.stage_optional,Optional,True
+__outplacement__.stage_done,Done,True

@@ -44,46 +44,11 @@ class ProjectTask(models.Model):
         for task in self.env["res.joint_planning"].search([], order="sequence"):
             try:
                 stage_todo = self.env.ref(".".join([xmlid_module, 'stage_todo']))
-            except ValueError:
-                stage_todo = self.env['project.task.type'].create({
-                    'name': 'To Do',
-                    'is_outplacement': True,
-                    })
-                external_xmlid = ".".join([xmlid_module, 'stage_todo'])
-                self.env['ir.model.data'].create({
-                            'name': external_xmlid.split('.')[1],   
-                            'module': external_xmlid.split('.')[0],
-                            'model': stage_todo._name,
-                            'res_id': stage_todo.id
-                            })
-            try:
                 stage_optional = self.env.ref(".".join([xmlid_module, 'stage_optional']))
+                self.env.ref(".".join([xmlid_module, 'stage_done']))
             except ValueError:
-                stage_optional = self.env['project.task.type'].create({
-                    'name': 'Optional',
-                    'is_outplacement': True,
-                    })
-                external_xmlid = ".".join([xmlid_module, 'stage_optional'])
-                self.env['ir.model.data'].create({
-                            'name': external_xmlid.split('.')[1],
-                            'module': external_xmlid.split('.')[0],
-                            'model': stage_optional._name,
-                            'res_id': stage_optional.id
-                            })
-            try:
-                stage_done = self.env.ref(".".join([xmlid_module, 'stage_done']))
-            except ValueError:
-                stage_done = self.env['project.task.type'].create({
-                    'name': 'Done',
-                    'is_outplacement': True,
-                    })
-                external_xmlid = ".".join([xmlid_module, 'stage_done'])
-                self.env['ir.model.data'].create({
-                            'name': external_xmlid.split('.')[1],
-                            'module': external_xmlid.split('.')[0],
-                            'model': stage_done._name,
-                            'res_id': stage_done.id
-                            })
+                raise ValueError(_("Not all stages were found"))
+                
 
             self.env["project.task"].create(
                 {

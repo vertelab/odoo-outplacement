@@ -41,7 +41,7 @@
     ],
     'data': [
         'data/product.xml',
-        'data/project.xml',
+        'data/project.task.type.csv',
         'views/outplacement_view.xml',
         'views/product_views.xml',
         'views/project_views.xml',

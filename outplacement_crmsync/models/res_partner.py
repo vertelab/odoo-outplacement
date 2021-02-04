@@ -190,7 +190,7 @@ class Outplacement(models.Model):
         xmlrpc = crm_serverII(self.env)
         
         partner = xmlrpc.common.env['res.partner'].browse(
-            xmlrpc.common.env['res.partner'].search([('email','=',self.management_team_id.email)],limit=1))
+            xmlrpc.common.env['res.users'].search([('email','=',self.management_team_id.email)],limit=1))
             # ~ xmlrpc.common.env['res.partner'].search([('id','=',26)],limit=1))
         if self.management_team_id._name == 'hr.employee':
             self.management_team_id.write({

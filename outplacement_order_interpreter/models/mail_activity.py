@@ -18,10 +18,8 @@ class MailActivity(models.Model):
         string='Interpreter Language',
         default=lambda self: self._get_default_outplacement_value(
             'interpreter_language'))
-    interpreter_gender_preference = fields.Selection([
-        ('male', 'Male'),
-        ('female', 'Female'),
-        ('no_preference', 'No preference')],
+    interpreter_gender_preference = fields.Many2one(
+        comodel_name='res.interpreter.gender_preference',
         string="Gender Preference",
         default=lambda self: self._get_default_outplacement_value(
             'interpreter_gender_preference'))
@@ -156,8 +154,8 @@ class MailActivity(models.Model):
             data = json.loads(response.content.decode())
             self.booking_ref = data.get('tolkbokningId')
 
-    # ToDo: Poll Tolkportalen to get status of open orders and update
-    #       status.
     @api.model
     def cron_order_interpreter(self):
-        pass
+        ipf_client = self.env['ipf.interpreter.client']
+        if not ipf_client.is_params_set():
+            return

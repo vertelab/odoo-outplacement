@@ -39,13 +39,13 @@ msgstr "VAB"
 #. module: outplacement_deviation_report
 #: model:ir.model.fields,field_description:outplacement_deviation_report.field_outplacement_deviation_report_wizard__company_id
 msgid "Company ID"
-msgstr ""
+msgstr "Företags-ID"
 
 #. module: outplacement_deviation_report
 #: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:136
 #, python-format
 msgid "Configuration not found"
-msgstr ""
+msgstr "Konfiguration saknas"
 
 #. module: outplacement_deviation_report
 #: model:ir.model.fields,field_description:outplacement_deviation_report.field_outplacement_deviation_report_wizard__create_uid
@@ -212,7 +212,7 @@ msgstr "Namn"
 #. module: outplacement_deviation_report
 #: model:ir.model.fields,field_description:outplacement_deviation_report.field_outplacement_deviation_report_wizard__order_id
 msgid "Order ID"
-msgstr ""
+msgstr "Order-ID"
 
 #. module: outplacement_deviation_report
 #: model:ir.model.fields,field_description:outplacement_deviation_report.field_outplacement_deviation_report_wizard__deviation_18_other_reason

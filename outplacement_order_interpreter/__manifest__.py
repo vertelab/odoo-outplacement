@@ -38,6 +38,7 @@
         'project',
         'task_interpreter_ipf_client',
         'res_interpreter_language',
+        'res_interpreter_gender_preference',
         'outplacement',
     ],
     'data': [

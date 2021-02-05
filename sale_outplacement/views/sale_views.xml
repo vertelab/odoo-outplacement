@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+
+    <record model="ir.ui.view" id="view_order_form">
+        <field name="name">sale.order.line.outplacement</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="payment_term_id" position="after">
+                <field name="outplacement_id" />
+            </field>
+            <xpath expr="//field[@name='order_line']/form//field[@name='product_uom_qty']" position="after">
+                <field name="forvantatantal" />
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

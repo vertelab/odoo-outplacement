@@ -1,4 +1,5 @@
 import base64
+import uuid
 
 from datetime import timedelta
 from odoo import api, fields, models, tools, _
@@ -111,12 +112,13 @@ class Outplacement(models.Model):
     my_outplacement = fields.Boolean(compute='_compute_my_outplacement',
                                      search='_search_my_outplacement')
     sprakstod = fields.Char()
-    
+
     show_2nd_line = fields.Boolean(compute="_compute_readonly")
-    
+
     @api.one
     def _compute_readonly(self):
-        self.show_2nd_line = not self.env.user.has_group("base_user_groups_dafa.2_line_support")
+        self.show_2nd_line = not self.env.user.has_group(
+            "base_user_groups_dafa.2_line_support")
 
     # Nils: If image is removed this should be removed as well.
     @api.onchange('employee_id')
@@ -141,8 +143,7 @@ class Outplacement(models.Model):
     @api.returns('self', lambda value: value.id)
     def create(self, vals):
         if not vals.get('uniq_ref'):
-            vals['uniq_ref'] = self.env['ir.sequence'].get(
-                'outplacement.uniqid')
+            vals['uniq_ref'] = str(uuid.uuid4())
         return super(Outplacement, self).create(vals)
 
     @api.multi
@@ -195,43 +196,6 @@ class Outplacement(models.Model):
                 'notif_layout': 'mail.mail_notification_light'
             })
         return res
-
-    # This crashes, who uses this?, can it be removed?
-    # @api.multi
-    # def _notify_get_reply_to(
-    #         self, default=None, records=None, company=None, doc_names=None):
-    #     """
-    #     Override to set alias of Outplacements to their job definition
-    #     if any.
-    #     """
-    #     aliases = self.mapped('job_ids')._notify_get_reply_to(default=default,
-    #                                                          records=None,
-    #                                                          company=company,
-    #                                                          doc_names=None)
-    #     res = {app.id: aliases.get(app.job_id.id) for app in self}
-    #     leftover = self.filtered(lambda rec: not rec.job_id)
-    #     if leftover:
-    #         res.update(super(Outplacement, leftover)._notify_get_reply_to(
-    #             default=default, records=None,
-    #             company=company, doc_names=doc_names))
-    #     return res
-
-    # @api.multi
-    # def message_get_suggested_recipients(self):
-    #     recipients = super(
-    #         Outplacement, self).message_get_suggested_recipients()
-    #     for outplacement in self:
-    #         if outplacement.partner_id:
-    #             outplacement._message_add_suggested_recipient(
-    #                 recipients,
-    #                 partner=outplacement.partner_id,
-    #                 reason=_('Contact'))
-    #         elif outplacement.email_from:
-    #             outplacement._message_add_suggested_recipient(
-    #                 recipients,
-    #                 email=outplacement.email_from,
-    #                 reason=_('Contact Email'))
-    #     return recipients
 
     @api.model
     def message_new(self, msg, custom_values=None):

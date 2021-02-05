@@ -1,0 +1,12 @@
+<odoo>    
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">outplacement.view.form.inherit.final.report</field>
+        <field name="model">outplacement</field> 
+        <field name="inherit_id" ref="outplacement.outplacement_form_view" />
+        <field name="arch" type="xml">
+            <field name="study_visit_ids" position="after">
+                <button type="object" name="send_final_report">Send report</button>
+            </field>
+        </field>
+    </record>
+</odoo>

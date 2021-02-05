@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2019 N-Development (<https://n-development.com>).
@@ -18,35 +18,35 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-################################################################################
+###############################################################################
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
-    'name': 'Sale outplacement',
-    'version': '12.0.1.0.1',
+    'name': 'Order Interpreter',
+    'version': '12.0.1.0.4',
     'category': 'Outplacement',
-    'description': """Receives a suborder and automatically create sale.order 
-    and outplacement.outplacement objects.""",
+    'description': """This module adds interpreter-functionality \n
+    v12.0.0.2 changed the languagecodes from a full list to Tolkportalens list. AFC-1586 \n
+    v12.0.1.0.3 Added Category Outplacement \n
+    v12.0.1.0.3 Added fields to Outplacement view \n
+    """,
     'author': "N-development",
     'license': 'AGPL-3',
     'website': 'https://www.n-development.com',
-    'depends': [
-        'outplacement',
-        'sale',
-        'res_joint_planning_af',
-        'sale_suborder_ipf_server',
-        'l10n_se',
+    "depends": [
+        'mail',
+        'hr_timesheet',
         'project',
-        'hr_skill',
-        'partner_ssn',
+        'task_interpreter_ipf_client',
+        'res_interpreter_language',
+        'res_interpreter_gender_preference',
+        'outplacement',
     ],
     'data': [
-        'data/product.xml',
-        'data/project.task.type.csv',
+        'data/mail_data.xml',
+        'data/cron.xml',
+        'views/mail_activity_views.xml',
+        'views/res_partner_view.xml',
         'views/outplacement_view.xml',
-        'views/product_views.xml',
-        'views/project_views.xml',
-        'views/sale_views.xml',
-        'security/ir.model.access.csv',
     ],
     'installable': True,
     'images': [

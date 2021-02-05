@@ -7,17 +7,16 @@
         <field name="inherit_id" ref="mail.mail_activity_view_form_popup"/>
         <field name="arch" type="xml">
             <field name="summary" position="after">
-                <field name="location_type" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
+                <field name="location_type" attrs="{'required': [('activity_type_id', '=', %(outplacement_order_interpretor.order_interpreter)d)], 'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
                 <field name="phone" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
-                <field name="time_start" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
-                <field name="time_end" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
+                <field name="time_start" attrs="{'required': [('activity_type_id', '=', %(outplacement_order_interpretor.order_interpreter)d)], 'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
+                <field name="time_end" attrs="{'required': [('activity_type_id', '=', %(outplacement_order_interpretor.order_interpreter)d)], 'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
             </field>
             <field name="user_id" position="after">
-                <field name="interpreter_gender_preference" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
-                <field name="interpreter_language" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
+                <field name="interpreter_gender_preference" attrs="{'required': [('activity_type_id', '=', %(outplacement_order_interpretor.order_interpreter)d)], 'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
+                <field name="interpreter_language" attrs="{'required': [('activity_type_id', '=', %(outplacement_order_interpretor.order_interpreter)d)], 'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
                 <label for="street" string="Address" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}"/>
-<!--
-                <div class="o_address_format" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}">
+                <div class="o_address_format" attrs="{'required': [('activity_type_id', '=', %(outplacement_order_interpretor.order_interpreter)d)], 'invisible': [('activity_type_id', '!=', %(outplacement_order_interpretor.order_interpreter)d)]}">
                     <field name="street" placeholder="Street..."
                            class="o_address_street"/>
                     <field name="street2" placeholder="Street 2..."
@@ -32,7 +31,6 @@
                            class="o_address_country"
                            options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
                 </div>
--->
             </field>
         </field>
     </record>

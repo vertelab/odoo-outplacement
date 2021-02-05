@@ -127,6 +127,72 @@ class ClientConfig(models.Model):
                                      params=querystring)
         return response
 
+    @api.model
+    def get_api(self):
+        return self.search([], limit=1)
+
+    @api.model
+    def post_request(self, outplacement, res_joint_planning_af_recordset):
+        api = self.get_api()
+        if 'department_ref' in outplacement.performing_operation_id:
+            dep_id = outplacement.performing_operation_id.ka_nr
+            _logger.info("using department_ref %s"
+                         % outplacement.performing_operation_id.ka_nr)
+        else:
+            dep_id = outplacement.performing_operation_id.ka_nr
+            _logger.info("using ka_ref %s"
+                         % outplacement.performing_operation_id.ka_nr)
+
+        if not outplacement.meeting_remote:
+            raise Warning("Meeting type for outplacement not set.")
+        if not dep_id:
+            raise Warning("KA nr. not set on performing operation.")
+
+        # Add version handling to unik_id (unique id)
+        unikt_id = outplacement.uniq_ref.split('_')
+        if len(unikt_id) == 1:
+            unikt_id = unikt_id[0] + '_0'
+        else:
+            unikt_id = f'{unikt_id[0]}_{int(unikt_id[1])+1}'
+        outplacement.write({'uniq_ref': unikt_id})
+
+        payload = {
+            "utforande_verksamhets_id": str(dep_id),
+            "avrops_id": "A000000000000",
+            "genomforande_referens": outplacement.order_id.origin,
+            "ordernummer": outplacement.order_id.name,
+            "personnr": outplacement.partner_id.social_sec_nr.replace('-', ''),
+            "unikt_id": unikt_id,
+            "deltagare": {
+                "fornamn": outplacement.partner_id.firstname,
+                "efternamn": outplacement.partner_id.lastname,
+                "deltog_per_distans": outplacement.meeting_remote
+            },
+            "inskickad_datum": str(outplacement.jp_sent_date),
+            "status": str(outplacement.stage_id.sequence),
+            "ofullstandig": "true" if outplacement.incomplete else "false",
+            "sent_inskickad": "true" if outplacement.late else "false",
+            "innehall": []
+        }
+        # As BÄR only accept certain IDs and only in the correct order
+        # the activites are matched towards res.joint_planning and only
+        # those marked as send2server is sent in the correct order.
+        for planned in self.env['res.joint_planning'].search(
+                [('send2server', '=', True)], order="sequence"):
+            _logger.info("send2server for %s %s" % (planned.activity_id,
+                                                    planned.send2server))
+            task = outplacement.task_ids.filtered(
+                lambda t: t.activity_id == planned.activity_id)
+            payload['innehall'].append({
+                'aktivitets_id': planned.activity_id,
+                'aktivitets_namn': (task.activity_name
+                                    if task else planned.name),
+                'beskrivning': task.description if task else '',
+            })
+        _logger.warn(payload)
+        return
+        api.post_report(payload)
+
     def test_post_report(self):
         payload = {
             "utforande_verksamhets_id": "10011119",
@@ -147,17 +213,20 @@ class ClientConfig(models.Model):
             "innehall": [
                 {
                     "aktivitets_id": "176",
-                    "aktivitets_namn": "Val och framtidsplanering - deltagarens karriärplan",
+                    "aktivitets_namn": "Val och framtidsplanering - "
+                                       "deltagarens karriärplan",
                     "beskrivning": "Coach's comment"
                 },
                 {
                     "aktivitets_id": "177",
-                    "aktivitets_namn": "Individuella karriärsvägledningssamtal",
+                    "aktivitets_namn": "Individuella "
+                                       "karriärsvägledningssamtal",
                     "beskrivning": "Coach's comment"
                 },
                 {
                     "aktivitets_id": "178",
-                    "aktivitets_namn": "Stöd till att bli antagen till kommunens insatser",
+                    "aktivitets_namn": "Stöd till att bli antagen till "
+                                       "kommunens insatser",
                     "beskrivning": "Coach's comment"
                 },
                 {
@@ -177,7 +246,9 @@ class ClientConfig(models.Model):
                 },
                 {
                     "aktivitets_id": "182",
-                    "aktivitets_namn": "Kunskap om arbetsmarknad, utbildningsvägar, studiefinansiering, omvärldsbev.",
+                    "aktivitets_namn": "Kunskap om arbetsmarknad, "
+                                       "utbildningsvägar, studiefinansiering, "
+                                       "omvärldsbev.",
                     "beskrivning": "Coach's comment"
                 }
             ]
@@ -185,61 +256,3 @@ class ClientConfig(models.Model):
 
         response = self.post_report(payload)
         print(response.text)
-
-    @api.model
-    def get_api(self):
-        return self.search([], limit=1)
-
-    @api.model
-    def post_request(self, outplacement, res_joint_planning_af_recordset):
-        api = self.get_api()
-        if 'department_ref' in outplacement.performing_operation_id:
-            dep_id = outplacement.performing_operation_id.ka_nr
-            # _logger.info("using department_ref %s" % outplacement.performing_operation_id.ka_nr)
-        else:
-            dep_id = outplacement.performing_operation_id.ka_nr
-            _logger.info("using ka_ref %s" % outplacement.performing_operation_id.ka_nr)
-
-        if not outplacement.meeting_remote:
-            raise Warning("Meeting type for outplacement not set.")
-        if not dep_id:
-            raise Warning("KA nr. not set on performing operation.")
-
-        # Add version handling to unik_id (unique id)
-        unikt_id = outplacement.uniq_ref.split('-')
-        if len(unikt_id) == 1:
-            unikt_id = unikt_id[0] + '-0'
-        else:
-            unikt_id = f'{unikt_id[0]}-{int(unikt_id[1])+1}'
-        outplacement.write({'uniq_ref': unikt_id})
-
-        payload = {
-            "utforande_verksamhets_id": str(dep_id),
-            "avrops_id": "A000000000000",
-            "genomforande_referens": outplacement.order_id.origin,
-            "ordernummer": outplacement.order_id.name,
-            "personnr": outplacement.partner_id.social_sec_nr.replace('-',''),
-            "unikt_id": unikt_id,
-            "deltagare": {
-                "fornamn": outplacement.partner_id.firstname,
-                "efternamn": outplacement.partner_id.lastname,
-                "deltog_per_distans": outplacement.meeting_remote
-            },
-            "inskickad_datum": str(outplacement.jp_sent_date),
-            "status": str(outplacement.stage_id.sequence),
-            "ofullstandig": "true" if outplacement.incomplete else "false",
-            "sent_inskickad": "true" if outplacement.late else "false",
-            "innehall": []
-        }
-        for planned in self.env['res.joint_planning'].search(
-                [('send2server', '=', True)], order="sequence"):
-            _logger.info("send2server for %s %s" % (planned.activity_id, planned.send2server))
-            task = outplacement.task_ids.filtered(
-                lambda t: t.activity_id == planned.activity_id)
-            payload['innehall'].append({
-                'aktivitets_id': planned.activity_id, #takes only 176-183
-                'aktivitets_namn': (task.activity_name
-                                    if task else planned.name),
-                'beskrivning': task.description if task else '',
-            })
-        api.post_report(payload)

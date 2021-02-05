@@ -19,37 +19,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ################################################################################
-# Version format OdooMajor.OdooMinor.Major.Minor.Patch
-{
-    'name': 'Sale outplacement',
-    'version': '12.0.1.0.1',
-    'category': 'Outplacement',
-    'description': """Receives a suborder and automatically create sale.order 
-    and outplacement.outplacement objects.""",
-    'author': "N-development",
-    'license': 'AGPL-3',
-    'website': 'https://www.n-development.com',
-    'depends': [
-        'outplacement',
-        'sale',
-        'res_joint_planning_af',
-        'sale_suborder_ipf_server',
-        'l10n_se',
-        'project',
-        'hr_skill',
-        'partner_ssn',
-    ],
-    'data': [
-        'data/product.xml',
-        'data/project.task.type.csv',
-        'views/outplacement_view.xml',
-        'views/product_views.xml',
-        'views/project_views.xml',
-        'views/sale_views.xml',
-        'security/ir.model.access.csv',
-    ],
-    'installable': True,
-    'images': [
-        'static/description/img.png'
-    ],
-}
+
+from . import mail_activity
+from . import res_partner
+from . import outplacement

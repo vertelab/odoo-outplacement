@@ -116,6 +116,7 @@ class Outplacement(models.Model):
 
     @api.model
     def suborder_process_data(self, data):
+        _logger.info(data)
         data = super(Outplacement, self).suborder_process_data(data)
         partner_id = self._get_partner_id(data)
 

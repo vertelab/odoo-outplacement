@@ -171,7 +171,7 @@ class DeviationReportWizard(models.TransientModel):
         elif self.deviation_type == "deviation":
             avvikelse_dict = {
                 "avvikelseorsakskod": self.deviation_code,
-                "rapportertingsdatum": str(self.deviation_date),
+                "rapporteringsdatum": str(self.deviation_date),
             }
 
         qa_pairs = []

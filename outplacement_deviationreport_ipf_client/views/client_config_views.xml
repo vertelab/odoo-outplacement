@@ -61,14 +61,14 @@
     </record>
 
     <record model="ir.actions.act_window" id="ipf_report_client_config_action_window">
-        <field name="name">IPF Report Client Config</field>
+        <field name="name">IPF Deviation Report Client Config</field>
         <field name="res_model">ipf.report.client.config</field>
         <field name="view_mode">tree,form</field>
     </record>
 
 
     <menuitem id="ipf_report_client_config"
-              name="IPF Report Client Config"
+              name="IPF Deviation Report Client Config"
               action="ipf_report_client_config_action_window"
               parent="base.menu_custom"
               sequence="120"/>

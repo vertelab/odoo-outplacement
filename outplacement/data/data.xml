@@ -1,6 +1,11 @@
 <odoo>
   <data noupdate="0">
+    <!-- TODO: This record has a typo. We need to remove this at a later date -->
     <record id="approvec_stage" model="outplacement.stage">
+      <field name="name">Approved</field>
+      <field name="sequence">10</field>
+    </record>
+    <record id="approved_stage" model="outplacement.stage">
       <field name="name">Approved</field>
       <field name="sequence">10</field>
     </record>

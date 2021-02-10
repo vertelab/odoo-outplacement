@@ -181,8 +181,13 @@
             <group>
                 <field name="ka_nr" />
             </group>
-            <label for="partner_ids" />
-            <field name="partner_ids" />
+            <field name="partner_ids" mode="tree">
+              <tree>
+                <field name="street"/>
+                <field name="city"/>
+                <field name="zip"/>
+              </tree>
+            </field>
           </sheet>
         </form>
       </field>

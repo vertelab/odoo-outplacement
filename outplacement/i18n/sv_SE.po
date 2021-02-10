@@ -568,7 +568,7 @@ msgid "Incomplete"
 msgstr "Ej komplett"
 
 #. module: outplacement
-#: model:outplacement.stage,name:outplacement.approvec_stage
+#: model:outplacement.stage,name:outplacement.approved_stage
 msgid "Approved"
 msgstr "Godkänd"
 

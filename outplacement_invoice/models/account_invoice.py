@@ -1,34 +1,66 @@
 # -*- coding: utf-8 -*-
-
+"""
+Adds functions to handle invoices from Raindance server.
+"""
 import base64
 import logging
 import xmltodict
 
 from odoo import api, models, fields, tools, _
+from odoo.exceptions import Warning
+
+# only used in tests
+from odoo.addons.outplacement_invoice.static.svefaktura import SVEFAKTURA
 
 _logger = logging.getLogger(__name__)
 
 
 class AccountInvoice(models.Model):
+    """Handle Invoices from Raindance."""
     _inherit = "account.invoice"
     raindance_ref = fields.Char(string='Raindance ID')
 
     @api.model
     def cron_outplacement_invoice(self):
+        """Cron job entry point."""
+        self.outplacement_invoice(silent=True)
+
+    @api.model
+    def outplacement_invoice(self, silent=False):
+        """Get invoices from raindance and proccess them."""
         raindance = 'api.raindance.client.config'
-        for invoice_ref in self.env[raindance].get_invoices(
-                supplier_id=None, date=None):
-            for invoice in self.env[raindance].get_invoice(invoice_ref):
-                self.create_invoice(invoice)
+        client_config = self.env[raindance].search([], limit=1)
+        if not client_config:
+            raise Warning(_("No client config for raindance integration"))
+        if not client_config.url:
+            raise Warning(_("No url configured for raindance client config"))
+        if not client_config.client_id:
+            raise Warning(_("No client_id configured for raindance client config"))
+        if not client_config.client_secret:
+            raise Warning(_("No client_secret configured for raindance client config"))
+
+        legacy_no = self.env["ir.config_parameter"].sudo().get_param("dafa.legacy_no")
+        if not legacy_no:
+            raise Warning(_("dafa.legacy_no not set in system parameters"))
+
+        for invoice_ref in client_config.get_invoices(
+                supplier_id=legacy_no, date=""):
+            pass
+            # for invoice in client_config.get_invoice(invoice_ref):
+            #     self.create_invoice(invoice)
 
     @api.model
     def create_invoice(self, invoice):
+        '''
+        Process invoice in the format svefaktura.
+        Takes a dict with the key svefaktura.
+        '''
         sf = invoice.get('svefaktura')
         if sf:
             sf = xmltodict.parse(sf)
             invoice_ref = sf['Invoice']['ID']
-            if len(self.env['account.invoice'].search(
-                    [('raindance_ref', '=', invoice_ref)])):
+            if self.env['account.invoice'].search(
+                    [('raindance_ref', '=', invoice_ref)]):
                 _logger.debug('Invoice already exists: %s', invoice_ref)
                 return
             party = sf['Invoice']['cac:BuyerParty']['cac:Party']
@@ -36,7 +68,7 @@ class AccountInvoice(models.Model):
             org_nr = party['cac:PartyIdentification']['cac:ID']
             res_partner = self.env['res.partner'].search(
                 [('company_registry', '=', org_nr)], limit=1)
-            if not len(res_partner):
+            if not res_partner:
                 name = party['cac:PartyName']['cbc:Name']
                 org_nr = party['cac:PartyIdentification']['cac:ID']
                 street = party['cac:Address']['cbc:Postbox']
@@ -83,3 +115,7 @@ class AccountInvoice(models.Model):
                      'name': description,
                      'price_unit': price,
                      'quantity': quantity})
+
+    def test_data(self):
+        """Returns svefaktura dict with testdata."""
+        return {'svefaktura': SVEFAKTURA}

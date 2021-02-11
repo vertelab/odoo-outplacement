@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2019 N-Development (<https://n-development.com>).
@@ -18,11 +18,11 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-################################################################################
+###############################################################################
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Outplacement Invoice',
-    'version': '12.0.1.0.1',
+    'version': '12.0.1.1.3',
     'category': 'Outplacement',
     'description': """This module listen for new invoices from Raindance...""",
     'author': "Vertel AB",
@@ -31,9 +31,11 @@
     "depends": [
         'outplacement',
         'account',
+        'api_raindance_client',
     ],
     'data': [
         'data/cron.xml',
+        'data/test.xml',
     ],
     'installable': True,
     'images': [

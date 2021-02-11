@@ -32,7 +32,7 @@
     </record>
     <record id="outplacement.sent_stage" model="outplacement.stage">
       <field name="name">Sent</field>
-      <field name="ordertjansten_status">KLAR</field>
+      <field name="ordertjansten_status">KLAR, LEVERERAD</field>
       <field name="order_id_state">done</field>
       <field name="sequence">60</field>
     </record>

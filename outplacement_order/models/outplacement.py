@@ -29,7 +29,6 @@ class Outplacement(models.Model):
         for outplacement in outplacements:
             # send request
             res = client_config.get_order_id(outplacement.name)
-            _logger.warn("DAER res: %s" % res)
             order_status = res.get("orderstatus")
             if not order_status:
                 _logger.warn(

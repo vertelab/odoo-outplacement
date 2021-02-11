@@ -7,8 +7,13 @@ _logger = logging.getLogger(__name__)
 
 
 class OutplacementStage(models.Model):
-    _inherit = 'outplacement.stage'
+    _inherit = "outplacement.stage"
 
-    ordertjansten_status = fields.Char(string='Ordertjänsten status', help="Technical name of mapped status in ordertjänsten, seperate several statuses with ','") #Tekniskt namn på mappad status i ordertjänsten
-    order_id_state = fields.Char(string='Säljorder status', help='Techincal name of mapped state on saleorders in Odoo') #Tekniskt namn på mappad status på säljorder i Odoo
-    
+    ordertjansten_status = fields.Char(
+        string="Ordertjänsten status",
+        help="Technical name of mapped status in ordertjänsten, seperate several statuses with ','",
+    )
+    order_id_state = fields.Char(
+        string="Säljorder status",
+        help="Techincal name of mapped state on saleorders in Odoo",
+    )

@@ -53,10 +53,11 @@ class MailActivity(models.Model):
     country_id = fields.Many2one(
         'res.country', string='Country',
         default=lambda self: self._get_address('country_id'))
-    interpreter_booking_ref = fields.Char(string='Booking Reference')
-    interpreteter_booking_status = fields.Char(string='Booking Status',
-                                               readonly=True,
-                                               default='Not booked')
+    interpreter_booking_ref = fields.Char(string='Booking Reference',
+                                          readonly=True)
+    interpreter_booking_status = fields.Char(string='Booking Status',
+                                             readonly=True,
+                                             default='Not booked')
     interpreter_name = fields.Char(string='Interpreter Name',
                                    readonly=True)
     interpreter_phone = fields.Char(string='Interpreter Phone Number',
@@ -154,6 +155,7 @@ class MailActivity(models.Model):
 
     @api.model
     def create(self, vals):
+        _logger.warn('CREATE')
         record = super(MailActivity, self).create(vals)
         order_interpreter = self.env.ref(
             'outplacement_order_interpreter.order_interpreter').id
@@ -168,14 +170,18 @@ class MailActivity(models.Model):
         return record
 
     @api.model
+    def write(self, *args, **kwargs):
+        super(MailActivity, self).write(*args, **kwargs)
+        _logger.warn('WRITE')
+
+    @api.model
     def process_response(self, response, record):
         if response and response.status_code == 200:
-            data = json.loads(response.content.decode())
-            record.booking_ref = data.get('tolkbokningId')
-            record.interpreteter_booking_status = 'Request sent'
+            record.interpreter_booking_ref = response.text
+            record.interpreter_booking_status = 'Request sent'
         else:
             msg = 'Failed to make booking'
-            record.interpreteter_booking_status = msg
+            record.interpreter_booking_status = msg
             _logger.error(f'\n{msg}\nResponse text:\n{response.text}\n'
                           f'Response status code:\n{response.status_code}')
 
@@ -186,29 +192,33 @@ class MailActivity(models.Model):
                          f'{response.status_code}')
             return
         data = json.loads(response.content.decode())
-        activity_obj.interpreteter_booking_status = data.get(
-            'tekniskStatusTypId')
-        activity_obj.interpreter_type = data.get('tolkTypId')
-        activity_obj.interpreter_remote_type = data.get('distanstolkTypId')
-        activity_obj.time_start = datetime.datetime.fromtimestamp(
-            data.get('fromDatumTid'))
-        activity_obj.time_end = datetime.datetime.fromtimestamp(
-            data.get('toDatumTid'))
-        address_obj = data.get('address')
-        activity_obj.street = address_obj.get('adress')
+        _logger.warn(data)
+        activity_obj.interpreter_booking_status = data.get(
+            'tekniskStatusTypId', 'Order received')
+        activity_obj.interpreter_type = self.env["res.interpreter.type"].search([('code', '=', data.get('tolkTypId'))])  # noqa:E501
+        activity_obj.interpreter_remote_type = self.env["res.interpreter.remote_type"].search([('code', '=', data.get('distanstolkTypId'))])  # noqa:E501
+        activity_obj.time_start = datetime.datetime.strptime(
+            data.get('fromDatumTid'),
+            '%Y-%m-%dT%H:%M:%S')
+        activity_obj.time_end = datetime.datetime.strptime(
+            data.get('tomDatumTid'),
+            '%Y-%m-%dT%H:%M:%S')
+        address_obj = data.get('adress')
+        activity_obj.street = address_obj.get('gatuadress')
         activity_obj.zip = address_obj.get('postnr')
         activity_obj.city = address_obj.get('ort')
         activity_obj.state_id = address_obj.get('kommunkod')
-        activity_obj.interpreter_language = data.get('tolksprakId')
-        activity_obj.interpreter_gender = data.get('tolkkonID')
+        activity_obj.interpreter_language = self.env["res.interpreter.language"].search([('code', '=', data.get('tolksprakId'))])  # noqa:E501
+        activity_obj.interpreter_gender = self.env["res.interpreter.gender_preference"].search([('code', '=', data.get('tolkkonID'))])  # noqa:E501
         activity_obj.interpreter_ref = data.get('tolkId')
         activity_obj.interpreter_name = data.get('tolkNamn')
         activity_obj.interpreter_phone = data.get('tolkTelefonnummer')
         activity_obj.interpreter_company = data.get(
             'tolkLeverantorVerksamhetsnamn')
-        supplier_obj = data.get('tolkLeverantorKontaktperson')
-        activity_obj.interpreter_contact_person = supplier_obj('namn')
-        activity_obj.interpreter_contact_phone = supplier_obj('telefonnummer')
+        supplier_obj = data.get('tolkLeverantorKontaktperson', {})
+        activity_obj.interpreter_contact_person = supplier_obj.get('namn')
+        activity_obj.interpreter_contact_phone = supplier_obj.get(
+            'telefonnummer')
 
     @api.model
     def cron_order_interpreter(self):
@@ -221,9 +231,10 @@ class MailActivity(models.Model):
             ref = activity.interpreter_booking_ref
             perf_op = activity.get_outplacement_value(
                 'performing_operation_id')
-            if not perf_op:
+            ka_nr = perf_op.ka_nr if perf_op else None
+            if not (ka_nr and ref):
                 continue
-            ka_nr = perf_op.ka_nr
+            _logger.debug(f'Checking status on booking with ref: {ref}')
             response = ipf_client.get_tolkbokningar_id(ref, ka_nr)
             self.update_activity(activity, response)
 

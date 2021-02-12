@@ -86,7 +86,7 @@
       <field name="name">Outplacement</field>
       <field name="model">outplacement</field>
       <field name="arch" type="xml">
-        <kanban class="o_hr_employee_kanban" default_group_by="stage_id">
+        <kanban class="o_hr_employee_kanban" default_group_by="employee_id">
           <field name="id" />
           <field name="message_follower_ids" />
           <field name="message_ids" />
@@ -98,29 +98,27 @@
           <templates>
             <t t-name="kanban-box">
               <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
+                <!-- removed images for now -->
                 <!-- Medium employee's picture -->
-                <div class="o_kanban_image_fill_left d-none d-md-block" t-attf-style="background-image: url(#{kanban_image('hr.jobseeker', 'image_medium', record.id.raw_value)})" role="img" />
+                <!-- <div class="o_kanban_image_fill_left d-none d-md-block" t-attf-style="background-image: url(#{kanban_image('hr.jobseeker', 'image_medium', record.id.raw_value)})" role="img" /> -->
                 <!-- Employee's picture optimized for mobile -->
-                <div class="o_kanban_image d-md-none rounded-circle" t-attf-style="background-image: url(#{kanban_image('hr.jobseeker', 'image_small', record.id.raw_value)})" role="img" />
+                <!-- <div class="o_kanban_image d-md-none rounded-circle" t-attf-style="background-image: url(#{kanban_image('hr.jobseeker', 'image_small', record.id.raw_value)})" role="img" /> -->
                 <div class="oe_kanban_details">
                   <div class="o_kanban_record_top">
                     <div class="o_kanban_record_headings">
                       <strong class="o_kanban_record_title">
                         <strong><t t-esc="record.partner_name.value"/></strong>
                       </strong>
-                      <!--                                        <span t-if="record.job_id.raw_value" class="o_kanban_record_subtitle"><field name="job_id"/></span>-->
+                      <span class="o_kanban_record_subtitle"><field name="name"/></span>
                     </div>
                   </div>
-                  <!--                                <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>-->
-                  <!--                                <ul>-->
-                  <!--                                    <li t-if="record.work_location.raw_value"><field name="work_location"/></li>-->
-                  <!--                                </ul>-->
                   <div class="o_kanban_record_body">
-                    <field name="name"/><br/>
-                    <field name="booking_ref"/><br/>
-                    <field name="service_start_date"/><br/>
-                    <field name="service_end_date"/><br/>
-                    <field name="sprakstod"/>
+                    <b>Language: </b>
+                    <field name="sprakstod"/><br/>
+                    <b>Start: </b>
+                    <field name="service_start_date" options="{'format': 'DD-MM-YYYY'}"/><br/>
+                    <b>End: </b>
+                    <field name="service_end_date" options="{'format': 'DD-MM-YYYY'}"/>
                 </div>
                 </div>
               </div>

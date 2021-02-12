@@ -4,16 +4,35 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0-20201022\n"
+"Project-Id-Version: Odoo Server 12.0-20210127\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-10 09:52+0000\n"
-"PO-Revision-Date: 2021-01-10 09:52+0000\n"
+"POT-Creation-Date: 2021-02-12 12:02+0000\n"
+"PO-Revision-Date: 2021-02-12 12:02+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: outplacement
+#: model_terms:ir.ui.view,arch_db:outplacement.outplacement_kanban_view
+msgid "<b>Language: </b>"
+msgstr "<b>Språkstöd: </b>"
+
+#. module: outplacement
+#: model_terms:ir.ui.view,arch_db:outplacement.outplacement_kanban_view
+msgid "<br/>\n"
+"                    <b>End: </b>"
+msgstr "<br/>\n"
+"                    <b>Slutdatum: </b>"
+
+#. module: outplacement
+#: model_terms:ir.ui.view,arch_db:outplacement.outplacement_kanban_view
+msgid "<br/>\n"
+"                    <b>Start: </b>"
+msgstr "<br/>\n"
+"                    <b>Startdatum: </b>"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__message_needaction
@@ -36,19 +55,24 @@ msgid "Address"
 msgstr "Adress"
 
 #. module: outplacement
+#: model:ir.model.fields,field_description:outplacement.field_performing_operation__partner_ids
+msgid "Addresses"
+msgstr ""
+
+#. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__message_attachment_count
 msgid "Attachment Count"
 msgstr "Antal bilagor"
 
 #. module: outplacement
-#: model:outplacement.stage,name:outplacement.blocked_stage
-msgid "Blocked"
-msgstr "Blockerad"
-
-#. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__booking_ref
 msgid "Booking Ref"
 msgstr "Bokningsreferens"
+
+#. module: outplacement
+#: model:outplacement.stage,name:outplacement.cancelled_stage
+msgid "Cancelled"
+msgstr "Avbruten"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__partner_city
@@ -62,9 +86,15 @@ msgid "Coach"
 msgstr "Handledare"
 
 #. module: outplacement
+#: model:ir.model,name:outplacement.model_res_company
+msgid "Companies"
+msgstr "Bolag"
+
+#. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__company_id
+#: model:ir.model.fields,field_description:outplacement.field_performing_operation__company_id
 msgid "Company"
-msgstr "Företag"
+msgstr "Bolag"
 
 #. module: outplacement
 #: model:ir.ui.menu,name:outplacement.outplacement_configuration
@@ -72,16 +102,9 @@ msgid "Configuration"
 msgstr "Konfiguration"
 
 #. module: outplacement
-#: code:addons/outplacement/models/outplacement.py:185
-#, python-format
+#: model:ir.model,name:outplacement.model_res_partner
 msgid "Contact"
 msgstr "Kontakt"
-
-#. module: outplacement
-#: code:addons/outplacement/models/outplacement.py:187
-#, python-format
-msgid "Contact Email"
-msgstr ""
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__country_id
@@ -92,12 +115,14 @@ msgstr "Land"
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__create_uid
 #: model:ir.model.fields,field_description:outplacement.field_outplacement_stage__create_uid
+#: model:ir.model.fields,field_description:outplacement.field_performing_operation__create_uid
 msgid "Created by"
 msgstr "Skapad av"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__create_date
 #: model:ir.model.fields,field_description:outplacement.field_outplacement_stage__create_date
+#: model:ir.model.fields,field_description:outplacement.field_performing_operation__create_date
 msgid "Created on"
 msgstr "Skapad den"
 
@@ -107,18 +132,14 @@ msgid "Define the schedule of resource"
 msgstr "Definiera planeringen för en resurs"
 
 #. module: outplacement
-#: model:ir.model.fields,field_description:outplacement.field_outplacement__department_id
-#: model_terms:ir.ui.view,arch_db:outplacement.outplacement_filter_view
-msgid "Department"
-msgstr "Avdelning"
-
-#. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__display_name
 #: model:ir.model.fields,field_description:outplacement.field_outplacement_stage__display_name
+#: model:ir.model.fields,field_description:outplacement.field_performing_operation__display_name
 msgid "Display Name"
 msgstr "Visningsnamn"
 
 #. module: outplacement
+#: model:ir.model.fields,field_description:outplacement.field_outplacement__email_from
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__partner_email
 msgid "Email"
 msgstr "E-post"
@@ -166,6 +187,7 @@ msgstr ""
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__id
 #: model:ir.model.fields,field_description:outplacement.field_outplacement_stage__id
+#: model:ir.model.fields,field_description:outplacement.field_performing_operation__id
 msgid "ID"
 msgstr ""
 
@@ -182,12 +204,27 @@ msgstr "Om den är markerad så finns det meddelanden som kräver din uppmärksa
 #. module: outplacement
 #: model:ir.model.fields,help:outplacement.field_outplacement__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Om markerad finns det meddelandet med leveransfel."
 
 #. module: outplacement
-#: model:outplacement.stage,name:outplacement.in_progress_stage
-msgid "In Progress"
-msgstr "Pågående"
+#: model:outplacement.stage,name:outplacement.in-progress_stage
+msgid "In-Progress"
+msgstr "Pågår"
+
+#. module: outplacement
+#: model:outplacement.stage,name:outplacement.incoming_stage
+msgid "Incoming"
+msgstr "Inkommen"
+
+#. module: outplacement
+#: model:ir.model.fields,field_description:outplacement.field_outplacement__incomplete
+msgid "Incomplete"
+msgstr "Ej komplett"
+
+#. module: outplacement
+#: model:ir.model.fields,field_description:outplacement.field_outplacement__interruption
+msgid "Interrupted"
+msgstr "Avbruten"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__message_is_follower
@@ -195,9 +232,14 @@ msgid "Is Follower"
 msgstr "Är följare"
 
 #. module: outplacement
+#: model:ir.model.fields,field_description:outplacement.field_performing_operation__ka_nr
+msgid "KA Number"
+msgstr "KA-nummer"
+
+#. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_hr_department__ka_ref
 msgid "KA-Number"
-msgstr ""
+msgstr "KA-nummer"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__color
@@ -207,18 +249,21 @@ msgstr ""
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement____last_update
 #: model:ir.model.fields,field_description:outplacement.field_outplacement_stage____last_update
+#: model:ir.model.fields,field_description:outplacement.field_performing_operation____last_update
 msgid "Last Modified on"
 msgstr "Senast redigerad"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__write_uid
 #: model:ir.model.fields,field_description:outplacement.field_outplacement_stage__write_uid
+#: model:ir.model.fields,field_description:outplacement.field_performing_operation__write_uid
 msgid "Last Updated by"
 msgstr "Senast uppdaterad av"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__write_date
 #: model:ir.model.fields,field_description:outplacement.field_outplacement_stage__write_date
+#: model:ir.model.fields,field_description:outplacement.field_performing_operation__write_date
 msgid "Last Updated on"
 msgstr "Senast uppdaterad"
 
@@ -268,20 +313,21 @@ msgid "Messages"
 msgstr "Meddelanden"
 
 #. module: outplacement
-#: model:ir.model.fields,field_description:outplacement.field_outplacement__my_department
-#: model_terms:ir.ui.view,arch_db:outplacement.outplacement_filter_view
-msgid "My Department"
-msgstr ""
-
-#. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__my_outplacement
 #: model_terms:ir.ui.view,arch_db:outplacement.outplacement_filter_view
 msgid "My Outplacement"
-msgstr ""
+msgstr "Mina deltagare"
+
+#. module: outplacement
+#: model:ir.model.fields,field_description:outplacement.field_outplacement__my_performing_operation
+#: model_terms:ir.ui.view,arch_db:outplacement.outplacement_filter_view
+msgid "My Performing Operation"
+msgstr "Min utförande verksamhet"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__name
 #: model:ir.model.fields,field_description:outplacement.field_outplacement_stage__name
+#: model:ir.model.fields,field_description:outplacement.field_performing_operation__name
 msgid "Name"
 msgstr "Namn"
 
@@ -301,12 +347,7 @@ msgid "Next Activity Type"
 msgstr ""
 
 #. module: outplacement
-#: model:outplacement.stage,name:outplacement.next_stage_stage
-msgid "Next Stage"
-msgstr "Nästa steg"
-
-#. module: outplacement
-#: code:addons/outplacement/models/outplacement.py:203
+#: code:addons/outplacement/models/outplacement.py:214
 #, python-format
 msgid "No Subject"
 msgstr ""
@@ -329,7 +370,7 @@ msgstr "Antal meddelanden som kräver en åtgärd"
 #. module: outplacement
 #: model:ir.model.fields,help:outplacement.field_outplacement__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Antal meddelanden med leveransfel"
 
 #. module: outplacement
 #: model:ir.model.fields,help:outplacement.field_outplacement__message_unread_counter
@@ -338,8 +379,8 @@ msgstr "Antal olästa meddelanden"
 
 #. module: outplacement
 #: selection:outplacement,meeting_remote:0
-msgid "On Premice"
-msgstr ""
+msgid "On Premise"
+msgstr "I person"
 
 #. module: outplacement
 #: model:ir.actions.act_window,name:outplacement.outplacement_action
@@ -355,7 +396,7 @@ msgstr "Deltagare"
 #: model:ir.actions.act_window,name:outplacement.outplacement_stage_action
 #: model:ir.model,name:outplacement.model_outplacement_stage
 msgid "Outplacement Stage"
-msgstr ""
+msgstr "Deltagaretapp"
 
 #. module: outplacement
 #: selection:outplacement,activity_state:0
@@ -371,6 +412,34 @@ msgstr "Samarbetspartner"
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__partner_name
 msgid "Partner Name"
 msgstr "Företagsnamn"
+
+#. module: outplacement
+#: model:ir.model.fields,field_description:outplacement.field_res_partner__jobseeker_operation_id
+#: model:ir.model.fields,field_description:outplacement.field_res_users__jobseeker_operation_id
+msgid "Perf. Op. Jobseeker"
+msgstr ""
+
+#. module: outplacement
+#: model:ir.actions.act_window,name:outplacement.action_performing_operation
+#: model:ir.model,name:outplacement.model_performing_operation
+#: model:ir.model.fields,field_description:outplacement.field_outplacement__performing_operation_id
+#: model:ir.model.fields,field_description:outplacement.field_res_partner__performing_operation_id
+#: model:ir.model.fields,field_description:outplacement.field_res_users__performing_operation_id
+#: model_terms:ir.ui.view,arch_db:outplacement.outplacement_filter_view
+msgid "Performing Operation"
+msgstr "Utförande verksamhet"
+
+#. module: outplacement
+#: model:ir.model.fields,field_description:outplacement.field_res_users__performing_operation_ids
+#: model:ir.ui.menu,name:outplacement.menu_performing_operation
+msgid "Performing Operations"
+msgstr "Utförande verksamheter"
+
+#. module: outplacement
+#: model:ir.model.fields,field_description:outplacement.field_res_company__performing_operation_ids
+#: model:ir.model.fields,field_description:outplacement.field_res_partner__performing_operation_ids
+msgid "Performing operations"
+msgstr "Utförande verksamheter"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__partner_phone
@@ -390,7 +459,7 @@ msgstr "Planerad"
 #. module: outplacement
 #: selection:outplacement,meeting_remote:0
 msgid "Remote"
-msgstr ""
+msgstr "Distansmöten"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__resource_id
@@ -401,6 +470,16 @@ msgstr "Resurs"
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__activity_user_id
 msgid "Responsible User"
 msgstr "Ansvarig användare"
+
+#. module: outplacement
+#: model:outplacement.stage,name:outplacement.sent_stage
+msgid "Sent"
+msgstr "Skickad"
+
+#. module: outplacement
+#: model:ir.model.fields,field_description:outplacement.field_outplacement__late
+msgid "Sent late"
+msgstr "Skickad sent"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement_stage__sequence
@@ -418,6 +497,11 @@ msgid "Service Start Date"
 msgstr "Tjänstens startdatum"
 
 #. module: outplacement
+#: model:ir.model.fields,field_description:outplacement.field_outplacement__show_2nd_line
+msgid "Show 2Nd Line"
+msgstr "Visa 2nd line"
+
+#. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__image_small
 msgid "Small-sized photo"
 msgstr "Litet fotografi"
@@ -426,6 +510,11 @@ msgstr "Litet fotografi"
 #: model:ir.model.fields,help:outplacement.field_outplacement__image_small
 msgid "Small-sized photo of the employee. It is automatically resized as a 64x64px image, with aspect ratio preserved. Use this field anywhere a small image is required."
 msgstr "Litet foto av den anställde. Det storleksändras automatiskt till 64x64px, men bildförhållandet bevaras. Använd det här fältet i de fall en liten bild krävs."
+
+#. module: outplacement
+#: model:ir.model.fields,field_description:outplacement.field_outplacement__partner_social_sec_nr
+msgid "Social security number"
+msgstr "Personnummer"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__sprakstod
@@ -490,7 +579,13 @@ msgstr "Detta fält innehåller ett foto av den anställde, begränsat till 1024
 #. module: outplacement
 #: model:ir.model.fields,help:outplacement.field_outplacement__tz
 msgid "This field is used in order to define in which timezone the resources will work."
-msgstr ""
+msgstr "Detta fält anger i vilken tidszon som resurserna kommer att arbeta."
+
+#. module: outplacement
+#: model:ir.model.fields,help:outplacement.field_res_partner__performing_operation_id
+#: model:ir.model.fields,help:outplacement.field_res_users__performing_operation_id
+msgid "This is an address for the given Performing Operation"
+msgstr "Detta är adressen för den valda utförande verksamheten"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__tz
@@ -528,6 +623,17 @@ msgid "User: Standard"
 msgstr ""
 
 #. module: outplacement
+#: model:ir.model,name:outplacement.model_res_users
+#: model:ir.model.fields,field_description:outplacement.field_performing_operation__user_ids
+msgid "Users"
+msgstr "Användare"
+
+#. module: outplacement
+#: model:ir.model.fields,help:outplacement.field_performing_operation__ka_nr
+msgid "Utförande verksamhets-nummer"
+msgstr ""
+
+#. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__website_message_ids
 msgid "Website Messages"
 msgstr "Webbplatsmeddelanden"
@@ -552,32 +658,3 @@ msgstr "Postnummer"
 msgid "Zip"
 msgstr "Postnummer"
 
-#. module: outplacement
-#: model:ir.model.fields,field_description:outplacement.field_outplacement__late
-msgid "Sent late"
-msgstr "Skickad sent"
-
-#. module: outplacement
-#: model:ir.model.fields,field_description:outplacement.field_outplacement__interruption
-msgid "Interrupted"
-msgstr "Avbruten"
-
-#. module: outplacement
-#: model:ir.model.fields,field_description:outplacement.field_outplacement__incomplete
-msgid "Incomplete"
-msgstr "Ej komplett"
-
-#. module: outplacement
-#: model:outplacement.stage,name:outplacement.approved_stage
-msgid "Approved"
-msgstr "Godkänd"
-
-#. module: outplacement
-#: model:outplacement.stage,name:outplacement.not_approved_stage
-msgid "Not approved"
-msgstr "Ej Godkänd"
-
-#. module: outplacement
-#: model:outplacement.stage,name:outplacement.in-progress_stage
-msgid "In-Progress"
-msgstr "Pågår"

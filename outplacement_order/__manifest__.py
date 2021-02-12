@@ -20,22 +20,22 @@
 ################################################################################
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
-    'name': 'Outplacement Order (Ordertjansten Order)',
-    'version': '12.0.1.0.1',
-    'category': 'Outplacement',
-    'description': """This module listen for updates for an order""",
-    'author': "Vertel AB",
-    'license': 'AGPL-3',
-    'website': 'https://vertel.se',
+    "name": "Outplacement Order (Ordertjansten Order)",
+    "version": "12.0.1.0.2",
+    "category": "Outplacement",
+    "description": """This module listen for updates for an order""",
+    "author": "Vertel AB",
+    "license": "AGPL-3",
+    "website": "https://vertel.se",
     "depends": [
-        'outplacement',
-        'sale_showorder_ipf_client',
+        "outplacement",
+        "sale_showorder_ipf_client",
     ],
-    'data': [
-        'data/cron.xml',
+    "data": [
+        "data/cron.xml",
+        "data/data.xml",
+        "views/outplacement_stage_view.xml",
     ],
-    'installable': True,
-    'images': [
-        'static/description/img.png'
-    ],
+    "installable": True,
+    "images": ["static/description/img.png"],
 }

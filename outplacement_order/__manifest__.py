@@ -21,7 +21,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     "name": "Outplacement Order (Ordertjansten Order)",
-    "version": "12.0.1.0.2",
+    "version": "12.0.1.0.3",
     "category": "Outplacement",
     "description": """This module listen for updates for an order""",
     "author": "Vertel AB",

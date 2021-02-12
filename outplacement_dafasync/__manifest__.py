@@ -2,7 +2,7 @@
 
 ################################################################################
 #
-#    OpenERP, Open Source Management Solution
+#    Odoo, Open Source Management Solution
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -20,22 +20,27 @@
 ################################################################################
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
-    "name": "Outplacement Order (Ordertjansten Order)",
-    "version": "12.0.1.0.2",
-    "category": "Outplacement",
-    "description": """This module listen for updates for an order""",
-    "author": "Vertel AB",
-    "license": "AGPL-3",
-    "website": "https://vertel.se",
+    'name': 'Outplacement DAFA Sync',
+    'version': '12.0.1.0.1',
+    'category': 'Outplacement',
+    'description': """This module sync data from CRM to DAFA 
+        
+        partnersyncCrm2Dafa(ssn,host,user,password)
+        
+        This is the CRM-part of the DAFA sync
+        
+        """,
+    'author': "Vertel AB",
+    'license': 'AGPL-3',
+    'website': 'https://vertel.se',
     "depends": [
-        "outplacement",
-        "sale_showorder_ipf_client",
+        'partner_ssn',
+        'partner_firstname',
+        'partner_education_views',
+        'partner_desired_jobs',
     ],
-    "data": [
-        "data/cron.xml",
-        "data/data.xml",
-        "views/outplacement_stage_view.xml",
+    'installable': True,
+    'images': [
+        'static/description/img.png'
     ],
-    "installable": True,
-    "images": ["static/description/img.png"],
 }

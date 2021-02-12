@@ -5,7 +5,6 @@ from datetime import timedelta
 from odoo import api, fields, models, tools, _
 from odoo.modules.module import get_module_resource
 
-
 import logging
 _logger = logging.getLogger(__name__)
 

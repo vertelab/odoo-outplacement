@@ -20,16 +20,14 @@
                            attrs="{'readonly': [('interpreter_booking_ref', '!=', False)],}"
                            placeholder="Street..."
                            class="o_address_street"/>
-                    <!-- <field name="street2" placeholder="Street..."
-                           class="o_address_street"/> -->
-                    <field name="city" 
-                           attrs="{'readonly': [('interpreter_booking_ref', '!=', False)],}" 
-                           placeholder="City" 
-                           class="o_address_city"/>
                     <field name="zip"
                            attrs="{'readonly': [('interpreter_booking_ref', '!=', False)],}"
                            placeholder="ZIP"
                            class="o_address_zip"/>
+                    <field name="city" 
+                           attrs="{'readonly': [('interpreter_booking_ref', '!=', False)],}" 
+                           placeholder="City" 
+                           class="o_address_city"/>
                     <field name="country_id"
                            attrs="{'readonly': [('interpreter_booking_ref', '!=', False)],}"
                            placeholder="Country"
@@ -55,31 +53,27 @@
                     'readonly': [('interpreter_booking_ref', '!=', False)],
                     'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
-                <field name="interpreter_name" attrs="{
-                    'readonly': [('interpreter_booking_ref', '!=', False)],
+                <field name="interpreter_name" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
-                <field name="interpreter_phone" attrs="{
-                    'readonly': [('interpreter_booking_ref', '!=', False)],
+                <field name="interpreter_phone" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
-                <field name="interpreter_gender" attrs="{
-                    'readonly': [('interpreter_booking_ref', '!=', False)],
+                <field name="interpreter_gender" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
-                <field name="interpreter_company" attrs="{
-                    'readonly': [('interpreter_booking_ref', '!=', False)],
+                <field name="interpreter_company" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
-                <field name="interpreter_contact_person" attrs="{
-                    'readonly': [('interpreter_booking_ref', '!=', False)],
+                <field name="interpreter_contact_person" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
-                <field name="interpreter_contact_phone" attrs="{
-                    'readonly': [('interpreter_booking_ref', '!=', False)],
+                <field name="interpreter_contact_phone" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
-                <field name="interpreter_booking_status" attrs="{
-                    'readonly': [('interpreter_booking_ref', '!=', False)],
+                <field name="interpreter_booking_status" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
-                <field name="interpreter_booking_ref" attrs="{
-                    'readonly': [('interpreter_booking_ref', '!=', False)],
+                <field name="interpreter_booking_ref" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
-                <button name="%(deliver_interpreter_action)d" type="action"> Inleverera tolk </button>
+                <button name="%(deliver_interpreter_action)d"
+                        attrs="{'invisible': ['|',
+                                              ('interpreter_booking_ref', '=', False),
+                                              ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                        type="action"> Inleverera tolk </button>
             </field>
         </field>
     </record>

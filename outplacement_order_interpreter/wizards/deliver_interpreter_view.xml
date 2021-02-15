@@ -6,6 +6,7 @@
             <field name="arch" type="xml">
                 <form>
                     <group>
+                        <field name="mail_activity_id" invisible="1"/>
                         <field name="booking_ref"/>
                         <field name="kanr"/>
                         <!-- Not used by tolkportalen yet.

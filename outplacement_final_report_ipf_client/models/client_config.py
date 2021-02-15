@@ -251,10 +251,10 @@ class ClientConfig(models.Model):
             if outplacement.employee_id.user_id:
                 payload["ansvarig_handledare"]["signatur"] = \
                     outplacement.employee_id.user_id.login
-        if outplacement.obstacle_id:
+        if outplacement.obstacle_reason:
             payload["hinder"] = {
-                "orsak_typ": outplacement.obstacle_id.reason,
-                "motivering": outplacement.obstacle_id.motivation
+                "orsak_typ": outplacement.obstacle_reason,
+                "motivering": outplacement.obstacle_motivation 
             }
         goal_id = outplacement.main_goal_id
         if goal_id:

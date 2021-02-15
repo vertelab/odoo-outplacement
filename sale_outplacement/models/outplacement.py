@@ -93,8 +93,7 @@ class Outplacement(models.Model):
             [('email', '=', data['epost_handlaggargrupp'])], limit=1)
 
         if not management_team:
-            management_team = self.env['res.users'].create({
-                'login': data['epost_handlaggargrupp'],
+            management_team = self.env['res.partner'].create({
                 'name': data['epost_handlaggargrupp'],
                 'email': data['epost_handlaggargrupp'],
                 'phone': data['telefonnummer_handlaggargrupp']

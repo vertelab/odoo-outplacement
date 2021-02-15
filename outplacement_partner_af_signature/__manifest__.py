@@ -25,17 +25,13 @@
     'version': '12.0.0.2.0',
     'category': 'Outplacement',
     'description': """AF Signature on Outplacement (via management_team_id) """,
-
     'author': "Vertel AB",
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
     'depends': ['partner_af_signature', 'outplacement'],
-    'data': [
-       
-    ],
+    'data': [],
     'installable': True,
     'application': False,
-
     'images': [
     ],
 }

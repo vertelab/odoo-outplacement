@@ -179,7 +179,7 @@ class ClientConfig(models.Model):
         # those marked as send2server is sent in the correct order.
         for planned in self.env['res.joint_planning'].search(
                 [('send2server', '=', True)], order="sequence"):
-            _logger.info("send2server for %s %s" % (planned.activity_id,
+            _logger.debug("send2server for %s %s" % (planned.activity_id,
                                                     planned.send2server))
             task = outplacement.task_ids.filtered(
                 lambda t: t.activity_id == planned.activity_id)
@@ -190,7 +190,6 @@ class ClientConfig(models.Model):
                 'beskrivning': task.description if task else '',
             })
         _logger.warn(payload)
-        return
         api.post_report(payload)
 
     def test_post_report(self):

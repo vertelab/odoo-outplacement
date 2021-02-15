@@ -93,7 +93,8 @@ class Outplacement(models.Model):
             [('email', '=', data['epost_handlaggargrupp'])], limit=1)
 
         if not management_team:
-            management_team = self.env['res.partner'].create({
+            management_team = self.env['res.users'].create({
+                'login': data['epost_handlaggargrupp'],
                 'name': data['epost_handlaggargrupp'],
                 'email': data['epost_handlaggargrupp'],
                 'phone': data['telefonnummer_handlaggargrupp']
@@ -116,6 +117,7 @@ class Outplacement(models.Model):
 
     @api.model
     def suborder_process_data(self, data):
+        _logger.info(data)
         data = super(Outplacement, self).suborder_process_data(data)
         partner_id = self._get_partner_id(data)
 

@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2019 N-Development (<https://n-development.com>).
@@ -18,16 +18,17 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-################################################################################
+###############################################################################
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
-    'name': 'Order Interpreter',
+    'name': 'Depricated - Order Interpreter',
     'version': '12.0.1.0.4',
     'category': 'Outplacement',
     'description': """This module adds interpreter-functionality \n
     v12.0.0.2 changed the languagecodes from a full list to Tolkportalens list. AFC-1586 \n
     v12.0.1.0.3 Added Category Outplacement \n
     v12.0.1.0.3 Added fields to Outplacement view \n
+    -> Moved to outplacement_order_interpretor
     """,
     'author': "N-development",
     'license': 'AGPL-3',
@@ -36,7 +37,8 @@
         'mail',
         'hr_timesheet',
         'project',
-        'task_interperator_ipf_client',
+        'task_interpreter_ipf_client',
+        'res_interpreter_language',
         'outplacement',
     ],
     'data': [
@@ -46,7 +48,7 @@
         'views/res_partner_view.xml',
         'views/outplacement_view.xml',
     ],
-    'installable': True,
+    'installable': False,
     'images': [
         'static/description/img.png'
     ],

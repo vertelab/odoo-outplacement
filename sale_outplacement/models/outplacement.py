@@ -40,7 +40,7 @@ class SaleOrder(models.Model):
 class Outplacement(models.Model):
     _inherit = 'outplacement'
 
-    management_team_id = fields.Many2one(comodel_name='res.partner',
+    management_team_id = fields.Many2one(comodel_name='res.users',
                                          string='Management team')
     skill_id = fields.Many2one('hr.skill')
     participitation_rate = fields.Integer()
@@ -89,11 +89,12 @@ class Outplacement(models.Model):
 
     @api.multi
     def _get_management_team_id(self, data):
-        management_team = self.env['res.partner'].search(
-            [('email', '=', data['telefonnummer_handlaggargrupp'])], limit=1)
+        management_team = self.env['res.users'].search(
+            [('email', '=', data['epost_handlaggargrupp'])], limit=1)
 
         if not management_team:
-            management_team = self.env['res.partner'].create({
+            management_team = self.env['res.users'].create({
+                'login': data['epost_handlaggargrupp'],
                 'name': data['epost_handlaggargrupp'],
                 'email': data['epost_handlaggargrupp'],
                 'phone': data['telefonnummer_handlaggargrupp']
@@ -116,6 +117,7 @@ class Outplacement(models.Model):
 
     @api.model
     def suborder_process_data(self, data):
+        _logger.info(data)
         data = super(Outplacement, self).suborder_process_data(data)
         partner_id = self._get_partner_id(data)
 
@@ -150,6 +152,7 @@ class Outplacement(models.Model):
         self.env['project.task'].init_joint_planning_stages(outplacement.id)
         return data
 
+    # For test. ToDo: Rename with a test in function name.
     @api.model
     def create_suborder_process_data(self):
         self.suborder_process_data({

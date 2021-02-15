@@ -34,31 +34,26 @@ class OutplacementGoal(models.Model):
     # return codes for these two selections should be limited to search
     # ilike field_of_work.code
     job_id = fields.Many2one(comodel_name="res.ssyk", string="Job title")
-    job_description = fields.Char(string="Job description")
-    motivation = fields.Selection(selection=[
-        ('matches interest', 'Matchar deltagarens intressen'),
-        ('matches ability', 'Arbetsuppgifter matchar förmåga'),
-        ('market demand', 'Efterfrågan på arbetsmarknaden'),
-        ('complementing education', 'Kompletterar nuvarande utbildning'),
-        ('complementing experience', 'kompletterar tidigare erfarenheter'),
-        ('other', 'Other')
-        ], string="Motivation")
-    # should only be used if motivation is "other"
-    free_text = fields.Char(string="Free text")
     step_ids = fields.Many2many(
         comodel_name="outplacement.goal.step", string="Step")
+    job_description = fields.Char(string="Job description") 
+    matches_interest = fields.Boolean(string='Matches interest'),
+    matches_ability = fields.Boolean(string='Matches ability'),
+    market_demand = fields.Boolean(string='Market demand'),
+    complementing_education = fields.Boolean(string='Complementing education'),
+    complementing_experience = fields.Boolean(string='Complementing experience'),
+    other_motivation = fields.Boolean(string='Other')
+    # should only be used if motivation is "other":
+    free_text = fields.Char(string="Free text")
 
 
 class OutplacementGoalStep(models.Model):
     _name = "outplacement.goal.step"
 
-    # step type should be a series of boolean fields, but due to current
-    # API behaviour will be a selection field.
     step_type = fields.Selection(selection=[
-        ('study', 'Studera'),
-        ('regular education', 'Reguljär utbildning'),
+        ('study', 'Studera och reguljär utbildning'),
         ('fitting complementing efforts', 'Lämpliga kompletterande insatser'),
-        ('other', 'Other')], string="Type")  # needs values
+        ('other', 'Other')], string="Type")  
     complementing_effort_type = fields.Selection(
         string="Complementing effort type", selection=[
             ('study motivating effort', 'Studiemotiverande insats'),
@@ -73,13 +68,12 @@ class OutplacementGoalStep(models.Model):
             ('evaluation and complementation of foreign education',
              'Bedömning och komplettering av utländsk utbildning'),
             ('other', 'Other')
-            ])  # might be better as a selection field.
-    # This and the field above should only be visible if fitting
-    # complementing efforts is chosen.
+            ])
     complementing_effort_description = fields.Char(
         string="Complementing effort")
-    name = fields.Char(string="Name")
-    sun_id = fields.Many2one(string="Educaiton Level", comodel_name="res.sun")
+    other_step_name = fields.Char(string="Name")
+    other_step_level = fields.Char(string="Level")
+    free_text = fields.Char(string="Free text")
     start_date = fields.Datetime(string="Start date")
     end_date = fields.Datetime(string="End date")
 

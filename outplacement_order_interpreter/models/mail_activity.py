@@ -4,11 +4,7 @@ import datetime
 import json
 import logging
 
-<<<<<<< HEAD
-from odoo import api, models, fields, tools
-=======
 from odoo import api, models, fields, tools, _
->>>>>>> 046bd32700c073f94210171c65d9f666be850f93
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
@@ -65,7 +61,7 @@ class MailActivity(models.Model):
                                              compute='_compute_booking_status')
     _interpreter_booking_status = fields.Char(string='Booking Status Internal',
                                               readonly=True,
-                                              default='Not booked')
+                                              default=_('Not booked'))
     interpreter_name = fields.Char(string='Interpreter Name',
                                    readonly=True)
     interpreter_phone = fields.Char(string='Interpreter Phone Number',
@@ -207,21 +203,21 @@ class MailActivity(models.Model):
         except AttributeError:
             self._interpreter_booking_status = msg
             _logger.exception(msg)
-            raise UserError('Unknown error making Interpreter booking')
+            raise UserError(_('Unknown error making Interpreter booking'))
         if status_code == 200:
             self.interpreter_booking_ref = response.text
-            self._interpreter_booking_status = 'Request sent'
+            self._interpreter_booking_status = _('Request sent')
             _logger.debug('Interpreter booking success.')
         elif status_code == 404:
             self._interpreter_booking_status = msg
             _logger.error(f'\n{msg}\nCheck KA-Number and that address '
                           'is correct.')
-            raise UserError('Failed to book Interpreter, '
-                            'please check KA-Number and address in request.')
+            raise UserError(_('Failed to book Interpreter, '
+                            'please check KA-Number and address in request.'))
         else:
             self._interpreter_booking_status = msg
-            err_msg = (f'\n{msg}\nResponse text:\n{response.text}\n'
-                       f'Response status code:\n{response.status_code}')
+            err_msg = (f'\n{msg}\n{_("Response text")}:\n{response.text}\n'
+                       f'{_("Response status code")}:\n{response.status_code}')
             _logger.error(err_msg)
             raise UserError(err_msg)
 

@@ -36,15 +36,13 @@ class Outplacement(models.Model):
                 )
                 raise Warning(_("Error in communication with ordertjänsten"))
 
-            # storing this information on outplacement.stage is wierd 
-            # now that we dont update outplacement.stage_id from here.
             outplacement_stage = self.env['outplacement.stage'].search([('ordertjansten_status', 'ilike', order_status)], limit=1)
             if not outplacement_stage:
                 _logger.warn("Unmapped status from ordertjänsten: order status = %s" % order_status)
             else:
-                # TODO: Decide if we should ever update 
-                # outplacement.stage_id from this code
-                # outplacement.stage_id = outplacement_stage.id
+                # TODO: Decide if we should update outplacement stage in more cases
+                if outplacement_stage == self.env.ref('outplacement.cancelled_stage'):
+                    outplacement.stage_id = outplacement_stage.id
                 if outplacement_stage.order_id_state:
                     if outplacement.order_id:
                         outplacement.order_id.state = outplacement_stage.order_id_state

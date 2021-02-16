@@ -77,11 +77,11 @@ class MailActivity(models.Model):
 
     @api.depends('_interpreter_booking_status', 'interpreter_company')
     def _compute_booking_status(self):
-        statuses = {'1': 'Order received', '2': 'Delivered'}
+        statuses = {'1': _('Order received'), '2': _('Delivered')}
         for record in self:
             status = statuses.get(record._interpreter_booking_status)
             if status and record.interpreter_company:
-                status = 'Interpreter Booked'
+                status = _('Interpreter Booked')
             if not status:
                 status = record._interpreter_booking_status
             record.interpreter_booking_status = status

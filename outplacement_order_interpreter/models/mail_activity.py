@@ -4,7 +4,8 @@ import datetime
 import json
 import logging
 
-from odoo import api, models, fields, tools
+from odoo import api, models, fields, tools, _
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -53,10 +54,14 @@ class MailActivity(models.Model):
     country_id = fields.Many2one(
         'res.country', string='Country',
         default=lambda self: self._get_address('country_id'))
-    interpreter_booking_ref = fields.Char(string='Booking Reference')
-    interpreteter_booking_status = fields.Char(string='Booking Status',
-                                               readonly=True,
-                                               default='Not booked')
+    interpreter_booking_ref = fields.Char(string='Booking Reference',
+                                          readonly=True)
+    interpreter_booking_status = fields.Char(string='Booking Status',
+                                             readonly=True,
+                                             compute='_compute_booking_status')
+    _interpreter_booking_status = fields.Char(string='Booking Status Internal',
+                                              readonly=True,
+                                              default='Not booked')
     interpreter_name = fields.Char(string='Interpreter Name',
                                    readonly=True)
     interpreter_phone = fields.Char(string='Interpreter Phone Number',
@@ -69,6 +74,17 @@ class MailActivity(models.Model):
     interpreter_contact_phone = fields.Char(
         string='Interpreter Supplier Phone Number',
         readonly=True)
+
+    @api.depends('_interpreter_booking_status', 'interpreter_company')
+    def _compute_booking_status(self):
+        statuses = {'1': _('Order received'), '2': _('Delivered')}
+        for record in self:
+            status = statuses.get(record._interpreter_booking_status)
+            if status and record.interpreter_company:
+                status = _('Interpreter Booked')
+            if not status:
+                status = record._interpreter_booking_status
+            record.interpreter_booking_status = status
 
     def _get_end_time(self):
         """
@@ -158,57 +174,87 @@ class MailActivity(models.Model):
         order_interpreter = self.env.ref(
             'outplacement_order_interpreter.order_interpreter').id
         if record.activity_type_id.id == order_interpreter:
-            try:
-                resp = self.env[
-                    'ipf.interpreter.client'].post_tolkbokningar(record)
-            except Exception as e:
-                _logger.exception(e)
-            else:
-                record.process_response(resp, record)
+            self.make_request(record)
         return record
 
-    @api.model
-    def process_response(self, response, record):
-        if response and response.status_code == 200:
-            data = json.loads(response.content.decode())
-            record.booking_ref = data.get('tolkbokningId')
-            record.interpreteter_booking_status = 'Request sent'
-        else:
-            msg = 'Failed to make booking'
-            record.interpreteter_booking_status = msg
-            _logger.error(f'\n{msg}\nResponse text:\n{response.text}\n'
-                          f'Response status code:\n{response.status_code}')
+    def write(self, values):
+        res = super(MailActivity, self).write(values)
+        if (self.is_interpreter() and
+                not self.interpreter_booking_ref and
+                'no_post' not in self.env.context):
+            self.make_request()
+        return res
 
-    @api.model
-    def update_activity(self, activity_obj, response):
+    def make_request(self, record=None):
+        record = record or self
+        try:
+            resp = self.env[
+                'ipf.interpreter.client'].post_tolkbokningar(record)
+        except Exception as e:
+            _logger.exception(e)
+        else:
+            record.with_context(no_post='').process_response(resp)
+
+    @api.multi
+    def process_response(self, response):
+        msg = 'Failed to make booking'
+        try:
+            status_code = response.status_code
+        except AttributeError:
+            self._interpreter_booking_status = msg
+            _logger.exception(msg)
+            raise UserError('Unknown error making Interpreter booking')
+        if status_code == 200:
+            self.interpreter_booking_ref = response.text
+            self._interpreter_booking_status = 'Request sent'
+            _logger.debug('Interpreter booking success.')
+        elif status_code == 404:
+            self._interpreter_booking_status = msg
+            _logger.error(f'\n{msg}\nCheck KA-Number and that address '
+                          'is correct.')
+            raise UserError('Failed to book Interpreter, '
+                            'please check KA-Number and address in request.')
+        else:
+            self._interpreter_booking_status = msg
+            err_msg = (f'\n{msg}\nResponse text:\n{response.text}\n'
+                       f'Response status code:\n{response.status_code}')
+            _logger.error(err_msg)
+            raise UserError(err_msg)
+
+    @api.multi
+    def update_activity(self, response):
         if response.status_code not in (200,):
             _logger.warn('Failed to update interperator bookings with code: '
                          f'{response.status_code}')
             return
         data = json.loads(response.content.decode())
-        activity_obj.interpreteter_booking_status = data.get(
-            'tekniskStatusTypId')
-        activity_obj.interpreter_type = data.get('tolkTypId')
-        activity_obj.interpreter_remote_type = data.get('distanstolkTypId')
-        activity_obj.time_start = datetime.datetime.fromtimestamp(
-            data.get('fromDatumTid'))
-        activity_obj.time_end = datetime.datetime.fromtimestamp(
-            data.get('toDatumTid'))
-        address_obj = data.get('address')
-        activity_obj.street = address_obj.get('adress')
-        activity_obj.zip = address_obj.get('postnr')
-        activity_obj.city = address_obj.get('ort')
-        activity_obj.state_id = address_obj.get('kommunkod')
-        activity_obj.interpreter_language = data.get('tolksprakId')
-        activity_obj.interpreter_gender = data.get('tolkkonID')
-        activity_obj.interpreter_ref = data.get('tolkId')
-        activity_obj.interpreter_name = data.get('tolkNamn')
-        activity_obj.interpreter_phone = data.get('tolkTelefonnummer')
-        activity_obj.interpreter_company = data.get(
+        _logger.debug(f'Update interpreter booking with data: {data}')
+        self._interpreter_booking_status = data.get(
+            'tekniskStatusTypId', self._interpreter_booking_status)
+        self.interpreter_type = self.env["res.interpreter.type"].search([('code', '=', data.get('tolkTypId'))])  # noqa:E501
+        self.interpreter_remote_type = self.env["res.interpreter.remote_type"].search([('code', '=', data.get('distanstolkTypId'))])  # noqa:E501
+        self.time_start = datetime.datetime.strptime(
+            data.get('fromDatumTid'),
+            '%Y-%m-%dT%H:%M:%S')
+        self.time_end = datetime.datetime.strptime(
+            data.get('tomDatumTid'),
+            '%Y-%m-%dT%H:%M:%S')
+        address_obj = data.get('adress')
+        self.street = address_obj.get('gatuadress')
+        self.zip = address_obj.get('postnr')
+        self.city = address_obj.get('ort')
+        self.state_id = address_obj.get('kommunkod')
+        self.interpreter_language = self.env["res.interpreter.language"].search([('code', '=', data.get('tolksprakId'))])  # noqa:E501
+        self.interpreter_gender = self.env["res.interpreter.gender_preference"].search([('code', '=', data.get('tolkkonID'))])  # noqa:E501
+        self.interpreter_ref = data.get('tolkId')
+        self.interpreter_name = data.get('tolkNamn')
+        self.interpreter_phone = data.get('tolkTelefonnummer')
+        self.interpreter_company = data.get(
             'tolkLeverantorVerksamhetsnamn')
-        supplier_obj = data.get('tolkLeverantorKontaktperson')
-        activity_obj.interpreter_contact_person = supplier_obj('namn')
-        activity_obj.interpreter_contact_phone = supplier_obj('telefonnummer')
+        supplier_obj = data.get('tolkLeverantorKontaktperson', {})
+        self.interpreter_contact_person = supplier_obj.get('namn')
+        self.interpreter_contact_phone = supplier_obj.get(
+            'telefonnummer')
 
     @api.model
     def cron_order_interpreter(self):
@@ -221,11 +267,12 @@ class MailActivity(models.Model):
             ref = activity.interpreter_booking_ref
             perf_op = activity.get_outplacement_value(
                 'performing_operation_id')
-            if not perf_op:
+            ka_nr = perf_op.ka_nr if perf_op else None
+            if not (ka_nr and ref):
                 continue
-            ka_nr = perf_op.ka_nr
+            _logger.debug(f'Checking status on booking with ref: {ref}')
             response = ipf_client.get_tolkbokningar_id(ref, ka_nr)
-            self.update_activity(activity, response)
+            activity.update_activity(response)
 
     @api.multi
     def activity_format(self):
@@ -248,7 +295,7 @@ class MailActivity(models.Model):
             'outplacement_order_interpreter.order_interpreter').id
         return obj.activity_type_id.id == order_interpreter
 
-    @api.model
+    @api.multi
     def deliver_interpreter(self):
         if not self.is_interpreter():
             # ToDo: Add functionality here.

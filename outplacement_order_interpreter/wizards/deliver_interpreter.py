@@ -1,6 +1,6 @@
 import logging  # noqa:F401
 
-from odoo import models, fields, api, _  # noqa:F401
+from odoo import models, fields, api, __  # noqa:F401
 from odoo.exceptions import UserError, Warning  # noqa:F401
 
 _logger = logging.getLogger(__name__)

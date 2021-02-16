@@ -8,6 +8,16 @@
       <field name="name">In-Progress</field>
       <field name="sequence">20</field>
     </record>
+    <record id="outplacement.sent_stage" model="outplacement.stage">
+      <field name="fold">1</field>
+      <field name="name">Sent</field>
+      <field name="sequence">30</field>
+    </record>
+    <record id="outplacement.cancelled_stage" model="outplacement.stage">
+      <field name="fold">1</field>
+      <field name="name">Cancelled</field>
+      <field name="sequence">40</field>
+    </record>
 
     <record id="ir_actions_start_outplacement" model="ir.actions.server">
       <field name="name">Start outplacement</field>

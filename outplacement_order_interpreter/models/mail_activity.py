@@ -4,7 +4,11 @@ import datetime
 import json
 import logging
 
+<<<<<<< HEAD
 from odoo import api, models, fields, tools
+=======
+from odoo import api, models, fields, tools, _
+>>>>>>> 046bd32700c073f94210171c65d9f666be850f93
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)

@@ -43,6 +43,7 @@ class Outplacement(models.Model):
                 # TODO: Decide if we should update outplacement stage in more cases
                 if outplacement_stage == self.env.ref('outplacement.cancelled_stage'):
                     outplacement.stage_id = outplacement_stage.id
+                    outplacement.interruption = True
                 if outplacement_stage.order_id_state:
                     if outplacement.order_id:
                         outplacement.order_id.state = outplacement_stage.order_id_state

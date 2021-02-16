@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data>
+    <record id="deliver_interpreter" model="ir.ui.view">
+            <field name="name">interpreter_delivery.wizard</field>
+            <field name="model">outplacement.interpreter_delivery.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="booking_ref"/>
+                        <field name="kanr"/>
+                        <!-- Not used by tolkportalen yet.
+                        <field name="follow_up_code"/>
+                        <field name="office_code"/> -->
+                        <field name="project_code"/>
+                        <field name="absent_interpreter"/>
+                        <field name="additional_time"/>
+                    </group>
+                </form>
+            </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="deliver_interpreter_action">
+        <field name="name">Interpreter delivery</field>
+        <field name="res_model">outplacement.interpreter_delivery.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</data>

@@ -5,7 +5,6 @@ from datetime import timedelta
 from odoo import api, fields, models, tools, _
 from odoo.modules.module import get_module_resource
 
-
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -23,6 +22,8 @@ class Outplacement(models.Model):
             base64.b64encode(open(image_path, 'rb').read()))
 
     def _default_stage_id(self):
+        # since default sorting on outplacement.stage is sequence
+        # this code will fetch the stage with the lowest sequence.
         return self.env['outplacement.stage'].search(
             [('fold', '=', False)], limit=1)
 
@@ -197,43 +198,6 @@ class Outplacement(models.Model):
             })
         return res
 
-    # This crashes, who uses this?, can it be removed?
-    # @api.multi
-    # def _notify_get_reply_to(
-    #         self, default=None, records=None, company=None, doc_names=None):
-    #     """
-    #     Override to set alias of Outplacements to their job definition
-    #     if any.
-    #     """
-    #     aliases = self.mapped('job_ids')._notify_get_reply_to(default=default,
-    #                                                          records=None,
-    #                                                          company=company,
-    #                                                          doc_names=None)
-    #     res = {app.id: aliases.get(app.job_id.id) for app in self}
-    #     leftover = self.filtered(lambda rec: not rec.job_id)
-    #     if leftover:
-    #         res.update(super(Outplacement, leftover)._notify_get_reply_to(
-    #             default=default, records=None,
-    #             company=company, doc_names=doc_names))
-    #     return res
-
-    # @api.multi
-    # def message_get_suggested_recipients(self):
-    #     recipients = super(
-    #         Outplacement, self).message_get_suggested_recipients()
-    #     for outplacement in self:
-    #         if outplacement.partner_id:
-    #             outplacement._message_add_suggested_recipient(
-    #                 recipients,
-    #                 partner=outplacement.partner_id,
-    #                 reason=_('Contact'))
-    #         elif outplacement.email_from:
-    #             outplacement._message_add_suggested_recipient(
-    #                 recipients,
-    #                 email=outplacement.email_from,
-    #                 reason=_('Contact Email'))
-    #     return recipients
-
     @api.model
     def message_new(self, msg, custom_values=None):
         """ Overrides mail_thread message_new that is called by the mailgateway
@@ -300,6 +264,7 @@ class Outplacement(models.Model):
 class OutplacementStage(models.Model):
     _name = 'outplacement.stage'
     _description = 'Outplacement Stage'
+    _order = 'sequence'
 
     name = fields.Char(string="Name", translate=True)
     sequence = fields.Integer(string="Sequence")

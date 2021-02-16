@@ -1,4 +1,4 @@
-from odoo import api, fields, models, tools, _
+from odoo import api, fields, models, tools, _  # noqa:F401
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -10,7 +10,8 @@ class PerformingOperation(models.Model):
 
     name = fields.Char()
     ka_nr = fields.Integer(string='KA Number',
-                           help="Utförande verksamhets-nummer")
+                           help="Utförande verksamhets-nummer")                
+    company_id = fields.Many2one(comodel_name="res.company", string="Company")
     partner_ids = fields.One2many(comodel_name='res.partner',
                                   string='Addresses',
                                   inverse_name='performing_operation_id')

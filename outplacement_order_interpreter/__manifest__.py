@@ -38,9 +38,13 @@
         'project',
         'task_interpreter_ipf_client',
         'res_interpreter_language',
+        'res_interpreter_gender_preference',
+        'res_interpreter_type',
+        'res_interpreter_remote_type',
         'outplacement',
     ],
     'data': [
+        'wizards/deliver_interpreter_view.xml',
         'data/mail_data.xml',
         'data/cron.xml',
         'views/mail_activity_views.xml',
@@ -50,5 +54,8 @@
     'installable': True,
     'images': [
         'static/description/img.png'
+    ],
+    'qweb': [
+        'static/src/xml/activity.xml',
     ],
 }

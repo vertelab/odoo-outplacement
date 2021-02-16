@@ -12,9 +12,13 @@ class ResPartner(models.Model):
                                                             'American'))
     interpreter_language = fields.Many2one(
         comodel_name='res.interpreter.language',
-        string='Interperator Language')
-    interpreter_gender_preference = fields.Selection([
-        ('male', 'Male'),
-        ('female', 'Female'),
-        ('no_preference', 'No preference'),
-    ])
+        string='Interpreter Language')
+    interpreter_gender_preference = fields.Many2one(
+        comodel_name='res.interpreter.gender_preference',
+        string='Interpreter Gender Preference')
+    interpreter_type = fields.Many2one(
+        comodel_name='res.interpreter.type',
+        string='Interpreter Type')
+    interpreter_remote_type = fields.Many2one(
+        comodel_name='res.interpreter.remote_type',
+        string='Interpreter Remote Type')

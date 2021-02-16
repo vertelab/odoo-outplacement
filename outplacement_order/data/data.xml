@@ -22,7 +22,7 @@
     <record id="outplacement.cancelled_stage" model="outplacement.stage">
       <field name="fold">1</field>
       <field name="name">Cancelled</field>
-      <field name="ordertjansten_status">MAKULERAD, AVBRUTEN</field>
+      <field name="ordertjansten_status">MAKULERAD, AVBRUTEN, AVBRUTEN_KLAR</field>
       <field name="order_id_state">cancel</field>
       <field name="sequence">40</field>
     </record>

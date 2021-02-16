@@ -37,11 +37,11 @@ class OutplacementGoal(models.Model):
     step_ids = fields.Many2many(
         comodel_name="outplacement.goal.step", string="Step")
     job_description = fields.Char(string="Job description") 
-    matches_interest = fields.Boolean(string='Matches interest'),
-    matches_ability = fields.Boolean(string='Matches ability'),
-    market_demand = fields.Boolean(string='Market demand'),
-    complementing_education = fields.Boolean(string='Complementing education'),
-    complementing_experience = fields.Boolean(string='Complementing experience'),
+    matches_interest = fields.Boolean(string='Matches interest')
+    matches_ability = fields.Boolean(string='Matches ability')
+    market_demand = fields.Boolean(string='Market demand')
+    complementing_education = fields.Boolean(string='Complementing education')
+    complementing_experience = fields.Boolean(string='Complementing experience')
     other_motivation = fields.Boolean(string='Other')
     # should only be used if motivation is "other":
     free_text = fields.Char(string="Free text")

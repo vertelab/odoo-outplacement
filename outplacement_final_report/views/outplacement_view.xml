@@ -43,8 +43,6 @@
                     <field name="complementing_education"/>
                     <field name="complementing_experience"/>
                     <field name="other_motivation"/>
-                    <field name="other_motivation_name" attrs="{'invisible': [('other_motivation', '=', False)]}"/>
-                    <field name="other_motivation_level" attrs="{'invisible': [('other_motivation', '=', False)]}"/>
                     <field name="free_text" attrs="{'invisible': [('other_motivation', '=', False)]}"/>
                     <field name="step_ids" widget="many2many_tags"/>
                 </group>

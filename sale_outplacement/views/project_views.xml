@@ -20,9 +20,6 @@
       <field name="project_id" position="attributes">
         <attribute="invisible">1</attribute>
       </field>
-      <xpath expr="//page[@name='extra_info']/group/group" position="inside">
-        <field name="project_id" domain="[('active', '=', True)]" groups="base.group_no_one"/>
-      </xpath>
       <field name="tag_ids" position="attributes">
         <attribute="invisible">1</attribute>
       </field>

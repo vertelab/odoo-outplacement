@@ -5,7 +5,7 @@ import json
 import logging
 
 from odoo import api, models, fields, tools
-from odoo.exceptions import Warning
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -58,7 +58,10 @@ class MailActivity(models.Model):
                                           readonly=True)
     interpreter_booking_status = fields.Char(string='Booking Status',
                                              readonly=True,
-                                             default='Not booked')
+                                             compute='_compute_booking_status')
+    _interpreter_booking_status = fields.Char(string='Booking Status Internal',
+                                              readonly=True,
+                                              default='Not booked')
     interpreter_name = fields.Char(string='Interpreter Name',
                                    readonly=True)
     interpreter_phone = fields.Char(string='Interpreter Phone Number',
@@ -71,6 +74,17 @@ class MailActivity(models.Model):
     interpreter_contact_phone = fields.Char(
         string='Interpreter Supplier Phone Number',
         readonly=True)
+
+    @api.depends('_interpreter_booking_status', 'interpreter_company')
+    def _compute_booking_status(self):
+        statuses = {'1': 'Order received', '2': 'Delivered'}
+        for record in self:
+            status = statuses.get(record._interpreter_booking_status)
+            if status and record.interpreter_company:
+                status = 'Interpreter Booked'
+            if not status:
+                status = record._interpreter_booking_status
+            record.interpreter_booking_status = status
 
     def _get_end_time(self):
         """
@@ -187,25 +201,25 @@ class MailActivity(models.Model):
         try:
             status_code = response.status_code
         except AttributeError:
-            self.interpreter_booking_status = msg
+            self._interpreter_booking_status = msg
             _logger.exception(msg)
-            raise Warning('Unknown error making Interpreter booking')
+            raise UserError('Unknown error making Interpreter booking')
         if status_code == 200:
             self.interpreter_booking_ref = response.text
-            self.interpreter_booking_status = 'Request sent'
+            self._interpreter_booking_status = 'Request sent'
             _logger.debug('Interpreter booking success.')
         elif status_code == 404:
-            self.interpreter_booking_status = msg
+            self._interpreter_booking_status = msg
             _logger.error(f'\n{msg}\nCheck KA-Number and that address '
                           'is correct.')
-            raise Warning('Failed to book Interpreter, '
-                          'please check KA-Number and address in request.')
+            raise UserError('Failed to book Interpreter, '
+                            'please check KA-Number and address in request.')
         else:
-            self.interpreter_booking_status = msg
+            self._interpreter_booking_status = msg
             err_msg = (f'\n{msg}\nResponse text:\n{response.text}\n'
                        f'Response status code:\n{response.status_code}')
             _logger.error(err_msg)
-            raise Warning(err_msg)
+            raise UserError(err_msg)
 
     @api.multi
     def update_activity(self, response):
@@ -214,9 +228,9 @@ class MailActivity(models.Model):
                          f'{response.status_code}')
             return
         data = json.loads(response.content.decode())
-        _logger.warn(data)
-        self.interpreter_booking_status = data.get(
-            'tekniskStatusTypId', 'Order received')
+        _logger.debug(f'Update interpreter booking with data: {data}')
+        self._interpreter_booking_status = data.get(
+            'tekniskStatusTypId', self._interpreter_booking_status)
         self.interpreter_type = self.env["res.interpreter.type"].search([('code', '=', data.get('tolkTypId'))])  # noqa:E501
         self.interpreter_remote_type = self.env["res.interpreter.remote_type"].search([('code', '=', data.get('distanstolkTypId'))])  # noqa:E501
         self.time_start = datetime.datetime.strptime(

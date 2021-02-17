@@ -25,7 +25,7 @@ import datetime  # Used in test
 import random  # Used in test
 import string  # Used in test
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -50,6 +50,15 @@ class Outplacement(models.Model):
     task_ids = fields.Many2many(comodel_name='project.task', string='Tasks')
     order_id = fields.Many2one(comodel_name='sale.order')
     tasks_count = fields.Integer(compute='_compute_tasks_count')
+    analytic_account_id = fields.Many2one(
+        comodel_name='account.analytic.account',
+        string="Analytic Account",
+        copy=False,
+        ondelete='set null',
+        help="Link this outplacement to an analytic account if you need "
+             "financial management. It enables you to connect "
+             "outplacements with budgets, planning, cost and revenue "
+             "analysis, timesheets.")
 
     @api.onchange('employee_id')
     def _employee_activites(self):
@@ -183,6 +192,33 @@ class Outplacement(models.Model):
             "epost_handlaggargrupp": ''.join(
                 random.sample(string.digits, k=4)) + "@test.com"
             })
+
+
+    @api.model
+    def create(self, values):
+        """ Create an analytic account if project allow timesheet and don't provide one
+            Note: create it before calling super() to avoid raising the ValidationError from _check_allow_timesheet
+        """
+        if not values.get('analytic_account_id'):
+            analytic_account = self.env['account.analytic.account'].create({
+                'name': values.get('name', _('Unknown Analytic Account')),
+                'company_id': values.get('company_id', self.env.user.company_id.id),
+                'partner_id': values.get('partner_id'),
+                'active': True,
+            })
+            values['analytic_account_id'] = analytic_account.id
+        return super(Outplacement, self).create(values)
+
+    @api.multi
+    def unlink(self):
+        """ Delete the empty related analytic account """
+        analytic_accounts_to_delete = self.env['account.analytic.account']
+        for outplacement in self:
+            if outplacement.analytic_account_id and not outplacement.analytic_account_id.line_ids:
+                analytic_accounts_to_delete |= outplacement.analytic_account_id
+        result = super(Outplacement, self).unlink()
+        analytic_accounts_to_delete.unlink()
+        return result
 
 
 class ResPartner(models.Model):

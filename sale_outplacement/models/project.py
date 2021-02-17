@@ -12,7 +12,6 @@ xmlid_module = '__outplacement__'
 class ProjectTask(models.Model):
     _inherit = "project.task"
 
-
     start_date = fields.Datetime(string="Start date")
     instructions = fields.Text(string="Instructions", readonly=True)
     outplacement_id = fields.Many2one(
@@ -48,7 +47,6 @@ class ProjectTask(models.Model):
                 self.env.ref(".".join([xmlid_module, 'stage_done']))
             except ValueError:
                 raise ValueError(_("Not all stages were found"))
-                
 
             self.env["project.task"].create(
                 {
@@ -78,7 +76,7 @@ class ProjectTask(models.Model):
         if [elem for elem in domain if "outplacement_id" in elem]:
             return stages.search([("is_outplacement", "=", True)])
         return stages
-    
+
     @api.constrains("stage_id")
     def constrain_stage_id(self):
         stage_todo = self.env.ref(".".join([xmlid_module, 'stage_todo']))

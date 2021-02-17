@@ -294,9 +294,3 @@ class MailActivity(models.Model):
         order_interpreter = self.env.ref(
             'outplacement_order_interpreter.order_interpreter').id
         return obj.activity_type_id.id == order_interpreter
-
-    @api.multi
-    def deliver_interpreter(self):
-        if not self.is_interpreter():
-            # ToDo: Add functionality here.
-            return

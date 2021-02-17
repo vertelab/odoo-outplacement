@@ -17,6 +17,11 @@
                         <field name="additional_time"/>
                     </group>
                 </form>
+                <footer>
+                    <button name="deliver_interpreter"
+                            string="Inleverera"
+                            type="object"/>
+                </footer>
             </field>
     </record>
 

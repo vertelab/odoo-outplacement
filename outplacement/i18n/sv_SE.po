@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0-20210127\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-12 12:02+0000\n"
-"PO-Revision-Date: 2021-02-12 12:02+0000\n"
+"POT-Creation-Date: 2021-02-17 10:11+0000\n"
+"PO-Revision-Date: 2021-02-17 10:11+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -57,12 +57,17 @@ msgstr "Adress"
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_performing_operation__partner_ids
 msgid "Addresses"
-msgstr ""
+msgstr "Adresser"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__message_attachment_count
 msgid "Attachment Count"
 msgstr "Antal bilagor"
+
+#. module: outplacement
+#: model_terms:ir.ui.view,arch_db:outplacement.outplacement_form_view
+msgid "Authority data"
+msgstr "Arbetsförmedlingsuppgifter"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__booking_ref
@@ -275,12 +280,12 @@ msgstr ""
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement_stage__template_id
 msgid "Mail Template"
-msgstr ""
+msgstr "Mail-mall"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Huvudbilaga"
 
 #. module: outplacement
 #: model:res.groups,name:outplacement.group_outplacement_admin
@@ -393,6 +398,16 @@ msgid "Outplacement"
 msgstr "Deltagare"
 
 #. module: outplacement
+#: model_terms:ir.ui.view,arch_db:outplacement.outplacement_form_view
+msgid "Outplacement"
+msgstr "Om deltagaren"
+
+#. module: outplacement
+#: model_terms:ir.ui.view,arch_db:outplacement.outplacement_form_view
+msgid "Outplacement id"
+msgstr "Avrop ID"
+
+#. module: outplacement
 #: model:ir.actions.act_window,name:outplacement.outplacement_stage_action
 #: model:ir.model,name:outplacement.model_outplacement_stage
 msgid "Outplacement Stage"
@@ -485,6 +500,11 @@ msgstr "Skickad sent"
 #: model:ir.model.fields,field_description:outplacement.field_outplacement_stage__sequence
 msgid "Sequence"
 msgstr "Sekvens"
+
+#. module: outplacement
+#: model_terms:ir.ui.view,arch_db:outplacement.outplacement_form_view
+msgid "Service"
+msgstr "Om tjänsten"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__service_end_date

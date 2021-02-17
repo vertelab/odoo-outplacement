@@ -18,13 +18,13 @@
         <field name="instructions"/>
       </field>
       <field name="project_id" position="attributes">
-        <attribute="invisible">1</attribute>
+        <attribute name="invisible">1</attribute>
       </field>
       <field name="tag_ids" position="attributes">
-        <attribute="invisible">1</attribute>
+        <attribute name="invisible">1</attribute>
       </field>
       <field name="email_from" position="attributes">
-        <attribute="invisible">1</attribute>
+        <attribute name="invisible">1</attribute>
       </field>      
     </field>
   </record>

@@ -44,8 +44,8 @@ class AccountInvoice(models.Model):
             raise Warning(_("dafa.legacy_no not set in system parameters"))
 
         for invoice_ref in client_config.get_invoices(
-                supplier_id=legacy_no, date=""):
-            pass
+                supplier_id=legacy_no, date="200101-211231"):
+            _logger.warn("DAER invoice_ref: %s" % invoice_ref)
             # for invoice in client_config.get_invoice(invoice_ref):
             #     self.create_invoice(invoice)
 

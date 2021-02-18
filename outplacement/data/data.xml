@@ -19,7 +19,8 @@
       <field name="sequence">40</field>
     </record>
 
-    <record id="ir_actions_start_outplacement" model="ir.actions.server">
+    <!-- Removed for now, leaving code in case we need it later. -->
+    <!-- <record id="ir_actions_start_outplacement" model="ir.actions.server">
       <field name="name">Start outplacement</field>
       <field name="type">ir.actions.server</field>
       <field name="model_id" ref="model_outplacement" />
@@ -28,7 +29,7 @@
       <field name="code">
 env['outplacement'].create_activities(record)
       </field>
-    </record>
+    </record> -->
 
     <record id="seq_outplacement_id" model="ir.sequence">
         <field name="name">Outplacement Number</field>

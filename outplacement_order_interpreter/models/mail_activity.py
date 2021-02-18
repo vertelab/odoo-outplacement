@@ -79,12 +79,13 @@ class MailActivity(models.Model):
     def _compute_booking_status(self):
         statuses = {'1': _('Order received'), '2': _('Delivered')}
         for record in self:
-            status = statuses.get(record._interpreter_booking_status)
-            if status and record.interpreter_company:
-                status = _('Interpreter Booked')
-            if not status:
-                status = record._interpreter_booking_status
-            record.interpreter_booking_status = status
+            status = record._interpreter_booking_status
+            if record.interpreter_company and status == '1':
+                record.interpreter_booking_status = _('Interpreter Booked')
+            elif status in statuses:
+                record.interpreter_booking_status = statuses[status]
+            else:
+                record.interpreter_booking_status = status
 
     def _get_end_time(self):
         """
@@ -168,8 +169,21 @@ class MailActivity(models.Model):
         }
         return action
 
+    def action_feedback(self, feedback=False):
+        """Adding aditional log rows"""
+        # Has to be fore call to super as the record is removed in super.
+        msg = f'Reference: {self.interpreter_booking_ref}\n'\
+              f'Date: {self.time_start}\n'\
+              f'Total time: {(self.time_end - self.time_start) / 3600}'
+        message = super(MailActivity, self).action_feedback(feedback)
+        if message:
+            result = self.env['mail.message'].browse(message)
+            result.body = result.body + msg
+        return message
+
     @api.model
     def create(self, vals):
+        """Adding request to server in create."""
         record = super(MailActivity, self).create(vals)
         order_interpreter = self.env.ref(
             'outplacement_order_interpreter.order_interpreter').id
@@ -178,7 +192,11 @@ class MailActivity(models.Model):
         return record
 
     def write(self, values):
+        """Adding request to server on edit."""
         res = super(MailActivity, self).write(values)
+        # Only make a new request if no_post is not set,
+        # will create infinite recursion as make_request write result
+        # on record.
         if (self.is_interpreter() and
                 not self.interpreter_booking_ref and
                 'no_post' not in self.env.context):
@@ -186,6 +204,7 @@ class MailActivity(models.Model):
         return res
 
     def make_request(self, record=None):
+        """Makes request to server with a booking."""
         record = record or self
         try:
             resp = self.env[
@@ -193,10 +212,14 @@ class MailActivity(models.Model):
         except Exception as e:
             _logger.exception(e)
         else:
+            # Important to use context no_post here as we write to the
+            # record and thus trigger write again, infinite reqursion
+            # will occur otherwise.
             record.with_context(no_post='').process_response(resp)
 
     @api.multi
     def process_response(self, response):
+        """Process response from a interpreter booking."""
         msg = 'Failed to make booking'
         try:
             status_code = response.status_code
@@ -223,6 +246,10 @@ class MailActivity(models.Model):
 
     @api.multi
     def update_activity(self, response):
+        """
+        Updates the activity with new status if it has been updated on
+        server.
+        """
         if response.status_code not in (200,):
             _logger.warn('Failed to update interperator bookings with code: '
                          f'{response.status_code}')
@@ -258,6 +285,7 @@ class MailActivity(models.Model):
 
     @api.model
     def cron_order_interpreter(self):
+        """Cron job to check booking status."""
         ipf_client = self.env['ipf.interpreter.client']
         if not ipf_client.is_params_set():
             return
@@ -276,6 +304,7 @@ class MailActivity(models.Model):
 
     @api.multi
     def activity_format(self):
+        """Add is_interpreter_order field to activity"""
         activities = super().activity_format()
         type_id = self.env['ir.model.data'].xmlid_to_res_id(
             'outplacement_order_interpreter.order_interpreter')
@@ -286,10 +315,15 @@ class MailActivity(models.Model):
 
     @api.multi
     def interpreter_cancel_booking(self):
+        """
+        Overrides normal cancel with dialog to request user to cancel
+        by phone."""
+        # ToDo implement this.
         return
 
     @api.model
     def is_interpreter(self, obj=None):
+        """Checks if activity is of order_interpreter type."""
         obj = obj or self
         order_interpreter = self.env.ref(
             'outplacement_order_interpreter.order_interpreter').id

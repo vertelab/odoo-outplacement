@@ -1,0 +1,84 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* outplacement_order
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0-20210127\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-11 14:45+0000\n"
+"PO-Revision-Date: 2021-02-11 14:45+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: outplacement_order
+#: model:ir.actions.server,name:outplacement_order.ir_cron_order_update_ir_actions_server
+#: model:ir.cron,cron_name:outplacement_order.ir_cron_order_update
+#: model:ir.cron,name:outplacement_order.ir_cron_order_update
+msgid "Check for Outplacement Order Update"
+msgstr "Begär deltagarorderuppdatering"
+
+#. module: outplacement_order
+#: code:addons/outplacement_order/models/outplacement.py:38
+#, python-format
+msgid "Error in communication with ordertjänsten"
+msgstr "Fel i kommunikationen med ordertjänsten"
+
+#. module: outplacement_order
+#: code:addons/outplacement_order/models/outplacement.py:17
+#, python-format
+msgid "No client config for showorder integration"
+msgstr "Klientkonfiguration for showorder integrationen saknas"
+
+#. module: outplacement_order
+#: code:addons/outplacement_order/models/outplacement.py:21
+#, python-format
+msgid "No client_id configured for showorder client config"
+msgstr "Inget client_id finns i showorders klientkonfiguration"
+
+#. module: outplacement_order
+#: code:addons/outplacement_order/models/outplacement.py:23
+#, python-format
+msgid "No client_secret configured for showorder client config"
+msgstr "Inget client_secret finns i showorders klientkonfiguration"
+
+#. module: outplacement_order
+#: code:addons/outplacement_order/models/outplacement.py:19
+#, python-format
+msgid "No url configured for showorder client config"
+msgstr "Ingen URL finns i showorders klientkonfiguration"
+
+#. module: outplacement_order
+#: model:ir.model.fields,field_description:outplacement_order.field_outplacement_stage__ordertjansten_status
+msgid "Ordertjänsten status"
+msgstr "Ordertjänsten status"
+
+#. module: outplacement_order
+#: model:ir.model,name:outplacement_order.model_outplacement
+msgid "Outplacement"
+msgstr "Deltagare"
+
+#. module: outplacement_order
+#: model:ir.model,name:outplacement_order.model_outplacement_stage
+msgid "Outplacement Stage"
+msgstr "Deltagaretapp"
+
+#. module: outplacement_order
+#: model:ir.model.fields,field_description:outplacement_order.field_outplacement_stage__order_id_state
+msgid "Säljorder status"
+msgstr "Säljorder status"
+
+#. module: outplacement_order
+#: model:ir.model.fields,help:outplacement_order.field_outplacement_stage__order_id_state
+msgid "Techincal name of mapped state on saleorders in Odoo"
+msgstr "Tekniskt namn på mappad status på säljorder i Odoo"
+
+#. module: outplacement_order
+#: model:ir.model.fields,help:outplacement_order.field_outplacement_stage__ordertjansten_status
+msgid "Technical name of mapped status in ordertjänsten, seperate several statuses with ','"
+msgstr "Tekniskt namn på mappad status i ordertjänsten, flera statusar separeras med ','"
+

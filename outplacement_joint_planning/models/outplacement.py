@@ -43,7 +43,7 @@ class Outplacement(models.Model):
     task_count = fields.Integer(
         compute='_compute_task_count', string="Task Count")
 
-    @api.model
+    @api.one
     def send_gp_to_bar(self):
         client = self.env['ipf.completion_report.client.config'].search(
             [], limit=1)

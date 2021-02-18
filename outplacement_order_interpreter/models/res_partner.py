@@ -15,4 +15,10 @@ class ResPartner(models.Model):
         string='Interpreter Language')
     interpreter_gender_preference = fields.Many2one(
         comodel_name='res.interpreter.gender_preference',
-        string='Gender Preference')
+        string='Interpreter Gender Preference')
+    interpreter_type = fields.Many2one(
+        comodel_name='res.interpreter.type',
+        string='Interpreter Type')
+    interpreter_remote_type = fields.Many2one(
+        comodel_name='res.interpreter.remote_type',
+        string='Interpreter Remote Type')

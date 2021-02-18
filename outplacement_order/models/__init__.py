@@ -20,3 +20,4 @@
 ################################################################################
 
 from . import outplacement
+from . import outplacement_stage

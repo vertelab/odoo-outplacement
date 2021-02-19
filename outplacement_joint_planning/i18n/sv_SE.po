@@ -49,6 +49,11 @@ msgid "Send GP to BAR"
 msgstr "Skicka gemensam planering till BÄR"
 
 #. module: outplacement_joint_planning
+#: model_terms:ir.ui.view,arch_db:outplacement_joint_planning.outplacement_form_view
+msgid "Send GP to BAR"
+msgstr "Skicka gemensam planering till BÄR"
+
+#. module: outplacement_joint_planning
 #: model:ir.model.fields,field_description:outplacement_joint_planning.field_outplacement__task_count
 msgid "Task Count"
 msgstr "Antal aktiviteter"

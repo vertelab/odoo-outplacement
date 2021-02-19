@@ -140,11 +140,6 @@ class Outplacement(models.Model):
             'partner_id': partner_id,
             'order_line': order_lines,
         })
-        # product = self.env.ref('sale_outplacement.product_suborder')
-        # self.env['sale.order.line'].create({
-        #     'product_id': product.id,
-        #     'order_id': order.id,
-        # })
         outplacement = self.env['outplacement'].create({
             'name': data['ordernummer'],
             'performing_operation_id': self._get_department_id(data),

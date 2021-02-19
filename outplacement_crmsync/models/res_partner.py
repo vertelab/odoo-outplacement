@@ -3,13 +3,15 @@
 from xmlrpc.client import ServerProxy
 from odoo import api, fields, models
 from odoo.exceptions import Warning
-import odoorpc
 import pprint
 
 import logging
-
 _logger = logging.getLogger(__name__)
 
+try:
+    import odoorpc
+except:
+    _logger.info("outplacement_crmsync needs odoorpc. pip install odoorpc")
 
 class crm_server(object):
     def __init__(self, env):

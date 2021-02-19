@@ -44,7 +44,12 @@ msgid "Please, configure the configuration to send this report."
 msgstr ""
 
 #. module: outplacement_joint_planning
-#: model:ir.actions.server,name:outplacement_joint_planning.ir_actions_server_send_gp_to_bar
+#: model_terms:ir.ui.view,arch_db:outplacement_joint_planning.outplacement_form_view
+msgid "Send GP to BAR"
+msgstr "Skicka Gemensam Planering till Arbetsförmedlingen"
+
+#. module: outplacement_joint_planning
+#: model_terms:ir.ui.view,arch_db:outplacement_joint_planning.outplacement_form_view
 msgid "Send GP to BAR"
 msgstr "Skicka gemensam planering till BÄR"
 

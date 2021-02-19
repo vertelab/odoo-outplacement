@@ -41,7 +41,7 @@
       <field name="inherit_id" ref="outplacement.outplacement_form_view" />
       <field name="arch" type="xml">
         <xpath expr="//header" position="inside">
-            <button name="send_gp_to_bar" string="Send GP to BAR" translate=True type="object"/>
+            <button name="send_gp_to_bar" string="Send GP to BAR" type="object"/>
         </xpath>
         <group name="service" position="inside">
           <field name="jp_sent_date" required="False" />

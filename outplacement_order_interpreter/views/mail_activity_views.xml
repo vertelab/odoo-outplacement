@@ -33,10 +33,11 @@
                            placeholder="Country"
                            class="o_address_country"/>
                 </div>
-                <field name="time_start" attrs="{
-                    'readonly': [('interpreter_booking_ref', '!=', False)],
-                    'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
-                    'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+                <field name="time_start"
+                       attrs="{
+                           'readonly': [('interpreter_booking_ref', '!=', False)],
+                           'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
+                           'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
 
                 <field name="time_end" attrs="{
                         'readonly': [('interpreter_booking_ref', '!=', False)],

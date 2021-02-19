@@ -174,7 +174,7 @@ class MailActivity(models.Model):
         # Has to be fore call to super as the record is removed in super.
         msg = f'Reference: {self.interpreter_booking_ref}\n'\
               f'Date: {self.time_start}\n'\
-              f'Total time: {(self.time_end - self.time_start) / 3600}'
+              f'Total time: {self.time_end - self.time_start}'
         message = super(MailActivity, self).action_feedback(feedback)
         if message:
             result = self.env['mail.message'].browse(message)
@@ -184,24 +184,17 @@ class MailActivity(models.Model):
     @api.model
     def create(self, vals):
         """Adding request to server in create."""
-        record = super(MailActivity, self).create(vals)
         order_interpreter = self.env.ref(
             'outplacement_order_interpreter.order_interpreter').id
+        if vals['activity_type_id'] == order_interpreter:
+            for field in ('time_start', 'time_end'):
+                vals[field] = self.strip_seconds(vals[field])
+            vals['date_deadline'] = vals['time_start']
+        record = super(MailActivity, self).create(vals)
         if record.activity_type_id.id == order_interpreter:
+            self.validate_booking_rules(record)
             self.make_request(record)
         return record
-
-    def write(self, values):
-        """Adding request to server on edit."""
-        res = super(MailActivity, self).write(values)
-        # Only make a new request if no_post is not set,
-        # will create infinite recursion as make_request write result
-        # on record.
-        if (self.is_interpreter() and
-                not self.interpreter_booking_ref and
-                'no_post' not in self.env.context):
-            self.make_request()
-        return res
 
     def make_request(self, record=None):
         """Makes request to server with a booking."""
@@ -212,14 +205,33 @@ class MailActivity(models.Model):
         except Exception as e:
             _logger.exception(e)
         else:
-            # Important to use context no_post here as we write to the
-            # record and thus trigger write again, infinite reqursion
-            # will occur otherwise.
-            record.with_context(no_post='').process_response(resp)
+            record.process_response(*resp)
+
+    def validate_booking_rules(self, record):
+        """Validate record against various rules in the portal."""
+        if record.time_start <= datetime.datetime.now():
+            raise UserError('Start time cannot be before now.')
+        time_diff = record.time_end - record.time_start
+        rules = {'3': (60, 'onsite'), '2': (30, 'phone')}
+        current_rule = rules[record.interpreter_type[0].code][0]
+        if not time_diff >= datetime.timedelta(minutes=current_rule):
+            msg = 'This type of booking needs to be atleast {current_rule} '\
+                  'minutes long.'
+            raise UserError(msg.format(current_rule=current_rule))
+        if time_diff.seconds % 30*60:
+            raise UserError(_('Booking has to be an even 30 minutes '
+                              'segment.'))
+        return True
+
+    def strip_seconds(self, dt):
+        """Remove seconds and miliseconds from a dt"""
+        return f'{dt.rsplit(":", 1)[0]}:00'
 
     @api.multi
-    def process_response(self, response):
+    def process_response(self, response, payload):
         """Process response from a interpreter booking."""
+        # Note that calling code relies on that UserError is thrown when
+        # wrong status is caught.
         msg = 'Failed to make booking'
         try:
             status_code = response.status_code
@@ -235,6 +247,7 @@ class MailActivity(models.Model):
             self._interpreter_booking_status = msg
             _logger.error(f'\n{msg}\nCheck KA-Number and that address '
                           'is correct.')
+            _logger.error(payload)
             raise UserError(_('Failed to book Interpreter, '
                             'please check KA-Number and address in request.'))
         else:
@@ -242,6 +255,7 @@ class MailActivity(models.Model):
             err_msg = (f'\n{msg}\n{_("Response text")}:\n{response.text}\n'
                        f'{_("Response status code")}:\n{response.status_code}')
             _logger.error(err_msg)
+            _logger.error(payload)
             raise UserError(err_msg)
 
     @api.multi

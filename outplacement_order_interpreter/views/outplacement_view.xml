@@ -4,10 +4,10 @@
         <field name="model">outplacement</field> 
         <field name="inherit_id" ref="outplacement.outplacement_form_view" />
         <field name="arch" type="xml">
-            <field name="employee_id" position="after">
+            <group name="outplacement" position="inside">
                 <field name="interpreter_language"/>
                 <field name="interpreter_gender_preference"/>
-            </field>
+            </group>
         </field>
     </record>
 </odoo>

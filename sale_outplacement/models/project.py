@@ -12,7 +12,6 @@ xmlid_module = '__outplacement__'
 class ProjectTask(models.Model):
     _inherit = "project.task"
 
-
     start_date = fields.Datetime(string="Start date")
     instructions = fields.Text(string="Instructions", readonly=True)
     outplacement_id = fields.Many2one(
@@ -48,7 +47,6 @@ class ProjectTask(models.Model):
                 self.env.ref(".".join([xmlid_module, 'stage_done']))
             except ValueError:
                 raise ValueError(_("Not all stages were found"))
-                
 
             self.env["project.task"].create(
                 {
@@ -78,7 +76,7 @@ class ProjectTask(models.Model):
         if [elem for elem in domain if "outplacement_id" in elem]:
             return stages.search([("is_outplacement", "=", True)])
         return stages
-    
+
     @api.constrains("stage_id")
     def constrain_stage_id(self):
         stage_todo = self.env.ref(".".join([xmlid_module, 'stage_todo']))
@@ -119,10 +117,17 @@ class ProjectTask(models.Model):
     
     @api.model
     def create(self, vals):
-        stage_todo = self.env['project.task.type'].create({'name': 'To Do'})[0]
+        stage_todo = self.env.ref(".".join([xmlid_module, 'stage_todo']))
+        stage_optional = self.env.ref(".".join([xmlid_module, 'stage_optional']))
         if vals.get('parent_id'):
             parent = self.env['project.task'].browse(vals['parent_id'])
-            vals['stage_id'] = stage_todo.id
+            if parent.task_type != "optional":
+                vals['stage_id'] = stage_todo.id
+            else:
+                vals['stage_id'] = stage_optional.id
+            vals['color'] = parent.color
+            vals['task_type'] = parent.task_type
+            vals['outplacement_id'] = parent.outplacement_id
             # with the current handling of sequence this only allows a total of 9 sub-tasks
             # before things start to act a bit weird.
             # If we need more then sequence should be changed in res_joint_planning_af/data/data.xml

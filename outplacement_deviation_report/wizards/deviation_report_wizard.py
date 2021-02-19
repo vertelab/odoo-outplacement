@@ -155,7 +155,12 @@ class DeviationReportWizard(models.TransientModel):
         legacy_no = self.env["ir.config_parameter"].sudo().get_param("dafa.legacy_no")
         if not legacy_no:
             raise UserError(_("dafa.legacy_no not set in system parameters"))
-
+        # A013 = KVL
+        service_code = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("dafa.service_code", "A013")
+        )
         if self.deviation_type == "leave":
             franvaro_dict = {
                 "avvikelseorsakskod": self.deviation_leave_code,
@@ -171,14 +176,14 @@ class DeviationReportWizard(models.TransientModel):
         elif self.deviation_type == "deviation":
             avvikelse_dict = {
                 "avvikelseorsakskod": self.deviation_code,
-                "rapportertingsdatum": str(self.deviation_date),
+                "rapporteringsdatum": str(self.deviation_date),
             }
 
         qa_pairs = []
         payload = {
             "genomforande_referens": self.order_id,
             "id": self.uniq_ref,
-            "tjanstekod": "A013",  # A013 = KVL, hardcoded for now
+            "tjanstekod": service_code,
             "datum_for_rapportering": str(self.deviation_date),
             "arbetssokande": {
                 "personnummer": self.social_sec_nr.replace("-", ""),
@@ -187,8 +192,7 @@ class DeviationReportWizard(models.TransientModel):
             },
             "ansvarig_arbetsformedlare": {
                 "funktionsbrevlada": self.responsible_id.email,
-                # TODO: Fix when AF_Security fix is in.
-                "signatur": "Dummy",
+                "signatur": self.responsible_id.af_signature,
             },
             "leverantor": {
                 "namn": self.company_id.name,

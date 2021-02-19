@@ -1,4 +1,8 @@
-from odoo import models, fields
+import logging
+
+from odoo import models, api, fields  # noqa:F401
+
+_logger = logging.getLogger(__name__)
 
 
 class Outplacement(models.Model):
@@ -10,6 +14,9 @@ class Outplacement(models.Model):
     interpreter_gender_preference = fields.Many2one(
         related="partner_id.interpreter_gender_preference",
         readonly=False)
-    # Place holder for functions that will be added in subsequent commits.
-    # interpreter_type = fields.Many2one()
-    # interpreter_remote_type = fields.Many2one()
+    interpreter_type = fields.Many2one(
+        related='partner_id.interpreter_type',
+        readonly=False)
+    interpreter_remote_type = fields.Many2one(
+        related='partner_id.interpreter_type',
+        readonly=False)

@@ -4,6 +4,12 @@ from odoo import api, fields, models, tools, _  # noqa:F401
 class Partner(models.Model):
     _inherit = 'res.partner'
 
+    performing_operation_ids = fields.One2many(
+        comodel_name="performing.operation",
+        inverse_name="company_id",
+        string="Performing operations",
+        related="company_id.performing_operation_ids",
+        )
     jobseeker_operation_id = fields.Many2one(
         comodel_name='performing.operation', string='Perf. Op. Jobseeker')
     performing_operation_id = fields.Many2one(
@@ -20,3 +26,13 @@ class Users(models.Model):
         relation='performing_operation_user_rel',
         column1='user_id',
         column2='operation_id')
+
+class ResCompany(models.Model):
+    _inherit = "res.company"
+
+    performing_operation_ids = fields.One2many(
+        comodel_name="performing.operation",
+        inverse_name="company_id",
+        string="Performing operations"
+        )
+

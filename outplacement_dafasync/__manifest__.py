@@ -36,7 +36,7 @@
     "depends": [
         'partner_ssn',
         'partner_firstname',
-        'partner_education_views',
+        #'partner_education_views',
         'partner_desired_jobs',
     ],
     'installable': True,

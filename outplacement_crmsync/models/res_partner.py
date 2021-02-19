@@ -64,9 +64,6 @@ class crm_server(object):
 
 class crm_serverII(object):
     def __init__(self, env):
-
-    def __init__(self,env):
-        
         # self.server_url =  env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_url','http[s]://%s')
         self.server_host =  env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_host','<domain>')
         self.server_port = env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_port','8069')

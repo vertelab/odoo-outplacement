@@ -61,10 +61,11 @@ class InterpreterDeliveryWizard(models.TransientModel):
                                                               payload)
         except Exception as e:
             _logger.exception(e)
+            _logger.error(payload)
         else:
             self.check_response(response)
             self.log_to_accounting()
-            self.mail_activity_id.mark_done()
+            self.mail_activity_id.action_done()
 
     def check_response(self, response):
         """Verify that response is 200 else raise UserError."""

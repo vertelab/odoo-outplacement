@@ -174,7 +174,7 @@ class MailActivity(models.Model):
         # Has to be fore call to super as the record is removed in super.
         msg = f'Reference: {self.interpreter_booking_ref}\n'\
               f'Date: {self.time_start}\n'\
-              f'Total time: {(self.time_end - self.time_start) / 3600}'
+              f'Total time: {self.time_end - self.time_start}'
         message = super(MailActivity, self).action_feedback(feedback)
         if message:
             result = self.env['mail.message'].browse(message)

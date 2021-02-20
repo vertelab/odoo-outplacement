@@ -2,7 +2,8 @@
 
 ################################################################################
 #
-#    Odoo, Open Source Management Solution
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2020 Vertel AB (<https://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -20,27 +21,17 @@
 ################################################################################
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
-    'name': 'Outplacement DAFA Sync',
-    'version': '12.0.1.0.1',
+    'name': 'Outplacement AF Signature',
+    'version': '12.0.0.2.0',
     'category': 'Outplacement',
-    'description': """This module sync data from CRM to DAFA 
-        
-        partnersyncCrm2Dafa(ssn,host,user,password)
-        
-        This is the CRM-part of the DAFA sync
-        
-        """,
+    'description': """AF Signature on Outplacement (via management_team_id) """,
     'author': "Vertel AB",
     'license': 'AGPL-3',
-    'website': 'https://vertel.se',
-    "depends": [
-        'partner_ssn',
-        'partner_firstname',
-        #'partner_education_views',
-        'partner_desired_jobs',
-    ],
+    'website': 'http://www.vertel.se',
+    'depends': ['partner_af_signature', 'outplacement'],
+    'data': [],
     'installable': True,
+    'application': False,
     'images': [
-        'static/description/img.png'
     ],
 }

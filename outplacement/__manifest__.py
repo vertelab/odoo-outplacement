@@ -23,7 +23,7 @@
 
 {
     'name': 'Outplacement',
-    'version': '12.0.1.2.1',
+    'version': '12.0.1.2.2',
     'category': 'Outplacement',
     'description': """
 	 Module to handle outplacement (Avrop)\n

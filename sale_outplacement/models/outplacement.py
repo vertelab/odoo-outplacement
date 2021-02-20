@@ -25,7 +25,7 @@ import datetime  # Used in test
 import random  # Used in test
 import string  # Used in test
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -40,7 +40,7 @@ class SaleOrder(models.Model):
 class Outplacement(models.Model):
     _inherit = 'outplacement'
 
-    management_team_id = fields.Many2one(comodel_name='res.users',
+    management_team_id = fields.Many2one(comodel_name='res.partner',
                                          string='Management team')
     skill_id = fields.Many2one('hr.skill')
     participitation_rate = fields.Integer()
@@ -50,6 +50,15 @@ class Outplacement(models.Model):
     task_ids = fields.Many2many(comodel_name='project.task', string='Tasks')
     order_id = fields.Many2one(comodel_name='sale.order')
     tasks_count = fields.Integer(compute='_compute_tasks_count')
+    analytic_account_id = fields.Many2one(
+        comodel_name='account.analytic.account',
+        string="Analytic Account",
+        copy=False,
+        ondelete='set null',
+        help="Link this outplacement to an analytic account if you need "
+             "financial management. It enables you to connect "
+             "outplacements with budgets, planning, cost and revenue "
+             "analysis, timesheets.")
 
     @api.onchange('employee_id')
     def _employee_activites(self):
@@ -74,7 +83,7 @@ class Outplacement(models.Model):
             record.tasks_count = len(record.task_ids)
 
     @api.multi
-    def _get_partner_id(self, data):
+    def _get_partner(self, data):
         partner = self.env['res.partner'].search([
             '|',
             ('customer_id', '=', data['sokande_id']),
@@ -85,16 +94,15 @@ class Outplacement(models.Model):
                 'customer_id': data['sokande_id'],
                 'social_sec_nr': data['personnummer'],
             })
-        return partner.id if partner else None
+        return partner
 
     @api.multi
     def _get_management_team_id(self, data):
-        management_team = self.env['res.users'].search(
+        management_team = self.env['res.partner'].search(
             [('email', '=', data['epost_handlaggargrupp'])], limit=1)
 
         if not management_team:
-            management_team = self.env['res.users'].create({
-                'login': data['epost_handlaggargrupp'],
+            management_team = self.env['res.partner'].create({
                 'name': data['epost_handlaggargrupp'],
                 'email': data['epost_handlaggargrupp'],
                 'phone': data['telefonnummer_handlaggargrupp']
@@ -119,24 +127,24 @@ class Outplacement(models.Model):
     def suborder_process_data(self, data):
         _logger.info(data)
         data = super(Outplacement, self).suborder_process_data(data)
-        partner_id = self._get_partner_id(data)
+        partner = self._get_partner(data)
 
         skill = self._get_skill(data)
+        order_lines = [
+            (0, 0, {"product_id": self.env.ref("sale_outplacement.startersattning").id}),
+            (0, 0, {"product_id": self.env.ref("sale_outplacement.slutersattning").id}),
+        ]
         order = self.env['sale.order'].create({
             'origin': data['genomforande_referens'],
             'name': data['ordernummer'],
-            'partner_id': partner_id,
-        })
-        product = self.env.ref('sale_outplacement.product_suborder')
-        self.env['sale.order.line'].create({
-            'product_id': product.id,
-            'order_id': order.id,
+            'partner_id': partner.id,
+            'order_line': order_lines,
         })
         outplacement = self.env['outplacement'].create({
             'name': data['ordernummer'],
             'performing_operation_id': self._get_department_id(data),
             'booking_ref': data['boknings_id'],
-            'partner_id': partner_id,
+            'partner_id': partner.id,
             'skill_id': skill.id if skill else None,
             'participitation_rate': data['deltagandegrad'],
             'service_start_date': data['startdatum_insats'],
@@ -147,6 +155,9 @@ class Outplacement(models.Model):
             'management_team_id': self._get_management_team_id(data),
             'order_id': order.id,
         })
+        lang = self.env['res.interpreter.language'].search(
+            [('code', '=', data['sprakstod'])])
+        partner.interpreter_language = lang.id if lang else False
         order.outplacement_id = outplacement.id
         self.env['project.task'].init_joint_planning(outplacement.id)
         self.env['project.task'].init_joint_planning_stages(outplacement.id)
@@ -169,7 +180,7 @@ class Outplacement(models.Model):
                           ''.join(random.sample(string.digits, k=4)),
             "tjanstekod": "KVL",
             "spar_kod": "10",
-            "sprakstod": "Tyska",
+            "sprakstod": "10283",
             "deltagandegrad": 75,
             "bokat_sfi": False,
             "startdatum_insats": '%s' % datetime.date.today(),
@@ -184,6 +195,33 @@ class Outplacement(models.Model):
             "epost_handlaggargrupp": ''.join(
                 random.sample(string.digits, k=4)) + "@test.com"
             })
+
+
+    @api.model
+    def create(self, values):
+        """ Create an analytic account if project allow timesheet and don't provide one
+            Note: create it before calling super() to avoid raising the ValidationError from _check_allow_timesheet
+        """
+        if not values.get('analytic_account_id'):
+            analytic_account = self.env['account.analytic.account'].create({
+                'name': values.get('name', _('Unknown Analytic Account')),
+                'company_id': values.get('company_id', self.env.user.company_id.id),
+                'partner_id': values.get('partner_id'),
+                'active': True,
+            })
+            values['analytic_account_id'] = analytic_account.id
+        return super(Outplacement, self).create(values)
+
+    @api.multi
+    def unlink(self):
+        """ Delete the empty related analytic account """
+        analytic_accounts_to_delete = self.env['account.analytic.account']
+        for outplacement in self:
+            if outplacement.analytic_account_id and not outplacement.analytic_account_id.line_ids:
+                analytic_accounts_to_delete |= outplacement.analytic_account_id
+        result = super(Outplacement, self).unlink()
+        analytic_accounts_to_delete.unlink()
+        return result
 
 
 class ResPartner(models.Model):

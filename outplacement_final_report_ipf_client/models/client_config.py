@@ -170,24 +170,62 @@ class ClientConfig(models.Model):
                 "yrkesomrade": "Hotell & Restaurang",
                 "yrke": "Kock",
                 "arbetsuppgifter_beskrivning": "Lagar mat",
-                "val_av_huvudmal_motivering": "Annat",
-                "fritext": "Används vid val_av_huvudmal_motivering Annat",
-                "steg": [{
-                    "typ": "Studera",
-                    "kompletterande_insats": {
-                        "typ": "Studiemotiverande insats"
+                "val_av_huvudmal_motivering": [
+                    {
+                        "typ": "Matchar deltagarens intressen"
+                    },
+                    {
+                        "typ": "Annat",
+                        "fritext": "Används vid val_av_huvudmal_motivering" 
+                    }
+                ],
+                "steg": [
+                    {
+                    "typ": "Studera och reguljär utbildning", 
+                        # Studera och reguljär utbildning 
+                        #Lämpliga kompletterande insatser
+                        # Annat
+                    "namn": "",
+                    "niva": "",
+                    "startdatum": "2020-12-22",
+                    "slutdatum": "2020-12-22"
+                    },
+                    {
+                    "typ": "Lämpliga kompletterande insatser",
+                    "kompletterande_insats": {   # This is displayed when "Lämpliga kompletterande insatser" is selected in "Typ"
+                    "typ": "Studiemotiverande insats",
+                        #Studiemotiverande insats
+                        #Rusta inför arbete
+                        #Matcha till arbete
+                        #Utreda arbetsförmågan
+                        #Delta i en arbetsmarknadsutbildning/Praktik/Validering
+                        #Svenskastudier inom valt område
+                        #Översättning av betyg
+                        #Bedömning och komplettering av utländsk utbildning
+                        #Annat
+                    "fritext":"text goes here for Annat" # If "Annat" is selected in "Typ"
                     },
                     "namn": "",
                     "niva": "",
                     "startdatum": "2020-12-22",
                     "slutdatum": "2020-12-22"
-                }]
+                }, 
+                {
+                    "typ": "Annat",
+                    "fritext":"Only sent when it is 'Annat'in Typ under steg object",
+                    "namn": "Används vid val_av_huvudmal_motivering Annat",
+                    "niva": "Används vid val_av_huvudmal_motivering Annat",
+                    "startdatum": "2020-12-22",
+                    "slutdatum": "2020-12-22"
+                }
+
+                ]
             },
-            "alternativ_mal": {
+            "alternativt_mal": {
                 "yrkesomrade": "Hotell & Restaurang",
                 "yrke": "Kock",
                 "arbetsuppgifter_beskrivning": "Lagar mat",
-                "val_av_alternativ_mal_motivering": "Matchar deltagarens intressen",
+                "val_av_alternativt_mal_motivering": "Matchar deltagarens intressen",
                 "steg": [{
                     "typ": "Studera",
                     "namn": "",
@@ -251,67 +289,119 @@ class ClientConfig(models.Model):
             if outplacement.employee_id.user_id:
                 payload["ansvarig_handledare"]["signatur"] = \
                     outplacement.employee_id.user_id.login
-        if outplacement.obstacle_id:
+        if outplacement.obstacle_reason:
             payload["hinder"] = {
-                "orsak_typ": outplacement.obstacle_id.reason,
-                "motivering": outplacement.obstacle_id.motivation
+                "orsak_typ": outplacement.obstacle_reason,
+                "motivering": outplacement.obstacle_motivation 
             }
         goal_id = outplacement.main_goal_id
         if goal_id:
             payload["huvudmal"] = {
                 "arbetsuppgifter_beskrivning": goal_id.job_description,
-                "val_av_huvudmal_motivering": goal_id.motivation,  # new field?
+                "val_av_huvudmal_motivering": [],  # new field?
                 "fritext": goal_id.free_text,  # new field?
                 "steg": []
             }
             if goal_id.field_of_work_id:
                 payload["huvudmal"]["yrkesomrade"] = goal_id.field_of_work_id
-
             if goal_id.job_id:
                 payload["huvudmal"]["yrke"] = goal_id.job_id
-
-            for step_id in goal_id:
+            if goal_id.matches_interest:
+                payload["huvudmal"]["val_av_huvudmal_motivering"].append({
+                    "typ":'Matchar deltagarens intressen'
+                    })
+            if goal_id.matches_ability:
+                payload["huvudmal"]["val_av_huvudmal_motivering"].append({
+                    "typ":'Arbetsuppgifter matchar förmåga'
+                    })
+            if goal_id.market_demand:
+                payload["huvudmal"]["val_av_huvudmal_motivering"].append({
+                    "typ":'Efterfrågan på arbetsmarknaden'
+                    })
+            if goal_id.complementing_education:
+                payload["huvudmal"]["val_av_huvudmal_motivering"].append({
+                    "typ":'Kompletterar nuvarande utbildning'
+                    })
+            if goal_id.complementing_experience:
+                payload["huvudmal"]["val_av_huvudmal_motivering"].append({
+                    "typ":'kompletterar tidigare erfarenheter'
+                    })
+            if goal_id.other_motivation:
+                payload["huvudmal"]["val_av_huvudmal_motivering"].append({
+                    "typ":'Annat',
+                    "fritext": goal_id.free_text if goal_id.free_text else ""
+                    })
+            for step_id in goal_id.step_ids:
                 step = {
                     "typ": step_id.step_type,
-                    "namn": step_id.name,
-                    "niva": step_id.level,
+                    "namn": step_id.name if step_id.name else "",
+                    "niva": step_id.level if step_id.level else "",
                     "startdatum": step_id.start_date,
                     "slutdatum": step_id.end_date
                 }
-                step["kompletterande_insats"] = {
-                    "typ": step_id.complementing_effort_type,
-                    "fritext": step_id.complementing_effort_description
-                }
+                if step_id.step_type == "fitting complementing efforts":
+                    step["kompletterande_insats"] = {
+                        "typ": step_id.complementing_effort_type,
+                        "fritext": step_id.complementing_effort_description if step_id.complementing_effort_description else ""
+                    }
+                elif step_id.step_type == "other":
+                    step["fritext"] = step_id.free_text if step_id.free_text else ""
                 payload['huvudmal']['steg'].append(step)
         goal_id = outplacement.alternative_goal_id
         if goal_id:
-            payload["alternativ_mal"] = {
+            payload["alternativt_mal"] = {
                 "arbetsuppgifter_beskrivning": goal_id.job_description,
-                "val_av_huvudmal_motivering": goal_id.motivation,  # new field?
+                "val_av_alternativt_mal_motivering": [],  # new field?
                 "fritext": goal_id.free_text,  # new field?
                 "steg": []
             }
             if goal_id.field_of_work_id:
-                payload["alternativ_mal"]["yrkesomrade"] = \
-                    goal_id.field_of_work_id
+                payload["alternativt_mal"]["yrkesomrade"] = goal_id.field_of_work_id
 
             if goal_id.job_id:
-                payload["alternativ_mal"]["yrke"] = goal_id.job_id
+                payload["alternativt_mal"]["yrke"] = goal_id.job_id
 
-            for step_id in goal_id:
+            if goal_id.matches_interest:
+                payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
+                    "typ":'Matchar deltagarens intressen'
+                    })
+            if goal_id.matches_ability:
+                payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
+                    "typ":'Arbetsuppgifter matchar förmåga'
+                    })
+            if goal_id.market_demand:
+                payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
+                    "typ":'Efterfrågan på arbetsmarknaden'
+                    })
+            if goal_id.complementing_education:
+                payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
+                    "typ":'Kompletterar nuvarande utbildning'
+                    })
+            if goal_id.complementing_experience:
+                payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
+                    "typ":'kompletterar tidigare erfarenheter'
+                    })
+            if goal_id.other_motivation:
+                payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
+                    "typ":'Annat',
+                    "fritext": goal_id.free_text if goal_id.free_text else ""
+                    })
+            for step_id in goal_id.step_ids:
                 step = {
                     "typ": step_id.step_type,
-                    "namn": step_id.name,
-                    "niva": step_id.level,
+                    "namn": step_id.name if step_id.name else "",
+                    "niva": step_id.level if step_id.level else "",
                     "startdatum": step_id.start_date,
                     "slutdatum": step_id.end_date
                 }
-                step["kompletterande_insats"] = {
-                    "typ": step_id.complementing_effort_type,
-                    "fritext": step_id.complementing_effort_description
-                }
-                payload['alternativ_mal']['steg'].append(step)
-
+                if step_id.step_type == "fitting complementing efforts":
+                    step["kompletterande_insats"] = {
+                        "typ": step_id.complementing_effort_type,
+                        "fritext": step_id.complementing_effort_description if step_id.complementing_effort_description else ""
+                    }
+                elif step_id.step_type == "other":
+                    step["fritext"] = step_id.free_text if step_id.free_text else ""
+                payload['alternativt_mal']['steg'].append(step)
         for planned in self.env['res.joint_planning'].search(
                 [('send2server', '=', True)], order='sequence'):
             task = outplacement.task_ids.filtered(

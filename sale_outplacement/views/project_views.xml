@@ -5,15 +5,43 @@
     <field name="model">project.task</field>
     <field name="inherit_id" ref="project.view_task_form2" />
     <field name="arch" type="xml">
-      <field name="email_from" position="after">
-        <field name="outplacement_id" />
+      <field name="date_deadline" position="replace">
+        <field name="start_date" widget="date"/>
+        <label for="date_deadline" string="End date"/>
+        <field name="date_deadline" widget="date" nolabel="1"/>
       </field>
-      <field name="date_deadline" position="before">
-        <field name="start_date"/>
-      </field>
-      <field name="name" position="after">
+      <field name="project_id" position="before">
         <field name="instructions"/>
+        <field name="outplacement_id" />
+        <field name="parent_id" domain="[('parent_id', '=', False)]"
+          attrs="{'invisible' : [('subtask_count', '>', 0)]}"
+          groups="project.group_subtask_project"
+        />
       </field>
+      <button name="toggle_active" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </button>
+      <field name="priority" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </field>
+      <field name="kanban_state" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </field>
+      <field name="project_id" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </field>
+      <field name="user_id" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </field>
+      <field name="tag_ids" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </field>
+      <field name="email_from" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </field>
+      <xpath expr="//notebook" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
     </field>
   </record>
   <record id="view_task_kanban" model="ir.ui.view">
@@ -21,16 +49,23 @@
     <field name="model">project.task</field>
     <field name="inherit_id" ref="project.view_task_kanban" />
     <field name="arch" type="xml">
-      <field name="priority" position="attributes">
+      <xpath expr="//div[@class='oe_kanban_bottom_left']/field[@name='priority']" position="attributes">
         <attribute name="invisible">1</attribute>
-      </field>
-      <field name="name" position="after">
+      </xpath>
+      <xpath expr="//div[@class='oe_kanban_bottom_left']/field[@name='activity_ids']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>        
+      <xpath expr="//kanban/field[@name='color']" position="after">
         <field name="instructions"/>
-      </field>
-      <field name="priority" position="before">
         <field name="start_date"/>
-        <field name="date_deadline"/>
-      </field>
+      </xpath>
+      <xpath expr="//div[@class='o_kanban_record_headings']/small/span/i/field[@name='date_deadline']" position="before">
+        <field name="instructions"/>
+        <field name="start_date" widget="date"/>
+      </xpath>
+      <xpath expr="//div[@class='oe_kanban_bottom_right']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
     </field>
   </record>
   <record id="view_task_tree2" model="ir.ui.view">
@@ -57,6 +92,10 @@
         <field name="parent_id"/>
       </field>
     </field>
+  </record>
+
+  <record id="project.action_view_task" model="ir.actions.act_window">
+    <field name="view_mode">kanban,tree,form,calendar</field>
   </record>
   
 </odoo>

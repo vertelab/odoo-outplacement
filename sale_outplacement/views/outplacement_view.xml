@@ -5,20 +5,18 @@
             <field name="model">outplacement</field>
             <field name="inherit_id" ref="outplacement.outplacement_form_view"/>
             <field name="arch" type="xml">
-                <group position="after">
-                    <group>
-                        <group>
-                            <field name="participitation_rate"/>
-                            <field name="file_reference_number"/>
-                            <field name='management_team_id'/>
-                        </group>
-                        <group>
-                            <field name="order_start_date"/>
-                            <field name="service_start_date"/>
-                            <field name="service_end_date"/>
-                            <field name="order_close_date"/>
-                        </group>
-                    </group>
+                <field name="employee_id" position="after">
+                    <field name='management_team_id'/>
+                </field>
+                <group name="service" position="inside">
+                    <field name="service_start_date"/>
+                    <field name="service_end_date"/>
+                    <field name="order_start_date"/>
+                    <field name="order_close_date"/>
+                    <field name="participitation_rate"/>
+                </group>
+                <group name="af_data" position="inside">
+                    <field name="file_reference_number"/>
                 </group>
             </field>
         </record>

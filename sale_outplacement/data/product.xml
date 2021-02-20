@@ -75,6 +75,17 @@ env['outplacement'].suborder_process_data({
       <field name="state">code</field>
       <field name="code">record.update_order_from_ordertjansten()</field>
     </record>
-    
+
+    <record id="startersattning" model="product.product">
+      <field name="name">Startersättning</field>
+      <field name="type">service</field>
+      <field name="list_price">2000</field>
+    </record>
+
+    <record id="slutersattning" model="product.product">
+      <field name="name">Slutersättning</field>
+      <field name="type">service</field>
+      <field name="list_price">7000</field>
+    </record>
   </data>
 </odoo>

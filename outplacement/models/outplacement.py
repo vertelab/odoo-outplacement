@@ -22,6 +22,8 @@ class Outplacement(models.Model):
             base64.b64encode(open(image_path, 'rb').read()))
 
     def _default_stage_id(self):
+        # since default sorting on outplacement.stage is sequence
+        # this code will fetch the stage with the lowest sequence.
         return self.env['outplacement.stage'].search(
             [('fold', '=', False)], limit=1)
 
@@ -262,6 +264,7 @@ class Outplacement(models.Model):
 class OutplacementStage(models.Model):
     _name = 'outplacement.stage'
     _description = 'Outplacement Stage'
+    _order = 'sequence'
 
     name = fields.Char(string="Name", translate=True)
     sequence = fields.Integer(string="Sequence")

@@ -150,7 +150,7 @@ msgstr "Pågående"
 #. module: sale_outplacement
 #: selection:project.task,task_type:0
 msgid "Optional"
-msgstr ""
+msgstr "Optionell"
 
 #. module: sale_outplacement
 #: model:ir.model.fields,field_description:sale_outplacement.field_outplacement__order_id
@@ -275,3 +275,12 @@ msgstr ""
 msgid "mail.activity.template"
 msgstr ""
 
+#. module: sale_outplacement
+#: model:ir.model.fields,field_description:sale_outplacement.field_project_task__instructions
+msgid "Instructions"
+msgstr "Instruktioner"
+
+#. module: sale_outplacement
+#: model:ir.model.fields,field_description:sale_outplacement.field_project_task__start_date
+msgid "Start date"
+msgstr "Startdatum"

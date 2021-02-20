@@ -83,7 +83,7 @@ class Outplacement(models.Model):
             record.tasks_count = len(record.task_ids)
 
     @api.multi
-    def _get_partner_id(self, data):
+    def _get_partner(self, data):
         partner = self.env['res.partner'].search([
             '|',
             ('customer_id', '=', data['sokande_id']),
@@ -94,7 +94,7 @@ class Outplacement(models.Model):
                 'customer_id': data['sokande_id'],
                 'social_sec_nr': data['personnummer'],
             })
-        return partner.id if partner else None
+        return partner
 
     @api.multi
     def _get_management_team_id(self, data):
@@ -127,7 +127,7 @@ class Outplacement(models.Model):
     def suborder_process_data(self, data):
         _logger.info(data)
         data = super(Outplacement, self).suborder_process_data(data)
-        partner_id = self._get_partner_id(data)
+        partner = self._get_partner(data)
 
         skill = self._get_skill(data)
         order_lines = [
@@ -137,14 +137,14 @@ class Outplacement(models.Model):
         order = self.env['sale.order'].create({
             'origin': data['genomforande_referens'],
             'name': data['ordernummer'],
-            'partner_id': partner_id,
+            'partner_id': partner.id,
             'order_line': order_lines,
         })
         outplacement = self.env['outplacement'].create({
             'name': data['ordernummer'],
             'performing_operation_id': self._get_department_id(data),
             'booking_ref': data['boknings_id'],
-            'partner_id': partner_id,
+            'partner_id': partner.id,
             'skill_id': skill.id if skill else None,
             'participitation_rate': data['deltagandegrad'],
             'service_start_date': data['startdatum_insats'],
@@ -155,6 +155,9 @@ class Outplacement(models.Model):
             'management_team_id': self._get_management_team_id(data),
             'order_id': order.id,
         })
+        lang = self.env['res.interpreter.language'].search(
+            [('code', '=', data['sprakstod'])])
+        partner.interpreter_language = lang.id if lang else False
         order.outplacement_id = outplacement.id
         self.env['project.task'].init_joint_planning(outplacement.id)
         self.env['project.task'].init_joint_planning_stages(outplacement.id)
@@ -177,7 +180,7 @@ class Outplacement(models.Model):
                           ''.join(random.sample(string.digits, k=4)),
             "tjanstekod": "KVL",
             "spar_kod": "10",
-            "sprakstod": "Tyska",
+            "sprakstod": "10283",
             "deltagandegrad": 75,
             "bokat_sfi": False,
             "startdatum_insats": '%s' % datetime.date.today(),

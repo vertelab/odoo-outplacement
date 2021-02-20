@@ -38,6 +38,7 @@
         'project',
         'hr_skill',
         'partner_ssn',
+        'res_interpreter_language',
     ],
     'data': [
         'data/product.xml',

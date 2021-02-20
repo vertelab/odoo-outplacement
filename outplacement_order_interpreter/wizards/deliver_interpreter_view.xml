@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<data>
+
     <record id="deliver_interpreter" model="ir.ui.view">
             <field name="name">interpreter_delivery.wizard</field>
             <field name="model">outplacement.interpreter_delivery.wizard</field>
             <field name="arch" type="xml">
+
                 <form>
                     <group>
                         <field name="mail_activity_id" invisible="1"/>
@@ -17,12 +18,13 @@
                         <field name="absent_interpreter"/>
                         <field name="additional_time"/>
                     </group>
+
+                    <footer>
+                        <button name="deliver_interpreter"
+                                string="Inleverera"
+                                type="object"/>
+                    </footer>
                 </form>
-                <footer>
-                    <button name="deliver_interpreter"
-                            string="Inleverera"
-                            type="object"/>
-                </footer>
             </field>
     </record>
 
@@ -32,5 +34,5 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
-</data>
+
 </odoo>

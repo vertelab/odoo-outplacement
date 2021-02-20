@@ -9,6 +9,14 @@
                 <field name="performing_operation_id"/>
                 <field name="jobseeker_operation_id"/>
             </field>
+            <field name="child_ids" position="before">
+                <field name="performing_operation_ids" mode="tree" attrs="{'invisible': [('parent_id','!=', False)]}">
+                    <tree>
+                        <field name="name"/>
+                        <field name="ka_nr"/>
+                    </tree>
+                </field>
+            </field>
         </field>
     </record>
 </odoo>

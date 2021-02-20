@@ -3,7 +3,6 @@
 ################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2020 Vertel AB (<https://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,23 +18,5 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ################################################################################
-# Version format OdooMajor.OdooMinor.Major.Minor.Patch
-{
-    'name': 'Outplacement AF Signature',
-    'version': '12.0.0.2.0',
-    'category': 'Outplacement',
-    'description': """AF Signature on Outplacement (via management_team_id) """,
 
-    'author': "Vertel AB",
-    'license': 'AGPL-3',
-    'website': 'http://www.vertel.se',
-    'depends': ['partner_af_signature', 'outplacement'],
-    'data': [
-       
-    ],
-    'installable': True,
-    'application': False,
-
-    'images': [
-    ],
-}
+from . import res_partner

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="outplacement_stage_form_view_inherited" model="ir.ui.view">
+        <field name="name">outplacement.stage.order.form</field>
+        <field name="model">outplacement.stage</field>
+        <field name="inherit_id" ref="outplacement.outplacement_stage_form_view"/>
+        <field name="arch" type="xml">
+            <field name="sequence" position="after">
+                <field name="ordertjansten_status"/>
+            </field>
+            <field name="template_id" position="after">
+                <field name="order_id_state"/>
+            </field>
+        </field>
+    </record>
+</odoo>

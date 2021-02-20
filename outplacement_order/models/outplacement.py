@@ -2,45 +2,52 @@
 
 import logging
 from odoo import api, models, fields, tools, _
-from odoo.addons.sale_showorder_ipf_client.models.client_config import Client
+from odoo.exceptions import Warning
 
 _logger = logging.getLogger(__name__)
 
+
 class Outplacement(models.Model):
-    _inherit = 'outplacement'
+    _inherit = "outplacement"
 
     @api.model
     def cron_outplacement_order(self):
-        for outplacement in self.env['outplacement'].search([]):
-            res = self.env['ipf.showorder.client.config'].get_order_id(outplacement.name)
-            # ~ 'preleminär','definitiv','avbruten','avbruten levererad',BÄR_status
-            outplacement.message_post(
-                    body=_(
-                        """Message recieved:
-        %s"""  
-                    )
-                    % (res)
+        client_config = self.env["ipf.showorder.client.config"].search([], limit=1)
+        if not client_config:
+            raise Warning(_("No client config for showorder integration"))
+        if not client_config.url:
+            raise Warning(_("No url configured for showorder client config"))
+        if not client_config.client_id:
+            raise Warning(_("No client_id configured for showorder client config"))
+        if not client_config.client_secret:
+            raise Warning(_("No client_secret configured for showorder client config"))
+
+        # find outplacements to send to ordertjänsten
+        outplacements = self.env["outplacement"].search(
+            [("order_id.state", "!=", "done")]
+        )
+        for outplacement in outplacements:
+            # send request
+            res = client_config.get_order_id(outplacement.name)
+            order_status = res.get("orderstatus")
+            if not order_status:
+                _logger.warn(
+                    "Error in communication with ordertjänsten: res = %s" % res
                 )
-              # ~ "AVBRUTEN",
-              # ~ "PRELIMINAR",
-              # ~ "DEFINITIV",
-              # ~ "MAKULERAD",
-              # ~ "LEVERERAD",
-              # ~ "KLAR"
-            if res['status'] == 'preleminar':
-                outplacement.status = self.env.ref('outplacement.stage_preleminar').id
-                outplacement.order_id.status = 'draft'
-            elif res['status'] == 'definitiv':
-                outplacement.status = self.env.ref('outplacement.stage_definitiv').id
-                outplacement.order_id.status = 'sale'
-            elif res['status'] == 'avbruten':
-                outplacement.status = self.env.ref('outplacement.stage_avbruten').id
-                outplacement.order_id.status = 'cancel'
-            elif res['status'] == 'avbruten_levererad':
-                outplacement.status = self.env.ref('outplacement.stage_avbruten_levererad').id
-                outplacement.order_id.status = 'cancel'
+                raise Warning(_("Error in communication with ordertjänsten"))
+
+            outplacement_stage = self.env['outplacement.stage'].search([('ordertjansten_status', 'ilike', order_status)], limit=1)
+            if not outplacement_stage:
+                _logger.warn("Unmapped status from ordertjänsten: order status = %s" % order_status)
             else:
-                pass
-        
-
-
+                # TODO: Decide if we should update outplacement stage in more cases
+                if outplacement_stage == self.env.ref('outplacement.cancelled_stage'):
+                    outplacement.stage_id = outplacement_stage.id
+                    outplacement.interruption = True
+                if outplacement_stage.order_id_state:
+                    if outplacement.order_id:
+                        outplacement.order_id.state = outplacement_stage.order_id_state
+                    else:
+                        _logger.warn("Outplacement does not have a sale order: %s" % outplacement.name)
+                else:
+                    _logger.warn("Unmapped saleorder status: outplacement.stage = %s" % outplacement_stage)

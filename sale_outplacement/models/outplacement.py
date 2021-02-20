@@ -90,7 +90,7 @@ class Outplacement(models.Model):
     @api.multi
     def _get_management_team_id(self, data):
         management_team = self.env['res.partner'].search(
-            [('email', '=', data['telefonnummer_handlaggargrupp'])], limit=1)
+            [('email', '=', data['epost_handlaggargrupp'])], limit=1)
 
         if not management_team:
             management_team = self.env['res.partner'].create({
@@ -116,6 +116,7 @@ class Outplacement(models.Model):
 
     @api.model
     def suborder_process_data(self, data):
+        _logger.info(data)
         data = super(Outplacement, self).suborder_process_data(data)
         partner_id = self._get_partner_id(data)
 

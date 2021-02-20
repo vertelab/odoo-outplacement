@@ -4,6 +4,7 @@ from xmlrpc.client import ServerProxy
 from odoo import api, fields, models
 from odoo.exceptions import Warning
 import odoorpc
+import pprint
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -182,6 +183,69 @@ class Outplacement(models.Model):
         }) 
 
     @api.one
+    def get_jobseeker_dataV(self):
+        FIELDS = ['title', 'ref', 'lang', 'vat', 'comment',
+                  'active', 'customer', 'supplier', 'employee', 'function',
+                  'type', 'street', 'street2', 'zip', 'city','email', 
+                  'phone', 'mobile', 'is_company', 'color','company_name', 
+                  'firstname', 'lastname', 'name', 'additional_info', 
+                  'education_level', 'foreign_education', 'foreign_education_approved', 
+                  'cv', 'cv_file_name', 'references', 'references_file_name',
+                  'has_car', 'email_formatted', 'company_type', 'contact_address', 
+                  'age']
+        xmlrpc = crm_serverII(self.env)
+        rec = xmlrpc.common.env['res.partner'].partnersyncCrm2DafaSSN(self.partner_social_sec_nr)
+        self.partner_id.write({f:rec['partner'][f] for f in FIELDS})
+        # education_ids
+        self.partner_id.education_ids = [(6,0,[])]
+        for code,level,foreign,approved in rec['education_ids']:
+            self.partner_id.education_ids = [(0,0,{
+                'sun_id': self.env['res.sun'].search([('code','=',code)],limit=1)[0].id,
+                'education_level_id': self.env['res.partner.education.education_level'].search([('name','=',level)],limit=1)[0].id,
+                'foreign_education': foreign,
+                'foreign_education_approved': approved
+                })]
+
+        # drivers_license_ids
+        self.partner_id.drivers_license_ids = [(6,0,[e.id for e in self.env['res.drivers_license'].search([('name','in',rec['drivers_license_ids'])])])]
+        # job_ids
+        self.partner_id.job_ids = [(6,0,[])]
+        for ssyk_code,exp_length,exp,edu,sun_code,edu_lvl,edu_f,edu_fa in rec['job_ids']:
+            _logger.warn('ssyk code %s %s,exp lenght %s,exp %s,edu %s' % (
+                    ssyk_code,self.env['res.ssyk'].search([('code','=',ssyk_code)],limit=1)[0],
+                    exp_length, exp, edu))
+            values = {
+                    'partner_id': self.id,
+                    'ssyk_id' : self.env['res.ssyk'].search([('code','=',code)],limit=1)[0],
+                    'experience_length': exp_length,
+                    'education': edu,
+                    'experience': exp
+                }
+            sun_id = self.env['res.sun'].search([('code', '=', sun_code)], limit=1)[0]
+            edu_level = self.env['res.partner.education.eduation_level'].search([('name', '=',edu_lvl)], limit=1)[0]
+            education_id = self.env['res.partner.education'].search([('partner_id','=',self.partner_id.id),
+                                                                    ('sun_id','=',sun_id.id),
+                                                                    ('education_level_id','=',edu_level.id),
+                                                                    ('foreign_education','=',edu_f),
+                                                                    ('foreign_education_approved','=',edu_fa)], limit=1)[0]
+            _logger.warn('sun code %s %s, edu level %s %s, edu_f %s, edu_fa %s, education %s' % (
+                    sun_code,sun_id, edu_lvl, edu_level, edu_f, edu_fa, education_id))
+            values['education_id'] = education_id.id
+            self.partner_id.job_ids = [(0,0, values)]
+            
+            
+            # ~ self.partner_id.job_ids = [0,0,(self.env['res.ssyk'].search([('code','=',code)],limit=1)[0],
+                                 # ~ self.env['res.partner.education_level'].search([('name','=',level)],limit=1)[0],
+                                 # ~ length,approved,experience)]
+
+        # ~ self.partner_id.job_ids = [0,0,(self.env['res.ssyk'].search([('code','=','5')],limit=1)[0],
+                                        # ~ self.env['res.partner.education_level'].search([('name','=','5')],limit=1)[0],3,True,True)]
+        
+
+
+
+
+    @api.one
     def get_af_management_team(self):
         """
         Test update management team
@@ -190,7 +254,7 @@ class Outplacement(models.Model):
         xmlrpc = crm_serverII(self.env)
         
         partner = xmlrpc.common.env['res.partner'].browse(
-            xmlrpc.common.env['res.partner'].search([('email','=',self.management_team_id.email)],limit=1))
+            xmlrpc.common.env['res.users'].search([('email','=',self.management_team_id.email)],limit=1))
             # ~ xmlrpc.common.env['res.partner'].search([('id','=',26)],limit=1))
         if self.management_team_id._name == 'hr.employee':
             self.management_team_id.write({

@@ -3,7 +3,6 @@
 ################################################################################
 #
 #    Odoo, Open Source Management Solution
-#    Copyright (C) 2020 Vertel AB (<https://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -20,29 +19,28 @@
 #
 ################################################################################
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
-
 {
-    'name': 'Outplacement',
-    'version': '12.0.1.2.2',
+    'name': 'Outplacement DAFA Sync',
+    'version': '12.0.1.0.1',
     'category': 'Outplacement',
-    'description': """
-	 Module to handle outplacement (Avrop)\n
-	 v12.0.1.2.0 - changed version number to standard-format.\n
-	 v12.0.1.2.1 - AFC-1116 Changes due to Performing Operations.\n
-    """,
-    'author': 'Vertel AB',
+    'description': """This module sync data from CRM to DAFA 
+        
+        partnersyncCrm2Dafa(ssn,host,user,password)
+        
+        This is the CRM-part of the DAFA sync
+        
+        """,
+    'author': "Vertel AB",
     'license': 'AGPL-3',
-    'website': 'http://www.vertel.se',
-    'depends': ['base', 'hr', 'mail','partner_ssn'],
-    'data': [
-        'security/outplacement_security.xml',
-        'security/ir.model.access.csv',
-        'views/menu_item.xml',
-        'views/outplacement_stage_view.xml',
-        'views/outplacement_view.xml',
-        'views/hr_department_view.xml',
-        'views/res_partner_view.xml',
-        'data/data.xml',
+    'website': 'https://vertel.se',
+    "depends": [
+        'partner_ssn',
+        'partner_firstname',
+        'partner_education_views',
+        'partner_desired_jobs',
     ],
     'installable': True,
+    'images': [
+        'static/description/img.png'
+    ],
 }

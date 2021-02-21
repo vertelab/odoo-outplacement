@@ -245,11 +245,12 @@ class MailActivity(models.Model):
             _logger.debug('Interpreter booking success.')
         elif status_code == 404:
             self._interpreter_booking_status = msg
-            _logger.error(f'\n{msg}\nCheck KA-Number and that address '
-                          'is correct.')
+            _logger.error('Check KA-Number and that address is correct.')
+            _logger.error(response.text)
             _logger.error(payload)
-            raise UserError(_('Failed to book Interpreter, '
-                            'please check KA-Number and address in request.'))
+            msg = _('Failed to book Interpreter, '
+                    'please check KA-Number and address in request.\n')
+            raise UserError(f'{msg}{json.loads(response.text)["message"]}')
         else:
             self._interpreter_booking_status = msg
             err_msg = (f'\n{msg}\n{_("Response text")}:\n{response.text}\n'

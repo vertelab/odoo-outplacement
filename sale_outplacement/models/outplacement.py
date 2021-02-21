@@ -160,12 +160,13 @@ class Outplacement(models.Model):
             'management_team_id': self._get_management_team_id(data),
             'order_id': order.id,
         })
+        interpreter_need = data.get('tolkbehov')
         lang = self.env['res.interpreter.language'].search(
-            [('code', '=', data['sprakstod'])])
+            [('code', '=', interpreter_need)])
         partner.interpreter_language = lang.id if lang else False
         # Temporary hack until language is fixed in TLR
-        if data['sprakstod'] and not lang:
-            outplacement.temp_lang = data['sprakstod']
+        if interpreter_need and not lang:
+            outplacement.temp_lang = interpreter_need
         order.outplacement_id = outplacement.id
         self.env['project.task'].init_joint_planning(outplacement.id)
         self.env['project.task'].init_joint_planning_stages(outplacement.id)
@@ -188,7 +189,7 @@ class Outplacement(models.Model):
                           ''.join(random.sample(string.digits, k=4)),
             "tjanstekod": "KVL",
             "spar_kod": "10",
-            "sprakstod": "",
+            "tolkbehov": "",
             "deltagandegrad": 75,
             "bokat_sfi": False,
             "startdatum_insats": '%s' % datetime.date.today(),

@@ -31,6 +31,7 @@
     "depends": [
         'outplacement',
         'account',
+        'sale',
         'api_raindance_client',
     ],
     'data': [

@@ -31,10 +31,10 @@
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['sale_outplacement', 'auth_user_rights_wizard'],
+    'depends': ['contacts', 'sale_outplacement', 'auth_user_rights_wizard'],
     'data': [
         'views/hr_employee_view.xml',
-        
+        'security/outplacement_security.xml',
     ],
     'installable': True,
 }

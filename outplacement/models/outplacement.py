@@ -30,15 +30,7 @@ class Outplacement(models.Model):
     @api.model
     def _read_group_employee_ids(self, employees, domain, order):
         """ Always display all employees in users performing_operation """
-        _logger.warn('group by employee domain %s order %s' % (domain, order))
-        if ['my_performing_operation', '=', True] in domain:
-            domain = ['|', ('performing_operation_ids',
-                            'in',
-                            self.performing_operation_id.id)]
-        else:
-            domain = []
-        _logger.warn('group by employee domain %s order %s' % (domain, order))
-        return employees.search(domain, order=order)
+        return employees.search([], order=order)
 
     name = fields.Char(string="Name")
     stage_id = fields.Many2one(comodel_name='outplacement.stage',
@@ -152,6 +144,24 @@ class Outplacement(models.Model):
         tools.image_resize_images(vals)
         res = super(Outplacement, self).write(vals)
         return res
+
+    @api.multi
+    def name_get(self):
+        """ name_get() -> [(id, name), ...]
+
+        Returns a textual representation for the records in ``self``.
+        Name is partner_name if set, else name.
+
+        :return: list of pairs ``(id, text_repr)`` for each records
+        :rtype: list(tuple)
+        """
+        result = []
+        for outplacement in self:
+            if outplacement.partner_name:
+                result.append((outplacement.id, outplacement.partner_name))
+            else:
+                result.append((outplacement.id, outplacement.name))
+        return result
 
     @api.multi
     def _compute_my_performing_operation(self):

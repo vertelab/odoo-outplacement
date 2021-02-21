@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
 
-################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2019 N-Development (<https://n-development.com>).
+#    Copyright (C) 2019 Vertel AB (<https://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,12 +18,14 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-################################################################################
+###############################################################################
 
-from odoo import fields, models, api
+from odoo import fields, models, api, _
+from odoo.exceptions import ValidationError
 
 import logging
 _logger = logging.getLogger(__name__)
+
 
 class Employee(models.Model):
     _inherit = 'hr.employee'
@@ -39,19 +41,25 @@ class Employee(models.Model):
     def _compute_performing_operations(self):
         for employee in self:
             if employee.user_id:
-                employee.performing_operation_ids = employee.user_id.performing_operation_ids
+                employee.performing_operation_ids = employee.user_id.performing_operation_ids  # noqa: E501
 
-    # Special write rules are the only thing keeping this from being a regular related field.
+    # Special write rules are the only thing keeping this from being a
+    # regular related field.
     @api.multi
     def _write_performing_operations(self):
         permission_check = self.env.user._is_system() or \
-            self.env.user.has_group('base_user_groups_dafa.group_dafa_org_admin_write') or \
-            self.env.user.has_group('base_user_groups_dafa.group_dafa_employees_write')
+            self.env.user.has_group(
+                'base_user_groups_dafa.group_dafa_org_admin_write') or \
+            self.env.user.has_group(
+                'base_user_groups_dafa.group_dafa_employees_write')
         if not permission_check:
             raise ValidationError(_("You are not permitted to do this"))
         for employee in self:
             if employee.user_id:
-                employee.user_id.sudo().write({'performing_operation_ids': [(6, 0, employee.mapped('performing_operation_ids.id'))]})
+                employee.user_id.sudo().write({
+                    'performing_operation_ids': [
+                        (6, 0, employee.mapped('performing_operation_ids.id'))
+                        ]})
 
     @api.model
     def _search_performing_operations(self, op, value):

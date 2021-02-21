@@ -15,7 +15,13 @@ class Partner(models.Model):
     performing_operation_id = fields.Many2one(
         comodel_name='performing.operation', string='Performing Operation',
         help="This is an address for the given Performing Operation")
-
+    # Logically this should be a one2one, but this makes it update
+    # correctly if outplacement changes.
+    outplacement_ids = fields.One2many(
+        comodel_name="outplacement",
+        inverse_name="partner_id",
+        string="Outplacement"
+        )
 
 class Users(models.Model):
     _inherit = 'res.users'
@@ -27,6 +33,7 @@ class Users(models.Model):
         column1='user_id',
         column2='operation_id')
 
+
 class ResCompany(models.Model):
     _inherit = "res.company"
 
@@ -35,4 +42,3 @@ class ResCompany(models.Model):
         inverse_name="company_id",
         string="Performing operations"
         )
-

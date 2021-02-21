@@ -20,4 +20,7 @@
             </xpath>
         </field>
     </record>
+    <record id="contacts.action_contacts" model="ir.actions.act_window">
+        <field name="domain">['|', ('outplacement_ids', '=', False), ('outplacement_ids.employee_id.user_id', '=', uid)]</field>
+    </record>
 </odoo>

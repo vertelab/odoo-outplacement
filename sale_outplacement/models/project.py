@@ -81,8 +81,11 @@ class ProjectTask(models.Model):
     
     @api.constrains("stage_id")
     def constrain_stage_id(self):
-        stage_todo = self.env.ref(".".join([xmlid_module, 'stage_todo']))
-        stage_optional = self.env.ref(".".join([xmlid_module, 'stage_optional']))
+        try:
+            stage_todo = self.env.ref(".".join([xmlid_module, 'stage_todo']))
+            stage_optional = self.env.ref(".".join([xmlid_module, 'stage_optional']))
+        except ValueError:
+                raise ValueError(_("Not all stages were found"))
         if self.task_type == "mandatory" and self.stage_id.id == stage_optional.id:
             self.stage_id = stage_todo.id
             raise ValidationError(
@@ -104,7 +107,10 @@ class ProjectTask(models.Model):
         
     @api.depends("stage_id")
     def move_children(self):
-        stage_done = self.env.ref(".".join([xmlid_module, 'stage_done']))
+        try:
+            stage_done = self.env.ref(".".join([xmlid_module, 'stage_done']))
+        except ValueError:
+                raise ValueError(_("Done stage not found"))
         if self.stage_id.id == stage_done.id:
             for child in self.child_ids: 
                 # close task here (how?)
@@ -119,8 +125,11 @@ class ProjectTask(models.Model):
     
     @api.model
     def create(self, vals):
-        stage_todo = self.env.ref(".".join([xmlid_module, 'stage_todo']))
-        stage_optional = self.env.ref(".".join([xmlid_module, 'stage_optional']))
+        try:
+            stage_todo = self.env.ref(".".join([xmlid_module, 'stage_todo']))
+            stage_optional = self.env.ref(".".join([xmlid_module, 'stage_optional']))
+        except ValueError:
+                raise ValueError(_("Not all stages were found"))
         if vals.get('parent_id'):
             parent = self.env['project.task'].browse(vals['parent_id'])
             if parent.task_type != "optional":
@@ -129,7 +138,7 @@ class ProjectTask(models.Model):
                 vals['stage_id'] = stage_optional.id
             vals['color'] = parent.color
             vals['task_type'] = parent.task_type
-            vals['outplacement_id'] = parent.outplacement_id
+            vals['outplacement_id'] = parent.outplacement_id.id
             # with the current handling of sequence this only allows a total of 9 sub-tasks
             # before things start to act a bit weird.
             # If we need more then sequence should be changed in res_joint_planning_af/data/data.xml

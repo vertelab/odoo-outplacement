@@ -128,8 +128,6 @@ class Outplacement(models.Model):
     def _read_group_performing_operation_ids(
             self, performing_operation, domain, order):
         """ Always display all stages """
-        _logger.warn('group by performing_operation_ids %s order %s'
-                     % (domain, order))
         return performing_operation.search([], order=order)
 
     @api.model

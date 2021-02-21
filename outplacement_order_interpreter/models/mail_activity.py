@@ -285,7 +285,8 @@ class MailActivity(models.Model):
         self.street = address_obj.get('gatuadress')
         self.zip = address_obj.get('postnr')
         self.city = address_obj.get('ort')
-        self.state_id = address_obj.get('kommunkod')
+        # state_id is not used, and its uncertain that code is the one to be used.
+        self.state_id = self.env['res.country.state'].search([('code', '=', address_obj.get('kommunkod'))], limit=1) or False  # noqa:E501
         self.interpreter_language = self.env["res.interpreter.language"].search([('code', '=', data.get('tolksprakId'))])  # noqa:E501
         self.interpreter_gender = self.env["res.interpreter.gender_preference"].search([('code', '=', data.get('tolkkonID'))])  # noqa:E501
         self.interpreter_ref = data.get('tolkId')

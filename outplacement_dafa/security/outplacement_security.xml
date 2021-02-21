@@ -10,11 +10,17 @@
         <field name="domain_force">['|', ('is_jobseeker', '=', False), ('jobseeker_operation_id', 'in', user.mapped('performing_operation_ids.id'))]</field>
     </record>
     -->
-    <record id="rule_outplacement_dafa" model="ir.rule">
+    <record id="rule_outplacementparticipants" model="ir.rule">
         <field name="name">DAFA Outplacement Handläggare</field>
         <field name="model_id" ref="outplacement.model_outplacement"/>
         <field name="domain_force">[('employee_id', 'in', user.mapped('employee_ids.id'))]</field>
         <field name="groups" eval="[(6, 0, [ref('base_user_groups_dafa.group_dafa_participants_read'), ref('base_user_groups_dafa.group_dafa_participants_write')])]" />
+    </record>
+    <record id="rule_outplacementemployees" model="ir.rule">
+        <field name="name">DAFA Outplacement Hantera Anställda</field>
+        <field name="model_id" ref="outplacement.model_outplacement"/>
+        <field name="domain_force">['|', ('performing_operation_id', '=', False), ('performing_operation_id', 'in', user.mapped('performing_operation_ids.id'))]</field>
+        <field name="groups" eval="[(6, 0, [ref('base_user_groups_dafa.group_dafa_employees_read')])]" />
     </record>
 </data>
 </odoo>

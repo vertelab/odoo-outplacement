@@ -6,6 +6,10 @@ from odoo.exceptions import Warning
 
 _logger = logging.getLogger(__name__)
 
+PRODUCT_MAPPING = {
+    '166': 'sale_outplacement.startersattning',
+    '167': 'sale_outplacement.slutersattning'
+    }
 
 class Outplacement(models.Model):
     _inherit = "outplacement"
@@ -45,8 +49,17 @@ class Outplacement(models.Model):
                     outplacement.stage_id = outplacement_stage.id
                     outplacement.interruption = True
                 if outplacement_stage.order_id_state:
-                    if outplacement.order_id:
-                        outplacement.order_id.state = outplacement_stage.order_id_state
+                    order = outplacement.order_id
+                    if order:
+                        order.state = outplacement_stage.order_id_state
+                        for order_line_ext in res.get('artikelList', []):
+                            _logger.warn("DAER order_line: %s" % order_line_ext)
+                            tlr_id = order_line_ext.get('tlrId')
+                            for order_line in order.order_line:
+                                if order_line.product_id == PRODUCT_MAPPING[tlr_id]:
+                                    order_line.price_unit = order_line_ext.get('nuvarandeAPris', 0)
+                                    break
+
                     else:
                         _logger.warn("Outplacement does not have a sale order: %s" % outplacement.name)
                 else:

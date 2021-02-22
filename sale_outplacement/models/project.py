@@ -143,13 +143,11 @@ class ProjectTask(models.Model):
             # before things start to act a bit weird.
             # If we need more then sequence should be changed in res_joint_planning_af/data/data.xml
             vals['sequence'] = parent.sequence + len(parent.child_ids)
-        else:
+        elif not vals.get("task_type"):
             vals['task_type'] = "optional"
             vals['stage_id'] = stage_optional.id
         task = super(ProjectTask, self).create(vals)
         return task
-            
-            
 
 
 class ProjectTaskType(models.Model):

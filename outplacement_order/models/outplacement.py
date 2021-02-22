@@ -55,7 +55,7 @@ class Outplacement(models.Model):
                         order.state = outplacement_stage.order_id_state
                         confirm_date = res.get('definitivDatum', False)
                         if confirm_date:
-                            order.confirmation_date = datetime.strptime('2021-02-03', '%Y-%m-%d')
+                            order.confirmation_date = datetime.strptime(confirm_date, '%Y-%m-%d')
                         for order_line_ext in res.get('artikelList', []):
                             tlr_id = order_line_ext.get('tlrId')
                             for order_line in order.order_line:

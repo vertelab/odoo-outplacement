@@ -8,8 +8,13 @@ from odoo.exceptions import Warning
 _logger = logging.getLogger(__name__)
 
 PRODUCT_MAPPING = {
+<<<<<<< HEAD
     166: 'sale_outplacement.startersattning',
     167: 'sale_outplacement.slutersattning'
+=======
+    '166': 'sale_outplacement.startersattning',
+    '167': 'sale_outplacement.slutersattning'
+>>>>>>> cd586bc1b160d9777c95faa1cd36c0dae1d357da
     }
 
 class Outplacement(models.Model):
@@ -53,6 +58,7 @@ class Outplacement(models.Model):
                     order = outplacement.order_id
                     if order:
                         order.state = outplacement_stage.order_id_state
+<<<<<<< HEAD
                         confirm_date = res.get('definitivDatum', False)
                         if confirm_date:
                             order.confirmation_date = datetime.strptime('2021-02-03', '%Y-%m-%d')
@@ -61,6 +67,13 @@ class Outplacement(models.Model):
                             for order_line in order.order_line:
                                 order_line_product = self.env.ref(PRODUCT_MAPPING[tlr_id])
                                 if order_line.product_id == order_line_product:
+=======
+                        for order_line_ext in res.get('artikelList', []):
+                            _logger.warn("DAER order_line: %s" % order_line_ext)
+                            tlr_id = order_line_ext.get('tlrId')
+                            for order_line in order.order_line:
+                                if order_line.product_id == PRODUCT_MAPPING[tlr_id]:
+>>>>>>> cd586bc1b160d9777c95faa1cd36c0dae1d357da
                                     order_line.price_unit = order_line_ext.get('nuvarandeAPris', 0)
                                     break
 

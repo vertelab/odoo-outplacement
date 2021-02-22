@@ -79,13 +79,13 @@ env['outplacement'].suborder_process_data({
     <record id="startersattning" model="product.product">
       <field name="name">Startersättning</field>
       <field name="type">service</field>
-      <field name="list_price">2000</field>
+      <field name="list_price">0</field>
     </record>
 
     <record id="slutersattning" model="product.product">
       <field name="name">Slutersättning</field>
       <field name="type">service</field>
-      <field name="list_price">7000</field>
+      <field name="list_price">0</field>
     </record>
   </data>
 </odoo>

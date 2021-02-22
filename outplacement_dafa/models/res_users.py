@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2019 N-Development (<https://n-development.com>).
@@ -18,12 +18,13 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-################################################################################
+###############################################################################
 
-from odoo import fields, models, api, SUPERUSER_ID
+from odoo import models, api
 
 import logging
 _logger = logging.getLogger(__name__)
+
 
 class Users(models.Model):
     _inherit = 'res.users'
@@ -32,8 +33,15 @@ class Users(models.Model):
     def _update_last_login(self):
         # Despite model decorator, this function is executed on a user record
         try:
-            #Servicedesk, hantera Ekonomi, Hantera Organisation, Hantera Anställda 
-            xml_ids = ('group_dafa_employees_read', 'group_dafa_admin_accounting_read', 'group_dafa_org_admin_read', '1_line_support')
+            # Servicedesk
+            # Hantera Ekonomi
+            # Hantera Organisation
+            # Hantera Anställda
+            xml_ids = (
+                'group_dafa_employees_read',
+                'group_dafa_admin_accounting_read',
+                'group_dafa_org_admin_read',
+                '1_line_support')
             superuser = False
             sudo_self = self.sudo()
             for xml_id in xml_ids:
@@ -43,9 +51,11 @@ class Users(models.Model):
                     break
             if superuser:
                 # Check if user is missing any Performing Operations
-                ops = sudo_self.env['res.partner'].search([('ka_nr', '!=', False)])
-                if ops - self.performing_operation_ids:
+                ops = sudo_self.env['performing.operation'].search([])
+                if ops - sudo_self.performing_operation_ids:
                     sudo_self.performing_operation_ids |= ops
-        except:
-            _logger.warn('Failed to update DAFA performing operations on user %s' % self.id)
+        except Exception:
+            _logger.exception(
+                'Failed to update DAFA performing operations on user %s'
+                % self.id)
         return super()._update_last_login()

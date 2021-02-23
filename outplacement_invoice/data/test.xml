@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+        <record id="ir_actions_test_outplacement_invoice_static_data" model="ir.actions.server">
+            <field name="name">Process Static Invoice Data</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="account.model_account_invoice"/>
+            <field name="binding_model_id" ref="account.model_account_invoice"/>
+            <field name="state">code</field>
+            <field name="code">
+data = model.test_data()
+model.create_invoice(data)
+            </field>
+        </record>
+
+        <record id="ir_actions_test_outplacement_invoice_get_invoices" model="ir.actions.server">
+            <field name="name">Get Invoices from Server</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="account.model_account_invoice"/>
+            <field name="binding_model_id" ref="account.model_account_invoice"/>
+            <field name="state">code</field>
+            <field name="code">model.outplacement_invoice()</field>
+        </record>
+    </data>
+</odoo>

@@ -1,85 +1,40 @@
-# -*- coding: utf-8 -*-
+# -*- coding: UTF-8 -*-
 
-import base64
+################################################################################
+#
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2019 N-Development (<https://n-development.com>).
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+
 import logging
-import xmltodict
-
 from odoo import api, models, fields, tools, _
-
+from odoo.exceptions import Warning
 _logger = logging.getLogger(__name__)
+
+# only used in tests
+from odoo.addons.outplacement_invoice.static.svefaktura import SVEFAKTURA
 
 
 class AccountInvoice(models.Model):
+    """Handle Invoices from Raindance."""
     _inherit = "account.invoice"
+
     raindance_ref = fields.Char(string='Raindance ID')
 
-    @api.model
-    def cron_outplacement_invoice(self):
-        raindance = 'api.raindance.client.config'
-        for invoice_ref in self.env[raindance].get_invoices(
-                supplier_id=None, date=None):
-            for invoice in self.env[raindance].get_invoice(invoice_ref):
-                self.create_invoice(invoice)
-
-    @api.model
-    def create_invoice(self, invoice):
-        sf = invoice.get('svefaktura')
-        if sf:
-            sf = xmltodict.parse(sf)
-            invoice_ref = sf['Invoice']['ID']
-            if len(self.env['account.invoice'].search(
-                    [('raindance_ref', '=', invoice_ref)])):
-                _logger.debug('Invoice already exists: %s', invoice_ref)
-                return
-            party = sf['Invoice']['cac:BuyerParty']['cac:Party']
-            # Find or create a res_partner for buyer (AF).
-            org_nr = party['cac:PartyIdentification']['cac:ID']
-            res_partner = self.env['res.partner'].search(
-                [('company_registry', '=', org_nr)], limit=1)
-            if not len(res_partner):
-                name = party['cac:PartyName']['cbc:Name']
-                org_nr = party['cac:PartyIdentification']['cac:ID']
-                street = party['cac:Address']['cbc:Postbox']
-                city = party['cac:Address']['cbc:CityName']
-                zip_ = party['cac:Address']['cbc:PostalZone']
-                res_partner = self.env['res.partner'].create(
-                    {'name': name,
-                     'company_registry': org_nr,
-                     'street': street,
-                     'city': city,
-                     'zip': zip_})
-
-            # Create Invoice.
-            current_invoice = self.env['account.invoice'].create(
-                {'partner_id': res_partner.id,
-                 'raindance_ref': invoice_ref})
-
-            # Create attachment with raw data.
-            self.env['ir.attachment'].create(
-                {'name': 'Svefaktura',
-                 'res_model': 'account.invoice',
-                 'res_id': current_invoice.id,
-                 'datas': base64.b64encode(bytes(invoice['svefaktura'],
-                                                 'utf-8'))})
-
-            # Find Invoice lines to add to Invoice.
-            invoice_lines = sf['Invoice']['cac:InvoiceLine']
-            # If its only one line it will be returned as a
-            # ordered dict instead of list of ordered dicts.
-            if not isinstance(invoice_lines, list):
-                invoice_lines = [invoice_lines]
-            # Add lines to Invoice.
-            for line in invoice_lines:
-                item = line['cac:Item']
-                description = item['cbc:Description']
-                price_info = item['cac:BasePrice']['cbc:PriceAmount']
-                price = price_info['#text']
-                quantity = line['cbc:InvoicedQuantity']['#text']
-                account = self.env['account.account'].search(
-                    [('code', '=', '3000')], limit=1)
-                self.env['account.invoice.line'].create(
-                    {'account_id': account.id,
-                     'invoice_id': current_invoice.id,
-                     'name': description,
-                     'price_unit': price,
-                     'quantity': quantity})
+    def test_data(self):
+        """Returns svefaktura dict with testdata."""
+        return {'svefaktura': SVEFAKTURA}

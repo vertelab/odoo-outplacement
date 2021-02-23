@@ -70,9 +70,9 @@ class Outplacement(models.Model):
                 ['&',
                  ('res_model_id.model', '=', self._name),
                  ('res_id', '=', self.id)]).unlink()
-            for activity in self.order_id.mapped('order_lines').filtered(
+            for activity in self.order_id.mapped('order_line').filtered(
                 "product_id.is_suborder").mapped(
-                    'product_id.mail_activites'):
+                    'product_id.mail_activity_ids'):
                 self.env['mail.activity'].create({
                     'res_id': self.id,
                     'res_model_id': self.env.ref(

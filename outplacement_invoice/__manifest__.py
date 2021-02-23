@@ -33,6 +33,8 @@
         'account',
         'sale',
         'api_raindance_client',
+        'res_interpreter_language',
+        'res_interpreter_gender_preference',
     ],
     'data': [
         'data/cron.xml',

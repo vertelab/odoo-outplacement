@@ -14,6 +14,9 @@
                     <field name="order_start_date"/>
                     <field name="order_close_date"/>
                     <field name="participitation_rate"/>
+                    <!--Temporary solution until BÄR gives the right languages-->
+                    <field name="temp_lang"
+                           attrs="{'invisible': [('temp_lang', '=', False)]}"/>
                 </group>
                 <group name="af_data" position="inside">
                     <field name="file_reference_number"/>
@@ -27,7 +30,7 @@
             <field name="inherit_id" ref="project.task_type_edit"/>
             <field name="arch" type="xml">
                 <field name="auto_validation_kanban_state" position="after">
-                    <field name="is_outplacement"/>                
+                    <field name="is_outplacement"/>
                 </field>
             </field>
         </record>
@@ -37,7 +40,7 @@
             <field name="inherit_id" ref="project.task_type_tree"/>
             <field name="arch" type="xml">
                 <field name="fold" position="after">
-                    <field name="is_outplacement"/>                
+                    <field name="is_outplacement"/>
                 </field>
             </field>
         </record>

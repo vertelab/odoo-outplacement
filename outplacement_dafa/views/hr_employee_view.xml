@@ -20,4 +20,11 @@
             </xpath>
         </field>
     </record>
+    <!-- Rolled back. Should be removed unless we restore it. -->
+    <record id="contacts.action_contacts" model="ir.actions.act_window">
+        <field name="domain">[]</field>
+    </record>
+    <record id="contacts.menu_contacts" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base_user_groups_dafa.1_line_support')])]" />
+    </record>
 </odoo>

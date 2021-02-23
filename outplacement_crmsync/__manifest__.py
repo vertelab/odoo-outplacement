@@ -29,6 +29,7 @@
         * outplacement_crmsync.server_host - <domain>
         * outplacement_crmsync.server_port - 8069
         * outplacement_crmsync.server_db - database
+        * outplacement_crmsync.server_protocol - jsonrpc+ssl
         * outplacement_crmsync.server_login - userid
         * outplacement_crmsync.server_pw - password
         

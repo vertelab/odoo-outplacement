@@ -245,11 +245,12 @@ class MailActivity(models.Model):
             _logger.debug('Interpreter booking success.')
         elif status_code == 404:
             self._interpreter_booking_status = msg
-            _logger.error(f'\n{msg}\nCheck KA-Number and that address '
-                          'is correct.')
+            _logger.error('Check KA-Number and that address is correct.')
+            _logger.error(response.text)
             _logger.error(payload)
-            raise UserError(_('Failed to book Interpreter, '
-                            'please check KA-Number and address in request.'))
+            msg = _('Failed to book Interpreter, '
+                    'please check KA-Number and address in request.\n')
+            raise UserError(f'{msg}{json.loads(response.text)["message"]}')
         else:
             self._interpreter_booking_status = msg
             err_msg = (f'\n{msg}\n{_("Response text")}:\n{response.text}\n'
@@ -284,7 +285,8 @@ class MailActivity(models.Model):
         self.street = address_obj.get('gatuadress')
         self.zip = address_obj.get('postnr')
         self.city = address_obj.get('ort')
-        self.state_id = address_obj.get('kommunkod')
+        # state_id is not used, and its uncertain that code is the one to be used.
+        self.state_id = self.env['res.country.state'].search([('code', '=', address_obj.get('kommunkod'))], limit=1) or False  # noqa:E501
         self.interpreter_language = self.env["res.interpreter.language"].search([('code', '=', data.get('tolksprakId'))])  # noqa:E501
         self.interpreter_gender = self.env["res.interpreter.gender_preference"].search([('code', '=', data.get('tolkkonID'))])  # noqa:E501
         self.interpreter_ref = data.get('tolkId')

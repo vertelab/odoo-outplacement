@@ -3,13 +3,15 @@
 from xmlrpc.client import ServerProxy
 from odoo import api, fields, models
 from odoo.exceptions import Warning
-import odoorpc
 import pprint
 
 import logging
-
 _logger = logging.getLogger(__name__)
 
+try:
+    import odoorpc
+except:
+    _logger.info("outplacement_crmsync needs odoorpc. pip install odoorpc")
 
 class crm_server(object):
     def __init__(self, env):
@@ -66,13 +68,14 @@ class crm_serverII(object):
     def __init__(self, env):
         # self.server_url =  env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_url','http[s]://%s')
         self.server_host =  env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_host','<domain>')
+        self.server_protocol =  env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_protocol','jsonrpc+ssl')
         self.server_port = env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_port','8069')
         self.server_db =   env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_db','database')
         self.server_login = env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_login','userid')
         self.server_pw =   env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_pw','password')
 
         try:
-            self.common = odoorpc.ODOO(host=self.server_host,port=self.server_port)
+            self.common = odoorpc.ODOO(host=self.server_host,protocol=self.server_protocol,port=self.server_port)
             # self.common = odoorpc.ODOO(host="http://172.16.42.112",port=8069)
             # self.common = odoorpc.ODOO(host="172.16.42.112",port='8069')
             _logger.warn("DAER crm_serverII INIT")

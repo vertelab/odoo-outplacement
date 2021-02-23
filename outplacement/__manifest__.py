@@ -33,7 +33,7 @@
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['base', 'hr', 'mail','partner_ssn'],
+    'depends': ['base', 'hr', 'mail', 'partner_ssn'],
     'data': [
         'security/outplacement_security.xml',
         'security/ir.model.access.csv',

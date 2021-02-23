@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
 
-################################################################################
+###############################################################################
 #
 #    Odoo, Open Source Management Solution
-#    Copyright (C) 2020 Vertel AB (<https://vertel.se>).
+#    Copyright (C) 2020 - 2021 Vertel AB (<https://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,23 +18,23 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-################################################################################
+###############################################################################
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 
 {
     'name': 'Outplacement DAFA',
     'version': '12.0.1.0.0',
     'category': 'Outplacement',
-    'description': """
-	 Module to handle outplacement (Avrop) for Arbetsförmedlingen DAFA\n
-    """,
+    'description': "Module to handle outplacement (Avrop) for "
+                   "Arbetsförmedlingen DAFA""",
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['sale_outplacement', 'auth_user_rights_wizard'],
+    'depends': ['contacts', 'sale_outplacement', 'auth_user_rights_wizard'],
     'data': [
         'views/hr_employee_view.xml',
-        
+        'security/ir.model.access.csv',
+        'security/outplacement_security.xml',
     ],
     'installable': True,
 }

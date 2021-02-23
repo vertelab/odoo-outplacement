@@ -60,6 +60,9 @@ class Outplacement(models.Model):
              "outplacements with budgets, planning, cost and revenue "
              "analysis, timesheets.")
 
+    # Temporary solution
+    temp_lang = fields.Char(string='Language support requested')
+
     @api.onchange('employee_id')
     def _employee_activites(self):
         if self.employee_id:
@@ -67,9 +70,9 @@ class Outplacement(models.Model):
                 ['&',
                  ('res_model_id.model', '=', self._name),
                  ('res_id', '=', self.id)]).unlink()
-            for activity in self.order_id.mapped('order_lines').filtered(
+            for activity in self.order_id.mapped('order_line').filtered(
                 "product_id.is_suborder").mapped(
-                    'product_id.mail_activites'):
+                    'product_id.mail_activity_ids'):
                 self.env['mail.activity'].create({
                     'res_id': self.id,
                     'res_model_id': self.env.ref(
@@ -83,7 +86,7 @@ class Outplacement(models.Model):
             record.tasks_count = len(record.task_ids)
 
     @api.multi
-    def _get_partner_id(self, data):
+    def _get_partner(self, data):
         partner = self.env['res.partner'].search([
             '|',
             ('customer_id', '=', data['sokande_id']),
@@ -94,7 +97,7 @@ class Outplacement(models.Model):
                 'customer_id': data['sokande_id'],
                 'social_sec_nr': data['personnummer'],
             })
-        return partner.id if partner else None
+        return partner
 
     @api.multi
     def _get_management_team_id(self, data):
@@ -127,24 +130,26 @@ class Outplacement(models.Model):
     def suborder_process_data(self, data):
         _logger.info(data)
         data = super(Outplacement, self).suborder_process_data(data)
-        partner_id = self._get_partner_id(data)
+        partner = self._get_partner(data)
 
         skill = self._get_skill(data)
         order_lines = [
-            (0, 0, {"product_id": self.env.ref("sale_outplacement.startersattning").id}),
-            (0, 0, {"product_id": self.env.ref("sale_outplacement.slutersattning").id}),
+            (0, 0, {"product_id": self.env.ref(
+                "sale_outplacement.startersattning").id}),
+            (0, 0, {"product_id": self.env.ref(
+                "sale_outplacement.slutersattning").id}),
         ]
         order = self.env['sale.order'].create({
             'origin': data['genomforande_referens'],
             'name': data['ordernummer'],
-            'partner_id': partner_id,
+            'partner_id': partner.id,
             'order_line': order_lines,
         })
         outplacement = self.env['outplacement'].create({
             'name': data['ordernummer'],
             'performing_operation_id': self._get_department_id(data),
             'booking_ref': data['boknings_id'],
-            'partner_id': partner_id,
+            'partner_id': partner.id,
             'skill_id': skill.id if skill else None,
             'participitation_rate': data['deltagandegrad'],
             'service_start_date': data['startdatum_insats'],
@@ -155,6 +160,13 @@ class Outplacement(models.Model):
             'management_team_id': self._get_management_team_id(data),
             'order_id': order.id,
         })
+        interpreter_need = data.get('tolkbehov')
+        lang = self.env['res.interpreter.language'].search(
+            [('code', '=', interpreter_need)])
+        partner.interpreter_language = lang.id if lang else False
+        # Temporary hack until language is fixed in TLR
+        if interpreter_need and not lang:
+            outplacement.temp_lang = interpreter_need
         order.outplacement_id = outplacement.id
         self.env['project.task'].init_joint_planning(outplacement.id)
         self.env['project.task'].init_joint_planning_stages(outplacement.id)
@@ -177,7 +189,7 @@ class Outplacement(models.Model):
                           ''.join(random.sample(string.digits, k=4)),
             "tjanstekod": "KVL",
             "spar_kod": "10",
-            "sprakstod": "Tyska",
+            "tolkbehov": "",
             "deltagandegrad": 75,
             "bokat_sfi": False,
             "startdatum_insats": '%s' % datetime.date.today(),
@@ -193,16 +205,19 @@ class Outplacement(models.Model):
                 random.sample(string.digits, k=4)) + "@test.com"
             })
 
-
     @api.model
     def create(self, values):
-        """ Create an analytic account if project allow timesheet and don't provide one
-            Note: create it before calling super() to avoid raising the ValidationError from _check_allow_timesheet
+        """
+        Create an analytic account if project allow timesheet and don't
+        provide one.
+        Note: create it before calling super() to avoid raising the
+        ValidationError from _check_allow_timesheet
         """
         if not values.get('analytic_account_id'):
             analytic_account = self.env['account.analytic.account'].create({
                 'name': values.get('name', _('Unknown Analytic Account')),
-                'company_id': values.get('company_id', self.env.user.company_id.id),
+                'company_id': values.get('company_id',
+                                         self.env.user.company_id.id),
                 'partner_id': values.get('partner_id'),
                 'active': True,
             })
@@ -214,7 +229,8 @@ class Outplacement(models.Model):
         """ Delete the empty related analytic account """
         analytic_accounts_to_delete = self.env['account.analytic.account']
         for outplacement in self:
-            if outplacement.analytic_account_id and not outplacement.analytic_account_id.line_ids:
+            if (outplacement.analytic_account_id and not
+                    outplacement.analytic_account_id.line_ids):
                 analytic_accounts_to_delete |= outplacement.analytic_account_id
         result = super(Outplacement, self).unlink()
         analytic_accounts_to_delete.unlink()

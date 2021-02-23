@@ -432,7 +432,7 @@ msgstr "Företagsnamn"
 #: model:ir.model.fields,field_description:outplacement.field_res_partner__jobseeker_operation_id
 #: model:ir.model.fields,field_description:outplacement.field_res_users__jobseeker_operation_id
 msgid "Perf. Op. Jobseeker"
-msgstr ""
+msgstr "Utförande verksamhet arbestsökande"
 
 #. module: outplacement
 #: model:ir.actions.act_window,name:outplacement.action_performing_operation

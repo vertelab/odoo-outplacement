@@ -141,7 +141,7 @@ class SaleOrder(models.Model):
                     # TODO: add more data?
                     'partner_id': res_partner.id,
                     'date_invoice': '',
-                    'date_due': '',
+                    'date_due': due_date,
                     # 'raindance_ref': invoice_ref
                 }
             )

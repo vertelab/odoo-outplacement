@@ -26,7 +26,7 @@ import random  # Used in test
 import string  # Used in test
 
 from odoo import api, fields, models, _
-
+from odoo.exceptions import Warning
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -87,16 +87,22 @@ class Outplacement(models.Model):
 
     @api.multi
     def _get_partner(self, data):
-        partner = self.env['res.partner'].search([
-            '|',
-            ('customer_id', '=', data['sokande_id']),
-            ('social_sec_nr', '=', data['personnummer'])], limit=1)
-        if len(partner) == 0:
-            partner = self.env['res.partner'].create({
-                'name': data['personnummer'],
-                'customer_id': data['sokande_id'],
-                'social_sec_nr': data['personnummer'],
-            })
+        try:
+            pnr = data['personnummer']
+            partner = self.env['res.partner'].search([
+                '|',
+                ('customer_id', '=', data['sokande_id']),
+                ('social_sec_nr', '=', pnr[:8] + '-' + pnr[-4:])], limit=1)
+
+            if not partner:
+                partner = self.env['res.partner'].create({
+                    'name': data['personnummer'],
+                    'customer_id': data['sokande_id'],
+                    'social_sec_nr': data['personnummer'],
+                })
+        except:
+            _logger.exception('Error in partner information: %s' % data)
+            raise Warning('Error in partner information: %s' % data)
         return partner
 
     @api.multi

@@ -213,6 +213,8 @@ class MailActivity(models.Model):
         """Validate record against various rules in the portal."""
         if record.time_start <= datetime.datetime.now():
             raise UserError('Start time cannot be before now.')
+        if record.time_start > record.time_end:
+            raise UserError(_('Endtime is before start time'))
         time_diff = record.time_end - record.time_start
         rules = {'3': (60, 'onsite'), '2': (30, 'phone')}
         current_rule = rules[record.interpreter_type[0].code][0]

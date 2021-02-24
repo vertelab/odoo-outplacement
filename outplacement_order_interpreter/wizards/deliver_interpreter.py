@@ -91,7 +91,7 @@ class InterpreterDeliveryWizard(models.TransientModel):
         elif status_code in error_codes:
             msg = json.loads(response.text).get('message')
             ref = self.mail_activity_id.interpreter_booking_ref
-            _logger.error(error_codes[status_code].format(
+            _logger.exception(error_codes[status_code].format(
                 ref=ref, msg=msg))
             raise UserError(_(error_codes[status_code]).format(
                 ref=ref, msg=msg))

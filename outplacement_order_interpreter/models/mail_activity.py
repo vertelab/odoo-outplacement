@@ -3,6 +3,7 @@
 import datetime
 import json
 import logging
+import pytz
 
 from odoo import api, models, fields, tools, _
 from odoo.exceptions import UserError
@@ -59,6 +60,7 @@ class MailActivity(models.Model):
     interpreter_booking_status = fields.Char(string='Booking Status',
                                              readonly=True,
                                              compute='_compute_booking_status')
+    # Internal booking status to hold certain data to be computed.
     _interpreter_booking_status = fields.Char(string='Booking Status Internal',
                                               readonly=True,
                                               default=_('Not booked'))
@@ -172,8 +174,8 @@ class MailActivity(models.Model):
     def action_feedback(self, feedback=False):
         """Adding aditional log rows"""
         # Has to be fore call to super as the record is removed in super.
-        msg = f'Reference: {self.interpreter_booking_ref}\n'\
-              f'Date: {self.time_start}\n'\
+        msg = f'Reference: {self.interpreter_booking_ref}<br>'\
+              f'Date: {self.time_start}<br>'\
               f'Total time: {self.time_end - self.time_start}'
         message = super(MailActivity, self).action_feedback(feedback)
         if message:
@@ -224,7 +226,7 @@ class MailActivity(models.Model):
         return True
 
     def strip_seconds(self, dt):
-        """Remove seconds and miliseconds from a dt"""
+        """Remove seconds from a dt"""
         return f'{dt.rsplit(":", 1)[0]}:00'
 
     @api.multi
@@ -265,6 +267,13 @@ class MailActivity(models.Model):
         Updates the activity with new status if it has been updated on
         server.
         """
+        def change_tz(dt, tz='Europe/Stockholm'):
+            # Tolkportalen gives times in swedish local time.
+            tz = pytz.timezone(tz)
+            dt = dt.replace(tzinfo=tz).astimezone(datetime.timezone.utc)
+            # Making it naive again so that Odoo likes it.
+            return dt.replace(tzinfo=None)
+
         if response.status_code not in (200,):
             _logger.warn('Failed to update interperator bookings with code: '
                          f'{response.status_code}')
@@ -275,17 +284,18 @@ class MailActivity(models.Model):
             'tekniskStatusTypId', self._interpreter_booking_status)
         self.interpreter_type = self.env["res.interpreter.type"].search([('code', '=', data.get('tolkTypId'))])  # noqa:E501
         self.interpreter_remote_type = self.env["res.interpreter.remote_type"].search([('code', '=', data.get('distanstolkTypId'))])  # noqa:E501
-        self.time_start = datetime.datetime.strptime(
+        self.time_start = change_tz(datetime.datetime.strptime(
             data.get('fromDatumTid'),
-            '%Y-%m-%dT%H:%M:%S')
-        self.time_end = datetime.datetime.strptime(
+            '%Y-%m-%dT%H:%M:%S'))
+        self.time_end = change_tz(datetime.datetime.strptime(
             data.get('tomDatumTid'),
-            '%Y-%m-%dT%H:%M:%S')
+            '%Y-%m-%dT%H:%M:%S'))
         address_obj = data.get('adress')
         self.street = address_obj.get('gatuadress')
         self.zip = address_obj.get('postnr')
         self.city = address_obj.get('ort')
-        # state_id is not used, and its uncertain that code is the one to be used.
+        # state_id is not used, and its uncertain that code is the one
+        # to be used.
         self.state_id = self.env['res.country.state'].search([('code', '=', address_obj.get('kommunkod'))], limit=1) or False  # noqa:E501
         self.interpreter_language = self.env["res.interpreter.language"].search([('code', '=', data.get('tolksprakId'))])  # noqa:E501
         self.interpreter_gender = self.env["res.interpreter.gender_preference"].search([('code', '=', data.get('tolkkonID'))])  # noqa:E501
@@ -334,8 +344,18 @@ class MailActivity(models.Model):
         """
         Overrides normal cancel with dialog to request user to cancel
         by phone."""
-        # ToDo implement this.
-        return
+        author = self.env['res.users'].browse(self.env.uid).partner_id.id
+        ref = self.interpreter_booking_ref
+        message = _('<p>Interpreter booking with ref: {ref} canceled<p>')
+        message_id = self.env['mail.message'].create({
+            'body': message.format(ref=ref),
+            'subject': f"{_('Cancled Interpreter booking')}",
+            'author_id': author,
+            'res_id': self.res_id,
+            'model': self.res_model,
+            })
+        _logger.info(f'{author} {message_id.body}')
+        self.unlink()
 
     @api.model
     def is_interpreter(self, obj=None):

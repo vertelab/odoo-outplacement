@@ -1,4 +1,5 @@
 import datetime
+import json
 import logging
 
 from odoo import models, fields, api, _  # noqa:F401
@@ -44,10 +45,7 @@ class InterpreterDeliveryWizard(models.TransientModel):
 
     def deliver_interpreter(self):
         """Deliver interpreter booking to Tolkportalen."""
-        if not self.mail_activity_id.interpreter_company:
-            raise UserError(_('Could not find an assigned interpreter'))
-        if self.mail_activity_id.time_end > datetime.datetime.now():
-            raise UserError(_('The occation still lies in the future'))
+        self.validate_data()
         client = self.env['ipf.interpreter.client']
         payload = {'extraMinuter': self.additional_time,
                    'kanr': self.kanr,
@@ -67,6 +65,15 @@ class InterpreterDeliveryWizard(models.TransientModel):
             self.log_to_accounting()
             self.mail_activity_id.action_done()
 
+    def validate_data(self):
+        if self.additional_time % 15:
+            raise UserError(_('Additional time has to be in 15 min '
+                              'increments'))
+        if not self.mail_activity_id.interpreter_company:
+            raise UserError(_('Could not find an assigned interpreter'))
+        if self.mail_activity_id.time_end > datetime.datetime.now():
+            raise UserError(_('The occation still lies in the future'))
+
     def check_response(self, response):
         """Verify that response is 200 else raise UserError."""
         try:
@@ -74,19 +81,20 @@ class InterpreterDeliveryWizard(models.TransientModel):
         except AttributeError:
             _logger.exception(_('Could not access status code in response'))
             raise UserError(_('Could not access status code in response'))
-        error_codes = {400: 'Faulty params\n{response.text}',
-                       403: 'Faulty credentials\n{response.text}',
+        error_codes = {400: 'Faulty params\n{msg}',
+                       403: 'Faulty credentials\n{msg}',
                        404: 'Faulty reference ({ref}),'
-                            'could not find booking\n{response.text}',
-                       500: 'Unknown Error\n{response.text}'}
+                            'could not find booking\n{msg}',
+                       500: 'Unknown Error\n{msg}'}
         if status_code in (200, ):
             return
         elif status_code in error_codes:
+            msg = json.loads(response.text).get('message')
             ref = self.mail_activity_id.interpreter_booking_ref
-            _logger.error(error_codes[status_code].format(
-                ref=ref, response=response))
+            _logger.exception(error_codes[status_code].format(
+                ref=ref, msg=msg))
             raise UserError(_(error_codes[status_code]).format(
-                ref=ref, response=response))
+                ref=ref, msg=msg))
         else:
             msg = 'Unkown status_code:\n '\
                   '{response.status_code}\n{response.text}'

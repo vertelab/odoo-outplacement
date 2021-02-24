@@ -18,7 +18,7 @@ msgstr ""
 #. module: outplacement_partner_jobs
 #: model_terms:ir.ui.view,arch_db:outplacement_partner_jobs.view_partner_form
 msgid "Desired jobs"
-msgstr "Önskade yrken"
+msgstr "Sökta yrken"
 
 #. module: outplacement_partner_jobs
 #: model_terms:ir.ui.view,arch_db:outplacement_partner_jobs.view_partner_form

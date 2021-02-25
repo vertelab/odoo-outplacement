@@ -222,7 +222,7 @@ class MailActivity(models.Model):
             msg = 'This type of booking needs to be atleast {current_rule} '\
                   'minutes long.'
             raise UserError(msg.format(current_rule=current_rule))
-        if time_diff.seconds % 30*60:
+        if time_diff.seconds % (30*60):
             raise UserError(_('Booking has to be an even 30 minutes '
                               'segment.'))
         return True
@@ -344,8 +344,9 @@ class MailActivity(models.Model):
     @api.multi
     def interpreter_cancel_booking(self):
         """
-        Overrides normal cancel with dialog to request user to cancel
-        by phone."""
+        Runs after user presses Yes in dialog to remove interpreter
+        bookings.
+        """
         author = self.env['res.users'].browse(self.env.uid).partner_id.id
         ref = self.interpreter_booking_ref
         message = _('<p>Interpreter booking with ref: {ref} canceled<p>')

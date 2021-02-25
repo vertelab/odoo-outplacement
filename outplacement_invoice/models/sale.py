@@ -68,7 +68,7 @@ class SaleOrder(models.Model):
 
         res = client_config.get_invoices(order_id=self.outplacement_id.name)
         # Test invoices
-        res = client_config.get_invoices(order_id="AKTTEST-2272")
+        # res = client_config.get_invoices(order_id="AKTTEST-2272")
         # res = client_config.get_invoices(order_id="AKTTEST-4925")
         # res = client_config.get_invoices(order_id="AKTTEST-4923")
         for invoice in res.get('invoices', []):

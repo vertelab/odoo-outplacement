@@ -68,7 +68,7 @@ class SaleOrder(models.Model):
 
         res = client_config.get_invoices(order_id=self.outplacement_id.name)
         # Test invoices
-        # res = client_config.get_invoices(order_id="AKTTEST-2272")
+        res = client_config.get_invoices(order_id="AKTTEST-2272")
         # res = client_config.get_invoices(order_id="AKTTEST-4925")
         # res = client_config.get_invoices(order_id="AKTTEST-4923")
         for invoice in res.get('invoices', []):
@@ -99,7 +99,7 @@ class SaleOrder(models.Model):
             partner_ext_id = party['cac:PartyIdentification']['cac:ID']['#text']
             try:
                 res_partner = self.env.ref("__af_data__." + partner_ext_id)
-            except:
+            except ValueError:
                 res_partner = False
             if not res_partner:
                 name = party['cac:PartyName']['cbc:Name']['#text']
@@ -134,21 +134,27 @@ class SaleOrder(models.Model):
             payment = sf_dict['Invoice']['cac:PaymentMeans']
             try:
                 due_date = datetime.strptime(payment['cbc:DuePaymentDate']['#text'], '%Y-%m-%d').date()
-            except:
+            except KeyError:
                 _logger.exception("Raindance invoice: due date not found in svefaktura-data.")
+                due_date = False
+            except ValueError:
+                _logger.exception("Raindance invoice: due date has unexpected format in svefaktura-data.")
                 due_date = False
 
             # Find invoice date
             try:
                 invoice_date = datetime.strptime(sf_dict['Invoice']['cbc:IssueDate']['#text'], '%Y-%m-%d').date()
-            except:
+            except KeyError:
                 _logger.exception("Raindance invoice: invoice date not found in svefaktura-data.")
                 invoice_date = False
+            except ValueError:
+                _logger.exception("Raindance invoice: invoice date has unexpected format in svefaktura-data.")
+                due_date = False
 
             # Try to set 30 days payment terms
             try:
                 payment_terms = self.env.ref('account.account_payment_term_net')
-            except:
+            except ValueError:
                 _logger.exception("Raindance invoice: payment terms not found in svefaktura-data.")
                 payment_terms = False
 
@@ -164,6 +170,7 @@ class SaleOrder(models.Model):
                     'state': 'draft'
                 }
             )
+
             # Create attachment with raw data.
             self.env['ir.attachment'].create(
                 {'name': 'Svefaktura',

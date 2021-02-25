@@ -51,10 +51,7 @@ class ProjectTask(models.Model):
     def _compute_duration(self):
         if self.start_date and self.end_date:
             diff = self.end_date - self.start_date
-            days = diff.days*24
-            hours = round(diff.seconds / 3600.0, 2)
-            duration = hours + days
-            _logger.info("duration: %s" % duration)
+            duration = round(diff.total_seconds() / 3600, 2)
             self.duration = duration
 
     @api.model

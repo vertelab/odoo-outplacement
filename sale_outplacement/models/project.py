@@ -5,6 +5,7 @@ from odoo import api, fields, models, tools, SUPERUSER_ID
 from odoo import tools, _
 from odoo.exceptions import ValidationError, AccessError, Warning
 from odoo.modules.module import get_module_resource
+from datetime import datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -13,6 +14,14 @@ class ProjectTask(models.Model):
     _inherit = "project.task"
 
     start_date = fields.Datetime(string="Start date")
+    end_date = fields.Datetime(string="End date")
+    child_end_date = fields.Datetime(string="End date", 
+                                       related="end_date",
+                                       readonly=False)
+    child_start_date = fields.Datetime(string="Start date", 
+                                       related="start_date",
+                                       readonly=False)
+    duration = fields.Float(string="Duration")
     instructions = fields.Text(string="Instructions", readonly=True)
     outplacement_id = fields.Many2one(
         comodel_name="outplacement",
@@ -37,6 +46,13 @@ class ProjectTask(models.Model):
         ],
         string="Task Type",
     )
+
+    @api.onchange('start_date', 'end_date')
+    def _compute_duration(self):
+        if self.start_date and self.end_date:
+            diff = self.end_date - self.start_date
+            duration = round(diff.total_seconds() / 3600, 2)
+            self.duration = duration
 
     @api.model
     def init_joint_planning(self, outplacement_id):

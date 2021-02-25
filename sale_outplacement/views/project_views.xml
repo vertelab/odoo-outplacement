@@ -5,10 +5,14 @@
     <field name="model">project.task</field>
     <field name="inherit_id" ref="project.view_task_form2" />
     <field name="arch" type="xml">
-      <field name="date_deadline" position="replace">
-        <field name="start_date" widget="date"/>
-        <label for="date_deadline" string="End date"/>
-        <field name="date_deadline" widget="date" nolabel="1"/>
+      <field name="date_deadline" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </field>
+      <field name="date_deadline" position="after">
+        <field name="start_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
+        <field name="end_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
+        <field name="child_start_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
+        <field name="child_end_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
       </field>
       <field name="project_id" position="before">
         <field name="instructions"/>
@@ -54,14 +58,17 @@
       </xpath>
       <xpath expr="//div[@class='oe_kanban_bottom_left']/field[@name='activity_ids']" position="attributes">
         <attribute name="invisible">1</attribute>
-      </xpath>        
-      <xpath expr="//kanban/field[@name='color']" position="after">
-        <field name="instructions"/>
-        <field name="start_date"/>
       </xpath>
       <xpath expr="//div[@class='o_kanban_record_headings']/small/span/i/field[@name='date_deadline']" position="before">
         <field name="instructions"/>
-        <field name="start_date" widget="date"/>
+        <field name="start_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
+        <field name="end_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
+        <field name="child_start_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
+        <field name="child_end_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
+        <field name="parent_id" invisible="1"/>
+      </xpath>
+      <xpath expr="//div[@class='o_kanban_record_headings']/small/span/i/field[@name='date_deadline']" position="attributes">
+        <attribute name="invisible">1</attribute>
       </xpath>
       <xpath expr="//div[@class='oe_kanban_bottom_right']" position="attributes">
         <attribute name="invisible">1</attribute>
@@ -75,7 +82,7 @@
     <field name="arch" type="xml">
       <field name="user_id" position="after">
         <field name="start_date"/>
-        <field name="date_deadline"/>
+        <field name="end_date"/>
       </field>
     </field>
   </record>
@@ -91,6 +98,17 @@
       <field name="user_id" position="after">
         <field name="parent_id"/>
       </field>
+    </field>
+  </record>
+
+  <record id="project.view_task_calendar" model="ir.ui.view">
+    <field name="name">project.task.calendar</field>
+    <field name="model">project.task</field>
+    <field eval="2" name="priority"/>
+    <field name="arch" type="xml">
+      <calendar date_start="start_date" date_stop="end_date" date_delay="duration" string="Tasks" mode="month" quick_add="false">
+        <field name="name"/>
+      </calendar>
     </field>
   </record>
 

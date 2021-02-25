@@ -36,15 +36,18 @@ _logger = logging.getLogger(__name__)
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
-    
+
+    @api.depends('order_line.invoice_lines')
+    def _get_invoiced_stored(self):
+        for sale_order in self:
+            sale_order.invoice_count_stored = sale_order.invoice_count
+
+    invoice_count_stored = fields.Integer(string='Invoice Count (stored)', compute='_get_invoiced_stored', readonly=True, store=True)
+
     @api.model
     def cron_outplacement_invoice(self):
         """Cron job entry point."""
-        # for outplacement in self:
-        
-        sale_orders = self.env['sale.order'].search([('state', 'not in', ['draft', 'done'])])
-        # Tests:
-        # sale_orders = self.env['sale.order'].search([('id', '=', 12)])
+        sale_orders = self.env['sale.order'].search([('invoice_count_stored', '<', 2)])
         for sale_order in sale_orders: 
             sale_order.outplacement_invoice()
 
@@ -67,7 +70,7 @@ class SaleOrder(models.Model):
             raise Warning(_("dafa.legacy_no not set in system parameters"))
 
         res = client_config.get_invoices(order_id=self.outplacement_id.name)
-        # Test invoices
+        # Working test invoices
         # res = client_config.get_invoices(order_id="AKTTEST-2272")
         # res = client_config.get_invoices(order_id="AKTTEST-4925")
         # res = client_config.get_invoices(order_id="AKTTEST-4923")
@@ -83,8 +86,6 @@ class SaleOrder(models.Model):
         Process invoice in the format svefaktura.
         Takes a dict with the key svefaktura.
         '''
-        # TODO: do we need support for updating invoces?
-        # do they change over time.
         sf = invoice.get('svefaktura')
         if sf:
             sf = unescape(sf)
@@ -104,8 +105,7 @@ class SaleOrder(models.Model):
             if not res_partner:
                 name = party['cac:PartyName']['cbc:Name']['#text']
                 vat = party['cac:PartyTaxScheme']['cac:CompanyID']
-                # TODO: street is not present in invoices from Raindance?
-                street = False
+                street = False # Steet is not sent in raindance data
                 city = party['cac:Address']['cbc:CityName']['#text']
                 zip_ = party['cac:Address']['cbc:PostalZone']['#text']
                 country_code = party['cac:Address']['cac:Country']['cac:IdentificationCode']
@@ -222,6 +222,8 @@ class SaleOrder(models.Model):
             # to calculate taxes correctly.
             current_invoice._onchange_eval('invoice_line_ids', "1", {})
             amount_tax = sf_dict['Invoice']['cac:TaxTotal']['cbc:TotalTaxAmount']['#text']
+            # make sure odoo didn't calculate the tax different than
+            # what the invoice says.
             current_invoice.amount_tax = amount_tax
 
         return current_invoice

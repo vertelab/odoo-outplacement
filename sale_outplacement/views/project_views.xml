@@ -11,8 +11,8 @@
       <field name="date_deadline" position="after">
         <field name="start_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
         <field name="end_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
-        <field name="start_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
-        <field name="end_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
+        <field name="child_start_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
+        <field name="child_end_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
       </field>
       <field name="project_id" position="before">
         <field name="instructions"/>
@@ -63,8 +63,8 @@
         <field name="instructions"/>
         <field name="start_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
         <field name="end_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
-        <field name="start_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
-        <field name="end_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
+        <field name="child_start_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
+        <field name="child_end_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
         <field name="parent_id" invisible="1"/>
       </xpath>
       <xpath expr="//div[@class='o_kanban_record_headings']/small/span/i/field[@name='date_deadline']" position="attributes">

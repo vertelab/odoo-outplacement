@@ -49,9 +49,9 @@ var Activity = MailActivity.include({
     },
     interpreter_cancel: function (options){
         // Unlink, logg, reload.
-        this._rpc({model: options.model, method: 'interpreter_cancel_booking', args: options.args});
-        this._reload.bind(this, {activity: true});
-    }
+        this._rpc({model: options.model, method: 'interpreter_cancel_booking', args: options.args})
+        .then(this._reload.bind(this, {activity: true}));
+    },
 });
 
 });

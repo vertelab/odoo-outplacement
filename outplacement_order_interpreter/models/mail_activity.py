@@ -213,6 +213,8 @@ class MailActivity(models.Model):
         """Validate record against various rules in the portal."""
         if record.time_start <= datetime.datetime.now():
             raise UserError('Start time cannot be before now.')
+        if record.time_start > record.time_end:
+            raise UserError(_('Endtime is before start time'))
         time_diff = record.time_end - record.time_start
         rules = {'3': (60, 'onsite'), '2': (30, 'phone')}
         current_rule = rules[record.interpreter_type[0].code][0]
@@ -220,7 +222,7 @@ class MailActivity(models.Model):
             msg = 'This type of booking needs to be atleast {current_rule} '\
                   'minutes long.'
             raise UserError(msg.format(current_rule=current_rule))
-        if time_diff.seconds % 30*60:
+        if time_diff.seconds % (30*60):
             raise UserError(_('Booking has to be an even 30 minutes '
                               'segment.'))
         return True
@@ -342,8 +344,9 @@ class MailActivity(models.Model):
     @api.multi
     def interpreter_cancel_booking(self):
         """
-        Overrides normal cancel with dialog to request user to cancel
-        by phone."""
+        Runs after user presses Yes in dialog to remove interpreter
+        bookings.
+        """
         author = self.env['res.users'].browse(self.env.uid).partner_id.id
         ref = self.interpreter_booking_ref
         message = _('<p>Interpreter booking with ref: {ref} canceled<p>')

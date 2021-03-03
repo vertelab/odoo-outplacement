@@ -1,0 +1,133 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* outplacement_invoice
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0-20210127\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-03-02 15:05+0000\n"
+"PO-Revision-Date: 2021-03-02 15:05+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: outplacement_invoice
+#: model_terms:ir.ui.view,arch_db:outplacement_invoice.invoice_form_inherited
+msgid "Buyer"
+msgstr "Köpare"
+
+#. module: outplacement_invoice
+#: model:ir.actions.server,name:outplacement_invoice.ir_cron_order_invoice_ir_actions_server
+#: model:ir.cron,cron_name:outplacement_invoice.ir_cron_order_invoice
+#: model:ir.cron,name:outplacement_invoice.ir_cron_order_invoice
+msgid "Check for Outplacement Invoices"
+msgstr "Sök efter nya fakturor"
+
+#. module: outplacement_invoice
+#: model:ir.model.fields,field_description:outplacement_invoice.field_account_invoice__company_company_registry
+#: model:ir.model.fields,field_description:outplacement_invoice.field_account_invoice__partner_company_registry
+msgid "Company Registry"
+msgstr "Organisationsnummer"
+
+#. module: outplacement_invoice
+#: model_terms:ir.ui.view,arch_db:outplacement_invoice.invoice_form_inherited
+msgid "Customer"
+msgstr "Kund"
+
+#. module: outplacement_invoice
+#: model:ir.actions.server,name:outplacement_invoice.ir_actions_test_outplacement_invoice_get_invoices
+msgid "Get Invoices from Server"
+msgstr ""
+
+#. module: outplacement_invoice
+#: model:ir.model,name:outplacement_invoice.model_account_invoice
+msgid "Invoice"
+msgstr "Faktura"
+
+#. module: outplacement_invoice
+#: model:ir.model.fields,field_description:outplacement_invoice.field_sale_order__invoice_count_stored
+msgid "Invoice Count (stored)"
+msgstr "Antal fakturor (lagrad)"
+
+#. module: outplacement_invoice
+#: code:addons/outplacement_invoice/models/sale.py:60
+#, python-format
+msgid "No client config for raindance integration"
+msgstr "Ingen klientkonfiguration for raindance integration."
+
+#. module: outplacement_invoice
+#: code:addons/outplacement_invoice/models/sale.py:64
+#, python-format
+msgid "No client_id configured for raindance client config"
+msgstr "Ingen client_id konfigurerad for raindance integration."
+
+#. module: outplacement_invoice
+#: code:addons/outplacement_invoice/models/sale.py:66
+#, python-format
+msgid "No client_secret configured for raindance client config"
+msgstr "Ingen client_secret konfigurerad for raindance integration."
+
+#. module: outplacement_invoice
+#: code:addons/outplacement_invoice/models/sale.py:62
+#, python-format
+msgid "No url configured for raindance client config"
+msgstr "Ingen url konfigurerad for raindance integration."
+
+#. module: outplacement_invoice
+#: model_terms:ir.ui.view,arch_db:outplacement_invoice.invoice_form_inherited
+#: model_terms:ir.ui.view,arch_db:outplacement_invoice.invoice_tree_inherited
+msgid "Number"
+msgstr "Nummer"
+
+#. module: outplacement_invoice
+#: model:ir.model,name:outplacement_invoice.model_outplacement
+msgid "Outplacement"
+msgstr "Deltagare"
+
+#. module: outplacement_invoice
+#: model:ir.actions.server,name:outplacement_invoice.ir_actions_test_outplacement_invoice_static_data
+msgid "Process Static Invoice Data"
+msgstr ""
+
+#. module: outplacement_invoice
+#: model:ir.model.fields,field_description:outplacement_invoice.field_account_invoice__raindance_ref
+msgid "Raindance ID"
+msgstr ""
+
+#. module: outplacement_invoice
+#: model_terms:ir.ui.view,arch_db:outplacement_invoice.invoice_form_inherited
+msgid "SELF INVOICE"
+msgstr "SJÄLVFAKTURA"
+
+#. module: outplacement_invoice
+#: model:ir.model,name:outplacement_invoice.model_sale_order
+msgid "Sale Order"
+msgstr "Kundorder"
+
+#. module: outplacement_invoice
+#: model_terms:ir.ui.view,arch_db:outplacement_invoice.invoice_form_inherited
+msgid "Seller"
+msgstr "Säljare"
+
+#. module: outplacement_invoice
+#: model:ir.model.fields,field_description:outplacement_invoice.field_account_invoice__company_vat
+#: model:ir.model.fields,field_description:outplacement_invoice.field_account_invoice__partner_vat
+msgid "Tax ID"
+msgstr "Momsregistreringsnummer"
+
+#. module: outplacement_invoice
+#: model:ir.model.fields,help:outplacement_invoice.field_account_invoice__company_vat
+#: model:ir.model.fields,help:outplacement_invoice.field_account_invoice__partner_vat
+msgid "The Tax Identification Number. Complete it if the contact is subjected to government taxes. Used in some legal statements."
+msgstr ""
+
+#. module: outplacement_invoice
+#: code:addons/outplacement_invoice/models/sale.py:70
+#, python-format
+msgid "dafa.legacy_no not set in system parameters"
+msgstr "dafa.legacy_no ej satt i systemparametrar."
+

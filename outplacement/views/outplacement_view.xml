@@ -10,7 +10,8 @@
           </header>
           <sheet>
             <div class="oe_button_box" name="button_box" />
-            <field name="image" widget='image' class="oe_avatar" options='{"preview_image":"image_medium"}' />
+            <!-- remove image for now -->
+            <!-- <field name="image" widget='image' class="oe_avatar" options='{"preview_image":"image_medium"}' /> -->
             <div class="oe_title">
               <label for="name" class="oe_edit_only" />
               <h1>
@@ -86,8 +87,6 @@
       <field name="arch" type="xml">
         <kanban class="o_hr_employee_kanban" default_group_by="employee_id" create="false" edit="false" delete="false">
           <field name="id" />
-          <field name="message_follower_ids" />
-          <field name="message_ids" />
           <field name="message_needaction_counter" />
           <field name="partner_name" />
           <field name="my_performing_operation" />

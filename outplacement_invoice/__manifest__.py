@@ -22,12 +22,10 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Outplacement Invoice',
-    'version': '12.0.1.1.4',
+    'version': '12.0.1.2.0',
     'category': 'Outplacement',
-    'description': """
-        This module listen for new invoices from Raindance...
-        AFC-1343: Introduced module.
-        """,
+    'description': """This module listen for new invoices from Raindance.
+    AFC-1343: Introduced this module.""",
     'author': "Vertel AB",
     'license': 'AGPL-3',
     'website': 'https://vertel.se',
@@ -42,6 +40,7 @@
     'data': [
         'data/cron.xml',
         'data/test.xml',
+        'views/account_invoice_view.xml',
     ],
     'installable': True,
     'images': [

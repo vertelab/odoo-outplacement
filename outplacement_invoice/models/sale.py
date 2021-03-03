@@ -110,6 +110,9 @@ class SaleOrder(models.Model):
                 zip_ = party['cac:Address']['cbc:PostalZone']['#text']
                 country_code = party['cac:Address']['cac:Country']['cac:IdentificationCode']
                 country = self.env['res.country'].search([('code', '=', country_code)])
+                country_code = party['cac:Address']['cac:Country']['cac:IdentificationCode']
+                bank = sf_dict['Invoice']['cac:PaymentMeans']['cac:PayeeFinancialAccount']['cac:FinancialInstitutionBranch']['cac:FinancialInstitution']['cac:ID']
+                bank_nr = sf_dict['Invoice']['cac:PaymentMeans']['cac:PayeeFinancialAccount']['cac:ID']
 
                 res_partner = self.env['res.partner'].create(
                     {
@@ -129,6 +132,27 @@ class SaleOrder(models.Model):
                         'res_id': res_partner.id,
                     }
                 )
+
+                # check if partners bank exsists in system
+                bank_id = self.env['res.bank'].search([('name', '=', bank)])
+                if not bank_id:
+                    bank_id = self.env['res.bank'].create(
+                        {
+                            'name': bank,
+                        }
+                    )
+
+                # check if partners bank account already exists in system
+                partner_bank_id = self.env['res.partner.bank'].search([('acc_number', '=', bank_nr)])
+                if not partner_bank_id:
+                    partner_bank_id = self.env['res.partner.bank'].create(
+                        {
+                            'acc_number': bank_nr,
+                            'bank_id': bank_id.id,
+                            'partner_id': res_partner.id,
+                            'company_id': self.env.ref('base.main_company').id,
+                        }
+                    )
 
             # Find due date
             payment = sf_dict['Invoice']['cac:PaymentMeans']
@@ -151,6 +175,16 @@ class SaleOrder(models.Model):
                 _logger.exception("Raindance invoice: invoice date has unexpected format in svefaktura-data.")
                 due_date = False
 
+            # Find invoice delivery date
+            try:
+                date = datetime.strptime(sf_dict['Invoice']['cac:Delivery']['cbc:ActualDeliveryDateTime']['#text'], '%Y-%m-%d').date()
+            except KeyError:
+                _logger.exception("Raindance invoice: invoice delivery date not found in svefaktura-data.")
+                invoice_date = False
+            except ValueError:
+                _logger.exception("Raindance invoice: invoice delivery date has unexpected format in svefaktura-data.")
+                due_date = False
+
             # Try to set 30 days payment terms
             try:
                 payment_terms = self.env.ref('account.account_payment_term_net')
@@ -164,19 +198,27 @@ class SaleOrder(models.Model):
                     'partner_id': res_partner.id,
                     'date_invoice': invoice_date,
                     'date_due': due_date,
+                    'date': date,
                     'raindance_ref': invoice_ref,
                     'payment_term_id': payment_terms.id,
                     'origin': self.name,
+                    'contract_nr': self.outplacement_id.file_reference_number,
                     'state': 'draft'
                 }
             )
 
             # Create attachment with raw data.
             self.env['ir.attachment'].create(
-                {'name': 'Svefaktura',
-                 'res_model': 'account.invoice',
-                 'res_id': current_invoice.id,
-                 'datas': base64.b64encode(bytes(sf, 'utf-8'))})
+                {
+                    'name': 'Svefaktura',
+                    'res_model': 'account.invoice',
+                    'res_id': current_invoice.id,
+                    'datas': base64.b64encode(bytes(sf, 'utf-8')),
+                    'datas_fname': invoice_ref + '.xml',
+                    'store_fname': invoice_ref,
+                    'mimetype': 'application/xml'
+                }
+            )
 
             # Find Invoice lines to add to Invoice.
             invoice_lines = sf_dict['Invoice']['cac:InvoiceLine']

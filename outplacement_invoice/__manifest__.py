@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Outplacement Invoice',
-    'version': '12.0.1.1.4',
+    'version': '12.0.1.2.0',
     'category': 'Outplacement',
     'description': """This module listen for new invoices from Raindance.
     AFC-1343: Introduced this module.""",

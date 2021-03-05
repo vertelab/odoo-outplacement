@@ -173,17 +173,17 @@ class SaleOrder(models.Model):
                 invoice_date = False
             except ValueError:
                 _logger.exception("Raindance invoice: invoice date has unexpected format in svefaktura-data.")
-                due_date = False
+                invoice_date = False
 
             # Find invoice delivery date
             try:
                 date = datetime.strptime(sf_dict['Invoice']['cac:Delivery']['cbc:ActualDeliveryDateTime']['#text'], '%Y-%m-%d').date()
             except KeyError:
                 _logger.exception("Raindance invoice: invoice delivery date not found in svefaktura-data.")
-                invoice_date = False
+                date = False
             except ValueError:
                 _logger.exception("Raindance invoice: invoice delivery date has unexpected format in svefaktura-data.")
-                due_date = False
+                date = False
 
             # Try to set 30 days payment terms
             try:

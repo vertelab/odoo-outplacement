@@ -277,10 +277,9 @@ class Outplacement(models.Model):
             "firstname",
             "lastname",
             "name",
-            "additional_info",
-            "education_level",
-            "foreign_education",
-            "foreign_education_approved",
+            # "education_level",
+            # "foreign_education",
+            # "foreign_education_approved",
             "cv",
             "cv_file_name",
             "references",
@@ -292,47 +291,56 @@ class Outplacement(models.Model):
             "age",
         ]
         xmlrpc = crm_serverII(self.env)
-        rec = xmlrpc.common.env['res.partner'].partnersyncCrm2DafaSSN(self.partner_social_sec_nr)
+        rec = xmlrpc.common.env['res.partner'].partnersyncCrm2DafaSSN(
+            self.partner_social_sec_nr)
+        _logger.debug(rec)
         if rec:
-            self.partner_id.write({f:rec['partner'][f] for f in FIELDS})
+            self.partner_id.write({f: rec['partner'][f] for f in FIELDS})
             # education_ids
-            self.partner_id.education_ids = [(6,0,[])]
-            for code,level,foreign,approved in rec['education_ids']:
-                self.partner_id.education_ids = [(0,0,{
-                    'sun_id': self.env['res.sun'].search([('code','=',code)],limit=1)[0].id,
-                    'education_level_id': self.env['res.partner.education.education_level'].search([('name','=',level)],limit=1)[0].id,
+            self.partner_id.education_ids = [(6, 0, [])]
+            for code, level, foreign, approved in rec['education_ids']:
+                self.partner_id.education_ids = [(0, 0, {
+                    'sun_id': self.env['res.sun'].search(
+                        [('code', '=', code)], limit=1)[0].id,
+                    'education_level_id': self.env['res.partner.education.education_level'].search([('name', '=', level)], limit=1)[0].id,
                     'foreign_education': foreign,
                     'foreign_education_approved': approved
                     })]
 
             # drivers_license_ids
-            self.partner_id.drivers_license_ids = [(6,0,[e.id for e in self.env['res.drivers_license'].search([('name','in',rec['drivers_license_ids'])])])]
+            self.partner_id.drivers_license_ids = [
+                (6, 0, [e.id for e in self.env['res.drivers_license'].search(
+                    [('name', 'in', rec['drivers_license_ids'])])])]
             # job_ids
-            self.partner_id.job_ids = [(6,0,[])]
-            for ssyk_code,exp_length,exp,edu,sun_code,edu_lvl,edu_f,edu_fa in rec['job_ids']:
-                _logger.warn('ssyk code %s %s,exp lenght %s,exp %s,edu %s' % (
-                        ssyk_code,self.env['res.ssyk'].search([('code','=',ssyk_code)],limit=1)[0],
+            self.partner_id.job_ids = [(6, 0, [])]
+            for ssyk_code, exp_length, exp, edu, sun_code, edu_lvl, edu_f, edu_fa in rec['job_ids']:  # noqa: E501
+                _logger.debug('ssyk code %s %s,exp lenght %s,exp %s,edu %s' % (
+                        ssyk_code, self.env['res.ssyk'].search(
+                            [('code', '=', ssyk_code)], limit=1)[0],
                         exp_length, exp, edu))
                 values = {
                         'partner_id': self.id,
-                        'ssyk_id' : self.env['res.ssyk'].search([('code','=',code)],limit=1)[0],
+                        'ssyk_id': self.env['res.ssyk'].search(
+                            [('code', '=', code)], limit=1)[0],
                         'experience_length': exp_length,
                         'education': edu,
                         'experience': exp
                     }
                 sun_id = self.env['res.sun'].search([('code', '=', sun_code)], limit=1)[0]
-                edu_level = self.env['res.partner.education.eduation_level'].search([('name', '=',edu_lvl)], limit=1)[0]
+                edu_level = self.env['res.partner.education.education_level'].search([('name', '=', edu_lvl)], limit=1)[0]
                 education_id = self.env['res.partner.education'].search([('partner_id','=',self.partner_id.id),
                                                                         ('sun_id','=',sun_id.id),
                                                                         ('education_level_id','=',edu_level.id),
                                                                         ('foreign_education','=',edu_f),
                                                                         ('foreign_education_approved','=',edu_fa)], limit=1)[0]
-                _logger.warn('sun code %s %s, edu level %s %s, edu_f %s, edu_fa %s, education %s' % (
-                        sun_code,sun_id, edu_lvl, edu_level, edu_f, edu_fa, education_id))
+                _logger.debug('sun code %s %s, edu level %s %s, edu_f %s'
+                              ', edu_fa %s, education %s' % (
+                                sun_code, sun_id, edu_lvl, edu_level,
+                                edu_f, edu_fa, education_id))
                 values['education_id'] = education_id.id
-                self.partner_id.job_ids = [(0,0, values)]
-            else:
-                raise Warning("Partner not found in CRM")
+                self.partner_id.job_ids = [(0, 0, values)]
+        else:
+            raise Warning("Partner not found in CRM")
             
             # ~ self.partner_id.job_ids = [0,0,(self.env['res.ssyk'].search([('code','=',code)],limit=1)[0],
             # ~ self.env['res.partner.education_level'].search([('name','=',level)],limit=1)[0],

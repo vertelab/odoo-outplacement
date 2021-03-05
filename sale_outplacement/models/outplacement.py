@@ -166,6 +166,12 @@ class Outplacement(models.Model):
             'management_team_id': self._get_management_team_id(data),
             'order_id': order.id,
         })
+        if int(self.env['ir.config_parameter'].get_param('sale_outplacement.sync_jobseeker', '0')):  # noqa: E501
+            try:
+                outplacement.get_jobseeker_dataV()
+            except Exception:
+                _logger.exception(
+                    "Failed to sync jobseeker when receiving outplacement.")
         interpreter_need = data.get('tolkbehov')
         lang = self.env['res.interpreter.language'].search(
             [('code', '=', interpreter_need)])

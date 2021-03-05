@@ -293,7 +293,7 @@ class Outplacement(models.Model):
         ]
         xmlrpc = crm_serverII(self.env)
         rec = xmlrpc.common.env['res.partner'].partnersyncCrm2DafaSSN(self.partner_social_sec_nr)
-        if res:
+        if rec:
             self.partner_id.write({f:rec['partner'][f] for f in FIELDS})
             # education_ids
             self.partner_id.education_ids = [(6,0,[])]

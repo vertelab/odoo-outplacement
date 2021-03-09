@@ -23,11 +23,12 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Res Joint Planning',
-    'version': '12.0.0.1.1',
+    'version': '12.0.0.1.2',
     'category': 'Outplacement',
     'description': """
 	 Module to handle outplacement (Avrop).\n
 	 This module handles the Activity template (project.task)
+    12.0.0.1.2: ACL-Made it possible for normal users to send GP.
     """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',

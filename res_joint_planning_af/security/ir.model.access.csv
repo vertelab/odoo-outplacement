@@ -1,4 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_res_joint_planning_read,res_joint_planning.access.user,model_res_joint_planning,outplacement.group_outplacement_user_read,1,0,0,0
-access_res_joint_planning_write,res_joint_planning.access.user,model_res_joint_planning,outplacement.group_outplacement_user_write,1,0,0,0
+access_res_joint_planning_write,res_joint_planning.access.user,model_res_joint_planning,outplacement.group_outplacement_user_write,1,1,0,0
 access_res_joint_planning_admin,res_joint_planning.access.user,model_res_joint_planning,outplacement.group_outplacement_admin,1,1,1,1

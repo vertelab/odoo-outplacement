@@ -211,11 +211,13 @@ class MailActivity(models.Model):
 
     def validate_booking_rules(self, record):
         """Validate record against various rules in the portal."""
-        if record.time_start <= datetime.datetime.now():
+        start = record.time_start.replace(second=0)
+        end = record.time_end.replace(second=0)
+        if start <= datetime.datetime.now():
             raise UserError('Start time cannot be before now.')
-        if record.time_start > record.time_end:
+        if start >= end:
             raise UserError(_('Endtime is before start time'))
-        time_diff = record.time_end - record.time_start
+        time_diff = end - start
         rules = {'3': (60, 'onsite'), '2': (30, 'phone')}
         current_rule = rules[record.interpreter_type[0].code][0]
         if not time_diff >= datetime.timedelta(minutes=current_rule):

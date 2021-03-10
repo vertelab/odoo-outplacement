@@ -1,7 +1,8 @@
 # -*- coding: UTF-8 -*-
 import logging
 
-from odoo import fields, models
+from odoo import fields, models, api, _
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -25,6 +26,12 @@ class Outplacement(models.Model):
     main_goal_id = fields.Many2one(comodel_name="outplacement.goal")
     alternative_goal_id = fields.Many2one(comodel_name="outplacement.goal")
 
+    @api.constrains('study_visit_ids')
+    @api.one
+    def _constrain_study_visit_ids(self):
+        if self.study_visit_ids and len(self.study_visit_ids) > 7:
+            raise ValidationError(_('Number of steps must not exceed 7'))
+
 
 class OutplacementGoal(models.Model):
     _name = "outplacement.goal"
@@ -45,6 +52,26 @@ class OutplacementGoal(models.Model):
     other_motivation = fields.Boolean(string='Other')
     # should only be used if motivation is "other":
     free_text = fields.Char(string="Free text")
+
+    @api.constrains('free_text')
+    @api.one
+    def _constrain_free_text(self):
+        if self.free_text and len(self.free_text) > 2000:
+            raise ValidationError(_('Number of characters must not exceed 2000'))
+
+    @api.constrains('other_motivation')
+    @api.one
+    def _constrain_other_motivation(self):
+        if self.other_motivation and len(self.other_motivation) > 2000:
+            raise ValidationError(_('Number of characters must not exceed 2000'))
+    
+    @api.constrains('step_ids')
+    @api.one
+    def _constrain_step_ids(self):
+        if self.step_ids and (len(self.step_ids) < 1 or len(self.step_ids) > 10):
+            raise ValidationError(_('Number of steps must not exceed 10, '
+                                  'at least one step is required'))
+    
 
 
 class OutplacementGoalStep(models.Model):
@@ -72,10 +99,22 @@ class OutplacementGoalStep(models.Model):
     complementing_effort_description = fields.Char(
         string="Complementing effort")
     other_step_name = fields.Char(string="Name")
-    other_step_level = fields.Char(string="Level")
+    level = fields.Char(string="Level")
     free_text = fields.Char(string="Free text")
     start_date = fields.Datetime(string="Start date")
     end_date = fields.Datetime(string="End date")
+
+    @api.constrains('other_step_name')
+    @api.one
+    def _constrain_other_step_name(self):
+        if self.other_step_name and len(self.other_step_name) > 1000:
+            raise ValidationError(_('Number of characters must not exceed 1000'))
+    
+    @api.constrains('complementing_effort_description')
+    @api.one
+    def _constrain_complementing_effort_description(self):
+        if self.complementing_effort_description and len(self.complementing_effort_description) > 1000:
+            raise ValidationError(_('Number of characters must not exceed 1000'))
 
 
 class OutplacementStudyVisit(models.Model):

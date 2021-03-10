@@ -60,7 +60,7 @@
                     <field name="complementing_effort_type" attrs="{'invisible': [('step_type', '!=', 'fitting complementing efforts')]}"/>
                     <field name="complementing_effort_description" attrs="{'invisible': [('complementing_effort_type', '!=', 'other')]}"/>
                     <field name="other_step_name" attrs="{'invisible': [('step_type', '!=', 'other')]}"/>
-                    <field name="other_step_level" attrs="{'invisible': [('step_type', '!=', 'other')]}"/>
+                    <field name="level" attrs="{'invisible': [('step_type', '!=', 'other')]}"/>
                     <field name="free_text" attrs="{'invisible': [('step_type', '!=', 'other')]}"/>
                     <field name="start_date"/>
                     <field name="end_date"/>

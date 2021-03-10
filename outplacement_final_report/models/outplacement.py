@@ -30,7 +30,7 @@ class Outplacement(models.Model):
     @api.one
     def _constrain_study_visit_ids(self):
         if self.study_visit_ids and len(self.study_visit_ids) > 7:
-            raise ValidationError(_('Number of steps must not exceed 7'))
+            raise ValidationError(_('Number of study visits must not exceed 7'))
 
 
 class OutplacementGoal(models.Model):

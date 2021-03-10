@@ -87,8 +87,8 @@ class Outplacement(models.Model):
     # have this name.
     country_id = fields.Many2one(related="partner_id.country_id",
                                  readonly=False)
-    partner_phone = fields.Char(string="Phone",
-                                related="partner_id.phone",
+    partner_mobile = fields.Char(string="Phone",
+                                related="partner_id.mobile",
                                 readonly=False)
     partner_email = fields.Char(string="Email",
                                 related="partner_id.email",

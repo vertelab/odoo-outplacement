@@ -24,7 +24,7 @@
               <group name="outplacement" string="Outplacement">
                 <field name="partner_social_sec_nr" attrs="{'readonly':[('show_2nd_line','=', True)]}" /> 
                 <field name="partner_email" />
-                <field name="partner_phone" />
+                <field name="partner_mobile" />
                 <label for="street" string="Address"/>
                 <div class="o_address_format">
                   <field name="partner_street" placeholder="Street..." class="o_address_street" attrs="{'readonly':[('show_2nd_line','=', True)]}" />

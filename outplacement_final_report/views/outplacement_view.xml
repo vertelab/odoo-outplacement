@@ -75,8 +75,13 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-                    <field name="name"/>
-                    <field name="visit_type"/>
+                    <field name="visit_selection"/>
+                    <label for="name" string="Education organizer" attrs="{'invisible':[('visit_selection','=','education')]}"/>
+                    <label for="name" string="Workplace" attrs="{'invisible':[('visit_selection','!=','education')]}"/>
+                    <field name="name" nolabel="1"/>
+                    <label for="visit_type" string="Field of education" attrs="{'invisible':[('visit_selection','=','education')]}"/>
+                    <label for="visit_type" string="Field of work" attrs="{'invisible':[('visit_selection','!=','education')]}"/>
+                    <field name="visit_type" nolabel="1"/>
                     <field name="reasoning"/>
                 </group>
             </form>

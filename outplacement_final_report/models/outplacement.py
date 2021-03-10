@@ -81,7 +81,11 @@ class OutplacementGoalStep(models.Model):
 class OutplacementStudyVisit(models.Model):
     _name = "outplacement.study_visit"
 
+    visit_selection = fields.Selection(string="Select organizer",
+                                       selection=[
+                                           ('workplace','Workplace'),
+                                           ('education','Education organizer')
+                                       ], default="education")
     name = fields.Char(string="Name")
-    visit_type = fields.Char(string="Type")  # needs values
-    # should only be used if visit_type is "other".
-    reasoning = fields.Text(string="Reasoning")
+    visit_type = fields.Char(string="Type")
+    reasoning = fields.Text(string="Description")

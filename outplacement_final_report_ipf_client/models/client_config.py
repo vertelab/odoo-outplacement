@@ -255,12 +255,10 @@ class ClientConfig(models.Model):
     @api.model
     def post_request(self, outplacement):
         api = self.get_api()
-        if 'department_ref' in outplacement.department_id:
-            dep_id = outplacement.department_id.department_ref
-        else:
-            dep_id = outplacement.department_id.ka_ref
+        if outplacement.performing_operation_id:
+            perf_op_id = outplacement.performing_operation_id.ka_nr
         payload = {
-            "utforande_verksamhets_id": dep_id,
+            "utforande_verksamhets_id": perf_op_id,
             "avrops_id": outplacement.name,
             "genomforande_referens": outplacement.order_id.origin,
             "ordernummer": outplacement.order_id.name,

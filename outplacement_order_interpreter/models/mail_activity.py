@@ -273,10 +273,12 @@ class MailActivity(models.Model):
         """
         def change_tz(dt, tz='Europe/Stockholm'):
             # Tolkportalen gives times in swedish local time.
-            tz = pytz.timezone(tz)
-            dt = dt.replace(tzinfo=tz).astimezone(datetime.timezone.utc)
-            # Making it naive again so that Odoo likes it.
-            return dt.replace(tzinfo=None)
+            if dt:
+                tz = pytz.timezone(tz)
+                dt = dt.replace(tzinfo=tz).astimezone(datetime.timezone.utc)
+                # Making it naive again so that Odoo likes it.
+                return dt.replace(tzinfo=None)
+            return False
 
         if response.status_code not in (200,):
             _logger.warn('Failed to update interperator bookings with code: '
@@ -294,7 +296,7 @@ class MailActivity(models.Model):
         self.time_end = change_tz(datetime.datetime.strptime(
             data.get('tomDatumTid'),
             '%Y-%m-%dT%H:%M:%S'))
-        address_obj = data.get('adress')
+        address_obj = data.get('adress', {})
         self.street = address_obj.get('gatuadress')
         self.zip = address_obj.get('postnr')
         self.city = address_obj.get('ort')

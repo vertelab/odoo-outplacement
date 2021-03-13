@@ -23,7 +23,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
-from datetime import date
+from datetime import datetime, date, timedelta
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -43,8 +43,22 @@ class Outplacement(models.Model):
     task_count = fields.Integer(
         compute='_compute_task_count', string="Task Count")
 
+    def date_by_adding_business_days(self, from_date, add_days):
+        business_days_to_add = add_days
+        current_date = from_date
+        while business_days_to_add > 0:
+            current_date += datetime.timedelta(days=1)
+            weekday = current_date.weekday()
+            if weekday >= 5:
+                continue
+            business_days_to_add -= 1
+        return current_date
+
     @api.one
     def send_gp_to_bar(self):
+        if self.date_by_adding_business_days(self.order_start_date, 16) > datetime.today():
+            raise Warning(_("You are not allowed to send GP for the first 16 work days"
+                            "since order start"))
         client = self.env['ipf.completion_report.client.config'].search(
             [], limit=1)
         if not client:

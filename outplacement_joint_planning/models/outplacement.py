@@ -47,7 +47,7 @@ class Outplacement(models.Model):
         business_days_to_add = add_days
         current_date = from_date
         while business_days_to_add > 0:
-            current_date += datetime.timedelta(days=1)
+            current_date += timedelta(days=1)
             weekday = current_date.weekday()
             if weekday >= 5:
                 continue

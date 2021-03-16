@@ -33,12 +33,10 @@ class Users(models.Model):
     def _update_last_login(self):
         # Despite model decorator, this function is executed on a user record
         try:
-            # Servicedesk
             # Hantera Ekonomi
             # Hantera Organisation
-            # Hantera Anställda
+            # Servicedesk
             xml_ids = (
-                'group_dafa_employees_read',
                 'group_dafa_admin_accounting_read',
                 'group_dafa_org_admin_read',
                 '1_line_support')

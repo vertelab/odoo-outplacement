@@ -23,7 +23,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
-from datetime import datetime, date, timedelta
+from datetime import date, timedelta
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -56,7 +56,7 @@ class Outplacement(models.Model):
 
     @api.one
     def send_gp_to_bar(self):
-        if self.date_by_adding_business_days(self.order_start_date, 16) > datetime.today():
+        if self.date_by_adding_business_days(self.order_start_date, 16) > date.today():
             raise Warning(_("You are not allowed to send GP for the first 16 work days"
                             "since order start"))
         client = self.env['ipf.completion_report.client.config'].search(

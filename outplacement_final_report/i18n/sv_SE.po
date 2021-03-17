@@ -213,7 +213,7 @@ msgstr "Namn"
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__obstacle_reason
 msgid "Obstacle Reason"
-msgstr ""
+msgstr "Hinder"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__other_motivation

@@ -57,7 +57,7 @@ class Outplacement(models.Model):
     @api.one
     def send_gp_to_bar(self):
         if self.date_by_adding_business_days(self.order_start_date, 16) > date.today():
-            raise Warning(_("You are not allowed to send GP for the first 16 work days"
+            raise ValidationError(_("You are not allowed to send GP for the first 16 work days"
                             "since order start"))
         client = self.env['ipf.completion_report.client.config'].search(
             [], limit=1)

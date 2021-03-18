@@ -259,7 +259,6 @@ class Outplacement(models.Model):
             "vat",
             "comment",
             "active",
-            "customer",
             "supplier",
             "employee",
             "function",

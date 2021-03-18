@@ -113,7 +113,7 @@ msgstr "Slutrapport"
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__send_date
 msgid "Final report send date"
-msgstr "Slutrapport skickad datum"
+msgstr "Slutrapport skickat datum"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__free_text
@@ -136,7 +136,7 @@ msgstr "Arbetsbeskrivning"
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__job_id
 msgid "Job title"
-msgstr "Job titel"
+msgstr "Jobbtitel"
 
 #. module: outplacement_final_report
 #: selection:outplacement,obstacle_reason:0
@@ -211,6 +211,32 @@ msgid "Name"
 msgstr "Namn"
 
 #. module: outplacement_final_report
+#: code:addons/outplacement_final_report/models/outplacement.py:111
+#: code:addons/outplacement_final_report/models/outplacement.py:117
+#, python-format
+msgid "Number of characters must not exceed 1000"
+msgstr "Antalet tecken får inte överskrida 1000"
+
+#. module: outplacement_final_report
+#: code:addons/outplacement_final_report/models/outplacement.py:60
+#: code:addons/outplacement_final_report/models/outplacement.py:66
+#, python-format
+msgid "Number of characters must not exceed 2000"
+msgstr "Antalet tecken får inte överskrida 2000"
+
+#. module: outplacement_final_report
+#: code:addons/outplacement_final_report/models/outplacement.py:72
+#, python-format
+msgid "Number of steps must not exceed 10, at least one step is required"
+msgstr "Antalet steg får inte överskrida 10, minst ett steg krävs"
+te
+#. module: outplacement_final_report
+#: code:addons/outplacement_final_report/models/outplacement.py:33
+#, python-format
+msgid "Number of study visits must not exceed 7"
+msgstr "Antalet studiebesök får inte överskrida 7"
+
+#. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__obstacle_reason
 msgid "Obstacle Reason"
 msgstr "Hinder"
@@ -230,17 +256,17 @@ msgstr "Deltagare"
 #. module: outplacement_final_report
 #: model:ir.actions.act_window,name:outplacement_final_report.outplacement_goal_action_window
 msgid "Outplacement goal"
-msgstr "Deltagare mål"
+msgstr "Deltagarens mål"
 
 #. module: outplacement_final_report
 #: model:ir.actions.act_window,name:outplacement_final_report.outplacement_goal_step_action_window
 msgid "Outplacement goal step"
-msgstr "Deltagare mål steg"
+msgstr "Deltagarens delmål"
 
 #. module: outplacement_final_report
 #: model:ir.actions.act_window,name:outplacement_final_report.outplacement_study_visit_action_window
 msgid "Outplacement study visit"
-msgstr "Deltagare studiebesök"
+msgstr "Deltagarens studiebesök"
 
 #. module: outplacement_final_report
 #: selection:outplacement,obstacle_reason:0
@@ -338,3 +364,4 @@ msgstr ""
 #: selection:outplacement.goal.step,complementing_effort_type:0
 msgid "Översättning av betyg"
 msgstr ""
+

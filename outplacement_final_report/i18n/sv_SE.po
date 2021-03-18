@@ -229,7 +229,7 @@ msgstr "Antalet tecken får inte överskrida 2000"
 #, python-format
 msgid "Number of steps must not exceed 10, at least one step is required"
 msgstr "Antalet steg får inte överskrida 10, minst ett steg krävs"
-te
+
 #. module: outplacement_final_report
 #: code:addons/outplacement_final_report/models/outplacement.py:33
 #, python-format

@@ -407,7 +407,7 @@ class ClientConfig(models.Model):
             payload['innehall'].append({
                 'aktivitets_id': planned.activity_id,
                 'aktivitets_namn': (task.activity_name if task else
-                                    planned.activity_name),
+                                    planned.name),
                 'beskrivning': task.description if task else '',
             })
         for study_visit in outplacement.study_visit_ids:

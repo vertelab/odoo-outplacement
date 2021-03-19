@@ -265,7 +265,7 @@ class ClientConfig(models.Model):
             "personnr": outplacement.partner_id.company_registry,
             "unikt_id": outplacement.uniq_ref,
             "inskickad_datum": str(outplacement.jp_sent_date),
-            "rapportering_datum": outplacement.report_date,
+            "rapportering_datum": str(outplacement.report_date),
             "status": outplacement.stage_id.sequence,
             "sent_inskickad": outplacement.late,
             "innehall": [],  # filled with data below.
@@ -334,8 +334,8 @@ class ClientConfig(models.Model):
                     "typ": step_id.step_type,
                     "namn": step_id.name if step_id.name else "",
                     "niva": step_id.level if step_id.level else "",
-                    "startdatum": step_id.start_date,
-                    "slutdatum": step_id.end_date
+                    "startdatum": str(step_id.start_date),
+                    "slutdatum": str(step_id.end_date)
                 }
                 if step_id.step_type == "fitting complementing efforts":
                     step["kompletterande_insats"] = {
@@ -389,8 +389,8 @@ class ClientConfig(models.Model):
                     "typ": step_id.step_type,
                     "namn": step_id.name if step_id.name else "",
                     "niva": step_id.level if step_id.level else "",
-                    "startdatum": step_id.start_date,
-                    "slutdatum": step_id.end_date
+                    "startdatum": str(step_id.start_date),
+                    "slutdatum": str(step_id.end_date)
                 }
                 if step_id.step_type == "fitting complementing efforts":
                     step["kompletterande_insats"] = {

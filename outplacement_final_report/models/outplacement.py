@@ -12,13 +12,11 @@ class Outplacement(models.Model):
 
     study_visit_ids = fields.Many2many(comodel_name="outplacement.study_visit")
     
-    obstacle_reason = fields.Selection([
-        ('loan', 'Kan inte ta studielån'), 
-        ('sickness', 'På grund utav sjukdom'), 
-        ('economy', 'På grund utav ekonomisk situation'), 
-        ('other', 'Annat')
+    completing_information = fields.Selection(string="Completing information",[
+        ('Information has been communicated', 'Information har kommunicerats'), 
+        ('Information has not been communicated', 'Information har inte kommuncerats'), 
+        ('Information missing', 'Information saknas'), 
         ])
-    obstacle_motivation = fields.Text(string="Motivation")
     
     send_date = fields.Datetime(string="Final report send date")
     report_date = fields.Datetime(string="Reporting date")

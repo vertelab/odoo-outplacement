@@ -7,8 +7,6 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Final report" name="final_report">
                     <group>
-                        <field name="obstacle_reason"/>
-                        <field name="obstacle_motivation"/>
                         <field name="main_goal_id"/>
                         <field name="alternative_goal_id"/>
                         <field name="report_date"/>
@@ -20,6 +18,10 @@
                                 <field name="reasoning"/>
                             </tree>
                         </field>
+                        Is there completing information for potential needs, 
+                        limitations or conditions to seek education or employment 
+                        that need to be communicated with Arbetsförmedlingen?
+                        <field name="completing_information"/>
                     </group>
                 </page>
             </xpath>

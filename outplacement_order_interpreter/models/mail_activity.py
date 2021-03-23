@@ -30,7 +30,8 @@ class MailActivity(models.Model):
         readonly=True)
     interpreter_type = fields.Many2one(
         comodel_name='res.interpreter.type',
-        string='Interpreter Type',)
+        string='Interpreter Type',
+        domain=[('code', '!=', '1')])
     interpreter_remote_type = fields.Many2one(
         comodel_name='res.interpreter.remote_type',
         string='Interpreter Remote Type')

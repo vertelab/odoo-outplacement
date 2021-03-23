@@ -47,7 +47,7 @@ msgstr "Aktiviteter"
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Aktivitetsstadie"
 
 #. module: outplacement
 #: model_terms:ir.ui.view,arch_db:outplacement.outplacement_form_view
@@ -187,19 +187,19 @@ msgstr "HR-avdelning"
 #. module: outplacement
 #: model:ir.module.category,description:outplacement.module_category_outplacement
 msgid "Helps you manage your outplacements by tracking them, generating plannings, etc..."
-msgstr ""
+msgstr "Hjälper dig att hantera dina deltagare."
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__id
 #: model:ir.model.fields,field_description:outplacement.field_outplacement_stage__id
 #: model:ir.model.fields,field_description:outplacement.field_performing_operation__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: outplacement
 #: model:ir.model.fields,help:outplacement.field_outplacement__message_unread
 msgid "If checked new messages require your attention."
-msgstr "Om ikryssad nya meddelanden som kräver din uppmärksamhet"
+msgstr "Om ikryssad visar den nya meddelanden som kräver din uppmärksamhet"
 
 #. module: outplacement
 #: model:ir.model.fields,help:outplacement.field_outplacement__message_needaction
@@ -310,7 +310,7 @@ msgstr "Mötestyp"
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Meddelandeleveransfel"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__message_ids
@@ -339,23 +339,23 @@ msgstr "Namn"
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Deadline för nästa aktivitet"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Sammanfattning för nästa aktivitet"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Näsa aktivitetstyp"
 
 #. module: outplacement
 #: code:addons/outplacement/models/outplacement.py:214
 #, python-format
 msgid "No Subject"
-msgstr ""
+msgstr "Inget ämne"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__message_needaction_counter
@@ -385,7 +385,7 @@ msgstr "Antal olästa meddelanden"
 #. module: outplacement
 #: selection:outplacement,meeting_remote:0
 msgid "On Premise"
-msgstr "I person"
+msgstr "På plats"
 
 #. module: outplacement
 #: model:ir.actions.act_window,name:outplacement.outplacement_action

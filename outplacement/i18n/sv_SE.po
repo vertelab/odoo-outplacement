@@ -349,7 +349,7 @@ msgstr "Sammanfattning för nästa aktivitet"
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__activity_type_id
 msgid "Next Activity Type"
-msgstr "Näsa aktivitetstyp"
+msgstr "Nästa aktivitetstyp"
 
 #. module: outplacement
 #: code:addons/outplacement/models/outplacement.py:214
@@ -569,7 +569,7 @@ msgid "Status based on activities\n"
 "Overdue: Due date is already passed\n"
 "Today: Activity date is today\n"
 "Planned: Future activities."
-msgstr "Framtida aktiviteter"
+msgstr ""
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__partner_street

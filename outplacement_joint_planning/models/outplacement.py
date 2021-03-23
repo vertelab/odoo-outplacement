@@ -57,7 +57,7 @@ class Outplacement(models.Model):
     @api.one
     def send_gp_to_bar(self):
         if self.date_by_adding_business_days(self.service_start_date, 5) > date.today():
-            raise ValidationError(_("You are not allowed to send GP until the 6th working day"
+            raise ValidationError(_("You are not allowed to send GP until the 6th working day "
                             "since the service start date"))
         client = self.env['ipf.completion_report.client.config'].search(
             [], limit=1)

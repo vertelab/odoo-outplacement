@@ -18,9 +18,7 @@
                                 <field name="reasoning"/>
                             </tree>
                         </field>
-                        Is there completing information for potential needs, 
-                        limitations or conditions to seek education or employment 
-                        that need to be communicated with Arbetsförmedlingen?
+                        Is there completing information for potential needs, limitations or conditions to seek education or employment that need to be communicated with Arbetsförmedlingen?
                         <field name="completing_information"/>
                     </group>
                 </page>

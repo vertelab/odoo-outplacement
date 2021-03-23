@@ -12,12 +12,11 @@ class Outplacement(models.Model):
 
     study_visit_ids = fields.Many2many(comodel_name="outplacement.study_visit")
     
-    completing_information = fields.Selection(string="Completing information",[
-        ('Information has been communicated', 'Information har kommunicerats'), 
-        ('Information has not been communicated', 'Information har inte kommuncerats'), 
-        ('Information missing', 'Information saknas'), 
+    completing_information = fields.Selection(string="Completing information", selection=[
+        ('Information har kommunicerats', 'Information has been communicated'), 
+        ('Information har inte kommuncerats', 'Information has not been communicated'), 
+        ('Information saknas', 'Information missing'), 
         ])
-    
     send_date = fields.Datetime(string="Final report send date")
     report_date = fields.Datetime(string="Reporting date")
 

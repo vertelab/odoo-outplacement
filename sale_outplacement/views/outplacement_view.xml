@@ -9,15 +9,15 @@
                     <field name='management_team_id'/>
                 </field>
                 <group name="service" position="inside">
-                    <field name="create_date" group='base.group_no_one'/>
+                    <field name="create_date" groups="base.group_no_one"/>
                     <!--the order_start_date should normally the 11th working day after the create_date. It used to be the same date as the start date AFC-2002-->
-                    <field name="order_start_date" group='base.group_no_one'/>
+                    <field name="order_start_date" groups="base.group_no_one"/>
                     <!--the service_start_date is refered to as the first day the participant starts the service -->
                     <field name="service_start_date"/>
                     <!--the service_end_date is refered to as the last day the participant starts the service, 40 working days after service_start_date -->
                     <field name="service_end_date"/>
                     <!--the order_close_date is not used at this time, but it is is sent from BAR until further notice-->
-                    <field name="order_close_date" group='base.group_no_one'/>
+                    <field name="order_close_date" groups="base.group_no_one"/>
                     <field name="participitation_rate"/>
                     <!--Temporary solution until BÄR gives the right languages-->
                     <field name="temp_lang"

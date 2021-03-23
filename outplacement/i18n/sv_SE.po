@@ -426,7 +426,7 @@ msgstr "Samarbetspartner"
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__partner_name
 msgid "Partner Name"
-msgstr "Företagsnamn"
+msgstr "Deltagarnamn"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_res_partner__jobseeker_operation_id
@@ -539,7 +539,7 @@ msgstr "Personnummer"
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__sprakstod
 msgid "Sprakstod"
-msgstr ""
+msgstr "Språkstöd"
 
 #. module: outplacement
 #: model_terms:ir.ui.view,arch_db:outplacement.outplacement_filter_view
@@ -569,7 +569,7 @@ msgid "Status based on activities\n"
 "Overdue: Due date is already passed\n"
 "Today: Activity date is today\n"
 "Planned: Future activities."
-msgstr ""
+msgstr "Framtida aktiviteter"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__partner_street
@@ -651,7 +651,7 @@ msgstr "Användare"
 #. module: outplacement
 #: model:ir.model.fields,help:outplacement.field_performing_operation__ka_nr
 msgid "Utförande verksamhets-nummer"
-msgstr ""
+msgstr "Utförande verksamhetsnummer"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__website_message_ids

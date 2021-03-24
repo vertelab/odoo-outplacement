@@ -239,9 +239,9 @@ class ClientConfig(models.Model):
                 "typ": "studieinriktning",
                 "motivering": "fritext"
             }],
-            "hinder": {
-                "orsak_typ": "Annat",
-                "motivering": "Fritext, används vid orsak_typ Annat"
+            "kompletterande_information": {
+                "fraga": "komm_info",
+                "svar": "komm_info_03"
             }
         }
 
@@ -272,6 +272,10 @@ class ClientConfig(models.Model):
             "avbrott": outplacement.interruption,
             "ofullstandig": outplacement.incomplete,
             "studiebesok": [],  # filled with data below
+            "kompletterande_information": {
+                "fraga": "komm_info",
+                "svar": outplacement.completing_information
+            }
         }
         if outplacement.partner_id:
             payload["deltagare"] = {
@@ -287,11 +291,6 @@ class ClientConfig(models.Model):
             if outplacement.employee_id.user_id:
                 payload["ansvarig_handledare"]["signatur"] = \
                     outplacement.employee_id.user_id.login
-        if outplacement.obstacle_reason:
-            payload["hinder"] = {
-                "orsak_typ": outplacement.obstacle_reason,
-                "motivering": outplacement.obstacle_motivation 
-            }
         goal_id = outplacement.main_goal_id
         if goal_id:
             payload["huvudmal"] = {

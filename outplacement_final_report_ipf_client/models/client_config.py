@@ -181,8 +181,8 @@ class ClientConfig(models.Model):
                 ],
                 "steg": [
                     {
-                    "typ": "Studera och reguljär utbildning", 
-                        # Studera och reguljär utbildning 
+                    "typ": "Studera reguljär utbildning", 
+                        # Studera reguljär utbildning 
                         #Lämpliga kompletterande insatser
                         # Annat
                     "namn": "",
@@ -227,7 +227,7 @@ class ClientConfig(models.Model):
                 "arbetsuppgifter_beskrivning": "Lagar mat",
                 "val_av_alternativt_mal_motivering": "Matchar deltagarens intressen",
                 "steg": [{
-                    "typ": "Studera",
+                    "typ": "Studera reguljär utbildning",
                     "namn": "",
                     "niva": "",
                     "startdatum": "2020-12-22",

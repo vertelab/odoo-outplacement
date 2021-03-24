@@ -78,7 +78,7 @@ class OutplacementGoalStep(models.Model):
     _name = "outplacement.goal.step"
 
     step_type = fields.Selection(selection=[
-        ('Studera och reguljär utbildning', 'study'),
+        ('Studera reguljär utbildning', 'study'),
         ('Lämpliga kompletterande insatser', 'fitting complementing efforts'),
         ('Annat', 'Other')], string="Type")  
     complementing_effort_type = fields.Selection(

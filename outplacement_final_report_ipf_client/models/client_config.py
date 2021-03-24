@@ -111,7 +111,7 @@ class ClientConfig(models.Model):
             "avrops_id": "A000000428847",
             "genomforande_referens": "100003568",
             "ordernummer": "MEET-1",
-            "personnr": "199910103028",
+            "personnummer": "199910103028",
             "unikt_id": "1421",
             "inskickad_datum": "2020-12-22",
             "rapportering_datum": "2020-12-22",
@@ -225,7 +225,11 @@ class ClientConfig(models.Model):
                 "yrkesomrade": "Hotell & Restaurang",
                 "yrke": "Kock",
                 "arbetsuppgifter_beskrivning": "Lagar mat",
-                "val_av_alternativt_mal_motivering": "Matchar deltagarens intressen",
+                "val_av_alternativt_mal_motivering": [
+                    {
+                        "typ": "Matchar deltagarens intressen"
+                    }
+                ],
                 "steg": [{
                     "typ": "Studera reguljär utbildning",
                     "namn": "",

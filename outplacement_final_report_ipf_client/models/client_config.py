@@ -262,11 +262,11 @@ class ClientConfig(models.Model):
         if outplacement.performing_operation_id:
             perf_op_id = outplacement.performing_operation_id.ka_nr
         payload = {
-            "utforande_verksamhets_id": perf_op_id,
+            "utforande_verksamhets_id": str(perf_op_id),
             "avrops_id": outplacement.name,
             "genomforande_referens": outplacement.order_id.origin,
             "ordernummer": outplacement.order_id.name,
-            "personnr": outplacement.partner_id.social_sec_nr,
+            "personnummer": outplacement.partner_id.social_sec_nr,
             "unikt_id": outplacement.uniq_ref,
             "inskickad_datum": str(outplacement.jp_sent_date),
             "rapportering_datum": str(outplacement.report_date),

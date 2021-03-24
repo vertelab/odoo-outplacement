@@ -7,15 +7,29 @@
         <field name="arch" type="xml">
             <field name="summary" position="after">
                 <field name='interpreter_type_code' invisible='1'/>
-                <field name="interpreter_type" attrs="{
-                        'readonly': [('interpreter_booking_ref', '!=', False)],
-                        'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
-                        'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
-                <field name="interpreter_remote_type" attrs="{
+                <field name="interpreter_type"
+                       attrs="{
+                            'readonly': [('interpreter_booking_ref', '!=', False)],
+                            'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
+                            'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                        options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                <field name="interpreter_remote_type" 
+                       attrs="{
                             'readonly': [('interpreter_booking_ref', '!=', False)],
                             'required': [('interpreter_type_code', '=', '2'),
                                          ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
-                            'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+                            'invisible': ['|', 
+                                          ('interpreter_type_code', '!=', '2'),
+                                          ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                        options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                <field name="interpreter_receiver"
+                       attrs="{
+                            'invisible': ['|',
+                                ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d),
+                                ('interpreter_type_code', '!=', '3'),],
+                            'required': [('interpreter_type_code', '=', '3'),
+                                         ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                        options="{'no_quick_create': True, 'no_create_edit' : True}"/>
                 <label for="street" string="Address" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)],}"/>
                 <div class="o_address_format" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}">
@@ -56,15 +70,19 @@
                        'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
             </field>
             <field name="user_id" position="after">
-                <field name="interpreter_gender_preference" attrs="{
-                    'readonly': [('interpreter_booking_ref', '!=', False)],
-                    'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
-                    'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+                <field name="interpreter_gender_preference"
+                       attrs="{
+                           'readonly': [('interpreter_booking_ref', '!=', False)],
+                           'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
+                           'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                        options="{'no_quick_create': True, 'no_create_edit' : True}"/>
 
-                <field name="interpreter_language" attrs="{
-                    'readonly': [('interpreter_booking_ref', '!=', False)],
-                    'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
-                    'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+                <field name="interpreter_language"
+                       attrs="{
+                            'readonly': [('interpreter_booking_ref', '!=', False)],
+                            'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
+                            'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                        options="{'no_quick_create': True, 'no_create_edit' : True}"/>
                 <field name="interpreter_name" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
                 <field name="interpreter_phone" readonly="1" attrs="{

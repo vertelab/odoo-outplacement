@@ -69,6 +69,6 @@ msgstr ""
 #. module: outplacement_joint_planning
 #: code:addons/outplacement_joint_planning/models/outplacement.py:60
 #, python-format
-msgid "You are not allowed to send GP for the first 16 work dayssince order start"
-msgstr "Du kan inte skicka in GP under de första 16 arbetsdagarna."
+msgid "You are not allowed to send GP until the 6th working day since the service start date"
+msgstr "Du kan inte skicka in GP förrän efter den 6e arbetsdagen sedan tjänstens startdatum."
 

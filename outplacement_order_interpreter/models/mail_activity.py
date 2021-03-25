@@ -41,6 +41,7 @@ class MailActivity(models.Model):
         default=lambda self: self._get_default_task_value('start_date'))
     time_end = fields.Datetime(string='End Time',
                                default=lambda self: self._get_end_time())
+    interpreter_receiver = fields.Char(string='Interpreter Receiver')
     street = fields.Char(string='Street',
                          default=lambda self: self._get_address('street'))
     street2 = fields.Char(string='Street2',

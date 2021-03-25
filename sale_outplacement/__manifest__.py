@@ -22,13 +22,17 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Sale outplacement',
-    'version': '12.0.1.0.1',
+    'version': '12.0.1.0.2',
     'category': 'Outplacement',
     'description': """Receives a suborder and automatically create sale.order 
-    and outplacement.outplacement objects.""",
-    'author': "N-development",
+    and outplacement.outplacement objects.\n
+    v 12.0.1.0.2 Updated order of Service Date fields AFC-2002 \n
+    """,
+    'maintainer': "Arbetsformedlingen",
+    'author': "Vertel AB",
+    'contributor': "Vertel, N-dev",
     'license': 'AGPL-3',
-    'website': 'https://www.n-development.com',
+    'website': 'https://www.vertel.se',
     'depends': [
         'outplacement',
         'sale',

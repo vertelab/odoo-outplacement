@@ -266,7 +266,7 @@ class ClientConfig(models.Model):
             "avrops_id": outplacement.name,
             "genomforande_referens": outplacement.order_id.origin,
             "ordernummer": outplacement.order_id.name,
-            "personnummer": outplacement.partner_id.social_sec_nr,
+            "personnummer": outplacement.partner_id.social_sec_nr.replace("-", ""),
             "unikt_id": outplacement.uniq_ref,
             "inskickad_datum": str(outplacement.jp_sent_date),
             "rapportering_datum": str(outplacement.report_date),

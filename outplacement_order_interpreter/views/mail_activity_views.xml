@@ -13,12 +13,12 @@
                             'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
                             'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
                         options="{'no_quick_create': True, 'no_create_edit' : True}"/>
-                <field name="interpreter_remote_type" 
+                <field name="interpreter_remote_type"
                        attrs="{
                             'readonly': [('interpreter_booking_ref', '!=', False)],
                             'required': [('interpreter_type_code', '=', '2'),
                                          ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
-                            'invisible': ['|', 
+                            'invisible': ['|',
                                           ('interpreter_type_code', '!=', '2'),
                                           ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
                         options="{'no_quick_create': True, 'no_create_edit' : True}"/>

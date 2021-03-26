@@ -60,6 +60,8 @@ class MailActivity(models.Model):
         default=lambda self: self._get_address('country_id'))
     interpreter_booking_ref = fields.Char(string='Booking Reference',
                                           readonly=True)
+    interpreter_ref = fields.Char(string='Interpreter reference',
+                                  readonly=True)
     interpreter_booking_status = fields.Char(string='Booking Status',
                                              readonly=True,
                                              compute='_compute_booking_status')

@@ -22,13 +22,15 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Order Interpreter',
-    'version': '12.0.1.0.5',
+    'version': '12.0.1.2.0',
     'category': 'Outplacement',
     'description': """This module adds interpreter-functionality \n
     v12.0.0.2 changed the languagecodes from a full list to Tolkportalens list. AFC-1586 \n
     v12.0.1.0.3 Added Category Outplacement \n
     v12.0.1.0.3 Added fields to Outplacement view \n
     v12.0.1.0.5 Hardening of interpreter-booking-parsing \n
+    v12.0.1.1.0 Made some fields obligatory.\n
+    v12.0.1.2.0 Added field adressat, removed edit and create from some fields.\n
     """,
     'author': "N-development",
     'license': 'AGPL-3',

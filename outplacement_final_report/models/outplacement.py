@@ -75,23 +75,23 @@ class OutplacementGoalStep(models.Model):
     _name = "outplacement.goal.step"
 
     step_type = fields.Selection(selection=[
-        ('study', 'Studera och reguljär utbildning'),
-        ('fitting complementing efforts', 'Lämpliga kompletterande insatser'),
-        ('other', 'Other')], string="Type")  
+        ('Studera reguljär utbildning', 'study'),
+        ('Lämpliga kompletterande insatser', 'fitting complementing efforts'),
+        ('Annat', 'Other')], string="Type")  
     complementing_effort_type = fields.Selection(
         string="Complementing effort type", selection=[
-            ('study motivating effort', 'Studiemotiverande insats'),
-            ('prepare for work', 'Rusta inför arbete'),
-            ('match to work', 'Matcha till arbete'),
-            ('evaluate ability to work', 'Utreda arbetsförmågan'),
-            ('partake in education/internship/validation',
-             'Delta i en arbetsmarknadsutbildning/Praktik/Validering'),
-            ('Swedish studies in chosen field',
-             'Svenskastudier inom valt område'),
-            ('translation of grades', 'Översättning av betyg'),
-            ('evaluation and complementation of foreign education',
-             'Bedömning och komplettering av utländsk utbildning'),
-            ('other', 'Other')
+            ('Studiemotiverande insats', 'study motivating effort'),
+            ('Rusta inför arbete', 'prepare for work'),
+            ('Matcha till arbete', 'match to work'),
+            ('Utreda arbetsförmågan', 'evaluate ability to work'),
+            ('Delta i en arbetsmarknadsutbildning/Praktik/Validering',
+             'partake in education/internship/validation'),
+            ('Svenskastudier inom valt område',
+             'Swedish studies in chosen field'),
+            ('Översättning av betyg', 'translation of grades'),
+            ('Bedömning och komplettering av utländsk utbildning',
+            'evaluation and complementation of foreign education'),
+            ('Annat', 'Other')
             ])
     complementing_effort_description = fields.Char(
         string="Complementing effort")

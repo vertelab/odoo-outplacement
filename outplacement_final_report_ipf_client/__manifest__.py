@@ -2,7 +2,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'IPF Final Report Client',
-    'version': '12.0.0.1.0',
+    'version': '12.0.0.1.1',
     'category': 'Outplacement',
     'description': """This module adds the client config for final report.""",
 

@@ -30,7 +30,9 @@ class MailActivity(models.Model):
         readonly=True)
     interpreter_type = fields.Many2one(
         comodel_name='res.interpreter.type',
-        string='Interpreter Type',)
+        string='Interpreter Type',
+        domain=[('code', '!=', '1')])
+    interpreter_type_code = fields.Char(related='interpreter_type.code')
     interpreter_remote_type = fields.Many2one(
         comodel_name='res.interpreter.remote_type',
         string='Interpreter Remote Type')
@@ -39,6 +41,7 @@ class MailActivity(models.Model):
         default=lambda self: self._get_default_task_value('start_date'))
     time_end = fields.Datetime(string='End Time',
                                default=lambda self: self._get_end_time())
+    interpreter_receiver = fields.Char(string='Interpreter Receiver')
     street = fields.Char(string='Street',
                          default=lambda self: self._get_address('street'))
     street2 = fields.Char(string='Street2',
@@ -57,6 +60,8 @@ class MailActivity(models.Model):
         default=lambda self: self._get_address('country_id'))
     interpreter_booking_ref = fields.Char(string='Booking Reference',
                                           readonly=True)
+    interpreter_ref = fields.Char(string='Interpreter reference',
+                                  readonly=True)
     interpreter_booking_status = fields.Char(string='Booking Status',
                                              readonly=True,
                                              compute='_compute_booking_status')

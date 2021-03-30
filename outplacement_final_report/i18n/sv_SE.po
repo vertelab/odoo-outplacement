@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0-20210129\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-23 16:52+0000\n"
-"PO-Revision-Date: 2021-03-23 17:53+0100\n"
+"POT-Creation-Date: 2021-03-24 09:10+0000\n"
+"PO-Revision-Date: 2021-03-24 10:44+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -65,11 +65,6 @@ msgstr "Skapad av"
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_study_visit__create_date
 msgid "Created on"
 msgstr "Skapad den"
-
-#. module: outplacement_final_report
-#: selection:outplacement.goal.step,complementing_effort_type:0
-msgid "Delta i en arbetsmarknadsutbildning/Praktik/Validering"
-msgstr ""
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_study_visit__reasoning
@@ -185,11 +180,6 @@ msgid "Level"
 msgstr "Nivå"
 
 #. module: outplacement_final_report
-#: selection:outplacement.goal.step,step_type:0
-msgid "Lämpliga kompletterande insatser"
-msgstr ""
-
-#. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__main_goal_id
 msgid "Main Goal"
 msgstr "Huvudmål"
@@ -198,11 +188,6 @@ msgstr "Huvudmål"
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__market_demand
 msgid "Market demand"
 msgstr "Efterfrågan på arbetsmarknaden"
-
-#. module: outplacement_final_report
-#: selection:outplacement.goal.step,complementing_effort_type:0
-msgid "Matcha till arbete"
-msgstr ""
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__matches_ability
@@ -248,6 +233,7 @@ msgstr "Antalet studiebesök får inte överskrida 7"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__other_motivation
+#: selection:outplacement,obstacle_reason:0
 #: selection:outplacement.goal.step,complementing_effort_type:0
 #: selection:outplacement.goal.step,step_type:0
 msgid "Other"
@@ -279,11 +265,6 @@ msgid "Reporting date"
 msgstr "Rapporteringsdatum"
 
 #. module: outplacement_final_report
-#: selection:outplacement.goal.step,complementing_effort_type:0
-msgid "Rusta inför arbete"
-msgstr ""
-
-#. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_study_visit__visit_selection
 msgid "Select organizer"
 msgstr "Välj anordnare"
@@ -299,16 +280,6 @@ msgid "Step"
 msgstr "Steg"
 
 #. module: outplacement_final_report
-#: selection:outplacement.goal.step,step_type:0
-msgid "Studera och reguljär utbildning"
-msgstr ""
-
-#. module: outplacement_final_report
-#: selection:outplacement.goal.step,complementing_effort_type:0
-msgid "Studiemotiverande insats"
-msgstr ""
-
-#. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__study_visit_ids
 msgid "Study Visit"
 msgstr "Studiebesök"
@@ -320,8 +291,8 @@ msgstr "Studiebesök"
 
 #. module: outplacement_final_report
 #: selection:outplacement.goal.step,complementing_effort_type:0
-msgid "Svenskastudier inom valt område"
-msgstr ""
+msgid "Swedish studies in chosen field"
+msgstr "Svenskastudier inom valt område"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal_step__step_type
@@ -330,15 +301,40 @@ msgid "Type"
 msgstr "Typ"
 
 #. module: outplacement_final_report
-#: selection:outplacement.goal.step,complementing_effort_type:0
-msgid "Utreda arbetsförmågan"
-msgstr ""
-
-#. module: outplacement_final_report
 #: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_outplacement_study_visit_form
 #: selection:outplacement.study_visit,visit_selection:0
 msgid "Workplace"
 msgstr "Arbetsplats"
+
+#. module: outplacement_final_report
+#: selection:outplacement,obstacle_reason:0
+msgid "economy"
+msgstr "På grund utav ekonomisk situation"
+
+#. module: outplacement_final_report
+#: selection:outplacement.goal.step,complementing_effort_type:0
+msgid "evaluate ability to work"
+msgstr "Utreda arbetsförmågan"
+
+#. module: outplacement_final_report
+#: selection:outplacement.goal.step,complementing_effort_type:0
+msgid "evaluation and complementation of foreign education"
+msgstr "Bedömning och komplettering av utländsk utbildning"
+
+#. module: outplacement_final_report
+#: selection:outplacement.goal.step,step_type:0
+msgid "fitting complementing efforts"
+msgstr "Lämpliga kompletterande insatser"
+
+#. module: outplacement_final_report
+#: selection:outplacement,obstacle_reason:0
+msgid "loan"
+msgstr "Kan inte ta studielån"
+
+#. module: outplacement_final_report
+#: selection:outplacement.goal.step,complementing_effort_type:0
+msgid "match to work"
+msgstr "Matcha till arbete"
 
 #. module: outplacement_final_report
 #: model:ir.model,name:outplacement_final_report.model_outplacement_goal
@@ -357,5 +353,30 @@ msgstr ""
 
 #. module: outplacement_final_report
 #: selection:outplacement.goal.step,complementing_effort_type:0
-msgid "Översättning av betyg"
-msgstr ""
+msgid "partake in education/internship/validation"
+msgstr "Delta i en arbetsmarknadsutbildning/Praktik/Validering"
+
+#. module: outplacement_final_report
+#: selection:outplacement.goal.step,complementing_effort_type:0
+msgid "prepare for work"
+msgstr "Rusta inför arbete"
+
+#. module: outplacement_final_report
+#: selection:outplacement,obstacle_reason:0
+msgid "sickness"
+msgstr "På grund utav sjukdom"
+
+#. module: outplacement_final_report
+#: selection:outplacement.goal.step,step_type:0
+msgid "study"
+msgstr "Studera reguljär utbildning"
+
+#. module: outplacement_final_report
+#: selection:outplacement.goal.step,complementing_effort_type:0
+msgid "study motivating effort"
+msgstr "Studiemotiverande insats"
+
+#. module: outplacement_final_report
+#: selection:outplacement.goal.step,complementing_effort_type:0
+msgid "translation of grades"
+msgstr "Översättning av betyg"

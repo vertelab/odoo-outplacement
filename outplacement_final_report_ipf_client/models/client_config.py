@@ -111,7 +111,7 @@ class ClientConfig(models.Model):
             "avrops_id": "A000000428847",
             "genomforande_referens": "100003568",
             "ordernummer": "MEET-1",
-            "personnr": "199910103028",
+            "personnummer": "199910103028",
             "unikt_id": "1421",
             "inskickad_datum": "2020-12-22",
             "rapportering_datum": "2020-12-22",
@@ -181,8 +181,8 @@ class ClientConfig(models.Model):
                 ],
                 "steg": [
                     {
-                    "typ": "Studera och reguljär utbildning", 
-                        # Studera och reguljär utbildning 
+                    "typ": "Studera reguljär utbildning", 
+                        # Studera reguljär utbildning 
                         #Lämpliga kompletterande insatser
                         # Annat
                     "namn": "",
@@ -225,9 +225,13 @@ class ClientConfig(models.Model):
                 "yrkesomrade": "Hotell & Restaurang",
                 "yrke": "Kock",
                 "arbetsuppgifter_beskrivning": "Lagar mat",
-                "val_av_alternativt_mal_motivering": "Matchar deltagarens intressen",
+                "val_av_alternativt_mal_motivering": [
+                    {
+                        "typ": "Matchar deltagarens intressen"
+                    }
+                ],
                 "steg": [{
-                    "typ": "Studera",
+                    "typ": "Studera reguljär utbildning",
                     "namn": "",
                     "niva": "",
                     "startdatum": "2020-12-22",
@@ -258,19 +262,19 @@ class ClientConfig(models.Model):
         if outplacement.performing_operation_id:
             perf_op_id = outplacement.performing_operation_id.ka_nr
         payload = {
-            "utforande_verksamhets_id": perf_op_id,
+            "utforande_verksamhets_id": str(perf_op_id),
             "avrops_id": outplacement.name,
             "genomforande_referens": outplacement.order_id.origin,
             "ordernummer": outplacement.order_id.name,
-            "personnr": outplacement.partner_id.company_registry,
+            "personnummer": outplacement.partner_id.social_sec_nr.replace("-", ""),
             "unikt_id": outplacement.uniq_ref,
             "inskickad_datum": str(outplacement.jp_sent_date),
             "rapportering_datum": str(outplacement.report_date),
             "status": outplacement.stage_id.sequence,
-            "sent_inskickad": outplacement.late,
+            "sent_inskickad": "true" if outplacement.late else "false",
             "innehall": [],  # filled with data below.
-            "avbrott": outplacement.interruption,
-            "ofullstandig": outplacement.incomplete,
+            "avbrott": "true" if outplacement.interruption else "false",
+            "ofullstandig": "true" if outplacement.incomplete else "false",
             "studiebesok": [],  # filled with data below
             "kompletterande_information": {
                 "fraga": "komm_info",
@@ -300,9 +304,9 @@ class ClientConfig(models.Model):
                 "steg": []
             }
             if goal_id.field_of_work_id:
-                payload["huvudmal"]["yrkesomrade"] = goal_id.field_of_work_id
+                payload["huvudmal"]["yrkesomrade"] = goal_id.field_of_work_id.name
             if goal_id.job_id:
-                payload["huvudmal"]["yrke"] = goal_id.job_id
+                payload["huvudmal"]["yrke"] = goal_id.job_id.name
             if goal_id.matches_interest:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
                     "typ":'Matchar deltagarens intressen'
@@ -353,10 +357,10 @@ class ClientConfig(models.Model):
                 "steg": []
             }
             if goal_id.field_of_work_id:
-                payload["alternativt_mal"]["yrkesomrade"] = goal_id.field_of_work_id
+                payload["alternativt_mal"]["yrkesomrade"] = goal_id.field_of_work_id.name
 
             if goal_id.job_id:
-                payload["alternativt_mal"]["yrke"] = goal_id.job_id
+                payload["alternativt_mal"]["yrke"] = goal_id.job_id.name
 
             if goal_id.matches_interest:
                 payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({

@@ -90,6 +90,8 @@
                         options="{'no_quick_create': True, 'no_create_edit' : True}"/>
                 <field name="interpreter_name" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+                <field name="interpreter_ref" readonly="1" attrs="{
+                        'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
                 <field name="interpreter_phone" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
                 <field name="interpreter_gender" readonly="1" attrs="{

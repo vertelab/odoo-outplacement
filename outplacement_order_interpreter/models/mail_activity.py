@@ -60,6 +60,8 @@ class MailActivity(models.Model):
         default=lambda self: self._get_address('country_id'))
     interpreter_booking_ref = fields.Char(string='Booking Reference',
                                           readonly=True)
+    interpreter_ref = fields.Char(string='Interpreter reference',
+                                  readonly=True)
     interpreter_booking_status = fields.Char(string='Booking Status',
                                              readonly=True,
                                              compute='_compute_booking_status')
@@ -217,19 +219,24 @@ class MailActivity(models.Model):
         start = record.time_start.replace(second=0)
         end = record.time_end.replace(second=0)
         if start <= datetime.datetime.now():
-            raise UserError('Start time cannot be before now.')
+            raise UserError(_('Start time cannot be before now.'))
         if start >= end:
             raise UserError(_('Endtime is before start time'))
         time_diff = end - start
-        rules = {'3': (60, 'onsite'), '2': (30, 'phone')}
-        current_rule = rules[record.interpreter_type[0].code][0]
-        if not time_diff >= datetime.timedelta(minutes=current_rule):
-            msg = 'This type of booking needs to be atleast {current_rule} '\
-                  'minutes long.'
-            raise UserError(msg.format(current_rule=current_rule))
-        if time_diff.seconds % (30*60):
-            raise UserError(_('Booking has to be an even 30 minutes '
-                              'segment.'))
+        # {rule_id: (minimum_minutes, increment_size, name)}
+        rules = {'3': {'min': 60, 'increment': 30, 'name': 'onsite'},
+                 '2': {'min': 30, 'increment': 15, 'name': 'phone'}}
+        meeting = rules.get(record.interpreter_type[0].code, {})
+        if not meeting:
+            # No rule for this meeting type
+            return True
+        if not time_diff >= datetime.timedelta(minutes=meeting['min']):
+            raise UserError(_('This type of booking needs to be atleast {min} '
+                              'minutes long.').format(min=meeting['min']))
+        increment = meeting['increment']
+        if time_diff.seconds % (increment*60):
+            raise UserError(_('Booking has to be an even '
+                              '{} minutes segment.').format(increment))
         return True
 
     def strip_seconds(self, dt):

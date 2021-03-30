@@ -31,6 +31,7 @@
     v12.0.1.0.5 Hardening of interpreter-booking-parsing \n
     v12.0.1.1.0 Made some fields obligatory.\n
     v12.0.1.2.0 Added field adressat, removed edit and create from some fields.\n
+    v12.0.1.2.0 Changes to validation rules.
     """,
     'author': "N-development",
     'license': 'AGPL-3',

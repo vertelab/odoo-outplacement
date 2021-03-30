@@ -108,7 +108,6 @@ class ClientConfig(models.Model):
     def test_post_report(self):
         payload = {
             "utforande_verksamhets_id": "10011119",
-            "avrops_id": "A000000428847",
             "genomforande_referens": "100003568",
             "ordernummer": "MEET-1",
             "personnummer": "199910103028",
@@ -263,11 +262,10 @@ class ClientConfig(models.Model):
             perf_op_id = outplacement.performing_operation_id.ka_nr
         payload = {
             "utforande_verksamhets_id": str(perf_op_id),
-            "avrops_id": outplacement.name,
             "genomforande_referens": outplacement.order_id.origin,
             "ordernummer": outplacement.order_id.name,
             "personnummer": outplacement.partner_id.social_sec_nr.replace("-", ""),
-            "unikt_id": outplacement.uniq_ref,
+            "unikt_id": str(uuid.uuid4()),
             "inskickad_datum": str(outplacement.jp_sent_date),
             "rapportering_datum": str(outplacement.report_date),
             "status": outplacement.stage_id.sequence,

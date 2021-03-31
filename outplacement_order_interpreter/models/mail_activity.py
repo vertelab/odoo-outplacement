@@ -285,7 +285,7 @@ class MailActivity(models.Model):
             # Tolkportalen gives times in swedish local time.
             if dt:
                 tz = pytz.timezone(tz)
-                dt = dt.replace(tzinfo=tz).astimezone(datetime.timezone.utc)
+                dt = tz.localize(dt).astimezone(datetime.timezone.utc)
                 # Making it naive again so that Odoo likes it.
                 return dt.replace(tzinfo=None)
             return False

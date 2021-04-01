@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Order Interpreter',
-    'version': '12.0.1.4.0',
+    'version': '12.0.1.4.1',
     'category': 'Outplacement',
     'description': """This module adds interpreter-functionality \n
     v12.0.0.2 changed the languagecodes from a full list to Tolkportalens list. AFC-1586 \n
@@ -31,8 +31,9 @@
     v12.0.1.0.5 Hardening of interpreter-booking-parsing \n
     v12.0.1.1.0 Made some fields obligatory.\n
     v12.0.1.2.0 Added field adressat, removed edit and create from some fields.\n
-    v12.0.1.3.0 Changes to validation rules.
-    v12.0.1.4.0 Hide date due for interpreter bookings
+    v12.0.1.3.0 Changes to validation rules.\n
+    v12.0.1.4.0 Hide date due for interpreter bookings\n
+    v12.0.1.4.1 Hide the Mark-as-Done-button when order an interpreter\n
     """,
     'author': "N-development",
     'license': 'AGPL-3',

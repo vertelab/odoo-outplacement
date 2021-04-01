@@ -230,8 +230,8 @@ class ClientConfig(models.Model):
             "ordernummer": outplacement.order_id.name,
             "personnummer": outplacement.partner_id.social_sec_nr.replace("-", ""),
             "unikt_id": str(uuid.uuid4()),
-            "inskickad_datum": str(outplacement.jp_sent_date),
-            "rapportering_datum": str(outplacement.report_date),
+            "inskickad_datum": str(outplacement.fr_send_date),
+            "rapportering_datum": str(outplacement.fr_report_date),
             "status": outplacement.stage_id.sequence,
             "sent_inskickad": "true" if outplacement.late else "false",
             "avbrott": "true" if outplacement.interruption else "false",
@@ -375,4 +375,5 @@ class ClientConfig(models.Model):
                 "typ": study_visit.visit_type,
                 "motivering": study_visit.reasoning
             })
+        _logger.debug("Final report payload: %s" % payload)
         return api.post_report(payload)

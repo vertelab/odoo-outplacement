@@ -20,8 +20,8 @@ class Outplacement(models.Model):
         ])
     obstacle_motivation = fields.Text(string="Motivation")
     
-    send_date = fields.Datetime(string="Final report send date")
-    report_date = fields.Datetime(string="Reporting date")
+    fr_send_date = fields.Date(string="Final report send date")
+    fr_report_date = fields.Date(string="Reporting date")
 
     main_goal_id = fields.Many2one(comodel_name="outplacement.goal")
     alternative_goal_id = fields.Many2one(comodel_name="outplacement.goal")

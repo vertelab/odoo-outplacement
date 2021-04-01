@@ -112,11 +112,12 @@
                                               ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
                         type="action"> Inleverera tolk </button>
             </field>
-            <button name="action_done" position="attributes">
+<!--             <button name="action_done" position="attributes">
                 <attribute name="attrs">
                 {'invisible': ['|', ('force_next', '=', True), ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)]}
                 </attribute>
             </button>
+--> 
             <button name="action_done_schedule_next" position="attributes">
                 <attribute name="attrs">
                 {'invisible': ['|', ('force_next', '=', True), ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)]}

@@ -5,7 +5,8 @@ import json
 import uuid
 import logging
 import requests
-from odoo import api, models, fields
+from odoo import api, models, fields, _
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -108,7 +109,6 @@ class ClientConfig(models.Model):
     def test_post_report(self):
         payload = {
             "utforande_verksamhets_id": "10011119",
-            "avrops_id": "A000000428847",
             "genomforande_referens": "100003568",
             "ordernummer": "MEET-1",
             "personnummer": "199910103028",
@@ -127,43 +127,6 @@ class ClientConfig(models.Model):
                 "efternamn": "Doe",
                 "signatur": "fritext"
             },
-            "innehall": [
-                {
-                    "aktivitets_id": "176",
-                    "aktivitets_namn": "Val och framtidsplanering - deltagarens karriärplan",
-                    "beskrivning": "Coach's comment"
-                },
-                {
-                    "aktivitets_id": "177",
-                    "aktivitets_namn": "Individuella karriärsvägledningssamtal",
-                    "beskrivning": "Coach's comment"
-                },
-                {
-                    "aktivitets_id": "178",
-                    "aktivitets_namn": "Stöd till att bli antagen till kommunens insatser",
-                    "beskrivning": "Coach's comment"
-                },
-                {
-                    "aktivitets_id": "179",
-                    "aktivitets_namn": "Studiebesök utbildningsanordnare",
-                    "beskrivning": "Coach's comment"
-                },
-                {
-                    "aktivitets_id": "180",
-                    "aktivitets_namn": "Studiebesök arbetsplatser",
-                    "beskrivning": "Coach's comment"
-                },
-                {
-                    "aktivitets_id": "181",
-                    "aktivitets_namn": "Möte med förebilder.",
-                    "beskrivning": "Coach's comment"
-                },
-                {
-                    "aktivitets_id": "182",
-                    "aktivitets_namn": "Kunskap om arbetsmarknad, utbildningsvägar, studiefinansiering, omvärldsbev.",
-                    "beskrivning": "Coach's comment"
-                }
-                ],
             "avbrott": "true",
             "ofullstandig": "false",
             "huvudmal": {
@@ -263,16 +226,14 @@ class ClientConfig(models.Model):
             perf_op_id = outplacement.performing_operation_id.ka_nr
         payload = {
             "utforande_verksamhets_id": str(perf_op_id),
-            "avrops_id": outplacement.name,
             "genomforande_referens": outplacement.order_id.origin,
             "ordernummer": outplacement.order_id.name,
             "personnummer": outplacement.partner_id.social_sec_nr.replace("-", ""),
-            "unikt_id": outplacement.uniq_ref,
-            "inskickad_datum": str(outplacement.jp_sent_date),
-            "rapportering_datum": str(outplacement.report_date),
+            "unikt_id": str(uuid.uuid4()),
+            "inskickad_datum": str(outplacement.fr_send_date),
+            "rapportering_datum": str(outplacement.fr_report_date),
             "status": outplacement.stage_id.sequence,
             "sent_inskickad": "true" if outplacement.late else "false",
-            "innehall": [],  # filled with data below.
             "avbrott": "true" if outplacement.interruption else "false",
             "ofullstandig": "true" if outplacement.incomplete else "false",
             "studiebesok": [],  # filled with data below
@@ -332,10 +293,12 @@ class ClientConfig(models.Model):
                     "typ":'Annat',
                     "fritext": goal_id.free_text if goal_id.free_text else ""
                     })
+            if not goal_id.step_ids:
+                raise ValidationError(_("At least one step is required to send final report"))
             for step_id in goal_id.step_ids:
                 step = {
                     "typ": step_id.step_type,
-                    "namn": step_id.name if step_id.name else "",
+                    "namn": step_id.other_step_name if step_id.other_step_name else "",
                     "niva": step_id.level if step_id.level else "",
                     "startdatum": str(step_id.start_date),
                     "slutdatum": str(step_id.end_date)
@@ -387,10 +350,12 @@ class ClientConfig(models.Model):
                     "typ":'Annat',
                     "fritext": goal_id.free_text if goal_id.free_text else ""
                     })
+            if not goal_id.step_ids:
+                raise ValidationError(_("At least one step is required to send final report"))
             for step_id in goal_id.step_ids:
                 step = {
                     "typ": step_id.step_type,
-                    "namn": step_id.name if step_id.name else "",
+                    "namn": step_id.other_step_name if step_id.other_step_name else "",
                     "niva": step_id.level if step_id.level else "",
                     "startdatum": str(step_id.start_date),
                     "slutdatum": str(step_id.end_date)
@@ -403,20 +368,11 @@ class ClientConfig(models.Model):
                 elif step_id.step_type == "other":
                     step["fritext"] = step_id.free_text if step_id.free_text else ""
                 payload['alternativt_mal']['steg'].append(step)
-        for planned in self.env['res.joint_planning'].search(
-                [('send2server', '=', True)], order='sequence'):
-            task = outplacement.task_ids.filtered(
-                lambda t: t.activity_id == planned.activity_id)
-            payload['innehall'].append({
-                'aktivitets_id': planned.activity_id,
-                'aktivitets_namn': (task.activity_name if task else
-                                    planned.name),
-                'beskrivning': task.description if task else '',
-            })
         for study_visit in outplacement.study_visit_ids:
             payload['studiebesok'].append({
                 "namn": study_visit.name,
                 "typ": study_visit.visit_type,
                 "motivering": study_visit.reasoning
             })
+        _logger.debug("Final report payload: %s" % payload)
         return api.post_report(payload)

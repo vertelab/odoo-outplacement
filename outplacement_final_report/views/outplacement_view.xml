@@ -9,8 +9,8 @@
                     <group>
                         <field name="main_goal_id"/>
                         <field name="alternative_goal_id"/>
-                        <field name="report_date"/>
-                        <field name="send_date"/>
+                        <field name="fr_report_date"/>
+                        <field name="fr_send_date"/>
                         <field name="study_visit_ids" mode="tree">
                             <tree editable="bottom" string="Study visits" default_order="name">
                                 <field name="name"/>

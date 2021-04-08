@@ -155,7 +155,7 @@ class MailActivity(models.Model):
         if self.res_model == 'project.task' and self.res_id:
             project_task = self.env[self.res_model].browse(self.res_id)
             try:
-                if project_task and project_task.outplacement_id:
+                if project_task.exists() and project_task.outplacement_id:
                     return getattr(project_task.outplacement_id, field_name)
             except AttributeError:
                 _logger.warn('Could not find field: {field_name}')
@@ -178,7 +178,7 @@ class MailActivity(models.Model):
 
     def action_feedback(self, feedback=False):
         """Adding aditional log rows"""
-        # Has to be fore call to super as the record is removed in super.
+        # Has to be before call to super as the record is removed in super.
         msg = f'Reference: {self.interpreter_booking_ref}<br>'\
               f'Date: {self.time_start}<br>'\
               f'Total time: {self.time_end - self.time_start}'

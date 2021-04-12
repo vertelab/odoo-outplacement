@@ -97,6 +97,7 @@
       </field>
       <field name="user_id" position="after">
         <field name="parent_id"/>
+        <field name="project_id" invisible="1" />
       </field>
     </field>
   </record>

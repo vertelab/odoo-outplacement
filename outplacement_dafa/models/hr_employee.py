@@ -35,7 +35,8 @@ class Employee(models.Model):
         string='Performing Operations',
         compute='_compute_performing_operations',
         inverse='_write_performing_operations',
-        search='_search_performing_operations')
+        search='_search_performing_operations',
+        track_visibility='onchange')
 
     @api.multi
     def _compute_performing_operations(self):

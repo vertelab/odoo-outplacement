@@ -30,6 +30,7 @@ class ProjectTask(models.Model):
         # default=lambda self: self.env.context.get("default_project_id"),
         default=lambda self: self.env.context.get("default_outplacement_id"),
     )
+    parent_id = fields.Many2one(domain="[('project_id', '=', project_id)]")
     activity_id = fields.Many2one("res.joint_planning", "Activity")
     joint_planing_type = fields.Selection(
         [

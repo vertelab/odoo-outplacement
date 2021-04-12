@@ -257,6 +257,11 @@ class ClientConfig(models.Model):
                 "orsak_typ": outplacement.obstacle_reason,
                 "motivering": outplacement.obstacle_motivation 
             }
+        else:
+            payload["hinder"] = {
+                "orsakt_typ": "Annat",
+                "motivering": "Inget hinder"
+            }
         goal_id = outplacement.main_goal_id
         if goal_id:
             payload["huvudmal"] = {

@@ -96,7 +96,7 @@ msgid "Final report"
 msgstr "Slutrapport"
 
 #. module: outplacement_final_report
-#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__send_date
+#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__fr_send_date
 msgid "Final report send date"
 msgstr "Slutrapport skickat datum"
 
@@ -240,7 +240,7 @@ msgid "Outplacement study visit"
 msgstr "Deltagarens studiebesök"
 
 #. module: outplacement_final_report
-#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__report_date
+#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__fr_report_date
 msgid "Reporting date"
 msgstr "Rapporteringsdatum"
 

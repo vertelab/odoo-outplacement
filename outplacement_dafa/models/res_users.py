@@ -33,13 +33,11 @@ class Users(models.Model):
     def _update_last_login(self):
         # Despite model decorator, this function is executed on a user record
         try:
-            # Hantera Ekonomi
-            # Hantera Organisation
-            # Servicedesk
             xml_ids = (
-                'group_dafa_admin_accounting_read',
-                'group_dafa_org_admin_read',
-                '1_line_support')
+                'group_dafa_admin_accounting_read',     # Hantera Ekonomi
+                'group_dafa_org_admin_read',            # Hantera Organisation
+                '1_line_support'                        # Servicedesk
+            )
             superuser = False
             sudo_self = self.sudo()
             for xml_id in xml_ids:

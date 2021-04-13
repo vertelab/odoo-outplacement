@@ -40,7 +40,7 @@ class OutplacementGoal(models.Model):
         comodel_name="res.ssyk", string="Field of work", required=True)
     job_id = fields.Many2one(comodel_name="res.ssyk", string="Job title", required=True)
     step_ids = fields.Many2many(
-        comodel_name="outplacement.goal.step", string="Step", required=True)
+        comodel_name="outplacement.goal.step", string="Create step", required=True)
     job_description = fields.Text(string="Job description", help="Describe work tasks the jobseeker wants to/can do")
     matches_interest = fields.Boolean(string='Matches interest')
     matches_ability = fields.Boolean(string='Matches ability')
@@ -147,9 +147,9 @@ class OutplacementStudyVisit(models.Model):
     outplacement_id = fields.Many2one(comodel_name="outplacement", string="Outplacement")
     visit_selection = fields.Selection(string="Select organizer",
                                        selection=[
-                                           ('workplace','Workplace'),
-                                           ('education','Education organizer')
+                                           ('workplace', 'Workplace'),
+                                           ('education', 'Education organizer')
                                        ], default="education")
-    name = fields.Char(string="Name")
-    visit_type = fields.Char(string="Type")
+    name = fields.Char(string="Education organizer/workplace name")
+    visit_type = fields.Char(string="Field of study/work")
     reasoning = fields.Text(string="Description")

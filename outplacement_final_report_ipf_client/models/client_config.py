@@ -224,6 +224,8 @@ class ClientConfig(models.Model):
         api = self.get_api()
         if outplacement.performing_operation_id:
             perf_op_id = outplacement.performing_operation_id.ka_nr
+        else:
+            raise ValidationError(_("Performing operation needs to be set to send final report"))
         payload = {
             "utforande_verksamhets_id": str(perf_op_id),
             "genomforande_referens": outplacement.order_id.origin,
@@ -304,8 +306,8 @@ class ClientConfig(models.Model):
             for step_id in goal_id.step_ids:
                 step = {
                     "typ": step_id.step_type,
-                    "namn": step_id.other_step_name if step_id.other_step_name else "",
-                    "niva": step_id.level if step_id.level else "",
+                    "namn": step_id.step_name if step_id.step_name else "",
+                    "niva": step_id.education_level_id.name if step_id.education_level_id else "",
                     "startdatum": str(step_id.start_date),
                     "slutdatum": str(step_id.end_date)
                 }

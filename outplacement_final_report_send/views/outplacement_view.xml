@@ -5,7 +5,9 @@
         <field name="inherit_id" ref="outplacement.outplacement_form_view" />
         <field name="arch" type="xml">
             <field name="study_visit_ids" position="after">
-                <button type="object" name="send_final_report">Send report</button>
+                <group>
+                    <button type="object" name="send_final_report">Send report</button>
+                </group>
             </field>
         </field>
     </record>

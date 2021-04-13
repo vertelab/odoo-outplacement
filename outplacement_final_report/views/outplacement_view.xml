@@ -8,20 +8,25 @@
                 <page string="Final report" name="final_report">
                     <group>
                         <group>
-                            <field name="obstacle_reason"/>
-                            <field name="obstacle_motivation"/>
                             <field name="main_goal_id" options="{'no_open':True}"/>
                             <field name="alternative_goal_id" options="{'no_open':True}"/>
                             <field name="fr_report_date" groups="base.group_no_one"/>
                             <field name="fr_send_date" groups="base.group_no_one"/>
-                            <field name="study_visit_ids" mode="tree">
-                                <tree editable="bottom" string="Study visits" default_order="name">
-                                    <field name="name"/>
-                                    <field name="visit_type"/>
-                                    <field name="reasoning"/>
-                                </tree>
-                            </field>
                         </group>
+                        <group>
+                            <field name="obstacle_reason"/>
+                            <field name="obstacle_motivation"/>
+                        </group>
+                    </group>
+                    <h2>Study visit</h2>
+                    <group>
+                        <field name="study_visit_ids" mode="tree" nolabel="1">
+                            <tree editable="bottom" string="Study visits" default_order="name">
+                                <field name="name"/>
+                                <field name="visit_type"/>
+                                <field name="reasoning"/>
+                            </tree>
+                        </field>
                     </group>
                 </page>
             </xpath>
@@ -34,8 +39,8 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-                    <field name="field_of_work_id" domain="{'parent_id','=',False}"/>
-                    <field name="job_id" domain="{'|',('parent_id','child_of',field_of_work_id),('parent_id','=',field_of_work_id)}"/>
+                    <field name="field_of_work_id" domain="[('parent_id','=',False)]" options="{'no_create_edit':True}"/>
+                    <field name="job_id" domain="['|',('parent_id','child_of',field_of_work_id),('parent_id','=',field_of_work_id)]" options="{'no_create_edit':True}"/>
                     <field name="job_description"/>
                     <field name="matches_interest"/>
                     <field name="matches_ability"/>
@@ -57,13 +62,12 @@
             <form>
                 <group>
                     <field name="step_type"/>
-                    <field name="complementing_effort_type" attrs="{'invisible': [('step_type', '!=', 'fitting complementing efforts')]}"/>
-                    <field name="complementing_effort_description" attrs="{'invisible': [('complementing_effort_type', '!=', 'other')]}"/>
-                    <field name="other_step_name" attrs="{'invisible': [('step_type', '!=', 'other')]}"/>
-                    <field name="level" attrs="{'invisible': [('step_type', '!=', 'other')]}"/>
-                    <field name="free_text" attrs="{'invisible': [('step_type', '!=', 'other')]}"/>
-                    <field name="start_date" widget="date"/>
-                    <field name="end_date" widget="date"/>
+                    <field name="complementing_effort_type" attrs="{'invisible': [('step_type', '!=', 'Lämpliga kompletterande insatser')]}"/>
+                    <field name="complementing_effort_description" attrs="{'invisible': [('complementing_effort_type', '!=', 'Annat')]}"/>
+                    <field name="step_name" attrs="{'invisible': [('step_type', '=', 'Lämpliga kompletterande insatser')]}"/>
+                    <field name="education_level_id" attrs="{'invisible': [('step_type', '!=', 'Studera reguljär utbildning')]}"/>
+                    <field name="start_date" />
+                    <field name="end_date" />
                 </group>
             </form>
         </field>

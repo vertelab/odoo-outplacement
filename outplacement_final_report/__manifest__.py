@@ -12,9 +12,9 @@
     'website': 'http://www.vertel.se',
     'depends': [
         'outplacement', 
-        'res_sun', 
         'res_ssyk',
-        'base_user_groups_dafa'
+        'base_user_groups_dafa',
+        'partner_education'
         ],
     'data': [
         'views/outplacement_view.xml',

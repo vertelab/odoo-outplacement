@@ -38,12 +38,10 @@ class OutplacementGoal(models.Model):
 
     field_of_work_id = fields.Many2one(
         comodel_name="res.ssyk", string="Field of work", required=True)
-    # return codes for these two selections should be limited to search
-    # ilike field_of_work.code
     job_id = fields.Many2one(comodel_name="res.ssyk", string="Job title", required=True)
     step_ids = fields.Many2many(
-        comodel_name="outplacement.goal.step", string="Step")
-    job_description = fields.Text(string="Job description", help="Describe work tasks the jobseeker wants to/can do") 
+        comodel_name="outplacement.goal.step", string="Step", required=True)
+    job_description = fields.Text(string="Job description", help="Describe work tasks the jobseeker wants to/can do")
     matches_interest = fields.Boolean(string='Matches interest')
     matches_ability = fields.Boolean(string='Matches ability')
     market_demand = fields.Boolean(string='Market demand')
@@ -52,6 +50,11 @@ class OutplacementGoal(models.Model):
     other_motivation = fields.Boolean(string='Other')
     # should only be used if motivation is "other":
     free_text = fields.Char(string="Free text")
+
+    @api.onchange('other_motivation')
+    def _clear_free_text(self):
+        for goal in self:
+            goal.free_text = False
 
     @api.constrains('free_text')
     @api.one
@@ -69,14 +72,13 @@ class OutplacementGoal(models.Model):
     @api.constrains('step_ids')
     @api.one
     def _constrain_step_ids(self):
-        if self.step_ids and (len(self.step_ids) < 1 or len(self.step_ids) > 10):
-            raise ValidationError(_('Number of steps must not exceed 10, '
-                                  'at least one step is required'))
+        if self.step_ids and len(self.step_ids) > 10:
+            raise ValidationError(_('Number of steps must not exceed 10'))
     @api.multi
     def name_get(self):
         data = []
         for goal in self:
-            display_value = goal.job_description if goal.job_description else goal.job_id
+            display_value = goal.job_description if goal.job_description else goal.job_id.name
             data.append((goal.id, display_value))
         return data
     
@@ -106,11 +108,17 @@ class OutplacementGoalStep(models.Model):
             ])
     complementing_effort_description = fields.Char(
         string="Complementing effort")
-    other_step_name = fields.Char(string="Name")
-    level = fields.Char(string="Level")
-    free_text = fields.Char(string="Free text")
-    start_date = fields.Datetime(string="Start date")
-    end_date = fields.Datetime(string="End date")
+    step_name = fields.Char(string="Name")
+    education_level_id = fields.Many2one(comodel_name="res.partner.education.education_level", string="Education level")
+    start_date = fields.Date(string="Start date")
+    end_date = fields.Date(string="End date")
+
+    @api.onchange('step_type')
+    def _clear_fields(self):
+        for step in self:
+            step.complementing_effort_description = False
+            step.education_level_id = False
+            step.step_name = False
 
     @api.constrains('other_step_name')
     @api.one
@@ -128,7 +136,7 @@ class OutplacementGoalStep(models.Model):
     def name_get(self):
         data = []
         for goal in self:
-            display_value = goal.step_type
+            display_value = goal.step_name or goal.complementing_effort_description or goal.step_type
             data.append((goal.id, display_value))
         return data
 

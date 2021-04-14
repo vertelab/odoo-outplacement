@@ -254,6 +254,8 @@ class ClientConfig(models.Model):
             if outplacement.employee_id.user_id:
                 payload["ansvarig_handledare"]["signatur"] = \
                     outplacement.employee_id.user_id.login
+        else:
+            raise ValidationError(_("Employee must be set"))
         if outplacement.obstacle_reason:
             payload["hinder"] = {
                 "orsak_typ": outplacement.obstacle_reason,
@@ -267,9 +269,9 @@ class ClientConfig(models.Model):
         goal_id = outplacement.main_goal_id
         if goal_id:
             payload["huvudmal"] = {
-                "arbetsuppgifter_beskrivning": goal_id.job_description,
-                "val_av_huvudmal_motivering": [],  # new field?
-                "fritext": goal_id.free_text,  # new field?
+                "arbetsuppgifter_beskrivning": goal_id.job_description if goal_id.job_description else "",
+                "val_av_huvudmal_motivering": [],
+                "fritext": goal_id.free_text if goal_id.free_text else "",
                 "steg": []
             }
             if goal_id.field_of_work_id:
@@ -278,27 +280,27 @@ class ClientConfig(models.Model):
                 payload["huvudmal"]["yrke"] = goal_id.job_id.name
             if goal_id.matches_interest:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
-                    "typ":'Matchar deltagarens intressen'
+                    "typ": 'Matchar deltagarens intressen'
                     })
             if goal_id.matches_ability:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
-                    "typ":'Arbetsuppgifter matchar förmåga'
+                    "typ": 'Arbetsuppgifter matchar förmåga'
                     })
             if goal_id.market_demand:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
-                    "typ":'Efterfrågan på arbetsmarknaden'
+                    "typ": 'Efterfrågan på arbetsmarknaden'
                     })
             if goal_id.complementing_education:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
-                    "typ":'Kompletterar nuvarande utbildning'
+                    "typ": 'Kompletterar nuvarande utbildning'
                     })
             if goal_id.complementing_experience:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
-                    "typ":'kompletterar tidigare erfarenheter'
+                    "typ": 'kompletterar tidigare erfarenheter'
                     })
             if goal_id.other_motivation:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
-                    "typ":'Annat',
+                    "typ": 'Annat',
                     "fritext": goal_id.free_text if goal_id.free_text else ""
                     })
             if not goal_id.step_ids:
@@ -313,8 +315,12 @@ class ClientConfig(models.Model):
                 }
                 if step_id.step_type == "fitting complementing efforts":
                     step["kompletterande_insats"] = {
-                        "typ": step_id.complementing_effort_type,
-                        "fritext": step_id.complementing_effort_description if step_id.complementing_effort_description else ""
+                        "typ": step_id.complementing_effort_type
+                        if step_id.complementing_effort_type
+                        else _("complementing effort type not set"),
+                        "fritext": step_id.complementing_effort_description
+                        if step_id.complementing_effort_description
+                        else ""
                     }
                 elif step_id.step_type == "other":
                     step["fritext"] = step_id.free_text if step_id.free_text else ""
@@ -322,9 +328,9 @@ class ClientConfig(models.Model):
         goal_id = outplacement.alternative_goal_id
         if goal_id:
             payload["alternativt_mal"] = {
-                "arbetsuppgifter_beskrivning": goal_id.job_description,
+                "arbetsuppgifter_beskrivning": goal_id.job_description if goal_id.job_description else "",
                 "val_av_alternativt_mal_motivering": [],
-                "fritext": goal_id.free_text,
+                "fritext": goal_id.free_text if goal_id.free_text else "",
                 "steg": []
             }
             if goal_id.field_of_work_id:
@@ -378,9 +384,9 @@ class ClientConfig(models.Model):
                 payload['alternativt_mal']['steg'].append(step)
         for study_visit in outplacement.study_visit_ids:
             payload['studiebesok'].append({
-                "namn": study_visit.name,
-                "typ": study_visit.visit_type,
-                "motivering": study_visit.reasoning
+                "namn": study_visit.name if study_visit.name else "",
+                "typ": study_visit.visit_type if study_visit.visit_type else "",
+                "motivering": study_visit.reasoning if study_visit.reasoning else ""
             })
         _logger.debug("Final report payload: %s" % payload)
         return api.post_report(payload)

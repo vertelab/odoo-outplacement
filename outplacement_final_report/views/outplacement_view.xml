@@ -76,8 +76,8 @@
                     <field name="complementing_effort_description" attrs="{'invisible': [('complementing_effort_type', '!=', 'Annat')]}"/>
                     <field name="step_name" attrs="{'invisible': [('step_type', '=', 'Lämpliga kompletterande insatser')]}"/>
                     <field name="education_level_id" attrs="{'invisible': [('step_type', '!=', 'Studera reguljär utbildning')]}"/>
-                    <field name="start_date" />
-                    <field name="end_date" />
+                    <field name="start_date" autocomplete="off"/>
+                    <field name="end_date" autocomplete="off"/>
                 </group>
             </form>
         </field>

@@ -36,11 +36,13 @@ class Outplacement(models.Model):
 class OutplacementGoal(models.Model):
     _name = "outplacement.goal"
 
+    outplacement_id = fields.Many2one(comodel_name="outplacement")
     field_of_work_id = fields.Many2one(
         comodel_name="res.ssyk", string="Field of work", required=True)
+    jobs_ids = fields.Many2many(comodel_name="res.ssyk", compute="_compute_jobs_ids")
     job_id = fields.Many2one(comodel_name="res.ssyk", string="Job title", required=True)
-    step_ids = fields.Many2many(
-        comodel_name="outplacement.goal.step", string="Create step", required=True)
+    step_ids = fields.One2many(
+        comodel_name="outplacement.goal.step", string="Create step", inverse_name="goal_id", required=True)
     job_description = fields.Text(string="Job description", help="Describe work tasks the jobseeker wants to/can do")
     matches_interest = fields.Boolean(string='Matches interest')
     matches_ability = fields.Boolean(string='Matches ability')
@@ -50,6 +52,17 @@ class OutplacementGoal(models.Model):
     other_motivation = fields.Boolean(string='Other')
     # should only be used if motivation is "other":
     free_text = fields.Char(string="Free text")
+
+    @api.onchange("field_of_work_id")
+    def _compute_jobs_ids(self):
+        for rec in self:
+            ssyks = self.env['res.ssyk'].search([('parent_id', 'child_of', rec.field_of_work_id.id)])
+            ssyk_ids = []
+            for ssyk in ssyks:
+                if len(ssyk.code) == 4:
+                    ssyk_ids.append(ssyk.id)
+            rec.jobs_ids = [(6, 0, ssyk_ids)]
+            _logger.info(rec.jobs_ids)
 
     @api.onchange('other_motivation')
     def _clear_free_text(self):
@@ -87,6 +100,7 @@ class OutplacementGoal(models.Model):
 class OutplacementGoalStep(models.Model):
     _name = "outplacement.goal.step"
 
+    goal_id = fields.Many2one(comodel_name="outplacement.goal")
     step_type = fields.Selection(selection=[
         ('Studera reguljär utbildning', 'study'),
         ('Lämpliga kompletterande insatser', 'fitting complementing efforts'),
@@ -152,4 +166,4 @@ class OutplacementStudyVisit(models.Model):
                                        ], default="education")
     name = fields.Char(string="Education organizer/workplace name")
     visit_type = fields.Char(string="Field of study/work")
-    reasoning = fields.Text(string="Description")
+    reasoning = fields.Text(string="In what way has the study visit become important in the career service?")

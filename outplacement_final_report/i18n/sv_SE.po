@@ -63,8 +63,8 @@ msgstr "Beskrivning av vad sökande kan/vill/är tänkt att göra"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_study_visit__reasoning
-msgid "Description"
-msgstr "Beskrivning"
+msgid "In what way has the study visit become important in the career service?"
+msgstr "På vilket sätt har studiebesöket fått betydelse i den fortsatta karriärvägledningen?"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__display_name
@@ -118,7 +118,7 @@ msgstr "Slutrapport"
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__fr_send_date
 msgid "Final report send date"
-msgstr "Slutredovisning inskickat datum"
+msgstr "Inskickad"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__free_text
@@ -266,7 +266,7 @@ msgstr "Deltagarens studiebesök"
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__fr_report_date
 msgid "Reporting date"
-msgstr "Rapporteringsdatum"
+msgstr "Slutredovisning påbörjad"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_study_visit__visit_selection
@@ -275,8 +275,8 @@ msgstr "Välj anordnare"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__step_ids
-msgid "Select step"
-msgstr ""
+msgid "Create step"
+msgstr "Skapa steg"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal_step__start_date
@@ -286,17 +286,17 @@ msgstr "Startdatum"
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__study_visit_ids
 msgid "Study Visit"
-msgstr "Studiebesök"
+msgstr "Genomförda studiebesök"
 
 #. module: outplacement_final_report
 #: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_partner_form
 msgid "Study visit"
-msgstr "Studiebesök"
+msgstr "Genomförda studiebesök"
 
 #. module: outplacement_final_report
 #: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_partner_form
 msgid "Study visits"
-msgstr "Studiebesök"
+msgstr "Genomförda studiebesök"
 
 #. module: outplacement_final_report
 #: selection:outplacement.goal.step,complementing_effort_type:0
@@ -317,12 +317,12 @@ msgstr "Arbetsplats"
 #. module: outplacement_final_report
 #: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_outplacement_goal_form
 msgid "descriptive text for goals"
-msgstr ""
+msgstr "Fyll i deltagarens huvudmål. Syftet är att slutredovisningen ska ge deltagaren stöd i hens fortsatta karriärprocess. Planen ska även ge arbetsförmedlaren stöd i fortsatt planering och bedömning av stöd från Arbetsförmedlingen. I karriärplanen ska det finnas ett huvudmål och minst ett alternativt mål om förutsättningarna förändras."
 
 #. module: outplacement_final_report
 #: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_outplacement_goal_step_form
 msgid "descriptive text for steps"
-msgstr ""
+msgstr "Deltagaren och leverantören tar tillsammans under tiden i tjänsten fram karriärplanen och planen ska innehålla väl underbyggda och realistiska mål för arbete som i vissa fall uppnås via studier. Det ska finnas en planering för hur huvudmålet och delmål kan nås, och i planen ska ungefärliga tidpunkter för varje steg anges."
 
 #. module: outplacement_final_report
 #: selection:outplacement,obstacle_reason:0

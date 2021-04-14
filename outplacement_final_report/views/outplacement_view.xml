@@ -24,7 +24,7 @@
                             <tree editable="bottom" string="Study visits" default_order="name">
                                 <field name="visit_selection"/>
                                 <field name="name" autocomplete="off"/>
-                                <field name="visit_type" />
+                                <field name="visit_type" autocomplete="off"/>
                                 <field name="reasoning"/>
                             </tree>
                         </field>

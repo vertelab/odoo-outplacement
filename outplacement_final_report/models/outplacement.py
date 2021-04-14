@@ -59,7 +59,7 @@ class OutplacementGoal(models.Model):
             ssyks = self.env['res.ssyk'].search([('parent_id', 'child_of', rec.field_of_work_id.id)])
             ssyk_ids = []
             for ssyk in ssyks:
-                if len(ssyk.code) == 4:
+                if len(ssyk.code) == 3:
                     ssyk_ids.append(ssyk.id)
             rec.jobs_ids = [(6, 0, ssyk_ids)]
             _logger.info(rec.jobs_ids)

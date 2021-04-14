@@ -10,8 +10,8 @@
                         <group>
                             <field name="main_goal_id" domain="[('id','=',-1)]"/>
                             <field name="alternative_goal_id" domain="[('id','=',-1)]"/>
-                            <field name="fr_report_date"/>
-                            <field name="fr_send_date" groups="base.group_no_one"/>
+                            <field name="fr_report_date" autocomplete="off"/>
+                            <field name="fr_send_date" groups="base.group_no_one" autocomplete="off"/>
                         </group>
                         <group>
                             <field name="obstacle_reason"/>

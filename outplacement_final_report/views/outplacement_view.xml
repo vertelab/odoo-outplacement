@@ -8,8 +8,8 @@
                 <page string="Final report" name="final_report" sequence="90">
                     <group>
                         <group>
-                            <field name="main_goal_id"/>
-                            <field name="alternative_goal_id" />
+                            <field name="main_goal_id" domain="[('id','=',-1)]"/>
+                            <field name="alternative_goal_id" domain="[('id','='-1)]"/>
                             <field name="fr_report_date"/>
                             <field name="fr_send_date" groups="base.group_no_one"/>
                         </group>

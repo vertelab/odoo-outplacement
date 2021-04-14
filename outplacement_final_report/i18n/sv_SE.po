@@ -20,7 +20,7 @@ msgstr ""
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__alternative_goal_id
 msgid "Alternative Goal"
-msgstr "Alternativt Mål"
+msgstr "Alternativt mål"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__complementing_education

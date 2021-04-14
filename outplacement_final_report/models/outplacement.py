@@ -62,7 +62,6 @@ class OutplacementGoal(models.Model):
                 if len(ssyk.code) == 3:
                     ssyk_ids.append(ssyk.id)
             rec.jobs_ids = [(6, 0, ssyk_ids)]
-            _logger.info(rec.jobs_ids)
 
     @api.onchange('other_motivation')
     def _clear_free_text(self):

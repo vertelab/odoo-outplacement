@@ -323,8 +323,8 @@ class ClientConfig(models.Model):
         if goal_id:
             payload["alternativt_mal"] = {
                 "arbetsuppgifter_beskrivning": goal_id.job_description,
-                "val_av_alternativt_mal_motivering": [],  # new field?
-                "fritext": goal_id.free_text,  # new field?
+                "val_av_alternativt_mal_motivering": [],
+                "fritext": goal_id.free_text,
                 "steg": []
             }
             if goal_id.field_of_work_id:

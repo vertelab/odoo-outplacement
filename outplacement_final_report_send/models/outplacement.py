@@ -12,7 +12,7 @@ class Outplacement(models.Model):
 
     def send_final_report(self):
         client_config = self.env['ipf.final_report.client.config'].search([], limit=1)
-        self.fr_send_date = "" #set to datetime.now with correct formating and timezone
+        self.fr_send_date = datetime.datetime.today().strftime("%Y-%m-%d")
         if client_config:
             response = client_config.post_request(self)
             if response.status_code != 201:

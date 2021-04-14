@@ -73,7 +73,7 @@ class OutplacementGoal(models.Model):
     def _constrain_free_text(self):
         if self.free_text and len(self.free_text) > 100:
             raise ValidationError(_('Number of characters in the free text must not exceed 100'))
-    
+
     @api.constrains('job_description')
     @api.one
     def _constrain_job_description(self):

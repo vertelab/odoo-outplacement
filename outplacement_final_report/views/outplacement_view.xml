@@ -192,7 +192,7 @@
               sequence="90" action="outplacement_goal_action"/>
     <menuitem id="goal_step_configuration" parent="outplacement.outplacement_configuration" name="Steps"
               groups="outplacement.group_outplacement_admin"
-              sequence="91" action="outplacement_goal_step_action_tree"/>
+              sequence="91" action="outplacement_goal_step_action"/>
 
 
 </odoo>

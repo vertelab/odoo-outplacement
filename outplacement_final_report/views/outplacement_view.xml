@@ -5,18 +5,26 @@
         <field name="inherit_id" ref="outplacement.outplacement_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <page string="Final report" name="final_report">
+                <page string="Final report" name="final_report" sequence="90">
                     <group>
-                        <field name="obstacle_reason"/>
-                        <field name="obstacle_motivation"/>
-                        <field name="main_goal_id"/>
-                        <field name="alternative_goal_id"/>
-                        <field name="fr_report_date"/>
-                        <field name="fr_send_date"/>
-                        <field name="study_visit_ids" mode="tree">
+                        <group>
+                            <field name="main_goal_id" domain="[('id','=',-1)]"/>
+                            <field name="alternative_goal_id" domain="[('id','=',-1)]"/>
+                            <field name="fr_report_date"/>
+                            <field name="fr_send_date" groups="base.group_no_one"/>
+                        </group>
+                        <group>
+                            <field name="obstacle_reason"/>
+                            <field name="obstacle_motivation"/>
+                        </group>
+                    </group>
+                    <h2>Study visit</h2>
+                    <group>
+                        <field name="study_visit_ids" mode="tree" nolabel="1">
                             <tree editable="bottom" string="Study visits" default_order="name">
-                                <field name="name"/>
-                                <field name="visit_type"/>
+                                <field name="visit_selection"/>
+                                <field name="name" autocomplete="off"/>
+                                <field name="visit_type" autocomplete="off"/>
                                 <field name="reasoning"/>
                             </tree>
                         </field>
@@ -31,9 +39,11 @@
         <field name="model">outplacement.goal</field>
         <field name="arch" type="xml">
             <form>
+                descriptive text for goals
                 <group>
-                    <field name="field_of_work_id"/>
-                    <field name="job_id"/>
+                    <field name="field_of_work_id" domain="[('parent_id','=',False)]" options="{'no_create_edit':True}"/>
+                    <field name="jobs_ids" invisible="1"/>
+                    <field name="job_id" domain="['&amp;', ('parent_id','child_of',field_of_work_id), ('id','in',jobs_ids)]" options="{'no_create_edit':True}"/>
                     <field name="job_description"/>
                     <field name="matches_interest"/>
                     <field name="matches_ability"/>
@@ -42,7 +52,13 @@
                     <field name="complementing_experience"/>
                     <field name="other_motivation"/>
                     <field name="free_text" attrs="{'invisible': [('other_motivation', '=', False)]}"/>
-                    <field name="step_ids" widget="many2many_tags"/>
+                    <field name="step_ids" mode="tree">
+                        <tree>
+                            <field name="step_type"/>
+                            <field name="start_date" />
+                            <field name="end_date" />
+                        </tree>
+                    </field>
                 </group>
             </form>
         </field>
@@ -53,15 +69,15 @@
         <field name="model">outplacement.goal.step</field>
         <field name="arch" type="xml">
             <form>
+                descriptive text for steps
                 <group>
                     <field name="step_type"/>
-                    <field name="complementing_effort_type" attrs="{'invisible': [('step_type', '!=', 'fitting complementing efforts')]}"/>
-                    <field name="complementing_effort_description" attrs="{'invisible': [('complementing_effort_type', '!=', 'other')]}"/>
-                    <field name="other_step_name" attrs="{'invisible': [('step_type', '!=', 'other')]}"/>
-                    <field name="level" attrs="{'invisible': [('step_type', '!=', 'other')]}"/>
-                    <field name="free_text" attrs="{'invisible': [('step_type', '!=', 'other')]}"/>
-                    <field name="start_date"/>
-                    <field name="end_date"/>
+                    <field name="complementing_effort_type" attrs="{'invisible': [('step_type', '!=', 'Lämpliga kompletterande insatser')]}"/>
+                    <field name="complementing_effort_description" attrs="{'invisible': [('complementing_effort_type', '!=', 'Annat')]}"/>
+                    <field name="step_name" attrs="{'invisible': [('step_type', '=', 'Lämpliga kompletterande insatser')]}"/>
+                    <field name="education_level_id" attrs="{'invisible': [('step_type', '!=', 'Studera reguljär utbildning')]}"/>
+                    <field name="start_date" autocomplete="off"/>
+                    <field name="end_date" autocomplete="off"/>
                 </group>
             </form>
         </field>
@@ -86,22 +102,97 @@
         </field>
     </record>
 
+    <record id="view_outplacement_goal_tree" model="ir.ui.view">
+        <field name="name">outplacement_goal</field>
+        <field name="model">outplacement.goal</field>
+        <field name="arch" type="xml">
+                <tree>
+                    <field name="field_of_work_id"/>
+                    <field name="job_id" />
+                    <field name="job_description"/>
+                    <field name="matches_interest"/>
+                    <field name="matches_ability"/>
+                    <field name="market_demand"/>
+                    <field name="complementing_education"/>
+                    <field name="complementing_experience"/>
+                    <field name="other_motivation"/>
+                    <field name="free_text" />
+                    <field name="step_ids" />
+                </tree>
+        </field>
+    </record>
+
+    <record id="view_outplacement_goal_step_tree" model="ir.ui.view">
+        <field name="name">outplacement_goal_step</field>
+        <field name="model">outplacement.goal.step</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="step_type"/>
+                <field name="complementing_effort_type" />
+                <field name="complementing_effort_description" />
+                <field name="step_name" />
+                <field name="education_level_id" />
+                <field name="start_date" />
+                <field name="end_date" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="outplacement_goal_action" model="ir.actions.act_window">
+        <field name="name">Final report goals</field>
+        <field name="res_model">outplacement.goal</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_outplacement_goal_tree"/>
+    </record>
+
+    <record id="outplacement_goal_step_action" model="ir.actions.act_window">
+        <field name="name">Final report goal steps</field>
+        <field name="res_model">outplacement.goal.step</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_outplacement_goal_step_tree"/>
+    </record>
+
     <record model="ir.actions.act_window" id="outplacement_study_visit_action_window">
         <field name="name">Outplacement study visit</field>
         <field name="res_model">outplacement.study_visit</field>
         <field name="view_mode">form</field>
     </record>
 
-    <record model="ir.actions.act_window" id="outplacement_goal_step_action_window">
-        <field name="name">Outplacement goal step</field>
-        <field name="res_model">outplacement.goal.step</field>
+
+    <record id="outplacement_goal_action_form_view" model="ir.actions.act_window.view">
+        <field name="act_window_id" ref="outplacement_goal_action"/>
+        <field name="sequence" eval="2"/>
         <field name="view_mode">form</field>
+        <field name="view_id" ref="view_outplacement_goal_form"/>
     </record>
 
-    <record model="ir.actions.act_window" id="outplacement_goal_action_window">
-        <field name="name">Outplacement goal</field>
-        <field name="res_model">outplacement.goal</field>
-        <field name="view_mode">form</field>
+    <record id="outplacement_goal_action_tree_view" model="ir.actions.act_window.view">
+        <field name="act_window_id" ref="outplacement_goal_action"/>
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_outplacement_goal_tree"/>
     </record>
+
+    <record id="outplacement_goal_step_action_form_view" model="ir.actions.act_window.view">
+        <field name="act_window_id" ref="outplacement_goal_step_action"/>
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_outplacement_goal_step_form"/>
+    </record>
+
+    <record id="outplacement_goal_step_action_tree_view" model="ir.actions.act_window.view">
+        <field name="act_window_id" ref="outplacement_goal_step_action"/>
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_outplacement_goal_step_tree"/>
+    </record>
+
+    <menuitem id="goal_configuration" parent="outplacement.outplacement_configuration" name="Goals"
+              groups="outplacement.group_outplacement_admin"
+              sequence="90" action="outplacement_goal_action"/>
+    <menuitem id="goal_step_configuration" parent="outplacement.outplacement_configuration" name="Steps"
+              groups="outplacement.group_outplacement_admin"
+              sequence="91" action="outplacement_goal_step_action"/>
+
 
 </odoo>

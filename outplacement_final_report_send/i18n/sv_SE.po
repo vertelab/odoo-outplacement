@@ -19,7 +19,7 @@ msgstr ""
 #: code:addons/outplacement_final_report_send/models/outplacement.py:19
 #, python-format
 msgid "No config found for final report"
-msgstr "Ingen konfiguration för slutrapport finns"
+msgstr "Ingen konfiguration för slutredovisning finns"
 
 #. module: outplacement_final_report_send
 #: model:ir.model,name:outplacement_final_report_send.model_outplacement
@@ -29,5 +29,5 @@ msgstr "Deltagare"
 #. module: outplacement_final_report_send
 #: model_terms:ir.ui.view,arch_db:outplacement_final_report_send.view_partner_form
 msgid "Send report"
-msgstr "Skicka in slutrapport"
+msgstr "Skicka in slutredovisning"
 

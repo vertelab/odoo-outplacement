@@ -341,27 +341,27 @@ class ClientConfig(models.Model):
 
             if goal_id.matches_interest:
                 payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
-                    "typ":'Matchar deltagarens intressen'
+                    "typ": 'Matchar deltagarens intressen'
                     })
             if goal_id.matches_ability:
                 payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
-                    "typ":'Arbetsuppgifter matchar förmåga'
+                    "typ": 'Arbetsuppgifter matchar förmåga'
                     })
             if goal_id.market_demand:
                 payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
-                    "typ":'Efterfrågan på arbetsmarknaden'
+                    "typ": 'Efterfrågan på arbetsmarknaden'
                     })
             if goal_id.complementing_education:
                 payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
-                    "typ":'Kompletterar nuvarande utbildning'
+                    "typ": 'Kompletterar nuvarande utbildning'
                     })
             if goal_id.complementing_experience:
                 payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
-                    "typ":'kompletterar tidigare erfarenheter'
+                    "typ": 'kompletterar tidigare erfarenheter'
                     })
             if goal_id.other_motivation:
                 payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
-                    "typ":'Annat',
+                    "typ": 'Annat',
                     "fritext": goal_id.free_text if goal_id.free_text else ""
                     })
             if not goal_id.step_ids:

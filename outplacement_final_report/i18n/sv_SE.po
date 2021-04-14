@@ -35,7 +35,7 @@ msgstr "Kompletterande insats"
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal_step__complementing_effort_type
 msgid "Complementing effort type"
-msgstr "Kompletterande insats typ"
+msgstr "Typ av kompletterande insats"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__complementing_experience
@@ -191,7 +191,7 @@ msgstr "Motivering"
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal_step__step_name
 msgid "Name"
-msgstr "Namn"
+msgstr "Beskriv steget"
 
 #. module: outplacement_final_report
 #: code:addons/outplacement_final_report/models/outplacement.py:133

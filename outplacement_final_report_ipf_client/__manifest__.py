@@ -13,7 +13,7 @@ V12.0.0.1.2 fixed some field names
     'author': "Vertel AB",
     'license': 'AGPL-3',
     'website': 'https://vertel.se',
-    'depends': ['outplacement', 'res_joint_planning_af'],
+    'depends': ['outplacement_final_report'],
     'data': [
         "security/ir.model.access.csv",
         'views/client_config_views.xml',

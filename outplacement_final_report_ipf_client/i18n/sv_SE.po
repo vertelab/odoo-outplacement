@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0-20210129\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-14 12:46+0000\n"
-"PO-Revision-Date: 2021-04-14 14:49+0200\n"
+"POT-Creation-Date: 2021-04-14 14:35+0000\n"
+"PO-Revision-Date: 2021-04-14 16:36+0200\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,11 +18,11 @@ msgstr ""
 "X-Generator: Poedit 2.4.2\n"
 
 #. module: outplacement_final_report_ipf_client
-#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:305
-#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:362
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:307
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:368
 #, python-format
 msgid "At least one step is required to send final report"
-msgstr "Minst ett steg krävs för att kunna skicka slutrapport"
+msgstr "Minst ett steg krävs för att kunna skicka slutredovisning"
 
 #. module: outplacement_final_report_ipf_client
 #: model:ir.model.fields,field_description:outplacement_final_report_ipf_client.field_ipf_final_report_client_config__client_id
@@ -56,6 +56,12 @@ msgstr "Skapad den"
 #: model:ir.model.fields,field_description:outplacement_final_report_ipf_client.field_ipf_final_report_request_history__display_name
 msgid "Display Name"
 msgstr "Visningsnamn"
+
+#. module: outplacement_final_report_ipf_client
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:258
+#, python-format
+msgid "Employee must be set"
+msgstr "Deltagare måste ha en ansvarig handläggare för att skicka in slutredovisning"
 
 #. module: outplacement_final_report_ipf_client
 #: model:ir.model.fields,field_description:outplacement_final_report_ipf_client.field_ipf_final_report_client_config__environment
@@ -179,6 +185,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:outplacement_final_report_ipf_client.field_ipf_final_report_request_history__url
 msgid "Url"
 msgstr ""
+
+#. module: outplacement_final_report_ipf_client
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:320
+#, python-format
+msgid "complementing effort type not set"
+msgstr "Typ av kompletterande insats inte angiven"
 
 #. module: outplacement_final_report_ipf_client
 #: model:ir.model,name:outplacement_final_report_ipf_client.model_ipf_final_report_request_history

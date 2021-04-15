@@ -206,9 +206,9 @@ class ClientConfig(models.Model):
                 "typ": "studieinriktning",
                 "motivering": "fritext"
             }],
-            "hinder": {
-                "orsak_typ": "Annat",
-                "motivering": "Fritext, används vid orsak_typ Annat"
+            "kompletterande_information": {
+                "fraga": "komm_info",
+                "svar": "komm_info_03"
             }
         }
 
@@ -239,6 +239,10 @@ class ClientConfig(models.Model):
             "avbrott": "true" if outplacement.interruption else "false",
             "ofullstandig": "true" if outplacement.incomplete else "false",
             "studiebesok": [],  # filled with data below
+            "kompletterande_information": {
+                "fraga": "komm_info",
+                "svar": outplacement.complementing_information
+            }
         }
         if outplacement.partner_id:
             payload["deltagare"] = {
@@ -256,16 +260,6 @@ class ClientConfig(models.Model):
                     outplacement.employee_id.user_id.login
         else:
             raise ValidationError(_("Employee must be set"))
-        if outplacement.obstacle_reason:
-            payload["hinder"] = {
-                "orsak_typ": outplacement.obstacle_reason,
-                "motivering": outplacement.obstacle_motivation 
-            }
-        else:
-            payload["hinder"] = {
-                "orsak_typ": "Annat",
-                "motivering": "Inget hinder"
-            }
         goal_id = outplacement.main_goal_id
         if goal_id:
             payload["huvudmal"] = {

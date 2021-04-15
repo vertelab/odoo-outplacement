@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 12.0-20210129\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-15 11:39+0000\n"
-"PO-Revision-Date: 2021-04-15 13:40+0200\n"
+"PO-Revision-Date: 2021-04-15 16:08+0200\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -41,6 +41,11 @@ msgstr "Typ av kompletterande insats"
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__complementing_experience
 msgid "Complementing experience"
 msgstr "Kompletterande erfarenhet"
+
+#. module: outplacement_final_report
+#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__complementing_information
+msgid "Complementing information"
+msgstr "Kompletterande information"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__step_ids
@@ -158,6 +163,26 @@ msgid "In what way has the study visit become important in the career service?"
 msgstr "På vilket sätt har studiebesöket fått betydelse i den fortsatta karriärvägledningen?"
 
 #. module: outplacement_final_report
+#: selection:outplacement,complementing_information:0
+msgid "Information has been communicated"
+msgstr "Ja, kompletterande information finns och har kommunicerats till Arbetsförmedlingen"
+
+#. module: outplacement_final_report
+#: selection:outplacement,complementing_information:0
+msgid "Information has not been communicated"
+msgstr "Ja, kompletterande information finns men har inte kommunicerats till Arbetsförmedlingen"
+
+#. module: outplacement_final_report
+#: selection:outplacement,complementing_information:0
+msgid "Information missing"
+msgstr "Nej, kompletterande information finns inte"
+
+#. module: outplacement_final_report
+#: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_partner_form
+msgid "Is there complementing information for potential needs, limitations or conditions to seek education or employment that need to be communicated with Arbetsförmedlingen?"
+msgstr "Finns det kompletterande information om eventuella behov, begränsningar eller förutsättningar för att söka utbildning eller ett arbete som behöver kommuniceras med Arbetsförmedlingen?"
+
+#. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__job_description
 msgid "Job description"
 msgstr "Arbetsbeskrivning"
@@ -214,59 +239,48 @@ msgid "Matches interest"
 msgstr "Matchar deltagarens intressen"
 
 #. module: outplacement_final_report
-#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__obstacle_motivation
-msgid "Motivation"
-msgstr "Motivering"
-
-#. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal_step__step_name
 msgid "Name"
 msgstr "Namn"
 
 #. module: outplacement_final_report
-#: code:addons/outplacement_final_report/models/outplacement.py:146
+#: code:addons/outplacement_final_report/models/outplacement.py:144
 #, python-format
 msgid "Number of characters in the description field must not exceed 1000"
 msgstr "Antalet tecken för beskrivningsfältet får inte överskrida 1000"
 
 #. module: outplacement_final_report
-#: code:addons/outplacement_final_report/models/outplacement.py:75
+#: code:addons/outplacement_final_report/models/outplacement.py:73
 #, python-format
 msgid "Number of characters in the free text must not exceed 100"
 msgstr "Antalet tecken för fritextfältet får inte överskrida 100"
 
 #. module: outplacement_final_report
-#: code:addons/outplacement_final_report/models/outplacement.py:81
+#: code:addons/outplacement_final_report/models/outplacement.py:79
 #, python-format
 msgid "Number of characters in the job description field must not exceed 2000"
 msgstr "Antalet tecken för arbetsbeskrivningsfältet får inte överskrida 2000"
 
 #. module: outplacement_final_report
-#: code:addons/outplacement_final_report/models/outplacement.py:140
+#: code:addons/outplacement_final_report/models/outplacement.py:138
 #, python-format
 msgid "Number of characters in the name field must not exceed 1000"
 msgstr "Antalet tecken för namnfältet får inte överskrida 1000"
 
 #. module: outplacement_final_report
-#: code:addons/outplacement_final_report/models/outplacement.py:88
+#: code:addons/outplacement_final_report/models/outplacement.py:86
 #, python-format
 msgid "Number of steps must not exceed 10"
 msgstr "Antalet steg får inte överskrida 10"
 
 #. module: outplacement_final_report
-#: code:addons/outplacement_final_report/models/outplacement.py:33
+#: code:addons/outplacement_final_report/models/outplacement.py:31
 #, python-format
 msgid "Number of study visits must not exceed 7"
 msgstr "Antalet studiebesök får inte överskrida 7"
 
 #. module: outplacement_final_report
-#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__obstacle_reason
-msgid "Obstacle Reason"
-msgstr "Hinder"
-
-#. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__other_motivation
-#: selection:outplacement,obstacle_reason:0
 #: selection:outplacement.goal.step,complementing_effort_type:0
 #: selection:outplacement.goal.step,step_type:0
 msgid "Other"
@@ -346,11 +360,6 @@ msgid "descriptive text for steps"
 msgstr "Deltagaren och leverantören tar tillsammans under tiden i tjänsten fram karriärplanen och planen ska innehålla väl underbyggda och realistiska mål för arbete som i vissa fall uppnås via studier. Det ska finnas en planering för hur huvudmålet och delmål kan nås, och i planen ska ungefärliga tidpunkter för varje steg anges."
 
 #. module: outplacement_final_report
-#: selection:outplacement,obstacle_reason:0
-msgid "economy"
-msgstr "På grund utav ekonomisk situation"
-
-#. module: outplacement_final_report
 #: selection:outplacement.goal.step,complementing_effort_type:0
 msgid "evaluate ability to work"
 msgstr "Utreda arbetsförmågan"
@@ -364,11 +373,6 @@ msgstr "Bedömning och komplettering av utländsk utbildning"
 #: selection:outplacement.goal.step,step_type:0
 msgid "fitting complementing efforts"
 msgstr "Lämpliga kompletterande insatser"
-
-#. module: outplacement_final_report
-#: selection:outplacement,obstacle_reason:0
-msgid "loan"
-msgstr "Kan inte ta studielån"
 
 #. module: outplacement_final_report
 #: selection:outplacement.goal.step,complementing_effort_type:0
@@ -399,11 +403,6 @@ msgstr "Delta i en arbetsmarknadsutbildning/Praktik/Validering"
 #: selection:outplacement.goal.step,complementing_effort_type:0
 msgid "prepare for work"
 msgstr "Rusta inför arbete"
-
-#. module: outplacement_final_report
-#: selection:outplacement,obstacle_reason:0
-msgid "sickness"
-msgstr "På grund utav sjukdom"
 
 #. module: outplacement_final_report
 #: selection:outplacement.goal.step,step_type:0

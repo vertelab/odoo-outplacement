@@ -25,7 +25,7 @@ class ClientConfig(models.Model):
     environment = fields.Selection(selection=[
         ('U1', 'U1'),
         ('I1', 'I1'),
-        ('T1', 'IT'),
+        ('T1', 'T1'),
         ('T2', 'T2'),
         ('PROD', 'PROD'),
     ], string='Environment',
@@ -244,7 +244,7 @@ class ClientConfig(models.Model):
             payload["deltagare"] = {
                 "fornamn": outplacement.partner_id.firstname,
                 "efternamn": outplacement.partner_id.lastname,
-                "deltog_per_distans": outplacement.meeting_remote
+                "deltog_per_distans": outplacement.meeting_remote if outplacement.meeting_remote else ""
             },
         if outplacement.employee_id:
             payload["ansvarig_handledare"] = {
@@ -309,9 +309,9 @@ class ClientConfig(models.Model):
                 step = {
                     "typ": step_id.step_type,
                     "namn": step_id.step_name if step_id.step_name else "",
-                    "niva": step_id.education_level_id.name if step_id.education_level_id else "",
-                    "startdatum": str(step_id.start_date),
-                    "slutdatum": str(step_id.end_date)
+                    "niva": str(step_id.education_level_id.name) if step_id.education_level_id else "",
+                    "startdatum": str(step_id.start_date) if step_id.start_date else "",
+                    "slutdatum": str(step_id.end_date) if step_id.end_date else ""
                 }
                 if step_id.step_type == "fitting complementing efforts":
                     step["kompletterande_insats"] = {
@@ -370,9 +370,9 @@ class ClientConfig(models.Model):
                 step = {
                     "typ": step_id.step_type,
                     "namn": step_id.step_name if step_id.step_name else "",
-                    "niva": step_id.education_level_id.name if step_id.education_level_id else "",
-                    "startdatum": str(step_id.start_date),
-                    "slutdatum": str(step_id.end_date)
+                    "niva": str(step_id.education_level_id.name) if step_id.education_level_id else "",
+                    "startdatum": str(step_id.start_date) if step_id.start_date else "",
+                    "slutdatum": str(step_id.end_date) if step_id.end_date else ""
                 }
                 if step_id.step_type == "fitting complementing efforts":
                     step["kompletterande_insats"] = {

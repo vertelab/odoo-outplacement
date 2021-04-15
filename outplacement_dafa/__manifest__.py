@@ -23,7 +23,7 @@
 
 {
     'name': 'Outplacement DAFA',
-    'version': '12.0.1.0.0',
+    'version': '12.0.1.1.0',
     'category': 'Outplacement',
     'description': "Module to handle outplacement (Avrop) for "
                    "Arbetsförmedlingen DAFA""",

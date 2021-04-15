@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0-20210129\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-24 09:10+0000\n"
-"PO-Revision-Date: 2021-03-24 10:44+0100\n"
+"POT-Creation-Date: 2021-04-15 11:39+0000\n"
+"PO-Revision-Date: 2021-04-15 13:40+0200\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__alternative_goal_id
 msgid "Alternative Goal"
-msgstr "Alternativt Mål"
+msgstr "Alternativt mål"
 
 #. module: outplacement_final_report
 #: selection:outplacement.goal.step,complementing_effort_type:0
@@ -40,7 +40,7 @@ msgstr "Kompletterande insats"
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal_step__complementing_effort_type
 msgid "Complementing effort type"
-msgstr "Kompletterande insats typ"
+msgstr "Typ av kompletterande insats"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__complementing_experience
@@ -51,6 +51,10 @@ msgstr "Kompletterande erfarenhet"
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__completing_information
 msgid "Completing information"
 msgstr "Kompletterande information"
+
+#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__step_ids
+msgid "Create step"
+msgstr "Skapa steg"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__create_uid
@@ -67,9 +71,9 @@ msgid "Created on"
 msgstr "Skapad den"
 
 #. module: outplacement_final_report
-#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_study_visit__reasoning
-msgid "Description"
-msgstr "Beskrivning"
+#: model:ir.model.fields,help:outplacement_final_report.field_outplacement_goal__job_description
+msgid "Describe work tasks the jobseeker wants to/can do"
+msgstr "Beskrivning av vad sökande kan/vill/är tänkt att göra"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__display_name
@@ -79,10 +83,20 @@ msgid "Display Name"
 msgstr "Visningsnamn"
 
 #. module: outplacement_final_report
+#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal_step__education_level_id
+msgid "Education level"
+msgstr "Utbildningsnivå"
+
+#. module: outplacement_final_report
 #: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_outplacement_study_visit_form
 #: selection:outplacement.study_visit,visit_selection:0
 msgid "Education organizer"
 msgstr "Utbildningsanordnare"
+
+#. module: outplacement_final_report
+#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_study_visit__name
+msgid "Education organizer/workplace name"
+msgstr "Utbildningsorganisatörs-/arbetsplatsnamn"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal_step__end_date
@@ -93,6 +107,11 @@ msgstr "Slutdatum"
 #: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_outplacement_study_visit_form
 msgid "Field of education"
 msgstr "Utbildningsområde"
+
+#. module: outplacement_final_report
+#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_study_visit__visit_type
+msgid "Field of study/work"
+msgstr "Studie-/arbetsinriktning"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__field_of_work_id
@@ -106,15 +125,34 @@ msgid "Final report"
 msgstr "Slutrapport"
 
 #. module: outplacement_final_report
-#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__send_date
+#: model:ir.actions.act_window,name:outplacement_final_report.outplacement_goal_step_action
+msgid "Final report goal steps"
+msgstr "Slutredovisningsmålssteg"
+
+#. module: outplacement_final_report
+#: model:ir.actions.act_window,name:outplacement_final_report.outplacement_goal_action
+msgid "Final report goals"
+msgstr "Slutredovisningsmål"
+
+#. module: outplacement_final_report
+#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__fr_send_date
 msgid "Final report send date"
-msgstr "Slutrapport skickat datum"
+msgstr "Inskickad"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__free_text
-#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal_step__free_text
 msgid "Free text"
 msgstr "Fritext"
+
+#. module: outplacement_final_report
+#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal_step__goal_id
+msgid "Goal"
+msgstr "Mål"
+
+#. module: outplacement_final_report
+#: model:ir.ui.menu,name:outplacement_final_report.goal_configuration
+msgid "Goals"
+msgstr "Mål"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__id
@@ -143,6 +181,10 @@ msgstr "Nej, kompletterande information finns inte"
 msgid "Is there completing information for potential needs, limitations or conditions to seek education or employment that need to be communicated with Arbetsförmedlingen?"
 msgstr "Finns det kompletterande information om eventuella behov, begränsningar eller förutsättningar för att söka utbildning eller ett arbete som behöver kommuniceras med Arbetsförmedlingen?"
 
+#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_study_visit__reasoning
+msgid "In what way has the study visit become important in the career service?"
+msgstr "På vilket sätt har studiebesöket fått betydelse i den fortsatta karriärvägledningen?"
+
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__job_description
 msgid "Job description"
@@ -152,6 +194,11 @@ msgstr "Arbetsbeskrivning"
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__job_id
 msgid "Job title"
 msgstr "Jobbtitel"
+
+#. module: outplacement_final_report
+#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__jobs_ids
+msgid "Jobs"
+msgstr "Jobb"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal____last_update
@@ -175,11 +222,6 @@ msgid "Last Updated on"
 msgstr "Senast uppdaterad"
 
 #. module: outplacement_final_report
-#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal_step__level
-msgid "Level"
-msgstr "Nivå"
-
-#. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__main_goal_id
 msgid "Main Goal"
 msgstr "Huvudmål"
@@ -200,30 +242,42 @@ msgid "Matches interest"
 msgstr "Matchar deltagarens intressen"
 
 #. module: outplacement_final_report
-#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal_step__other_step_name
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_study_visit__name
+
+#. module: outplacement_final_report
+#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal_step__step_name
 msgid "Name"
 msgstr "Namn"
 
 #. module: outplacement_final_report
-#: code:addons/outplacement_final_report/models/outplacement.py:108
-#: code:addons/outplacement_final_report/models/outplacement.py:114
+#: code:addons/outplacement_final_report/models/outplacement.py:146
 #, python-format
-msgid "Number of characters must not exceed 1000"
-msgstr "Antalet tecken får inte överskrida 1000"
+msgid "Number of characters in the description field must not exceed 1000"
+msgstr "Antalet tecken för beskrivningsfältet får inte överskrida 1000"
 
 #. module: outplacement_final_report
-#: code:addons/outplacement_final_report/models/outplacement.py:57
-#: code:addons/outplacement_final_report/models/outplacement.py:63
+#: code:addons/outplacement_final_report/models/outplacement.py:75
 #, python-format
-msgid "Number of characters must not exceed 2000"
-msgstr "Antalet tecken får inte överskrida 2000"
+msgid "Number of characters in the free text must not exceed 100"
+msgstr "Antalet tecken för fritextfältet får inte överskrida 100"
 
 #. module: outplacement_final_report
-#: code:addons/outplacement_final_report/models/outplacement.py:69
+#: code:addons/outplacement_final_report/models/outplacement.py:81
 #, python-format
-msgid "Number of steps must not exceed 10, at least one step is required"
-msgstr "Antalet steg får inte överskrida 10, minst ett steg krävs"
+msgid "Number of characters in the job description field must not exceed 2000"
+msgstr "Antalet tecken för arbetsbeskrivningsfältet får inte överskrida 2000"
+
+#. module: outplacement_final_report
+#: code:addons/outplacement_final_report/models/outplacement.py:140
+#, python-format
+msgid "Number of characters in the name field must not exceed 1000"
+msgstr "Antalet tecken för namnfältet får inte överskrida 1000"
+
+#. module: outplacement_final_report
+#: code:addons/outplacement_final_report/models/outplacement.py:88
+#, python-format
+msgid "Number of steps must not exceed 10"
+msgstr "Antalet steg får inte överskrida 10"
 
 #. module: outplacement_final_report
 #: code:addons/outplacement_final_report/models/outplacement.py:30
@@ -241,18 +295,10 @@ msgstr "Annat"
 
 #. module: outplacement_final_report
 #: model:ir.model,name:outplacement_final_report.model_outplacement
+#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__outplacement_id
+#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_study_visit__outplacement_id
 msgid "Outplacement"
 msgstr "Deltagare"
-
-#. module: outplacement_final_report
-#: model:ir.actions.act_window,name:outplacement_final_report.outplacement_goal_action_window
-msgid "Outplacement goal"
-msgstr "Deltagarens mål"
-
-#. module: outplacement_final_report
-#: model:ir.actions.act_window,name:outplacement_final_report.outplacement_goal_step_action_window
-msgid "Outplacement goal step"
-msgstr "Deltagarens delmål"
 
 #. module: outplacement_final_report
 #: model:ir.actions.act_window,name:outplacement_final_report.outplacement_study_visit_action_window
@@ -260,9 +306,9 @@ msgid "Outplacement study visit"
 msgstr "Deltagarens studiebesök"
 
 #. module: outplacement_final_report
-#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__report_date
+#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__fr_report_date
 msgid "Reporting date"
-msgstr "Rapporteringsdatum"
+msgstr "Slutredovisning påbörjad"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_study_visit__visit_selection
@@ -275,19 +321,24 @@ msgid "Start date"
 msgstr "Startdatum"
 
 #. module: outplacement_final_report
-#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal__step_ids
-msgid "Step"
+#: model:ir.ui.menu,name:outplacement_final_report.goal_step_configuration
+msgid "Steps"
 msgstr "Steg"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement__study_visit_ids
 msgid "Study Visit"
-msgstr "Studiebesök"
+msgstr "Genomförda studiebesök"
+
+#. module: outplacement_final_report
+#: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_partner_form
+msgid "Study visit"
+msgstr "Genomförda studiebesök"
 
 #. module: outplacement_final_report
 #: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_partner_form
 msgid "Study visits"
-msgstr "Studiebesök"
+msgstr "Genomförda studiebesök"
 
 #. module: outplacement_final_report
 #: selection:outplacement.goal.step,complementing_effort_type:0
@@ -296,7 +347,6 @@ msgstr "Svenskastudier inom valt område"
 
 #. module: outplacement_final_report
 #: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_goal_step__step_type
-#: model:ir.model.fields,field_description:outplacement_final_report.field_outplacement_study_visit__visit_type
 msgid "Type"
 msgstr "Typ"
 
@@ -305,6 +355,16 @@ msgstr "Typ"
 #: selection:outplacement.study_visit,visit_selection:0
 msgid "Workplace"
 msgstr "Arbetsplats"
+
+#. module: outplacement_final_report
+#: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_outplacement_goal_form
+msgid "descriptive text for goals"
+msgstr "Fyll i deltagarens huvudmål. Syftet är att slutredovisningen ska ge deltagaren stöd i hens fortsatta karriärprocess. Planen ska även ge arbetsförmedlaren stöd i fortsatt planering och bedömning av stöd från Arbetsförmedlingen. I karriärplanen ska det finnas ett huvudmål och minst ett alternativt mål om förutsättningarna förändras."
+
+#. module: outplacement_final_report
+#: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_outplacement_goal_step_form
+msgid "descriptive text for steps"
+msgstr "Deltagaren och leverantören tar tillsammans under tiden i tjänsten fram karriärplanen och planen ska innehålla väl underbyggda och realistiska mål för arbete som i vissa fall uppnås via studier. Det ska finnas en planering för hur huvudmålet och delmål kan nås, och i planen ska ungefärliga tidpunkter för varje steg anges."
 
 #. module: outplacement_final_report
 #: selection:outplacement,obstacle_reason:0

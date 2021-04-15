@@ -4,9 +4,9 @@
         <field name="model">outplacement</field> 
         <field name="inherit_id" ref="outplacement.outplacement_form_view" />
         <field name="arch" type="xml">
-            <field name="study_visit_ids" position="after">
-                <button type="object" name="send_final_report">Send report</button>
-            </field>
+            <xpath expr="//header" position="inside">
+                    <button type="object" string="Send report" name="send_final_report"/>
+            </xpath>
         </field>
     </record>
 </odoo>

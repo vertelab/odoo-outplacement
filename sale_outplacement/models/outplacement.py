@@ -138,6 +138,19 @@ class Outplacement(models.Model):
         data = super(Outplacement, self).suborder_process_data(data)
         partner = self._get_partner(data)
 
+        order_number = data["ordernummer"]
+        no_outplacement = self.env["outplacement"].search_count(
+            [("name", "=", order_number)]
+        ) + self.env["outplacement"].search_count(
+            [("partner_id", "=", partner.id)]
+        )
+        if no_outplacement:
+            _logger.warning(
+                "Rejected outplacement because of duplicate. Either because of outplacement.name: %s or partner_id: %s"
+                % (order_number, partner.id)
+            )
+            return 400
+
         skill = self._get_skill(data)
         order_lines = [
             (0, 0, {"product_id": self.env.ref(
@@ -147,12 +160,12 @@ class Outplacement(models.Model):
         ]
         order = self.env['sale.order'].create({
             'origin': data['genomforande_referens'],
-            'name': data['ordernummer'],
+            'name': order_number,
             'partner_id': partner.id,
             'order_line': order_lines,
         })
         outplacement = self.env['outplacement'].create({
-            'name': data['ordernummer'],
+            'name': order_number,
             'performing_operation_id': self._get_department_id(data),
             'booking_ref': data['boknings_id'],
             'partner_id': partner.id,

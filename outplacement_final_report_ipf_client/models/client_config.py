@@ -241,7 +241,7 @@ class ClientConfig(models.Model):
             "studiebesok": [],  # filled with data below
             "kompletterande_information": {
                 "fraga": "komm_info",
-                "svar": outplacement.complementing_information
+                "svar": outplacement.complementing_information or "komm_info_03"
             }
         }
         if outplacement.partner_id:

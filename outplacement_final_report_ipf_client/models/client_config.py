@@ -263,7 +263,7 @@ class ClientConfig(models.Model):
             }
         else:
             payload["hinder"] = {
-                "orsakt_typ": "Annat",
+                "orsak_typ": "Annat",
                 "motivering": "Inget hinder"
             }
         goal_id = outplacement.main_goal_id

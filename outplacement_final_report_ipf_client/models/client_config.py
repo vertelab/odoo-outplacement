@@ -370,7 +370,7 @@ class ClientConfig(models.Model):
                 step = {
                     "typ": step_id.step_type,
                     "namn": step_id.step_name if step_id.step_name else "",
-                    "niva": step_id.level if step_id.level else "",
+                    "niva": step_id.education_level_id.name if step_id.education_level_id else "",
                     "startdatum": str(step_id.start_date),
                     "slutdatum": str(step_id.end_date)
                 }

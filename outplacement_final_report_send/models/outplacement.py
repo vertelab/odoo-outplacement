@@ -22,7 +22,7 @@ class Outplacement(models.Model):
                 cause_dict = res_dict.get("cause", {})
                 code = cause_dict.get("code", _("Unknown error code"))
                 cause_message = cause_dict.get("message", _("Unknown cause"))
-                error_text = _("Error %s: %s\nCause: %s\nTracking ID: %s" % (code, message, cause_message, tracking_id))
+                error_text = _("Error %s: %s\nCause: %s\nTracking ID: %s") % (code, message, cause_message, tracking_id)
                 raise Warning(error_text)
             _logger.debug("Successfully created final report")
         else:

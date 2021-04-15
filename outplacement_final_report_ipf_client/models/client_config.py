@@ -242,14 +242,14 @@ class ClientConfig(models.Model):
         }
         if outplacement.partner_id:
             payload["deltagare"] = {
-                "fornamn": outplacement.partner_id.firstname,
-                "efternamn": outplacement.partner_id.lastname,
+                "fornamn": outplacement.partner_id.firstname or "",
+                "efternamn": outplacement.partner_id.lastname or "",
                 "deltog_per_distans": outplacement.meeting_remote or ""
             },
         if outplacement.employee_id:
             payload["ansvarig_handledare"] = {
-                "fornamn": outplacement.employee_id.firstname,
-                "efternamn": outplacement.employee_id.lastname,
+                "fornamn": outplacement.employee_id.firstname or "",
+                "efternamn": outplacement.employee_id.lastname or "",
             }
             if outplacement.employee_id.user_id:
                 payload["ansvarig_handledare"]["signatur"] = \
@@ -321,6 +321,8 @@ class ClientConfig(models.Model):
                 elif step_id.step_type == "other":
                     step["fritext"] = step_id.free_text or ""
                 payload['huvudmal']['steg'].append(step)
+        else:
+            raise ValidationError(_("A main goal is required to send final report"))
         goal_id = outplacement.alternative_goal_id
         if goal_id:
             payload["alternativt_mal"] = {
@@ -353,7 +355,7 @@ class ClientConfig(models.Model):
                     })
             if goal_id.complementing_experience:
                 payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
-                    "typ": 'kompletterar tidigare erfarenheter'
+                    "typ": 'Kompletterar tidigare erfarenhet'
                     })
             if goal_id.other_motivation:
                 payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
@@ -378,6 +380,8 @@ class ClientConfig(models.Model):
                 elif step_id.step_type == "other":
                     step["fritext"] = step_id.free_text or ""
                 payload['alternativt_mal']['steg'].append(step)
+        else:
+            raise ValidationError(_("An alternative goal is required to send final report"))
         for study_visit in outplacement.study_visit_ids:
             payload['studiebesok'].append({
                 "namn": study_visit.name or "",

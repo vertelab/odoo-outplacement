@@ -20,14 +20,8 @@ msgstr ""
 #. module: outplacement_final_report_send
 #: code:addons/outplacement_final_report_send/models/outplacement.py:25
 #, python-format
-msgid ""
-"Error %s: %s\n"
-"Cause: %s\n"
-"Tracking ID: %s"
-msgstr ""
-"Fel %s: %s\n"
-"Anledning: %s\n"
-"Tracking ID: %s"
+msgid "Error %s: %s\nCause: %s\nTracking ID: %s"
+msgstr "Fel %s: %s\nAnledning: %s\nTracking ID: %s"
 
 #. module: outplacement_final_report_send
 #: code:addons/outplacement_final_report_send/models/outplacement.py:29

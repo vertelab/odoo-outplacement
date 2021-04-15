@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0-20210129\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-14 14:35+0000\n"
-"PO-Revision-Date: 2021-04-14 16:36+0200\n"
+"POT-Creation-Date: 2021-04-15 11:39+0000\n"
+"PO-Revision-Date: 2021-04-15 13:41+0200\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,8 +18,20 @@ msgstr ""
 "X-Generator: Poedit 2.4.2\n"
 
 #. module: outplacement_final_report_ipf_client
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:325
+#, python-format
+msgid "A main goal is required to send final report"
+msgstr "Huvudmål krävs för att skicka in slutredovisning"
+
+#. module: outplacement_final_report_ipf_client
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:384
+#, python-format
+msgid "An alternative goal is required to send final report"
+msgstr "Alternativt mål krävs för att skicka in slutredovisning"
+
+#. module: outplacement_final_report_ipf_client
 #: code:addons/outplacement_final_report_ipf_client/models/client_config.py:307
-#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:368
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:366
 #, python-format
 msgid "At least one step is required to send final report"
 msgstr "Minst ett steg krävs för att kunna skicka slutredovisning"
@@ -89,11 +101,6 @@ msgstr ""
 #: model:ir.ui.menu,name:outplacement_final_report_ipf_client.ipf_client_config
 msgid "IPF Final Report Client Config"
 msgstr "IPF slutredovisning klient konfig"
-
-#. module: outplacement_final_report_ipf_client
-#: selection:ipf.final_report.client.config,environment:0
-msgid "IT"
-msgstr ""
 
 #. module: outplacement_final_report_ipf_client
 #: model:ir.model.fields,field_description:outplacement_final_report_ipf_client.field_ipf_final_report_client_config____last_update
@@ -172,6 +179,11 @@ msgstr ""
 
 #. module: outplacement_final_report_ipf_client
 #: selection:ipf.final_report.client.config,environment:0
+msgid "T1"
+msgstr ""
+
+#. module: outplacement_final_report_ipf_client
+#: selection:ipf.final_report.client.config,environment:0
 msgid "T2"
 msgstr ""
 
@@ -187,7 +199,7 @@ msgid "Url"
 msgstr ""
 
 #. module: outplacement_final_report_ipf_client
-#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:320
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:318
 #, python-format
 msgid "complementing effort type not set"
 msgstr "Typ av kompletterande insats inte angiven"

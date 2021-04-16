@@ -21,9 +21,15 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     "name": "Outplacement Order (Ordertjansten Order)",
-    "version": "12.0.1.0.3",
+    "version": "12.0.1.0.4",
     "category": "Outplacement",
-    "description": """This module listen for updates for an order""",
+    "description": """
+Outplacement Order (Ordertjansten Order)\n
+===============================================================================\n
+This module listen for updates for an order\n
+v12.0.1.0.3: Versions before version handling\n
+v12.0.1.0.4 AFC-2105: added update to field service_end_date when interupting outplacement\n
+""",
     "author": "Vertel AB",
     "license": "AGPL-3",
     "website": "https://vertel.se",

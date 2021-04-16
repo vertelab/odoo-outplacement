@@ -66,9 +66,12 @@ class MailActivity(models.Model):
                                              readonly=True,
                                              compute='_compute_booking_status')
     # Internal booking status to hold certain data to be computed.
-    _interpreter_booking_status = fields.Char(string='Booking Status Internal',
+    _interpreter_booking_status = fields.Char(string='Technical Booking Status Internal',
                                               readonly=True,
                                               default=_('Not booked'))
+    _interpreter_booking_status_2 = fields.Char(string='Booking Status Internal',
+                                                readonly=True,
+                                                default='0')
     interpreter_name = fields.Char(string='Interpreter Name',
                                    readonly=True)
     interpreter_phone = fields.Char(string='Interpreter Phone Number',
@@ -82,15 +85,31 @@ class MailActivity(models.Model):
         string='Interpreter Supplier Phone Number',
         readonly=True)
 
-    @api.depends('_interpreter_booking_status', 'interpreter_company')
+    @api.depends('_interpreter_booking_status',
+                 '_interpreter_booking_status_2',
+                 'interpreter_company')
     def _compute_booking_status(self):
-        statuses = {'1': _('Order received'), '2': _('Delivered')}
+        tech_statuses = {'1': _('Order received'),
+                         '2': _('Delivered')}
+        statuses = {'1': _('Order received'),
+                    '2': _('No available interpreter'),
+                    '3': _('Order received'),
+                    '4': _('Interpreter Booked'),
+                    '5': _('Cancellation performed'),
+                    '6': _('Cancelled by interpreter')}
         for record in self:
-            status = record._interpreter_booking_status
-            if record.interpreter_company and status == '1':
-                record.interpreter_booking_status = _('Interpreter Booked')
+            tech_status = record._interpreter_booking_status
+            status = record._interpreter_booking_status_2
+            if tech_status == '2':
+                record.interpreter_booking_status = tech_statuses['2']
+            elif (record.time_end < datetime.datetime.now()
+                  and tech_status != '2' and status == '4'):
+                record.interpreter_booking_status = _('Not delivered yet!')
             elif status in statuses:
                 record.interpreter_booking_status = statuses[status]
+            # Legacy
+            elif record.interpreter_company and tech_status == '1':
+                record.interpreter_booking_status = statuses['4']
             else:
                 record.interpreter_booking_status = status
 
@@ -257,7 +276,7 @@ class MailActivity(models.Model):
             raise UserError(_('Unknown error making Interpreter booking'))
         if status_code == 200:
             self.interpreter_booking_ref = response.text
-            self._interpreter_booking_status = _('Request sent')
+            self._interpreter_booking_status_2 = _('1')
             _logger.debug('Interpreter booking success.')
         elif status_code == 404:
             self._interpreter_booking_status = msg
@@ -295,9 +314,10 @@ class MailActivity(models.Model):
                          f'{response.status_code}')
             return
         data = json.loads(response.content.decode())
-        _logger.debug(f'Update interpreter booking with data: {data}')
-        self._interpreter_booking_status = data.get(
-            'tekniskStatusTypId', self._interpreter_booking_status)
+        self._interpreter_booking_status = str(
+            data.get('tekniskStatusTypId', self._interpreter_booking_status))
+        self._interpreter_booking_status_2 = str(
+            data.get('statusTypId', self._interpreter_booking_status_2))
         self.interpreter_type = self.env["res.interpreter.type"].search([('code', '=', data.get('tolkTypId'))])  # noqa:E501
         self.interpreter_remote_type = self.env["res.interpreter.remote_type"].search([('code', '=', data.get('distanstolkTypId'))])  # noqa:E501
         self.time_start = change_tz(datetime.datetime.strptime(
@@ -324,6 +344,9 @@ class MailActivity(models.Model):
         self.interpreter_contact_person = supplier_obj.get('namn')
         self.interpreter_contact_phone = supplier_obj.get(
             'telefonnummer')
+        # Force computation if time has passed
+        if self.time_end < datetime.datetime.now():
+            self._compute_booking_status()
 
     @api.model
     def cron_order_interpreter(self):

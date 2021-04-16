@@ -4,6 +4,7 @@ import logging
 from datetime import datetime
 from odoo import api, models, fields, tools, _
 from odoo.exceptions import Warning
+from datetime import date
 
 _logger = logging.getLogger(__name__)
 
@@ -49,6 +50,7 @@ class Outplacement(models.Model):
                 if outplacement_stage == self.env.ref('outplacement.cancelled_stage'):
                     outplacement.stage_id = outplacement_stage.id
                     outplacement.interruption = True
+                    outplacement.service_end_date = date.today()
                 if outplacement_stage.order_id_state:
                     order = outplacement.order_id
                     if order:

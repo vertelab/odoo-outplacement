@@ -102,6 +102,9 @@ class MailActivity(models.Model):
             status = record._interpreter_booking_status_2
             if tech_status == '2':
                 record.interpreter_booking_status = tech_statuses['2']
+            elif (record.time_end < datetime.datetime.now()
+                  and tech_status != '2' and status == '4'):
+                record.interpreter_booking_status = _('Not delivered yet!')
             elif status in statuses:
                 record.interpreter_booking_status = statuses[status]
             # Legacy
@@ -273,7 +276,7 @@ class MailActivity(models.Model):
             raise UserError(_('Unknown error making Interpreter booking'))
         if status_code == 200:
             self.interpreter_booking_ref = response.text
-            self._interpreter_booking_status = _('Request sent')
+            self._interpreter_booking_status_2 = _('1')
             _logger.debug('Interpreter booking success.')
         elif status_code == 404:
             self._interpreter_booking_status = msg
@@ -311,11 +314,10 @@ class MailActivity(models.Model):
                          f'{response.status_code}')
             return
         data = json.loads(response.content.decode())
-        _logger.info(f'Update interpreter booking with data: {data}')
-        self._interpreter_booking_status = data.get('tekniskStatusTypId',
-                                                    self._interpreter_booking_status)
-        self._interpreter_booking_status2 = data.get('statusTypId',
-                                                     self._interpreter_booking_status_2)
+        self._interpreter_booking_status = str(
+            data.get('tekniskStatusTypId', self._interpreter_booking_status))
+        self._interpreter_booking_status_2 = str(
+            data.get('statusTypId', self._interpreter_booking_status_2))
         self.interpreter_type = self.env["res.interpreter.type"].search([('code', '=', data.get('tolkTypId'))])  # noqa:E501
         self.interpreter_remote_type = self.env["res.interpreter.remote_type"].search([('code', '=', data.get('distanstolkTypId'))])  # noqa:E501
         self.time_start = change_tz(datetime.datetime.strptime(
@@ -342,6 +344,9 @@ class MailActivity(models.Model):
         self.interpreter_contact_person = supplier_obj.get('namn')
         self.interpreter_contact_phone = supplier_obj.get(
             'telefonnummer')
+        # Force computation if time has passed
+        if self.time_end < datetime.datetime.now():
+            self._compute_booking_status()
 
     @api.model
     def cron_order_interpreter(self):

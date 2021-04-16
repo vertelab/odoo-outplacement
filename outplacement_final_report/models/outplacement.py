@@ -24,6 +24,33 @@ class Outplacement(models.Model):
     main_goal_id = fields.Many2one(comodel_name="outplacement.goal")
     alternative_goal_id = fields.Many2one(comodel_name="outplacement.goal")
 
+    ended_early = fields.Boolean(string="Ended early", compute="_compute_ended_early", readonly=True)
+    ended = fields.Boolean(string="Ended", compute="_compute_ended", readonly=True)
+
+    @api.onchange('service_start_date', 'service_end_date')
+    @api.multi
+    def _compute_ended_early(self):
+        for rec in self:
+            rec.ended_early = False
+            if rec.service_start_date and rec.service_end_date:
+                delta = rec.service_end_date - rec.service_start_date
+                _logger.info("service_start_date: %s service_end_date: %s delta: %s" %
+                             (rec.service_start_date, rec.service_end_date, delta))
+                if delta.days < 16 and rec.interrupted:
+                    rec.ended_early = True
+
+    @api.onchange('service_start_date', 'service_end_date')
+    @api.multi
+    def _compute_ended(self):
+        for rec in self:
+            rec.ended = False
+            if rec.service_start_date and rec.service_end_date:
+                delta = rec.service_end_date - rec.service_start_date
+                _logger.info("service_start_date: %s service_end_date: %s delta: %s" %
+                             (rec.service_start_date, rec.service_end_date, delta.days))
+                if delta.days > 16 and rec.interrupted:
+                    rec.ended = True
+
     @api.constrains('study_visit_ids')
     @api.one
     def _constrain_study_visit_ids(self):
@@ -77,13 +104,13 @@ class OutplacementGoal(models.Model):
     def _constrain_job_description(self):
         if self.job_description and len(self.job_description) > 2000:
             raise ValidationError(_('Number of characters in the job description field must not exceed 2000'))
-    
 
     @api.constrains('step_ids')
     @api.one
     def _constrain_step_ids(self):
         if self.step_ids and len(self.step_ids) > 10:
             raise ValidationError(_('Number of steps must not exceed 10'))
+
     @api.multi
     def name_get(self):
         data = []

@@ -36,7 +36,7 @@ class Outplacement(models.Model):
                 delta = rec.service_end_date - rec.service_start_date
                 _logger.info("service_start_date: %s service_end_date: %s delta: %s" %
                              (rec.service_start_date, rec.service_end_date, delta))
-                if delta.days < 16 and rec.interrupted:
+                if delta.days < 16 and rec.interruption:
                     rec.ended_early = True
 
     @api.onchange('service_start_date', 'service_end_date')
@@ -48,7 +48,7 @@ class Outplacement(models.Model):
                 delta = rec.service_end_date - rec.service_start_date
                 _logger.info("service_start_date: %s service_end_date: %s delta: %s" %
                              (rec.service_start_date, rec.service_end_date, delta.days))
-                if delta.days > 16 and rec.interrupted:
+                if delta.days > 16 and rec.interruption:
                     rec.ended = True
 
     @api.constrains('study_visit_ids')

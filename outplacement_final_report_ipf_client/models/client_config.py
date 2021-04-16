@@ -224,6 +224,8 @@ class ClientConfig(models.Model):
         api = self.get_api()
         if outplacement.performing_operation_id:
             perf_op_id = outplacement.performing_operation_id.ka_nr
+        elif outplacement.interruption:
+            perf_op_id = ""
         else:
             raise ValidationError(_("Performing operation needs to be set to send final report"))
         payload = {
@@ -297,7 +299,7 @@ class ClientConfig(models.Model):
                     "typ": 'Annat',
                     "fritext": goal_id.free_text or ""
                     })
-            if not goal_id.step_ids:
+            if not goal_id.step_ids and not outplacement.interruption:
                 raise ValidationError(_("At least one step is required to send final report"))
             for step_id in goal_id.step_ids:
                 step = {
@@ -315,7 +317,7 @@ class ClientConfig(models.Model):
                 elif step_id.step_type == "other":
                     step["fritext"] = step_id.free_text or ""
                 payload['huvudmal']['steg'].append(step)
-        else:
+        elif not outplacement.interruption:
             raise ValidationError(_("A main goal is required to send final report"))
         goal_id = outplacement.alternative_goal_id
         if goal_id:
@@ -356,7 +358,7 @@ class ClientConfig(models.Model):
                     "typ": 'Annat',
                     "fritext": goal_id.free_text or ""
                     })
-            if not goal_id.step_ids:
+            if not goal_id.step_ids and not outplacement.interruption:
                 raise ValidationError(_("At least one step is required to send final report"))
             for step_id in goal_id.step_ids:
                 step = {
@@ -374,7 +376,7 @@ class ClientConfig(models.Model):
                 elif step_id.step_type == "other":
                     step["fritext"] = step_id.free_text or ""
                 payload['alternativt_mal']['steg'].append(step)
-        else:
+        elif not outplacement.interruption:
             raise ValidationError(_("An alternative goal is required to send final report"))
         for study_visit in outplacement.study_visit_ids:
             payload['studiebesok'].append({

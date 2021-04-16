@@ -11,14 +11,12 @@ class Outplacement(models.Model):
     _inherit = 'outplacement'
 
     study_visit_ids = fields.One2many(comodel_name="outplacement.study_visit", inverse_name="outplacement_id")
-    
-    obstacle_reason = fields.Selection([
-        ('Kan inte ta studielån', 'loan'), 
-        ('På grund utav sjukdom', 'sickness'), 
-        ('På grund utav ekonomisk situation', 'economy'), 
-        ('Annat', 'Other')
-        ])
-    obstacle_motivation = fields.Text(string="Motivation")
+
+    complementing_information = fields.Selection(string="Complementing information", selection=[
+        ('komm_info_01', 'Information has been communicated'),
+        ('komm_info_02', 'Information has not been communicated'),
+        ('komm_info_03', 'Information missing'),
+    ], default="komm_info_03")
     
     fr_send_date = fields.Date(string="Final report send date")
     fr_report_date = fields.Date(string="Reporting date")

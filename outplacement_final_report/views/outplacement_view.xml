@@ -10,12 +10,10 @@
                         <group>
                             <field name="main_goal_id" domain="[('id','=',-1)]"/>
                             <field name="alternative_goal_id" domain="[('id','=',-1)]"/>
-                            <field name="fr_report_date" autocomplete="off"/>
-                            <field name="fr_send_date" groups="base.group_no_one" autocomplete="off"/>
                         </group>
                         <group>
-                            <field name="obstacle_reason"/>
-                            <field name="obstacle_motivation"/>
+                            <field name="fr_report_date" autocomplete="off"/>
+                            <field name="fr_send_date" groups="base.group_no_one" autocomplete="off"/>
                         </group>
                     </group>
                     <h2>Study visit</h2>
@@ -28,6 +26,13 @@
                                 <field name="reasoning"/>
                             </tree>
                         </field>
+                    </group>
+                    <label for="complementing_information" string="Is there complementing information for potential needs, limitations or conditions to seek education or employment that need to be communicated with Arbetsförmedlingen?"/>
+                    <group>
+                        <group>
+                            <field name="complementing_information"/>
+                        </group>
+                        <group></group>
                     </group>
                 </page>
             </xpath>

@@ -206,9 +206,9 @@ class ClientConfig(models.Model):
                 "typ": "studieinriktning",
                 "motivering": "fritext"
             }],
-            "hinder": {
-                "orsak_typ": "Annat",
-                "motivering": "Fritext, används vid orsak_typ Annat"
+            "kompletterande_information": {
+                "fraga": "komm_info",
+                "svar": "komm_info_03"
             }
         }
 
@@ -224,6 +224,8 @@ class ClientConfig(models.Model):
         api = self.get_api()
         if outplacement.performing_operation_id:
             perf_op_id = outplacement.performing_operation_id.ka_nr
+        elif outplacement.interruption:
+            perf_op_id = ""
         else:
             raise ValidationError(_("Performing operation needs to be set to send final report"))
         payload = {
@@ -239,6 +241,10 @@ class ClientConfig(models.Model):
             "avbrott": "true" if outplacement.interruption else "false",
             "ofullstandig": "true" if outplacement.incomplete else "false",
             "studiebesok": [],  # filled with data below
+            "kompletterande_information": {
+                "fraga": "komm_info",
+                "svar": outplacement.complementing_information or "komm_info_03"
+            }
         }
         if outplacement.partner_id:
             payload["deltagare"] = {
@@ -256,16 +262,6 @@ class ClientConfig(models.Model):
                     outplacement.employee_id.user_id.login
         else:
             raise ValidationError(_("Employee must be set"))
-        if outplacement.obstacle_reason:
-            payload["hinder"] = {
-                "orsak_typ": outplacement.obstacle_reason,
-                "motivering": outplacement.obstacle_motivation 
-            }
-        else:
-            payload["hinder"] = {
-                "orsak_typ": "Annat",
-                "motivering": "Inget hinder"
-            }
         goal_id = outplacement.main_goal_id
         if goal_id:
             payload["huvudmal"] = {
@@ -303,7 +299,7 @@ class ClientConfig(models.Model):
                     "typ": 'Annat',
                     "fritext": goal_id.free_text or ""
                     })
-            if not goal_id.step_ids:
+            if not goal_id.step_ids and not outplacement.interruption:
                 raise ValidationError(_("At least one step is required to send final report"))
             for step_id in goal_id.step_ids:
                 step = {
@@ -321,7 +317,7 @@ class ClientConfig(models.Model):
                 elif step_id.step_type == "other":
                     step["fritext"] = step_id.free_text or ""
                 payload['huvudmal']['steg'].append(step)
-        else:
+        elif not outplacement.interruption:
             raise ValidationError(_("A main goal is required to send final report"))
         goal_id = outplacement.alternative_goal_id
         if goal_id:
@@ -362,7 +358,7 @@ class ClientConfig(models.Model):
                     "typ": 'Annat',
                     "fritext": goal_id.free_text or ""
                     })
-            if not goal_id.step_ids:
+            if not goal_id.step_ids and not outplacement.interruption:
                 raise ValidationError(_("At least one step is required to send final report"))
             for step_id in goal_id.step_ids:
                 step = {
@@ -380,7 +376,7 @@ class ClientConfig(models.Model):
                 elif step_id.step_type == "other":
                     step["fritext"] = step_id.free_text or ""
                 payload['alternativt_mal']['steg'].append(step)
-        else:
+        elif not outplacement.interruption:
             raise ValidationError(_("An alternative goal is required to send final report"))
         for study_visit in outplacement.study_visit_ids:
             payload['studiebesok'].append({

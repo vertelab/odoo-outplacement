@@ -2,7 +2,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Outplacement Final Report send',
-    'version': '12.0.0.1.1',
+    'version': '12.0.0.1.2',
     'category': 'Outplacement',
     'description': """
 This module adds a button to the outplacement interface that allows the sending of final reports.

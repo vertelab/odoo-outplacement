@@ -63,6 +63,7 @@ class InterpreterDeliveryWizard(models.TransientModel):
         else:
             self.check_response(response)
             self.log_to_accounting()
+            self.log_to_activity_stream()
             self.mail_activity_id.action_done()
 
     def validate_data(self):
@@ -100,6 +101,20 @@ class InterpreterDeliveryWizard(models.TransientModel):
                   '{response.status_code}\n{response.text}'
             _logger.error(msg.format(response=response))
             raise UserError(_(msg).format(response=response))
+
+    def log_to_activity_stream(self):
+        activity = self.mail_activity_id
+        msg = _('Interpreter booking with reference: {ref} delivered').format(
+            ref=activity.interpreter_booking_ref)
+
+        self.env['mail.message'].create({
+            'body': (f"{_('Interpreter Booking')}<br>{msg}"),
+            'subject': _("Interpreter Delivery"),
+            'author_id': self.env['res.users'].browse(
+                self.env.uid).partner_id.id,
+            'res_id': activity.res_id,
+            'model': activity.res_model,
+            })
 
     def log_to_accounting(self):
         """Create an acounting row with the amount of hours logged."""

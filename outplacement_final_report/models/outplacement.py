@@ -24,32 +24,17 @@ class Outplacement(models.Model):
     main_goal_id = fields.Many2one(comodel_name="outplacement.goal")
     alternative_goal_id = fields.Many2one(comodel_name="outplacement.goal")
 
-    ended_early = fields.Boolean(string="Ended early", compute="_compute_ended_early", readonly=True)
-    ended = fields.Boolean(string="Ended", compute="_compute_ended", readonly=True)
+    interrupted_early = fields.Boolean(string="Interrupted early", compute="_compute_interrupted_early", readonly=True)
 
     @api.onchange('service_start_date', 'service_end_date')
     @api.multi
-    def _compute_ended_early(self):
+    def _compute_interrupted_early(self):
         for rec in self:
-            rec.ended_early = False
+            rec.interrupted_early = False
             if rec.service_start_date and rec.service_end_date:
                 delta = rec.service_end_date - rec.service_start_date
-                _logger.info("service_start_date: %s service_end_date: %s delta: %s" %
-                             (rec.service_start_date, rec.service_end_date, delta))
                 if delta.days < 16 and rec.interruption:
-                    rec.ended_early = True
-
-    @api.onchange('service_start_date', 'service_end_date')
-    @api.multi
-    def _compute_ended(self):
-        for rec in self:
-            rec.ended = False
-            if rec.service_start_date and rec.service_end_date:
-                delta = rec.service_end_date - rec.service_start_date
-                _logger.info("service_start_date: %s service_end_date: %s delta: %s" %
-                             (rec.service_start_date, rec.service_end_date, delta.days))
-                if delta.days > 16 and rec.interruption:
-                    rec.ended = True
+                    rec.interrupted_early = True
 
     @api.constrains('study_visit_ids')
     @api.one

@@ -5,15 +5,14 @@
         <field name="inherit_id" ref="outplacement.outplacement_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <field name="ended_early" invisible="1"/>
-                <field name="ended" invisible="1"/>
+                <field name="interrupted_early" invisible="1"/>
                 <page string="Final report" name="final_report" sequence="90">
                     <h2 attrs="{'invisible': [('interruption', '=', False)]}">
                         Outplacement interrupted
-                        <span attrs="{'invisible': [('ended_early', '=', False)]}">
-                            before day 16, no final report needs to be sent <!-- empty final report needs to be sent -->
+                        <span attrs="{'invisible': [('interrupted_early', '=', False)]}"> <!-- if interrupted before end date -->
+                            before day 16, no final report needs to be sent
                         </span>
-                        <span attrs="{'invisible': [('ended', '=', False),]}"> <!-- if interrupted after end date -->
+                        <span attrs="{'invisible': ['|',('interrupted_early', '=', True),('interruption','=',False)]}"> <!-- if interrupted after end date -->
                             send final report with all available information
                         </span>
                     </h2>

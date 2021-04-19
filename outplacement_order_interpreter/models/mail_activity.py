@@ -14,6 +14,7 @@ _logger = logging.getLogger(__name__)
 class MailActivity(models.Model):
     _inherit = "mail.activity"
 
+    active = fields.Boolean(default=True)
     interpreter_language = fields.Many2one(
         comodel_name='res.interpreter.language',
         string='Interpreter Language',
@@ -102,8 +103,10 @@ class MailActivity(models.Model):
             status = record._interpreter_booking_status_2
             if tech_status == '2':
                 record.interpreter_booking_status = tech_statuses['2']
-            elif (record.time_end < datetime.datetime.now()
-                  and tech_status != '2' and status == '4'):
+            elif (record.time_end
+                  and record.time_end < datetime.datetime.now()
+                  and tech_status != '2'
+                  and status == '4'):
                 record.interpreter_booking_status = _('Not delivered yet!')
             elif status in statuses:
                 record.interpreter_booking_status = statuses[status]
@@ -196,15 +199,16 @@ class MailActivity(models.Model):
         return action
 
     def action_feedback(self, feedback=False):
-        """Adding aditional log rows"""
-        # Has to be before call to super as the record is removed in super.
+        """Archive instead of unlinking for interpreteter"""
+        if not self.is_interpreter:
+            return super(MailActivity, self).action_feedback(feedback)
+        self.active = False
+        message = self.env['mail.message']
         msg = f'Reference: {self.interpreter_booking_ref}<br>'\
               f'Date: {self.time_start}<br>'\
               f'Total time: {self.time_end - self.time_start}'
-        message = super(MailActivity, self).action_feedback(feedback)
-        if message:
-            result = self.env['mail.message'].browse(message)
-            result.body = result.body + msg
+        result = self.env['mail.message'].browse(message)
+        result.body = result.body + msg
         return message
 
     @api.model
@@ -345,7 +349,7 @@ class MailActivity(models.Model):
         self.interpreter_contact_phone = supplier_obj.get(
             'telefonnummer')
         # Force computation if time has passed
-        if self.time_end < datetime.datetime.now():
+        if self.time_end and self.time_end < datetime.datetime.now():
             self._compute_booking_status()
 
     @api.model
@@ -395,7 +399,7 @@ class MailActivity(models.Model):
             'model': self.res_model,
             })
         _logger.info(f'{author} {message_id.body}')
-        self.unlink()
+        self.active = False
 
     @api.model
     def is_interpreter(self, obj=None):

@@ -32,8 +32,8 @@ var Activity = MailActivity.include({
             // If we are trying to remove an interpreter booking ask the user
             // if all things the user have to do before removing it has been done.
 
-            let dialog = new Dialog(this, {'title': 'Avboka tolk',
-                                           '$content': $('<p>Kontakta handläggaren på Arbetsförmedlingen för att avboka tolktillfället. Ange bokningsreferens:' + activity.interpreter_booking_ref + '</p>'),
+            let dialog = new Dialog(this, {'title': 'Avboka tolkbokningen',
+                                           '$content': $('<p>Kontakta handläggaren på Arbetsförmedlingen via växeln 0771-600 000 för att avboka tolktillfället.<br/> Ange bokningsreferens:' + activity.interpreter_booking_ref + '<br/> Påminn gärna handläggaren om att markera tolken som inleverad</p>'),
                                            'technical':'false',
                                            'buttons':[
                                                 {'text':'Ja jag har kontaktat handläggaren', 'close':'true', 'click':function(){self.interpreter_cancel(options)}},

@@ -11,6 +11,10 @@ class Outplacement(models.Model):
     _inherit = 'outplacement'
 
     def send_final_report(self):
+        delta = self.service_end_date - datetime.datetime.today()
+        if not self.interruption and delta.days > 0:
+            raise Warning(_("You are not allowed to send final report before service end"
+                            " unless there has been an interruption"))
         client_config = self.env['ipf.final_report.client.config'].search([], limit=1)
         self.fr_send_date = datetime.datetime.today().strftime("%Y-%m-%d")
         if client_config:

@@ -49,6 +49,7 @@ class Outplacement(models.Model):
     file_reference_number = fields.Char()
     task_ids = fields.Many2many(comodel_name='project.task', string='Tasks')
     order_id = fields.Many2one(comodel_name='sale.order')
+    order_id_origin = fields.Char(string='Source Document', related='order_id.origin')
     tasks_count = fields.Integer(compute='_compute_tasks_count')
     analytic_account_id = fields.Many2one(
         comodel_name='account.analytic.account',

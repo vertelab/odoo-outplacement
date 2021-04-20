@@ -1,6 +1,5 @@
 import json
 import logging
-import pprint
 import uuid
 
 from odoo import models, fields, api, _
@@ -265,6 +264,5 @@ class DeviationReportWizard(models.TransientModel):
         if response.status_code not in (200, 201):
             raise UserError(_("Bad request"))
         self.outplacement_id.message_post(
-            body=f"Deviation report\n{pprint.pformat(payload)}\nResponse:"
-            f"\nStatus code: {response.status_code}\n{response.text}"
+            body=_("Deviation report sent")
         )

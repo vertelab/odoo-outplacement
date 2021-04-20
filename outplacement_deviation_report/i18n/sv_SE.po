@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 12.0-20210127\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-03 14:45+0000\n"
-"PO-Revision-Date: 2021-02-03 14:45+0000\n"
+"PO-Revision-Date: 2021-04-20 12:25+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgid "Acts consciously to sabotage job prospects"
 msgstr "Agerar medvetet för att inte få ett arbete (Ser till att arbetet inte kommer till stånd)."
 
 #. module: outplacement_deviation_report
-#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:193
+#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:267
 #, python-format
 msgid "Bad request"
 msgstr ""
@@ -42,7 +42,7 @@ msgid "Company ID"
 msgstr "Företags-ID"
 
 #. module: outplacement_deviation_report
-#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:136
+#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:154
 #, python-format
 msgid "Configuration not found"
 msgstr "Konfiguration saknas"
@@ -81,7 +81,7 @@ msgstr "Datum"
 #: model:ir.actions.act_window,name:outplacement_deviation_report.deviation_report_action
 #: model_terms:ir.ui.view,arch_db:outplacement_deviation_report.outplacement_form_view_deviation_report
 msgid "Deviation Report"
-msgstr "Skicka in Avvikelserapport"
+msgstr "Avvikelserapport"
 
 #. module: outplacement_deviation_report
 #: model:ir.model.fields,field_description:outplacement_deviation_report.field_outplacement_deviation_report_wizard__deviation_timeend
@@ -97,6 +97,12 @@ msgstr "Start"
 #: model:ir.model.fields,field_description:outplacement_deviation_report.field_outplacement_deviation_report_wizard__deviation_code
 msgid "Deviation Type"
 msgstr "Typ av avvikelse"
+
+#. module: outplacement_deviation_report
+#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:269
+#, python-format
+msgid "Deviation report sent"
+msgstr "Avvikelserapport skickad"
 
 #. module: outplacement_deviation_report
 #: model:ir.model.fields,field_description:outplacement_deviation_report.field_outplacement_deviation_report_wizard__display_name
@@ -186,7 +192,7 @@ msgstr "Frånvaro"
 #. module: outplacement_deviation_report
 #: model:ir.model.fields,field_description:outplacement_deviation_report.field_outplacement_deviation_report_wizard__deviation_leave_code
 msgid "Leave Type"
-msgstr "Typ av frånvaro"
+msgstr "Frånvarotyp"
 
 #. module: outplacement_deviation_report
 #: model:ir.model.fields,field_description:outplacement_deviation_report.field_outplacement_deviation_report_wizard__responsible_id
@@ -288,7 +294,7 @@ msgstr "Användare"
 #. module: outplacement_deviation_report
 #: model:ir.model.fields,help:outplacement_deviation_report.field_outplacement_deviation_report_wizard__performing_operation_nr
 msgid "Utförande verksamhets-nummer"
-msgstr ""
+msgstr "Utförande verksamhetsnummer"
 
 #. module: outplacement_deviation_report
 #: model:ir.model.fields,field_description:outplacement_deviation_report.field_outplacement_deviation_report_wizard__deviation_19_activity
@@ -315,6 +321,12 @@ msgstr "På vilket sätt kan deltagaren inte tillgodogöra sig programmet?"
 #: selection:outplacement.deviation.report.wizard,deviation_leave_code:0
 msgid "Work"
 msgstr "Arbete"
+
+#. module: outplacement_deviation_report
+#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:158
+#, python-format
+msgid "dafa.legacy_no not set in system parameters"
+msgstr ""
 
 #. module: outplacement_deviation_report
 #: model:ir.model,name:outplacement_deviation_report.model_outplacement_deviation_report_wizard

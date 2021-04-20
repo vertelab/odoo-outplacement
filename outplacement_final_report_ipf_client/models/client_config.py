@@ -292,7 +292,7 @@ class ClientConfig(models.Model):
                     })
             if goal_id.complementing_experience:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
-                    "typ": 'kompletterar tidigare erfarenheter'
+                    "typ": 'kompletterar tidigare erfarenhet'
                     })
             if goal_id.other_motivation:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({

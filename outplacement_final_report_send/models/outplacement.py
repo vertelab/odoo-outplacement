@@ -1,6 +1,6 @@
 from odoo import api, fields, models, tools
 from odoo import tools, _
-from odoo.exceptions import Warning
+from odoo.exceptions import UserError
 import logging
 import json
 import datetime
@@ -11,6 +11,10 @@ class Outplacement(models.Model):
     _inherit = 'outplacement'
 
     def send_final_report(self):
+        delta = self.service_end_date - datetime.datetime.now().date()
+        if not self.interruption and delta.days > 0:
+            raise UserError(_("You are not allowed to send final report before service end"
+                            " unless there has been an interruption"))
         client_config = self.env['ipf.final_report.client.config'].search([], limit=1)
         self.fr_send_date = datetime.datetime.today().strftime("%Y-%m-%d")
         if client_config:

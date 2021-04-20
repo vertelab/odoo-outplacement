@@ -5,6 +5,9 @@
             <field name="model">outplacement</field>
             <field name="inherit_id" ref="outplacement.outplacement_form_view"/>
             <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="order_id_origin"/>
+                </field>
                 <field name="employee_id" position="after">
                     <field name='management_team_id'/>
                 </field>
@@ -50,6 +53,15 @@
             </field>
         </record>
 
-
+        <record id="outplacement_tree_view" model="ir.ui.view">
+            <field name="name">Outplacement</field>
+            <field name="model">outplacement</field>
+            <field name="inherit_id" ref="outplacement.outplacement_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="booking_ref" position="replace">
+                    <field name="order_id_origin"/>
+                </field>
+            </field>
+        </record>
     </data>
 </odoo>

@@ -22,12 +22,13 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Sale outplacement',
-    'version': '12.0.1.0.3',
+    'version': '12.0.1.0.4',
     'category': 'Outplacement',
     'description': """Receives a suborder and automatically create sale.order 
     and outplacement.outplacement objects.\n
-    v 12.0.1.0.2 Updated order of Service Date fields AFC-2002 \n
-    v 12.0.1.0.3 added check to not accept duplicates AFC-2000\n
+    v 12.0.1.0.2 AFC-2002: Updated order of Service Date fields  \n
+    v 12.0.1.0.3 AFC-2000: added check to not accept duplicates \n
+    v 12.0.1.0.4 AFC-2120: added sale_order.origin field to outplacements and related views \n
     """,
     'maintainer': "Arbetsformedlingen",
     'author': "Vertel AB",

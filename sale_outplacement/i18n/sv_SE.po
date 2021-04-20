@@ -4,16 +4,22 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0-20201022\n"
+"Project-Id-Version: Odoo Server 12.0-20210127\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-08 09:36+0000\n"
-"PO-Revision-Date: 2021-01-08 09:36+0000\n"
-"Last-Translator: <>\n"
+"PO-Revision-Date: 2021-04-20 12:50+0000\n"
+"Last-Translator: Daniel Eriksson <daniel.eriksson@vertel.se>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: sale_outplacement
+#: code:addons/sale_outplacement/models/project.py:106
+#, python-format
+msgid "%s is a required task and can not be made optional."
+msgstr ""
 
 #. module: sale_outplacement
 #: model:ir.model.fields,field_description:sale_outplacement.field_mail_activity_template__activity_type_id
@@ -27,11 +33,21 @@ msgid "Add a product"
 msgstr "Lägg till en produkt"
 
 #. module: sale_outplacement
-#: model:project.task.type,legend_blocked:sale_outplacement.task_stage_data_1
-#: model:project.task.type,legend_blocked:sale_outplacement.task_stage_done
-#: model:project.task.type,legend_blocked:sale_outplacement.task_stage_init
-msgid "Blocked"
-msgstr "Blockerad"
+#: code:addons/sale_outplacement/models/project.py:110
+#, python-format
+msgid "An optional task with no sub-tasks can't be made required"
+msgstr ""
+
+#. module: sale_outplacement
+#: code:addons/sale_outplacement/models/project.py:115
+#, python-format
+msgid "An optional task with sub-tasksin To Do stage can't be made optionaluntil the required sub-tasks are done"
+msgstr ""
+
+#. module: sale_outplacement
+#: model:ir.model.fields,field_description:sale_outplacement.field_outplacement__analytic_account_id
+msgid "Analytic Account"
+msgstr "Objektkonto"
 
 #. module: sale_outplacement
 #: model:ir.model,name:sale_outplacement.model_res_partner
@@ -60,14 +76,26 @@ msgid "Display Name"
 msgstr "Visningsnamn"
 
 #. module: sale_outplacement
-#: model:project.task.type,name:sale_outplacement.task_stage_done
-msgid "Done"
-msgstr "Klar"
+#: code:addons/sale_outplacement/models/project.py:127
+#, python-format
+msgid "Done stage not found"
+msgstr ""
 
 #. module: sale_outplacement
 #: model:ir.model.fields,field_description:sale_outplacement.field_mail_activity_template__due_days
 msgid "Due Days"
 msgstr ""
+
+#. module: sale_outplacement
+#: model:ir.model.fields,field_description:sale_outplacement.field_project_task__duration
+msgid "Duration"
+msgstr "Varaktighet"
+
+#. module: sale_outplacement
+#: model:ir.model.fields,field_description:sale_outplacement.field_project_task__child_end_date
+#: model:ir.model.fields,field_description:sale_outplacement.field_project_task__end_date
+msgid "End date"
+msgstr "Slutdatum"
 
 #. module: sale_outplacement
 #: selection:project.task,joint_planing_type:0
@@ -80,16 +108,19 @@ msgid "File Reference Number"
 msgstr "Diarienummer"
 
 #. module: sale_outplacement
+#: model:ir.model.fields,field_description:sale_outplacement.field_sale_order_line__forvantatantal
+msgid "Förväntat antal"
+msgstr ""
+
+#. module: sale_outplacement
 #: model:ir.model.fields,field_description:sale_outplacement.field_mail_activity_template__id
 msgid "ID"
 msgstr ""
 
 #. module: sale_outplacement
-#: model:project.task.type,legend_normal:sale_outplacement.task_stage_data_1
-#: model:project.task.type,legend_normal:sale_outplacement.task_stage_done
-#: model:project.task.type,legend_normal:sale_outplacement.task_stage_init
-msgid "In Progress"
-msgstr "Pågående"
+#: model:ir.model.fields,field_description:sale_outplacement.field_project_task__instructions
+msgid "Instructions"
+msgstr "Instruktioner"
 
 #. module: sale_outplacement
 #: model:ir.model.fields,field_description:sale_outplacement.field_project_task_type__is_outplacement
@@ -104,6 +135,11 @@ msgstr ""
 #. module: sale_outplacement
 #: selection:project.task,joint_planing_type:0
 msgid "KVL"
+msgstr ""
+
+#. module: sale_outplacement
+#: model:ir.model.fields,field_description:sale_outplacement.field_outplacement__temp_lang
+msgid "Language support requested"
 msgstr ""
 
 #. module: sale_outplacement
@@ -122,10 +158,15 @@ msgid "Last Updated on"
 msgstr "Senast uppdaterad"
 
 #. module: sale_outplacement
+#: model:ir.model.fields,help:sale_outplacement.field_outplacement__analytic_account_id
+msgid "Link this outplacement to an analytic account if you need financial management. It enables you to connect outplacements with budgets, planning, cost and revenue analysis, timesheets."
+msgstr ""
+
+#. module: sale_outplacement
 #: model:ir.model.fields,field_description:sale_outplacement.field_product_product__mail_activity_ids
 #: model:ir.model.fields,field_description:sale_outplacement.field_product_template__mail_activity_ids
 msgid "Mail Activity"
-msgstr ""
+msgstr "Emailaktivitet"
 
 #. module: sale_outplacement
 #: model:ir.model.fields,field_description:sale_outplacement.field_outplacement__management_team_id
@@ -138,14 +179,12 @@ msgid "Mandatory"
 msgstr ""
 
 #. module: sale_outplacement
-#: model:project.task.type,name:sale_outplacement.task_stage_init
-msgid "New"
-msgstr "Ny"
-
-#. module: sale_outplacement
-#: model:project.task.type,name:sale_outplacement.task_stage_data_1
-msgid "Ongoing"
-msgstr "Pågående"
+#: code:addons/sale_outplacement/models/project.py:65
+#: code:addons/sale_outplacement/models/project.py:102
+#: code:addons/sale_outplacement/models/project.py:146
+#, python-format
+msgid "Not all stages were found"
+msgstr ""
 
 #. module: sale_outplacement
 #: selection:project.task,task_type:0
@@ -168,9 +207,16 @@ msgid "Order Start Date"
 msgstr "Avropets startdatum"
 
 #. module: sale_outplacement
+#: model:ir.model.fields,field_description:sale_outplacement.field_outplacement__order_id_origin
+#: model:ir.model.fields,field_description:sale.field_sale_order__origin
+msgid "Source Document"
+msgstr "Genomförandereferens"
+
+#. module: sale_outplacement
 #: model:ir.model,name:sale_outplacement.model_outplacement
 #: model:ir.model.fields,field_description:sale_outplacement.field_project_task__outplacement_id
 #: model:ir.model.fields,field_description:sale_outplacement.field_project_task_type__outplacement_ids
+#: model:ir.model.fields,field_description:sale_outplacement.field_sale_order__outplacement_id
 msgid "Outplacement"
 msgstr "Deltagare"
 
@@ -201,11 +247,19 @@ msgid "Product Template"
 msgstr "Produktmall"
 
 #. module: sale_outplacement
-#: model:project.task.type,legend_done:sale_outplacement.task_stage_data_1
-#: model:project.task.type,legend_done:sale_outplacement.task_stage_done
-#: model:project.task.type,legend_done:sale_outplacement.task_stage_init
-msgid "Ready for Next Stage"
-msgstr ""
+#: model:ir.model.fields,help:sale_outplacement.field_outplacement__order_id_origin
+msgid "Reference of the document that generated this sales order request."
+msgstr "En hänvisning till det dokument som genererade denna försäljningsorder."
+
+#. module: sale_outplacement
+#: model:ir.model,name:sale_outplacement.model_sale_order
+msgid "Sale Order"
+msgstr "Kundorder"
+
+#. module: sale_outplacement
+#: model:ir.model,name:sale_outplacement.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Orderrad"
 
 #. module: sale_outplacement
 #: model:ir.actions.server,name:sale_outplacement.ir_actions_test_outplacement
@@ -213,9 +267,32 @@ msgid "Simulate Suborder from BAR"
 msgstr ""
 
 #. module: sale_outplacement
+#: model:ir.actions.server,name:sale_outplacement.ir_actions_test_outplacement_manual
+msgid "Simulate Suborder from BAR Manual"
+msgstr ""
+
+#. module: sale_outplacement
 #: model:ir.model.fields,field_description:sale_outplacement.field_outplacement__skill_id
-msgid "Skills"
+msgid "Skill"
 msgstr "Kompetens"
+
+#. module: sale_outplacement
+#: model:product.product,name:sale_outplacement.slutersattning
+#: model:product.template,name:sale_outplacement.slutersattning_product_template
+msgid "Slutersättning"
+msgstr ""
+
+#. module: sale_outplacement
+#: model:ir.model.fields,field_description:sale_outplacement.field_project_task__child_start_date
+#: model:ir.model.fields,field_description:sale_outplacement.field_project_task__start_date
+msgid "Start date"
+msgstr "Startdatum"
+
+#. module: sale_outplacement
+#: model:product.product,name:sale_outplacement.startersattning
+#: model:product.template,name:sale_outplacement.startersattning_product_template
+msgid "Startersättning"
+msgstr ""
 
 #. module: sale_outplacement
 #: model_terms:ir.ui.view,arch_db:sale_outplacement.product_template_only_form_view
@@ -253,10 +330,43 @@ msgid "Tasks Count"
 msgstr ""
 
 #. module: sale_outplacement
+#: model:ir.model.fields,field_description:sale_outplacement.field_product_product__tlr_ref
+#: model:ir.model.fields,field_description:sale_outplacement.field_product_template__tlr_ref
+msgid "Tlr ID"
+msgstr ""
+
+#. module: sale_outplacement
 #: model:product.product,uom_name:sale_outplacement.product_suborder
+#: model:product.product,uom_name:sale_outplacement.slutersattning
+#: model:product.product,uom_name:sale_outplacement.startersattning
 #: model:product.template,uom_name:sale_outplacement.product_suborder_product_template
+#: model:product.template,uom_name:sale_outplacement.slutersattning_product_template
+#: model:product.template,uom_name:sale_outplacement.startersattning_product_template
 msgid "Unit(s)"
 msgstr "st"
+
+#. module: sale_outplacement
+#: code:addons/sale_outplacement/models/outplacement.py:244
+#, python-format
+msgid "Unknown Analytic Account"
+msgstr ""
+
+#. module: sale_outplacement
+#: model:ir.actions.server,name:sale_outplacement.ir_actions_update_order_from_ordertjansten
+msgid "Uppdatera_order_från_Ordertjänsten"
+msgstr ""
+
+#. module: sale_outplacement
+#: code:addons/sale_outplacement/models/project.py:120
+#, python-format
+msgid "You are not allowed to add new required or optional tasks."
+msgstr ""
+
+#. module: sale_outplacement
+#: code:addons/sale_outplacement/models/project.py:137
+#, python-format
+msgid "You are not allowed to remove requred tasks"
+msgstr ""
 
 #. module: sale_outplacement
 #: model:ir.model.fields,field_description:sale_outplacement.field_product_product__is_suborder
@@ -266,7 +376,11 @@ msgstr ""
 
 #. module: sale_outplacement
 #: model:product.product,weight_uom_name:sale_outplacement.product_suborder
+#: model:product.product,weight_uom_name:sale_outplacement.slutersattning
+#: model:product.product,weight_uom_name:sale_outplacement.startersattning
 #: model:product.template,weight_uom_name:sale_outplacement.product_suborder_product_template
+#: model:product.template,weight_uom_name:sale_outplacement.slutersattning_product_template
+#: model:product.template,weight_uom_name:sale_outplacement.startersattning_product_template
 msgid "kg"
 msgstr ""
 
@@ -275,12 +389,3 @@ msgstr ""
 msgid "mail.activity.template"
 msgstr ""
 
-#. module: sale_outplacement
-#: model:ir.model.fields,field_description:sale_outplacement.field_project_task__instructions
-msgid "Instructions"
-msgstr "Instruktioner"
-
-#. module: sale_outplacement
-#: model:ir.model.fields,field_description:sale_outplacement.field_project_task__start_date
-msgid "Start date"
-msgstr "Startdatum"

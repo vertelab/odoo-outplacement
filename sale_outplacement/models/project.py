@@ -47,6 +47,13 @@ class ProjectTask(models.Model):
         string="Task Type",
     )
 
+    @api.one
+    @api.constrains('parent_id')
+    def _constrain_same_outplacement(self):
+        if self.parent_id:
+            if self.outplacement_id != self.parent_id.outplacement_id:
+                raise ValidationError(_("Parent activity must have the same outplacement as its children."))
+
     @api.onchange('start_date', 'end_date')
     def _compute_duration(self):
         if self.start_date and self.end_date:

@@ -31,5 +31,8 @@ class Outplacement(models.Model):
             _logger.debug("Successfully created final report")
         else:
             raise Warning(_("No config found for final report"))
+        self.message_post(
+            body=_("Final report sent, note that if it's not accepted "
+                   "you will get that information from an administrative officer by email"))
 
 

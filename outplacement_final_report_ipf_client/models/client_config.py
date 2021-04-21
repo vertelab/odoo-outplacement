@@ -251,7 +251,7 @@ class ClientConfig(models.Model):
                 "fornamn": outplacement.partner_id.firstname or "",
                 "efternamn": outplacement.partner_id.lastname or "",
                 "deltog_per_distans": outplacement.meeting_remote or ""
-            },
+            }
         if outplacement.employee_id:
             payload["ansvarig_handledare"] = {
                 "fornamn": outplacement.employee_id.firstname or "",
@@ -307,13 +307,14 @@ class ClientConfig(models.Model):
             for step_id in goal_id.step_ids:
                 step = {
                     "typ": step_id.step_type,
-                    "namn": "",
                     "niva": str(step_id.education_level_id.name) if step_id.education_level_id else "",
                     "startdatum": str(step_id.start_date) if step_id.start_date else "",
                     "slutdatum": str(step_id.end_date) if step_id.end_date else ""
                 }
-                if step_id.step_name and step_id.step_type == "Studera reguljär utbildning":
-                    step["namn"] = step_id.step_name or "",
+                if step_id.step_type == "Studera reguljär utbildning":
+                    step["namn"] = step_id.step_name or ""
+                else:
+                    step["namn"] = ""
                 if step_id.step_type == "Lämpliga kompletterande insatser":
                     step["kompletterande_insats"] = {
                         "typ": step_id.complementing_effort_type or _("complementing effort type not set"),
@@ -371,13 +372,14 @@ class ClientConfig(models.Model):
             for step_id in goal_id.step_ids:
                 step = {
                     "typ": step_id.step_type,
-                    "namn": "",
                     "niva": str(step_id.education_level_id.name) if step_id.education_level_id else "",
                     "startdatum": str(step_id.start_date) if step_id.start_date else "",
                     "slutdatum": str(step_id.end_date) if step_id.end_date else ""
                 }
-                if step_id.step_name and step_id.step_type == "Studera reguljär utbildning":
-                    step["namn"] = step_id.step_name or "",
+                if step_id.step_type == "Studera reguljär utbildning":
+                    step["namn"] = step_id.step_name or ""
+                else:
+                    step["namn"] = ""
                 if step_id.step_type == "Lämpliga kompletterande insatser":
                     step["kompletterande_insats"] = {
                         "typ": step_id.complementing_effort_type,

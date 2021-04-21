@@ -97,8 +97,8 @@ class MailActivity(models.Model):
                     '2': _('No available interpreter'),
                     '3': _('Order received'),
                     '4': _('Interpreter Booked'),
-                    '5': _('Cancellation performed'),
-                    '6': _('Cancelled by interpreter')}
+                    '5': _('Cancelled by Interpreter'),
+                    '6': _('Cancelled by AF')}
         for record in self:
             tech_status = record._interpreter_booking_status
             status = record._interpreter_booking_status_2

@@ -13,6 +13,7 @@ class Outplacement(models.Model):
     def send_final_report(self):
         delta = self.service_end_date - datetime.datetime.now().date()
         if not self.interruption and delta.days > 0:
+            _logger.info("date delta: %s" % delta.days)
             raise UserError(_("You are not allowed to send final report before service end"
                             " unless there has been an interruption"))
         client_config = self.env['ipf.final_report.client.config'].search([], limit=1)
@@ -27,9 +28,12 @@ class Outplacement(models.Model):
                 code = cause_dict.get("code", _("Unknown error code"))
                 cause_message = cause_dict.get("message", _("Unknown cause"))
                 error_text = _("Error %s: %s\nCause: %s\nTracking ID: %s") % (code, message, cause_message, tracking_id)
-                raise Warning(error_text)
+                raise UserError(error_text)
             _logger.debug("Successfully created final report")
         else:
-            raise Warning(_("No config found for final report"))
+            raise UserError(_("No config found for final report"))
+        self.message_post(
+            body=_("Final report sent, note that if it's not accepted "
+                   "you will get that information from an administrative officer by email"))
 
 

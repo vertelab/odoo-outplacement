@@ -40,11 +40,11 @@
                 <field name="meeting_remote" />
               </group>
               <group name="af_data" string="Authority data">
-                <field name="name" string="Outplacement id"/>
+                <field name="name" string="Outplacement id" groups="base.group_no_one"/>
                 <field name="employee_id" />
                 <field name="performing_operation_id" />
-                <field name="uniq_ref" attrs="{'readonly':[('show_2nd_line','=', True)]}" />
-                <field name="booking_ref" attrs="{'readonly':[('show_2nd_line','=', True)]}" />
+                <field name="uniq_ref" attrs="{'readonly':[('show_2nd_line','=', True)]}" groups="base.group_no_one" />
+                <field name="booking_ref" attrs="{'readonly':[('show_2nd_line','=', True)]}" groups="base.group_no_one" />
               </group>
             </group>
             <notebook />

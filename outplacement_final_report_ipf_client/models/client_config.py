@@ -307,7 +307,7 @@ class ClientConfig(models.Model):
             for step_id in goal_id.step_ids:
                 step = {
                     "typ": step_id.step_type,
-                    "niva": str(step_id.education_level_id.name) if step_id.education_level_id else "",
+                    "niva": step_id.education_level_id.name_get()[0][1] if step_id.education_level_id else "",
                     "startdatum": str(step_id.start_date) if step_id.start_date else "",
                     "slutdatum": str(step_id.end_date) if step_id.end_date else ""
                 }

@@ -11,7 +11,7 @@ V12.0.0.1.2 fixed some field names
 V12.0.0.1.3 fixed values
 V12.0.0.1.4 fixed a value, refactoring
 V12.0.0.1.5 fixed values, added checks
-V12.0.0.1.6 fixed a value
+V12.0.0.1.6 fixed the value "Kompletterar tidigare erfarenet" in "val_av_alternativt_mal_motivering" in "alternativt_mal" payload
     """,
 
     'author': "Vertel AB",

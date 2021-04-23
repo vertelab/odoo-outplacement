@@ -307,7 +307,7 @@ class ClientConfig(models.Model):
             for step_id in goal_id.step_ids:
                 step = {
                     "typ": step_id.step_type,
-                    "niva": str(step_id.education_level_id.name) if step_id.education_level_id else "",
+                    "niva": step_id.education_level_id.name_get()[0][1] if step_id.education_level_id else "",
                     "startdatum": str(step_id.start_date) if step_id.start_date else "",
                     "slutdatum": str(step_id.end_date) if step_id.end_date else ""
                 }
@@ -325,6 +325,15 @@ class ClientConfig(models.Model):
                 payload['huvudmal']['steg'].append(step)
         elif not outplacement.interruption:
             raise ValidationError(_("A main goal is required to send final report"))
+        else:
+            payload["huvudmal"] = {
+                "yrkesomrade": "",
+                "yrke": "",
+                "arbetsuppgifter_beskrivning": "",
+                "val_av_huvudmal_motivering": [],
+                "fritext": "",
+                "steg": []
+            }
         goal_id = outplacement.alternative_goal_id
         if goal_id:
             payload["alternativt_mal"] = {
@@ -372,7 +381,7 @@ class ClientConfig(models.Model):
             for step_id in goal_id.step_ids:
                 step = {
                     "typ": step_id.step_type,
-                    "niva": str(step_id.education_level_id.name) if step_id.education_level_id else "",
+                    "niva": step_id.education_level_id.name_get()[0][1] if step_id.education_level_id else "",
                     "startdatum": str(step_id.start_date) if step_id.start_date else "",
                     "slutdatum": str(step_id.end_date) if step_id.end_date else ""
                 }
@@ -390,6 +399,15 @@ class ClientConfig(models.Model):
                 payload['alternativt_mal']['steg'].append(step)
         elif not outplacement.interruption:
             raise ValidationError(_("An alternative goal is required to send final report"))
+        else:
+            payload["alternativt_mal"] = {
+                "yrkesomrade": "",
+                "yrke": "",
+                "arbetsuppgifter_beskrivning": "",
+                "val_av_alternativt_mal_motivering": [],
+                "fritext": "",
+                "steg": []
+            }
         for study_visit in outplacement.study_visit_ids:
             payload['studiebesok'].append({
                 "namn": study_visit.name or "",

@@ -128,7 +128,7 @@ msgstr "Arbetsområde"
 #. module: outplacement_final_report
 #: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_partner_form
 msgid "Final report"
-msgstr "Slutrapport"
+msgstr "Slutredovisning"
 
 #. module: outplacement_final_report
 #: model:ir.actions.act_window,name:outplacement_final_report.outplacement_goal_step_action

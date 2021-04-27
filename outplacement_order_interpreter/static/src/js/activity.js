@@ -34,7 +34,7 @@ var Activity = MailActivity.include({
             let dialog = new Dialog(this, {'title': 'Cancel Interpreter',
                                            '$content': $('<p>
                                                          <b>Avboka tolkbokningen</b> <br>
-                                                         Avboka tolken genom att skicka ett epostmeddelande till <a href="mailto:team-crm@arbetsformedlingen.se?subject=Avboka tolk med referens ' + activity.interpreter_booking_ref + '.">team-crm@arbetsformedlingen.se och ange referensnummer ' + activity.interpreter_booking_ref + '.
+                                                         Avboka tolken genom att skicka ett epostmeddelande till <a href="mailto:team-crm@arbetsformedlingen.se?subject=Avboka tolk med referens ' + activity.interpreter_booking_ref + '."> team-crm@arbetsformedlingen.se och ange referensnummer ' + activity.interpreter_booking_ref + '.
                                                          </p>'),
                                            'technical':'false',
                                            'buttons':[

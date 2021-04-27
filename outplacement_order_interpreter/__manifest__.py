@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Order Interpreter',
-    'version': '12.0.1.5.3',
+    'version': '12.0.1.5.4',
     'category': 'Outplacement',
     'description': """This module adds interpreter-functionality \n
     v12.0.0.2 changed the languagecodes from a full list to Tolkportalens list. AFC-1586 \n
@@ -39,6 +39,7 @@
     v12.0.1.5.1 Fixed crash at delivery.\n
     v12.0.1.5.2 Fixed wrong status message on cancelation.\n
     v12.0.1.5.3 Changed cancellation instruction message.\n
+    v12.0.1.5.4 Fixed typo in cancelling message.\n
     
     """,
     'author': "N-development",

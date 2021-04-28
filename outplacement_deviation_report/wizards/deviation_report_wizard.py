@@ -177,7 +177,10 @@ class DeviationReportWizard(models.TransientModel):
                 "avvikelseorsakskod": self.deviation_code,
                 "rapporteringsdatum": str(self.deviation_date),
             }
-
+        if not self.responsible_id:
+            raise UserError(_("Missing management team"))
+        if not self.responsible_id.af_signature:
+            raise UserError(_("Missing signature on management team"))
         qa_pairs = []
         payload = {
             "genomforande_referens": self.order_id,
@@ -235,7 +238,7 @@ class DeviationReportWizard(models.TransientModel):
                 qa_pair = {"fraga": "22_2", "svar": self.deviation_22_action}
                 qa_pairs.append(qa_pair)
 
-        if self.deviation_leave_code:
+        if self.deviation_leave_code and self.deviation_type == "leave":
 
             if self.deviation_leave_code == "18" and self.deviation_18_alternatives:
                 dict_18 = {}

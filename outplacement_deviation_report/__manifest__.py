@@ -1,7 +1,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Deviation Report',
-    'version': '12.0.0.1.3',
+    'version': '12.0.0.1.4',
     'category': 'Outplacement',
     "description": """
 Outplacement Deviation Report\n
@@ -9,6 +9,7 @@ Outplacement Deviation Report\n
 v12.0.0.1.1: Versions before version handling\n
 v12.0.0.1.2 AFC-2104: Changed "sent"-message in chatter box\n
 v12.0.0.1.3 improved error messages
+v12.0.0.1.4 added checks and error messages
 """,
     'author': "Vertel AB",
     'license': 'AGPL-3',

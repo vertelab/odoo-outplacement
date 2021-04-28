@@ -266,7 +266,7 @@ class DeviationReportWizard(models.TransientModel):
             tracking_id = res_dict.get("error_id", "")
             message = res_dict.get("message", "")
             cause_dict = res_dict.get("cause", {})
-            code = cause_dict.get("code", _("Unknown error code"))
+            code = cause_dict.get("code", response.status_code)
             cause_message = cause_dict.get("message", _("Unknown cause"))
             error_text = _("Error %s: %s\nCause: %s\nTracking ID: %s") % (code, message, cause_message, tracking_id)
             _logger.debug(f"Error: {res_dict}")

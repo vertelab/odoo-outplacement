@@ -1,30 +1,26 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* outplacement_deviation_report
+# 	* outplacement_deviation_report
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0-20210127\n"
+"Project-Id-Version: Odoo Server 12.0-20210129\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-03 14:45+0000\n"
-"PO-Revision-Date: 2021-04-20 12:25+0000\n"
-"Last-Translator: Daniel Eriksson <daniel.eriksson@vertel.se>\n"
+"PO-Revision-Date: 2021-04-28 11:05+0200\n"
+"Last-Translator: <Sebastian Gieser>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
+"Language: sv\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #. module: outplacement_deviation_report
 #: selection:outplacement.deviation.report.wizard,deviation_code:0
 msgid "Acts consciously to sabotage job prospects"
 msgstr "Agerar medvetet för att inte få ett arbete (Ser till att arbetet inte kommer till stånd)."
-
-#. module: outplacement_deviation_report
-#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:267
-#, python-format
-msgid "Bad request"
-msgstr ""
 
 #. module: outplacement_deviation_report
 #: model_terms:ir.ui.view,arch_db:outplacement_deviation_report.deviation_report_form
@@ -42,7 +38,7 @@ msgid "Company ID"
 msgstr "Företags-ID"
 
 #. module: outplacement_deviation_report
-#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:154
+#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:152
 #, python-format
 msgid "Configuration not found"
 msgstr "Konfiguration saknas"
@@ -99,7 +95,7 @@ msgid "Deviation Type"
 msgstr "Typ av avvikelse"
 
 #. module: outplacement_deviation_report
-#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:269
+#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:275
 #, python-format
 msgid "Deviation report sent"
 msgstr "Avvikelserapport skickad"
@@ -113,6 +109,18 @@ msgstr "Visningsnamn"
 #: selection:outplacement.deviation.report.wizard,deviation_leave_code:0
 msgid "Education"
 msgstr "Utbildning"
+
+#. module: outplacement_deviation_report
+#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:271
+#, python-format
+msgid ""
+"Error %s: %s\n"
+"Cause: %s\n"
+"Tracking ID: %s"
+msgstr ""
+"Fel %s: %s\n"
+"Orsak: %s\n"
+"Spårnings-ID: %s"
 
 #. module: outplacement_deviation_report
 #: model:ir.model.fields,field_description:outplacement_deviation_report.field_outplacement_deviation_report_wizard__expected_time_end
@@ -282,6 +290,12 @@ msgid "Unique ID"
 msgstr "Unikt ID"
 
 #. module: outplacement_deviation_report
+#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:270
+#, python-format
+msgid "Unknown cause"
+msgstr "Okänd anledning"
+
+#. module: outplacement_deviation_report
 #: selection:outplacement.deviation.report.wizard,deviation_leave_code:0
 msgid "Unkown reason"
 msgstr "Okänd orsak"
@@ -323,7 +337,7 @@ msgid "Work"
 msgstr "Arbete"
 
 #. module: outplacement_deviation_report
-#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:158
+#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:156
 #, python-format
 msgid "dafa.legacy_no not set in system parameters"
 msgstr "dafa.legacy_no är ej inställt i systemparameter"
@@ -332,4 +346,3 @@ msgstr "dafa.legacy_no är ej inställt i systemparameter"
 #: model:ir.model,name:outplacement_deviation_report.model_outplacement_deviation_report_wizard
 msgid "outplacement.deviation.report.wizard"
 msgstr ""
-

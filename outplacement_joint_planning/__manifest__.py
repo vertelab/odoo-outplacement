@@ -23,13 +23,14 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Outplacement - Joint Planning',
-    'version': '12.0.1.0.5',
+    'version': '12.0.1.0.6',
     'category': 'Outplacement',
     'description': """
     Module to handle the GUI for SubOrder (SV: Avrop ).
      v12.0.1.0.3 adds limitation for sending GP before day 6 in the service. AFC-1943\n
      v12.0.1.0.4 Fixed bugs in date comparison.\n
      v12.0.1.0.5 AFC-2002 changed calculation base for the 6th day in service\n
+     v12.0.1.0.6 AFC-2028 Made fields readonly.
 """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',

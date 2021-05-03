@@ -6,28 +6,28 @@
             <field name="inherit_id" ref="outplacement.outplacement_form_view"/>
             <field name="arch" type="xml">
                 <field name="name" position="before">
-                    <field name="order_id_origin"/>
+                    <field name="order_id_origin" readonly="1"/>
                 </field>
                 <field name="employee_id" position="after">
-                    <field name='management_team_id'/>
+                    <field name='management_team_id' readonly="1"/>
                 </field>
                 <group name="service" position="inside">
-                    <field name="create_date" groups="base.group_no_one"/>
+                    <field name="create_date" groups="base.group_no_one" readonly="1"/>
                     <!--the order_start_date should normally the 11th working day after the create_date. It used to be the same date as the start date AFC-2002-->
-                    <field name="order_start_date" groups="base.group_no_one"/>
+                    <field name="order_start_date" groups="base.group_no_one" readonly="1"/>
                     <!--the service_start_date is refered to as the first day the participant starts the service -->
-                    <field name="service_start_date"/>
+                    <field name="service_start_date" readonly="1"/>
                     <!--the service_end_date is refered to as the last day the participant starts the service, 40 working days after service_start_date -->
-                    <field name="service_end_date"/>
+                    <field name="service_end_date" readonly="1"/>
                     <!--the order_close_date is not used at this time, but it is is sent from BAR until further notice-->
-                    <field name="order_close_date" groups="base.group_no_one"/>
-                    <field name="participitation_rate"/>
+                    <field name="order_close_date" groups="base.group_no_one" readonly="1"/>
+                    <field name="participitation_rate" readonly="1"/>
                     <!--Temporary solution until BÄR gives the right languages-->
                     <field name="temp_lang"
                            attrs="{'invisible': [('temp_lang', '=', False)]}"/>
                 </group>
                 <group name="af_data" position="inside">
-                    <field name="file_reference_number"/>
+                    <field name="file_reference_number" readonly="1"/>
                 </group>
             </field>
         </record>

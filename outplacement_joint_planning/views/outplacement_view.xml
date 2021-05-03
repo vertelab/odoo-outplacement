@@ -44,7 +44,7 @@
             <button name="send_gp_to_bar" string="Send GP to BAR" type="object"/>
         </xpath>
         <group name="service" position="inside">
-          <field name="jp_sent_date" required="False" />
+          <field name="jp_sent_date" required="False" readonly="1"/>
         </group>
         <div name="button_box" position="inside">
           <button class="oe_stat_button" type="action" name="%(act_project_project_2_project_task_all)d" icon="fa-tasks">

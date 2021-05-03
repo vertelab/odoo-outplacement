@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from collections import defaultdict
 import datetime
 import json
 import logging
@@ -96,8 +97,8 @@ class MailActivity(models.Model):
                     '2': _('No available interpreter'),
                     '3': _('Order received'),
                     '4': _('Interpreter Booked'),
-                    '5': _('Cancellation performed'),
-                    '6': _('Cancelled by interpreter')}
+                    '5': _('Cancelled by Interpreter'),
+                    '6': _('Cancelled by AF')}
         for record in self:
             tech_status = record._interpreter_booking_status
             status = record._interpreter_booking_status_2
@@ -199,17 +200,49 @@ class MailActivity(models.Model):
         return action
 
     def action_feedback(self, feedback=False):
-        """Archive instead of unlinking for interpreteter"""
-        if not self.is_interpreter:
-            return super(MailActivity, self).action_feedback(feedback)
-        self.active = False
-        message = self.env['mail.message']
-        msg = f'Reference: {self.interpreter_booking_ref}<br>'\
-              f'Date: {self.time_start}<br>'\
-              f'Total time: {self.time_end - self.time_start}'
-        result = self.env['mail.message'].browse(message)
-        result.body = result.body + msg
-        return message
+        interpreter_messages = self.filtered(lambda m: self.is_interpreter())
+        other_messages = self - interpreter_messages
+        if other_messages:
+            result = super(MailActivity, other_messages).action_feedback(feedback)
+        if interpreter_messages:
+            message = self.env['mail.message']
+            if feedback:
+                self.write(dict(feedback=feedback))
+
+            # Search for all attachments linked to the activities we are about to unlink. This way, we
+            # can link them to the message posted and prevent their deletion.
+            attachments = self.env['ir.attachment'].search_read([
+                ('res_model', '=', self._name),
+                ('res_id', 'in', self.ids),
+            ], ['id', 'res_id'])
+
+            activity_attachments = defaultdict(list)
+            for attachment in attachments:
+                activity_id = attachment['res_id']
+                activity_attachments[activity_id].append(attachment['id'])
+
+            for activity in interpreter_messages:
+                record = self.env[activity.res_model].browse(activity.res_id)
+                record.message_post_with_view(
+                    'mail.message_activity_done',
+                    values={'activity': activity},
+                    subtype_id=self.env['ir.model.data'].xmlid_to_res_id('mail.mt_activities'),
+                    mail_activity_type_id=activity.activity_type_id.id,
+                )
+
+                activity_message = record.message_ids[0]
+                message_attachments = self.env['ir.attachment'].browse(activity_attachments[activity.id])
+                if message_attachments:
+                    message_attachments.write({
+                        'res_id': activity_message.id,
+                        'res_model': activity_message._name,
+                    })
+                    activity_message.attachment_ids = message_attachments
+                message |= activity_message
+
+            interpreter_messages.write({'active': False})
+            return message.ids and message.ids[0] or False
+        return result
 
     @api.model
     def create(self, vals):

@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Order Interpreter',
-    'version': '12.0.1.5.1',
+    'version': '12.0.1.5.5',
     'category': 'Outplacement',
     'description': """This module adds interpreter-functionality \n
     v12.0.0.2 changed the languagecodes from a full list to Tolkportalens list. AFC-1586 \n
@@ -36,7 +36,11 @@
     v12.0.1.4.1 Bugfix of cronjob, Handling of removal of parent task.\n
     v12.0.1.4.2 Added sequence to interpreter-booking-view.\n
     v12.0.1.5.0 Archive instead of removing.\n
-    v12.0.1.5.1 AFC-2028: Making fields readonly/not able to create on the fly. \n
+    v12.0.1.5.1 Fixed crash at delivery.\n
+    v12.0.1.5.2 Fixed wrong status message on cancelation.\n
+    v12.0.1.5.3 Changed cancellation instruction message.\n
+    v12.0.1.5.4 Fixed typo in cancelling message.\n
+    v12.0.1.5.5 AFC-2028: Making fields readonly/not able to create on the fly. \n
     """,
     'author': "N-development",
     'license': 'AGPL-3',

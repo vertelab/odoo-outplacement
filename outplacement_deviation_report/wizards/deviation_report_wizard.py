@@ -262,7 +262,15 @@ class DeviationReportWizard(models.TransientModel):
             params=querystring,
         )
         if response.status_code not in (200, 201):
-            raise UserError(_("Bad request"))
+            res_dict = json.loads(response.text)
+            tracking_id = res_dict.get("error_id", "")
+            message = res_dict.get("message", "")
+            cause_dict = res_dict.get("cause", {})
+            code = cause_dict.get("code", response.status_code)
+            cause_message = cause_dict.get("message", _("Unknown cause"))
+            error_text = _("Error %s: %s\nCause: %s\nTracking ID: %s") % (code, message, cause_message, tracking_id)
+            _logger.debug(f"Error: {res_dict}")
+            raise UserError(error_text)
         self.outplacement_id.message_post(
             body=_("Deviation report sent")
         )

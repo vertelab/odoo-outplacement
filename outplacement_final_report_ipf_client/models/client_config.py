@@ -251,7 +251,7 @@ class ClientConfig(models.Model):
                 "fornamn": outplacement.partner_id.firstname or "",
                 "efternamn": outplacement.partner_id.lastname or "",
                 "deltog_per_distans": outplacement.meeting_remote or ""
-            },
+            }
         if outplacement.employee_id:
             payload["ansvarig_handledare"] = {
                 "fornamn": outplacement.employee_id.firstname or "",
@@ -292,33 +292,48 @@ class ClientConfig(models.Model):
                     })
             if goal_id.complementing_experience:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
-                    "typ": 'kompletterar tidigare erfarenheter'
+                    "typ": 'Kompletterar tidigare erfarenhet'
                     })
             if goal_id.other_motivation:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
                     "typ": 'Annat',
                     "fritext": goal_id.free_text or ""
                     })
+            if len(payload["huvudmal"]["val_av_huvudmal_motivering"]) < 1 \
+                    and not outplacement.interruption:
+                raise ValidationError(_("Motivation of main goal missing"))
             if not goal_id.step_ids and not outplacement.interruption:
                 raise ValidationError(_("At least one step is required to send final report"))
             for step_id in goal_id.step_ids:
                 step = {
                     "typ": step_id.step_type,
-                    "namn": step_id.step_name or "",
-                    "niva": str(step_id.education_level_id.name) if step_id.education_level_id else "",
+                    "niva": step_id.education_level_id.name_get()[0][1] if step_id.education_level_id else "",
                     "startdatum": str(step_id.start_date) if step_id.start_date else "",
                     "slutdatum": str(step_id.end_date) if step_id.end_date else ""
                 }
-                if step_id.step_type == "fitting complementing efforts":
+                if step_id.step_type == "Studera reguljär utbildning":
+                    step["namn"] = step_id.step_name or ""
+                else:
+                    step["namn"] = ""
+                if step_id.step_type == "Lämpliga kompletterande insatser":
                     step["kompletterande_insats"] = {
                         "typ": step_id.complementing_effort_type or _("complementing effort type not set"),
                         "fritext": step_id.complementing_effort_description or ""
                     }
-                elif step_id.step_type == "other":
-                    step["fritext"] = step_id.free_text or ""
+                elif step_id.step_type == "Annat":
+                    step["fritext"] = step_id.step_name or ""
                 payload['huvudmal']['steg'].append(step)
         elif not outplacement.interruption:
             raise ValidationError(_("A main goal is required to send final report"))
+        else:
+            payload["huvudmal"] = {
+                "yrkesomrade": "",
+                "yrke": "",
+                "arbetsuppgifter_beskrivning": "",
+                "val_av_huvudmal_motivering": [],
+                "fritext": "",
+                "steg": []
+            }
         goal_id = outplacement.alternative_goal_id
         if goal_id:
             payload["alternativt_mal"] = {
@@ -358,26 +373,41 @@ class ClientConfig(models.Model):
                     "typ": 'Annat',
                     "fritext": goal_id.free_text or ""
                     })
+            if len(payload["alternativt_mal"]["val_av_alternativt_mal_motivering"]) < 1 \
+                    and not outplacement.interruption:
+                raise ValidationError(_("Motivation of alternative goal missing"))
             if not goal_id.step_ids and not outplacement.interruption:
                 raise ValidationError(_("At least one step is required to send final report"))
             for step_id in goal_id.step_ids:
                 step = {
                     "typ": step_id.step_type,
-                    "namn": step_id.step_name or "",
-                    "niva": str(step_id.education_level_id.name) if step_id.education_level_id else "",
+                    "niva": step_id.education_level_id.name_get()[0][1] if step_id.education_level_id else "",
                     "startdatum": str(step_id.start_date) if step_id.start_date else "",
                     "slutdatum": str(step_id.end_date) if step_id.end_date else ""
                 }
-                if step_id.step_type == "fitting complementing efforts":
+                if step_id.step_type == "Studera reguljär utbildning":
+                    step["namn"] = step_id.step_name or ""
+                else:
+                    step["namn"] = ""
+                if step_id.step_type == "Lämpliga kompletterande insatser":
                     step["kompletterande_insats"] = {
                         "typ": step_id.complementing_effort_type,
                         "fritext": step_id.complementing_effort_description or ""
                     }
-                elif step_id.step_type == "other":
-                    step["fritext"] = step_id.free_text or ""
+                elif step_id.step_type == "Annat":
+                    step["fritext"] = step_id.step_name or ""
                 payload['alternativt_mal']['steg'].append(step)
         elif not outplacement.interruption:
             raise ValidationError(_("An alternative goal is required to send final report"))
+        else:
+            payload["alternativt_mal"] = {
+                "yrkesomrade": "",
+                "yrke": "",
+                "arbetsuppgifter_beskrivning": "",
+                "val_av_alternativt_mal_motivering": [],
+                "fritext": "",
+                "steg": []
+            }
         for study_visit in outplacement.study_visit_ids:
             payload['studiebesok'].append({
                 "namn": study_visit.name or "",

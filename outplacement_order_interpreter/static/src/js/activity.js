@@ -31,12 +31,15 @@ var Activity = MailActivity.include({
         if (activity.is_interpreter_order) {
             // If we are trying to remove an interpreter booking ask the user
             // if all things the user have to do before removing it has been done.
-            let dialog = new Dialog(this, {'title': 'Cancel Interpreter',
-                                           '$content': $('<p>Contact Tolkportalen and use reference:' + activity.interpreter_booking_ref + ' to cancel Interpreter bookings <br> Only press Yes after confirmation.</p>'),
+            let dialog = new Dialog(this, {'title': 'Avboka tolkbokningen',
+                                           '$content': $('<p>
+                                                         <b>Avboka tolkbokningen</b> <br>
+                                                         Avboka tolken genom att skicka ett epostmeddelande till <a href="mailto:team-crm@arbetsformedlingen.se?subject=Avboka tolk med referens ' + activity.interpreter_booking_ref + '. "> team-crm@arbetsformedlingen.se och ange referensnummer ' + activity.interpreter_booking_ref + '.
+                                                         </p>'),
                                            'technical':'false',
                                            'buttons':[
-                                               {'text':'Yes I have confirmed with Tolkportalen', 'close':'true', 'click':function(){self.interpreter_cancel(options)}},
-                                               {'text':'No I have not confirmed with Tolkportalen', 'close':'true', 'classes':'btn-primary'}]})
+                                               {'text':'Markera som Avbokad', 'close':'true', 'click':function(){self.interpreter_cancel(options)}},
+                                               {'text':'Stäng rutan utan att markera som avbokad', 'close':'true', 'classes':'btn-primary'}]})
             dialog.open()
             return
         };

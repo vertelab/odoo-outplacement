@@ -104,12 +104,11 @@ class InterpreterDeliveryWizard(models.TransientModel):
 
     def log_to_activity_stream(self):
         activity = self.mail_activity_id
-        subject = _('Interpreter Booking')
         msg = _('Interpreter booking with reference: {ref} delivered').format(
             ref=activity.interpreter_booking_ref)
 
         self.env['mail.message'].create({
-            'body': (f"{subject}<br>{msg}"),
+            'body': (f"{_('Interpreter Booking')}<br>{msg}"),
             'subject': _("Interpreter Delivery"),
             'author_id': self.env['res.users'].browse(
                 self.env.uid).partner_id.id,

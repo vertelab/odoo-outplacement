@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+         <template id="assets_backend" name="mail assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                 <script type="text/javascript" src="/outplacement_order_interpreter/static/src/js/booking_activity.js"></script>
+            </xpath>
+         </template>
+    </data>
+</odoo>

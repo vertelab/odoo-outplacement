@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 12.0-20210129\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-03 14:45+0000\n"
-"PO-Revision-Date: 2021-04-28 11:05+0200\n"
+"PO-Revision-Date: 2021-04-28 16:12+0200\n"
 "Last-Translator: <Sebastian Gieser>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -95,7 +95,7 @@ msgid "Deviation Type"
 msgstr "Typ av avvikelse"
 
 #. module: outplacement_deviation_report
-#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:275
+#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:278
 #, python-format
 msgid "Deviation report sent"
 msgstr "Avvikelserapport skickad"
@@ -111,7 +111,7 @@ msgid "Education"
 msgstr "Utbildning"
 
 #. module: outplacement_deviation_report
-#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:271
+#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:274
 #, python-format
 msgid ""
 "Error %s: %s\n"
@@ -218,6 +218,18 @@ msgid "Missbehaved or disrupted operations"
 msgstr "Misskött sig eller stört verksamheten"
 
 #. module: outplacement_deviation_report
+#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:181
+#, python-format
+msgid "Missing management team"
+msgstr "Saknas tillhörande kontor"
+
+#. module: outplacement_deviation_report
+#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:183
+#, python-format
+msgid "Missing signature on management team"
+msgstr "Saknas signatur på kontoret som deltagaren tillhör"
+
+#. module: outplacement_deviation_report
 #: model:ir.model.fields,field_description:outplacement_deviation_report.field_outplacement_deviation_report_wizard__jobseeker_name
 #: model:ir.model.fields,field_description:outplacement_deviation_report.field_outplacement_deviation_report_wizard__performing_operation_name
 msgid "Name"
@@ -290,7 +302,7 @@ msgid "Unique ID"
 msgstr "Unikt ID"
 
 #. module: outplacement_deviation_report
-#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:270
+#: code:addons/outplacement_deviation_report/wizards/deviation_report_wizard.py:273
 #, python-format
 msgid "Unknown cause"
 msgstr "Okänd anledning"

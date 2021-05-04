@@ -41,6 +41,7 @@
     v12.0.1.5.3 Changed cancellation instruction message.\n
     v12.0.1.5.4 Fixed typo in cancelling message.\n
     v12.0.1.5.5 AFC-2028: Making fields readonly/not able to create on the fly. \n
+    v12.0.1.5.6 AFC-2145: Various text formating fixes, translations \n
     """,
     'author': "N-development",
     'license': 'AGPL-3',

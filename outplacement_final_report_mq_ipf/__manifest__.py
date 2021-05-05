@@ -21,7 +21,7 @@
 
 {
     'name': "Outplacement final report MQ/IPF-update dispatcher",
-    'version': '12.0.0.0.1',
+    'version': '12.0.0.1.0',
     'category': '',
     'description': """
 

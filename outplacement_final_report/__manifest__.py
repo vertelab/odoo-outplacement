@@ -1,14 +1,15 @@
 {
     'name': 'Outplacement final report',
-    'version': '12.0.0.1.4',
+    'version': '12.0.0.1.5',
     'category': 'Outplacement',
     'description': """
 Module to handle outplacement (Avrop) final reports.
 ===========================================================
-v12.0.0.1.1 Translation and gui fix for eductation
-v12.0.0.1.2 changed some field names
-v12.0.0.1.3 Updated views, relations and translations
-v12.0.0.1.4 Added timing dependent interruption text
+v12.0.0.1.1 Translation and gui fix for eductation\n
+v12.0.0.1.2 changed some field names\n
+v12.0.0.1.3 Updated views, relations and translations\n
+v12.0.0.1.4 Added timing dependent interruption text\n
+v12.0.0.1.5 Added check and view for rejected final report\n
     """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',

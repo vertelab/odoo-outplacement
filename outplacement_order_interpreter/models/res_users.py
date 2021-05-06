@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import logging
+
 from odoo import api, models, modules, fields
+
+
+_logger = logging.getLogger(__name__)
 
 
 class Users(models.Model):
@@ -47,8 +52,8 @@ class Users(models.Model):
                     'failed_booking_count': 0,
                     'awaiting_booking_count': 0,
                 }
-
-            user_activities[activity['model']]['%s_count' % activity['states']] += activity['count']
-            user_activities[activity['model']]['total_count'] += activity['count']
+            if activity.get('states'):
+                user_activities[activity['model']]['%s_count' % activity['states']] += activity['count']
+                user_activities[activity['model']]['total_count'] += activity['count']
 
         return list(user_activities.values())

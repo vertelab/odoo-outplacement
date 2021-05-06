@@ -87,6 +87,13 @@ class MailActivity(models.Model):
         string='Interpreter Supplier Phone Number',
         readonly=True)
 
+    interpreter_ka_nr = fields.Char(compute='_compute_ka_nr')
+
+    def _compute_ka_nr(self):
+        for record in self:
+            perf_op = record.get_outplacement_value('performing_operation_id')
+            record.interpreter_ka_nr = perf_op.ka_nr if perf_op else None
+
     @api.depends('_interpreter_booking_status',
                  '_interpreter_booking_status_2',
                  'interpreter_company')
@@ -200,6 +207,11 @@ class MailActivity(models.Model):
         return action
 
     def action_feedback(self, feedback=False):
+        '''
+        Overriding the standard action feedback for interpreter messages.
+        As the standard version takes height for that it may be more
+        than one message we need to take height for it as well.
+        '''
         interpreter_messages = self.filtered(lambda m: self.is_interpreter())
         other_messages = self - interpreter_messages
         if other_messages:
@@ -209,8 +221,9 @@ class MailActivity(models.Model):
             if feedback:
                 self.write(dict(feedback=feedback))
 
-            # Search for all attachments linked to the activities we are about to unlink. This way, we
-            # can link them to the message posted and prevent their deletion.
+            # Search for all attachments linked to the activities we
+            # are about to unlink. This way, we can link them to the
+            # message posted and prevent their deletion.
             attachments = self.env['ir.attachment'].search_read([
                 ('res_model', '=', self._name),
                 ('res_id', 'in', self.ids),

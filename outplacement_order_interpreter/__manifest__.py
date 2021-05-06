@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Order Interpreter',
-    'version': '12.0.1.5.6',
+    'version': '12.0.1.6.0',
     'category': 'Outplacement',
     'description': """This module adds interpreter-functionality \n
     v12.0.0.2 changed the languagecodes from a full list to Tolkportalens list. AFC-1586 \n
@@ -41,7 +41,8 @@
     v12.0.1.5.3 Changed cancellation instruction message.\n
     v12.0.1.5.4 Fixed typo in cancelling message.\n
     v12.0.1.5.5 AFC-2028: Making fields readonly/not able to create on the fly. \n
-    v12.0.1.5.6 AFC-2125:  This version adds a widget for displaying interpreter-bookings. \n
+    v12.0.1.5.6 AFC-2145: Various text formating fixes, translations \n
+    V12.0.1.6.0 AFC-2125: This version adds a widget for displaying interpreter-bookings. \n
     """,
     'author': "N-development",
     'license': 'AGPL-3',
@@ -65,8 +66,6 @@
         'views/mail_activity_views.xml',
         'views/res_partner_view.xml',
         'views/outplacement_view.xml',
-        'views/assets.xml',
-        'views/project_task_view.xml',
     ],
     'installable': True,
     'images': [
@@ -74,6 +73,5 @@
     ],
     'qweb': [
         'static/src/xml/activity.xml',
-        'static/src/xml/booking_activity.xml',
     ],
 }

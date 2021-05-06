@@ -42,8 +42,8 @@ def connect_and_subscribe(mqconn, user, pwd, target, clientid=4):
     subscribe(mqconn, target, clientid=clientid)
 
 
-JS_REF = "genomforandereferens_arbetsgivare"
-EMP_REF = "genomforandereferens_arbetssokande"
+JS_REF = "genomforandereferens_arbetssokande"
+EMP_REF = "genomforandereferens_arbetsgivare"
 ORDER_NR = "ordernummer"
 MSGTYPE = "typ"
 COMMENT = "kommentar"
@@ -134,7 +134,7 @@ class Outplacement(models.Model):
 
     def __get_host_port(self):
         str = self.env["ir.config_parameter"].get_param(
-            "outplacement_final_report_mq_ipf.mqhostport", "172.16.36.27:61613"
+            "outplacement_final_report_mq_ipf.mqhostport", "ipfmq1-utv.arbetsformedlingen.se:61613"
         )
         hosts = list()
         for vals in str.split(","):
@@ -144,7 +144,7 @@ class Outplacement(models.Model):
 
     @api.model
     def mq_fr_sender(self, msg_list, ack_list, do_list, lock):
-        """Method run in a seperate thread. Sends requests to RASK."""
+        """Method run in a seperate thread. Sends requests."""
         new_cr = registry(self.env.cr.dbname).cursor()
         uid, context = self.env.uid, self.env.context
         with api.Environment.manage():

@@ -269,7 +269,7 @@ class Outplacement(models.Model):
                 )
                 # check if we have ACKs to send out
                 with lock:
-                    while len(ack_list) > 0:
+                    while ack_list:
                         try:
                             # read ack_list and send ACK to MQ queue
                             ack_message = ack_list.pop()

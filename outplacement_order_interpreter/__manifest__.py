@@ -66,6 +66,8 @@
         'views/mail_activity_views.xml',
         'views/res_partner_view.xml',
         'views/outplacement_view.xml',
+        'views/assets.xml',
+        'views/project_task_view.xml'
     ],
     'installable': True,
     'images': [
@@ -73,5 +75,6 @@
     ],
     'qweb': [
         'static/src/xml/activity.xml',
+        'static/src/xml/booking_activity.xml'
     ],
 }

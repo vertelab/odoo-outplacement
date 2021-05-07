@@ -26,6 +26,8 @@ class Outplacement(models.Model):
 
     interrupted_early = fields.Boolean(string="Interrupted early", compute="_compute_interrupted_early", readonly=True)
 
+    fr_rejected = fields.Boolean(string="Rejected")
+
     @api.onchange('service_start_date', 'service_end_date')
     @api.multi
     def _compute_interrupted_early(self):

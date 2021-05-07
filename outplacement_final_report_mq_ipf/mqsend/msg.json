@@ -1,0 +1,8 @@
+{
+  "typ": "Slutredovisning ej godkänd" ,
+  "tidpunkt": "2020-10-10T12:15:30+01:00",
+  "genomforandereferens_arbetsgivare" : "195948372",
+  "genomforandereferens_arbetssokande" : "195948372",
+  "ordernummer": "MEET-631",
+  "kommentar":"This is an optional field. Will pass the comments for specific events like SR."
+}

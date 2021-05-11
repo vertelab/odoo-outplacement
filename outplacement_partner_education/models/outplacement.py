@@ -11,5 +11,5 @@ class Outplacement(models.Model):
     has_drivers_license = fields.Boolean(string="Has drivers license",
                                          compute='_compute_has_drivers_license', related="partner_id.has_drivers_license", readonly=False)
     drivers_license_ids = fields.Many2many(comodel_name='res.drivers_license',
-                                          inverse_name='partner_id',
+                                         string='Drivers license class', related="partner_id.drivers_license_ids", readonly=False)
     has_car = fields.Boolean(string="Has access to car", related="partner_id.has_car", readonly=False)

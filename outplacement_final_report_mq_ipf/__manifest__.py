@@ -26,7 +26,6 @@
     'description': """
 
 v12.0.0.1.1 - Fixed cron data\n
-
 """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',

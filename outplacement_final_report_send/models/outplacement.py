@@ -15,11 +15,17 @@ class Outplacement(models.Model):
         if not self.interruption and delta.days > -1:
             raise UserError(_("You are not allowed to send final report before service end"
                             " unless there has been an interruption"))
+        already_sent = False
+        if self.fr_send_date:
+            already_sent = True
         client_config = self.env['ipf.final_report.client.config'].search([], limit=1)
         self.fr_send_date = datetime.datetime.today().strftime("%Y-%m-%d")
         if client_config:
             response = client_config.post_request(self)
             if response.status_code != 201:
+                if already_sent:
+                    raise UserError(_("You have already sent a final report "
+                                      "for this outplacement"))
                 res_dict = json.loads(response.text)
                 tracking_id = res_dict.get("error_id", "")
                 message = res_dict.get("message", "")

@@ -65,6 +65,8 @@ class OutplacementGoal(models.Model):
     # should only be used if motivation is "other":
     free_text = fields.Char(string="Free text")
 
+    main_goal = fields.Boolean(string="Main goal")
+
     @api.onchange("field_of_work_id")
     def _compute_jobs_ids(self):
         for rec in self:
@@ -115,7 +117,7 @@ class OutplacementGoalStep(models.Model):
     step_type = fields.Selection(selection=[
         ('Studera reguljär utbildning', 'study'),
         ('Lämpliga kompletterande insatser', 'fitting complementing efforts'),
-        ('Annat', 'Other')], string="Type", required=True)  
+        ('Annat', 'Other')], default="Annat", string="Type", required=True)
     complementing_effort_type = fields.Selection(
         string="Complementing effort type", selection=[
             ('Studiemotiverande insats', 'study motivating effort'),

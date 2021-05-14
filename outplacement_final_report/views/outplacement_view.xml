@@ -20,8 +20,8 @@
                         <group>
                             <field name="fr_report_date" autocomplete="off"/>
                             <field name="fr_send_date" groups="base.group_no_one" autocomplete="off"/>
-                            <field name="main_goal_id" domain="[('id','=',-1)]"/>
-                            <field name="alternative_goal_id" domain="[('id','=',-1)]"/>
+                            <field name="main_goal_id" domain="[('id','=',-1)]" context="{'main_goal': 1}"/>
+                            <field name="alternative_goal_id" domain="[('id','=',-1)]" context="{'main_goal': 0}"/>
                         </group>
                         <group>
                         </group>
@@ -73,12 +73,23 @@
         <field name="model">outplacement.goal</field>
         <field name="arch" type="xml">
             <form>
+                <span invisible="not context.get('main_goal')">description main goal</span>
+                <span invisible="context.get('main_goal')">description alternative goal</span>
                 descriptive text for goals
                 <group>
                     <field name="field_of_work_id" domain="[('parent_id','=',False)]" options="{'no_create_edit':True, 'no_open': True}"/>
                     <field name="jobs_ids" invisible="1"/>
                     <field name="job_id" domain="['&amp;', ('parent_id','child_of',field_of_work_id), ('id','in',jobs_ids)]" options="{'no_create_edit':True, 'no_open': True}"/>
                     <field name="job_description"/>
+                </group>
+                <div>
+                    <b>
+                        Motivate choice of
+                        <span invisible="not context.get('main_goal')">main goal</span>
+                        <span invisible="context.get('main_goal')">alternative goal</span>
+                    </b>
+                </div>
+                <group>
                     <field name="matches_interest"/>
                     <field name="matches_ability"/>
                     <field name="market_demand"/>
@@ -108,7 +119,8 @@
                     <field name="step_type"/>
                     <field name="complementing_effort_type" attrs="{'invisible': [('step_type', '!=', 'Lämpliga kompletterande insatser')]}"/>
                     <field name="complementing_effort_description" attrs="{'invisible': [('complementing_effort_type', '!=', 'Annat')]}"/>
-                    <field name="step_name" attrs="{'invisible': [('step_type', '=', 'Lämpliga kompletterande insatser')]}"/>
+                    <field name="step_name" string="Describe other step" attrs="{'invisible': [('step_type', '!=', 'Annat')]}"/>
+                    <field name="step_name" attrs="{'invisible': [('step_type', '!=', 'Studera reguljär utbildning')]}"/>
                     <field name="education_level_id" attrs="{'invisible': [('step_type', '!=', 'Studera reguljär utbildning')]}"/>
                     <field name="start_date" autocomplete="off"/>
                     <field name="end_date" autocomplete="off"/>

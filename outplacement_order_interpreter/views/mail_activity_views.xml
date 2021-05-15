@@ -1,5 +1,207 @@
 <?xml version="1.0"?>
 <odoo>
+
+    <record id="mail_activity_form_view_for_interpreter" model="ir.ui.view">
+        <field name="name">mail.activity.form.inherit.interpreter</field>
+        <field name="model">mail.activity</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group invisible="1">
+                        <field name="activity_category" invisible="1"/>
+                        <field name="res_model" invisible="1"/>
+                        <field name="res_model_id" invisible="1"/>
+                        <field name="res_id" invisible="1"/>
+                        <field name="force_next" invisible="1"/>
+                        <field name="previous_activity_type_id"/>
+                        <field name="has_recommended_activities"/>
+                    </group>
+                    <group attrs="{'invisible': [('has_recommended_activities','=',False)]}">
+                        <div class="o_row">
+                            <strong>Recommended Activities</strong>
+                            <field name="recommended_activity_type_id" widget="selection_badge"
+                                   domain="[('previous_type_ids', '=', previous_activity_type_id)]" nolabel="1"/>
+                        </div>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="activity_type_id" required="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="summary" placeholder="e.g. Discuss proposal"/>
+                            <field name="task_id" string="Task"/>
+                            <field name="interpreter_type_code" invisible="1"/>
+                            <field name='interpreter_type_code' invisible='1'/>
+                            <field name="interpreter_type"
+                                   attrs="{
+                            'readonly': [('interpreter_booking_ref', '!=', False)],
+                            'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
+                            'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                                   options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                            <field name="interpreter_remote_type"
+                                   attrs="{
+                            'readonly': [('interpreter_booking_ref', '!=', False)],
+                            'required': [('interpreter_type_code', '=', '2'),
+                                         ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
+                            'invisible': ['|',
+                                          ('interpreter_type_code', '!=', '2'),
+                                          ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                                   options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                            <field name="interpreter_receiver"
+                                   attrs="{
+                            'invisible': ['|',
+                                ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d),
+                                ('interpreter_type_code', '!=', '3'),],
+                            'required': [('interpreter_type_code', '=', '3'),
+                                         ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                                   options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                            <label for="street" string="Address" attrs="{
+                    'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)],}"/>
+                            <div class="o_address_format"
+                                 attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}">
+                                <field name="street"
+                                       attrs="{'readonly': [('interpreter_booking_ref', '!=', False)],
+                                   'required': [('interpreter_type_code', '=', '3'),
+                                                ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                                       placeholder="Street..."
+                                       class="o_address_street"/>
+                                <field name="zip"
+                                       attrs="{'readonly': [('interpreter_booking_ref', '!=', False)],
+                                   'required': [('interpreter_type_code', '=', '3'),
+                                                ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                                       placeholder="ZIP"
+                                       class="o_address_zip"/>
+                                <field name="city"
+                                       attrs="{'readonly': [('interpreter_booking_ref', '!=', False)],
+                                   'required': [('interpreter_type_code', '=', '3'),
+                                                ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                                       placeholder="City"
+                                       class="o_address_city"/>
+                                <field name="country_id"
+                                       attrs="{'readonly': [('interpreter_booking_ref', '!=', False)],
+                                   'required': [('interpreter_type_code', '=', '3'),
+                                                ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                                       placeholder="Country"
+                                       class="o_address_country"/>
+                            </div>
+                            <field name="time_start"
+                                   attrs="{
+                           'readonly': [('interpreter_booking_ref', '!=', False)],
+                           'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
+                           'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+
+                            <field name="time_end" attrs="{
+                        'readonly': [('interpreter_booking_ref', '!=', False)],
+                       'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
+                       'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+
+                        </group>
+                        <group>
+                            <field name="date_deadline"
+                                   attrs="{'invisible': ['|', ('activity_category', '=', 'meeting'),('activity_type_id', '=', 6)]}"/>
+                            <field name="user_id"/>
+                            <field name="interpreter_gender_preference"
+                                   attrs="{
+                           'readonly': [('interpreter_booking_ref', '!=', False)],
+                           'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
+                           'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                                   options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+
+                            <field name="interpreter_language"
+                                   attrs="{
+                            'readonly': [('interpreter_booking_ref', '!=', False)],
+                            'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
+                            'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                                   options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                            <field name="interpreter_name" readonly="1" attrs="{
+                    'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+                            <field name="interpreter_ref" readonly="1" attrs="{
+                        'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+                            <field name="interpreter_phone" readonly="1" attrs="{
+                    'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+                            <field name="interpreter_gender" readonly="1" attrs="{
+                    'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+                            <field name="interpreter_company" readonly="1" attrs="{
+                    'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+                            <field name="interpreter_contact_person" readonly="1" attrs="{
+                    'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+                            <field name="interpreter_contact_phone" readonly="1" attrs="{
+                    'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+                            <field name="interpreter_booking_status" readonly="1" attrs="{
+                    'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+                            <field name="interpreter_booking_ref" readonly="1" attrs="{
+                    'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+                            <button name="%(deliver_interpreter_action)d"
+                                    attrs="{'invisible': ['|',
+                                              ('interpreter_booking_ref', '=', False),
+                                              ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                                    type="action">Inleverera tolk
+                            </button>
+                        </group>
+                    </group>
+                    <field name="note" placeholder="Log a note..."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="mail_activity_kanban_view_for_interpreter" model="ir.ui.view">
+        <field name="name">mail.activity.kanban.inherit.interpreter</field>
+        <field name="model">mail.activity</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="summary"/>
+                <field name="interpreter_type"/>
+                <field name="time_start"/>
+                <field name="time_end"/>
+                <field name="res_name"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="res_name"/>
+                                </strong>
+                                <br/>
+                                <field name="summary"/>
+                                <br/>
+                                <field name="interpreter_type"/>
+                                <br/>
+                                <field name="time_start"/>
+                                -
+                                <field name="time_end"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <record id="mail_activity_search_view_for_interpreter" model="ir.ui.view">
+        <field name="name">mail.activity.search.inherit.interpreter</field>
+        <field name="model">mail.activity</field>
+        <field name="inherit_id" ref="mail.mail_activity_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='activities_upcoming_all']" position="after">
+                <filter string="Awaiting Response" name="activities_awaiting_booking"
+                        domain="[('user_id', '=', uid), ('activity_status_for_interpreter', '=', 'awaiting_booking')]"/>
+                <filter string="Failed Bookings" name="activities_failed_booking"
+                        domain="[('user_id', '=', uid), ('activity_status_for_interpreter', '=', 'failed_booking')]"/>
+                <filter string="Done Bookings" name="activities_done_booking"
+                        domain="[('user_id', '=', uid), ('active', '=', False),
+                        ('activity_status_for_interpreter', '=', 'done_booking')]"/>
+                <filter string="All Bookings" name="activities_all_booking"
+                        domain="[('user_id', '=', uid), ('activity_status_for_interpreter', '=', 'all_booking')]"/>
+                <filter string="Ongoing" name="activities_ongoing_booking"
+                        domain="[('user_id', '=', uid), ('activity_status_for_interpreter', '=', 'ongoing_booking')]"/>
+                <filter string="Not Delivered" name="activities_not_delivered_booking"
+                        domain="[('user_id', '=', uid),
+                        ('activity_status_for_interpreter', '=', 'not_delivered_booking')]"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="interpreter" model="ir.ui.view">
         <field name="name">mail.activity.form.inherit.calendar</field>
         <field name="model">mail.activity</field>
@@ -8,7 +210,8 @@
         <field name="arch" type="xml">
             <field name='date_deadline' position="attributes">
                 <attribute name="attrs">
-                    {'invisible': ['|', ('activity_category', '=', 'meeting'), ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)]}
+                    {'invisible': ['|', ('activity_category', '=', 'meeting'), ('activity_type_id', '=',
+                    %(outplacement_order_interpreter.order_interpreter)d)]}
                 </attribute>
             </field>
             <field name="summary" position="after">
@@ -18,7 +221,7 @@
                             'readonly': [('interpreter_booking_ref', '!=', False)],
                             'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
                             'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
-                        options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                       options="{'no_quick_create': True, 'no_create_edit' : True}"/>
                 <field name="interpreter_remote_type"
                        attrs="{
                             'readonly': [('interpreter_booking_ref', '!=', False)],
@@ -27,7 +230,7 @@
                             'invisible': ['|',
                                           ('interpreter_type_code', '!=', '2'),
                                           ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
-                        options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                       options="{'no_quick_create': True, 'no_create_edit' : True}"/>
                 <field name="interpreter_receiver"
                        attrs="{
                             'invisible': ['|',
@@ -35,10 +238,11 @@
                                 ('interpreter_type_code', '!=', '3'),],
                             'required': [('interpreter_type_code', '=', '3'),
                                          ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)]}"
-                        options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                       options="{'no_quick_create': True, 'no_create_edit' : True}"/>
                 <label for="street" string="Address" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)],}"/>
-                <div class="o_address_format" attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}">
+                <div class="o_address_format"
+                     attrs="{'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}">
                     <field name="street"
                            attrs="{'readonly': [('interpreter_booking_ref', '!=', False)],
                                    'required': [('interpreter_type_code', '=', '3'),
@@ -51,11 +255,11 @@
                                                 ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)]}"
                            placeholder="ZIP"
                            class="o_address_zip"/>
-                    <field name="city" 
+                    <field name="city"
                            attrs="{'readonly': [('interpreter_booking_ref', '!=', False)],
                                    'required': [('interpreter_type_code', '=', '3'),
-                                                ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)]}" 
-                           placeholder="City" 
+                                                ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                           placeholder="City"
                            class="o_address_city"/>
                     <field name="country_id"
                            attrs="{'readonly': [('interpreter_booking_ref', '!=', False)],
@@ -81,14 +285,14 @@
                            'readonly': [('interpreter_booking_ref', '!=', False)],
                            'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
                            'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
-                        options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                       options="{'no_quick_create': True, 'no_create_edit' : True}"/>
 
                 <field name="interpreter_language"
                        attrs="{
                             'readonly': [('interpreter_booking_ref', '!=', False)],
                             'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
                             'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
-                        options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                       options="{'no_quick_create': True, 'no_create_edit' : True}"/>
                 <field name="interpreter_name" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
                 <field name="interpreter_ref" readonly="1" attrs="{
@@ -111,16 +315,19 @@
                         attrs="{'invisible': ['|',
                                               ('interpreter_booking_ref', '=', False),
                                               ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
-                        type="action"> Inleverera tolk </button>
+                        type="action">Inleverera tolk
+                </button>
             </field>
             <button name="action_done" position="attributes">
                 <attribute name="attrs">
-                {'invisible': ['|', ('force_next', '=', True), ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)]}
+                    {'invisible': ['|', ('force_next', '=', True), ('activity_type_id', '=',
+                    %(outplacement_order_interpreter.order_interpreter)d)]}
                 </attribute>
             </button>
             <button name="action_done_schedule_next" position="attributes">
                 <attribute name="attrs">
-                {'invisible': ['|', ('force_next', '=', True), ('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)]}
+                    {'invisible': ['|', ('force_next', '=', True), ('activity_type_id', '=',
+                    %(outplacement_order_interpreter.order_interpreter)d)]}
                 </attribute>
             </button>
         </field>
@@ -131,4 +338,37 @@
             <script type="text/javascript" src="/outplacement_order_interpreter/static/src/js/activity.js"></script>
         </xpath>
     </template>
+
+    <record id="action_update_activity_status" model="ir.actions.server">
+        <field name="name">Update Activity Status</field>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="model_id" ref="project.model_project_task"/>
+        <field name="code">
+            records.update_activity_status()
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="interpreter_activity_action">
+        <field name="name">Activity</field>
+        <field name="res_model">mail.activity</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="view_id" ref="mail.mail_activity_view_search"/>
+    </record>
+
+    <record id="interpreter_activity_action_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="outplacement_order_interpreter.mail_activity_form_view_for_interpreter"/>
+        <field name="act_window_id" ref="interpreter_activity_action"/>
+    </record>
+
+     <record id="interpreter_activity_action_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="outplacement_order_interpreter.mail_activity_kanban_view_for_interpreter"/>
+        <field name="act_window_id" ref="interpreter_activity_action"/>
+    </record>
+
+
 </odoo>

@@ -123,30 +123,41 @@ odoo.define('mail.Bookings.ActivityMenu', function (require) {
             var data = _.extend({}, $(event.currentTarget).data(), $(event.target).data());
             var context = {};
             if (data.filter === 'my') {
-                context['search_default_activities_active_booking'] = 1;
+                context['search_default_activities_all_booking'] = 1;
+                context['search_default_activities_awaiting_booking'] = 1;
+                context['search_default_activities_ongoing_booking'] = 1;
+                context['search_default_activities_not_delivered_booking'] = 1;
                 context['search_default_activities_failed_booking'] = 1;
                 context['search_default_activities_done_booking'] = 1;
-                context['search_default_activities_awaiting_booking'] = 1;
             } else {
                 context['search_default_activities_' + data.filter] = 1;
             }
-            this.do_action({
-                type: 'ir.actions.act_window',
-                name: data.model_name,
-                res_model:  data.res_model,
-                views: [[false, 'kanban'], [false, 'form']],
-                search_view_id: [false],
-                domain: [['activity_user_id', '=', session.uid]],
-                context:context,
-            }, {
-                clear_breadcrumbs: true,
+            if (data.filter === 'failed_booking') {
+               context['search_default_activities_failed_booking'] = 1;
+            }
+            if (data.filter === 'done_booking') {
+               context['search_default_activities_done_booking'] = 1;
+            }
+            if (data.filter === 'all_booking') {
+               context['search_default_activities_all_booking'] = 1;
+            }
+            if (data.filter === 'ongoing_booking') {
+               context['search_default_activities_ongoing_booking'] = 1;
+            }
+            if (data.filter === 'awaiting_booking') {
+               context['search_default_activities_awaiting_booking'] = 1;
+            }
+            if (data.filter === 'not_delivered_booking') {
+               context['search_default_activities_not_delivered_booking'] = 1;
+            }
+            this.do_action('outplacement_order_interpreter.interpreter_activity_action', {
+               additional_context: context,
+               clear_breadcrumbs: true,
             });
         },
         /**
          * @private
          */
-
-
         _onBookingActivityMenuShow: function () {
              this._updateBookingActivityPreview();
         },

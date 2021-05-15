@@ -1,15 +1,53 @@
 # -*- coding: utf-8 -*-
 
-from collections import defaultdict
 import datetime
 import json
 import logging
 import pytz
-
-from odoo import api, models, fields, tools, _
+from collections import defaultdict
 from odoo.exceptions import UserError
 
+from odoo import api, models, fields, tools, _
+
 _logger = logging.getLogger(__name__)
+
+class ProjectTask(models.Model):
+
+    _inherit = 'project.task'
+
+    def update_activity_status(self):
+        act_obj = self.env['mail.activity']
+        for task in self:
+            activities = act_obj.search([('res_id', '=', task.id), ('res_model', '=', 'project.task'),
+                                         '|', ('active', '=', True), ('active', '=', False)])
+            for activity in activities:
+                if task.outplacement_id:
+                    if activity.active == True and activity._interpreter_booking_status in ['1', 'Order received',
+                                                                                            'Order mottagen'] \
+                            and activity._interpreter_booking_status_2 in ['4', 'Interpreter Booked',
+                                                                           'Tolk bokad'] and \
+                            datetime.datetime.today() >= activity.time_end:
+                        activity.activity_status_for_interpreter = 'not_delivered_booking'
+                    elif activity.active == True and activity._interpreter_booking_status in ['1', 'Order received',
+                                                                                              'Order mottagen'] \
+                            and activity._interpreter_booking_status_2 in ['3', '4', 'Order mottagen',
+                                                                           'Order received',
+                                                                           'Interpreter Booked', 'Tolk bokad']:
+                        activity.activity_status_for_interpreter = 'ongoing_booking'
+                    elif activity.active == True and activity._interpreter_booking_status in ['1', 'Order received',
+                                                                                              'Order mottagen'] \
+                            and activity._interpreter_booking_status_2 in ['1', '3', 'Order received',
+                                                                           'Order mottagen']:
+                        activity.activity_status_for_interpreter = 'awaiting_booking'
+                    elif activity.active == True and activity._interpreter_booking_status in ['1', 'Order received',
+                                                                                              'Order mottagen'] \
+                            and activity._interpreter_booking_status_2 in ['No available interpreter', '2',
+                                                                           'Ingen tillgänglig tolk']:
+                        activity.activity_status_for_interpreter = 'failed_booking'
+                    elif activity.active == False:
+                        activity.activity_status_for_interpreter = 'done_booking'
+                    else:
+                        activity.activity_status_for_interpreter = 'all_booking'
 
 
 class MailActivity(models.Model):
@@ -88,6 +126,55 @@ class MailActivity(models.Model):
         readonly=True)
 
     interpreter_ka_nr = fields.Char(compute='_compute_ka_nr')
+    task_id = fields.Reference(
+        string='Record', selection='_selection_target_model',
+        compute='_compute_resource_ref')
+    activity_status_for_interpreter = fields.Char(string="Activity Status for Interpreter",
+                                                  compute='_compute_activity_status', store=True)
+
+    @api.depends('_interpreter_booking_status', '_interpreter_booking_status_2', 'time_end', 'active')
+    def _compute_activity_status(self):
+        task_obj = self.env['project.task']
+        for activity in self:
+            if activity.res_id:
+                task_id = activity.res_id
+                task = task_obj.browse(task_id)
+                if task.outplacement_id:
+                    if activity.active == True and activity._interpreter_booking_status in ['1', 'Order received', 'Order mottagen'] \
+                        and activity._interpreter_booking_status_2 in ['4', 'Interpreter Booked', 'Tolk bokad'] and \
+                        datetime.datetime.today() >= activity.time_end:
+                        activity.activity_status_for_interpreter = 'not_delivered_booking'
+                    elif activity.active == True and activity._interpreter_booking_status in ['1', 'Order received', 'Order mottagen'] \
+                        and activity._interpreter_booking_status_2 in ['3', '4', 'Order mottagen', 'Order received',
+                                           'Interpreter Booked', 'Tolk bokad']:
+                        activity.activity_status_for_interpreter = 'ongoing_booking'
+                    elif activity.active == True and activity._interpreter_booking_status in ['1', 'Order received', 'Order mottagen'] \
+                        and activity._interpreter_booking_status_2 in ['1', '3', 'Order received', 'Order mottagen']:
+                        activity.activity_status_for_interpreter = 'awaiting_booking'
+                    elif activity.active == True and activity._interpreter_booking_status in ['1', 'Order received', 'Order mottagen'] \
+                        and activity._interpreter_booking_status_2 in ['No available interpreter', '2', 'Ingen tillgänglig tolk']:
+                        activity.activity_status_for_interpreter = 'failed_booking'
+                    elif activity.active == False:
+                        activity.activity_status_for_interpreter = 'done_booking'
+                    else:
+                        activity.activity_status_for_interpreter = 'all_booking'
+
+    @api.model
+    def _selection_target_model(self):
+        models = self.env['ir.model'].search([])
+        return [(model.model, model.name) for model in models]
+
+    def _compute_resource_ref(self):
+        for record in self:
+            model = 'project.task'
+            if record.res_id:
+                activity = self.env['project.task'].search([('id', '=', record.res_id)])
+                if activity:
+                    record.task_id = '%s,%s' % (model, activity.id)
+                else:
+                    record.task_id = False
+            else:
+                record.task_id = False
 
     def _compute_ka_nr(self):
         for record in self:
@@ -303,7 +390,7 @@ class MailActivity(models.Model):
             raise UserError(_('This type of booking needs to be atleast {min} '
                               'minutes long.').format(min=meeting['min']))
         increment = meeting['increment']
-        if time_diff.seconds % (increment*60):
+        if time_diff.seconds % (increment * 60):
             raise UserError(_('Booking has to be an even '
                               '{} minutes segment.').format(increment))
         return True
@@ -350,6 +437,7 @@ class MailActivity(models.Model):
         Updates the activity with new status if it has been updated on
         server.
         """
+
         def change_tz(dt, tz='Europe/Stockholm'):
             # Tolkportalen gives times in swedish local time.
             if dt:
@@ -368,8 +456,10 @@ class MailActivity(models.Model):
             data.get('tekniskStatusTypId', self._interpreter_booking_status))
         self._interpreter_booking_status_2 = str(
             data.get('statusTypId', self._interpreter_booking_status_2))
-        self.interpreter_type = self.env["res.interpreter.type"].search([('code', '=', data.get('tolkTypId'))])  # noqa:E501
-        self.interpreter_remote_type = self.env["res.interpreter.remote_type"].search([('code', '=', data.get('distanstolkTypId'))])  # noqa:E501
+        self.interpreter_type = self.env["res.interpreter.type"].search(
+            [('code', '=', data.get('tolkTypId'))])  # noqa:E501
+        self.interpreter_remote_type = self.env["res.interpreter.remote_type"].search(
+            [('code', '=', data.get('distanstolkTypId'))])  # noqa:E501
         self.time_start = change_tz(datetime.datetime.strptime(
             data.get('fromDatumTid'),
             '%Y-%m-%dT%H:%M:%S'))
@@ -382,9 +472,12 @@ class MailActivity(models.Model):
         self.city = address_obj.get('ort')
         # state_id is not used, and its uncertain that code is the one
         # to be used.
-        self.state_id = self.env['res.country.state'].search([('code', '=', address_obj.get('kommunkod'))], limit=1) or False  # noqa:E501
-        self.interpreter_language = self.env["res.interpreter.language"].search([('code', '=', data.get('tolksprakId'))])  # noqa:E501
-        self.interpreter_gender = self.env["res.interpreter.gender_preference"].search([('code', '=', data.get('tolkkonID'))])  # noqa:E501
+        self.state_id = self.env['res.country.state'].search([('code', '=', address_obj.get('kommunkod'))],
+                                                             limit=1) or False  # noqa:E501
+        self.interpreter_language = self.env["res.interpreter.language"].search(
+            [('code', '=', data.get('tolksprakId'))])  # noqa:E501
+        self.interpreter_gender = self.env["res.interpreter.gender_preference"].search(
+            [('code', '=', data.get('tolkkonID'))])  # noqa:E501
         self.interpreter_ref = data.get('tolkId')
         self.interpreter_name = data.get('tolkNamn')
         self.interpreter_phone = data.get('tolkTelefonnummer')
@@ -443,7 +536,7 @@ class MailActivity(models.Model):
             'author_id': author,
             'res_id': self.res_id,
             'model': self.res_model,
-            })
+        })
         _logger.info(f'{author} {message_id.body}')
         self.active = False
 

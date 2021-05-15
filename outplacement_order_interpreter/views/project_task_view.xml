@@ -8,13 +8,28 @@
                 <filter name="activities_my" position="after">
                     <separator/>
                     <filter string="Active Bookings" name="activities_active_booking"
-                        domain="[('activity_ids.user_id', '=', uid), ('activity_ids.active', '=', True)]"/>
+                            domain="[('activity_ids.user_id', '=', uid), ('activity_ids.active', '=', True)]"/>
                     <filter string="Awaiting Response" name="activities_awaiting_booking"
-                        domain="[('activity_ids.user_id', '=', uid), ('activity_ids.active', '=', True), ('activity_ids._interpreter_booking_status', '=', '1'), ('activity_ids._interpreter_booking_status_2', 'in', ['1', '3'])]"/>
+                            domain="[('activity_ids.user_id', '=', uid), ('activity_ids.active', '=', True),
+                        ('activity_ids._interpreter_booking_status', '=', '1'),
+                        ('activity_ids._interpreter_booking_status_2', 'in', ['1', '3'])]"/>
                     <filter string="Failed Bookings" name="activities_failed_booking"
-                        domain="[('activity_ids.user_id', '=', uid), ('activity_ids.active', '=', True), ('activity_ids._interpreter_booking_status', '=', '1'), ('activity_ids._interpreter_booking_status_2', '=', '2')]"/>
+                            domain="[('activity_ids.user_id', '=', uid), ('activity_ids.active', '=', True),
+                         ('activity_ids._interpreter_booking_status', '=', '1'),
+                         ('activity_ids._interpreter_booking_status_2', '=', '2')]"/>
                     <filter string="Done Bookings" name="activities_done_booking"
-                        domain="[('activity_ids.user_id', '=', uid), ('activity_ids.active', '=', False)]"/>
+                            domain="[('activity_ids.user_id', '=', uid), ('activity_ids.active', '=', False)]"/>
+                    <filter string="All Bookings" name="activities_all_booking"
+                            domain="[('activity_ids.user_id', '=', uid), ('activity_ids.active', '=', True)]"/>
+                    <filter string="Ongoing" name="activities_ongoing_booking"
+                            domain="[('activity_ids.user_id', '=', uid), ('activity_ids.active', '=', True),
+                        ('activity_ids._interpreter_booking_status', '=', '1'),
+                        ('activity_ids._interpreter_booking_status_2', 'in', ['3', '4'])]"/>
+                      <filter string="Not Delivered" name="activities_not_delivered_booking"
+                            domain="[('activity_ids.user_id', '=', uid),
+                        ('activity_ids.date_deadline', '>=', datetime.datetime.now()),
+                        ('activity_ids._interpreter_booking_status', '=', '1'),
+                        ('activity_ids._interpreter_booking_status_2', '=', '4')]"/>
                 </filter>
             </field>
         </record>

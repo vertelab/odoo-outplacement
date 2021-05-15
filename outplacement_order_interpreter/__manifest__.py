@@ -57,7 +57,7 @@
         'res_interpreter_gender_preference',
         'res_interpreter_type',
         'res_interpreter_remote_type',
-        'outplacement',
+        'sale_outplacement'
     ],
     'data': [
         'wizards/deliver_interpreter_view.xml',

@@ -437,3 +437,95 @@ msgstr "Postnummer"
 #: model:ir.model,name:outplacement_order_interpreter.model_outplacement_interpreter_delivery_wizard
 msgid "outplacement.interpreter_delivery.wizard"
 msgstr ""
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:43
+#, python-format
+msgid "0 All Bookings"
+msgstr "0 Alla bokningar"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:49
+#, python-format
+msgid "0 Awaiting Response"
+msgstr "0 Avvaktar svar"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:73
+#, python-format
+msgid "0 Done"
+msgstr "0 Avslutad"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:67
+#, python-format
+msgid "0 Failed"
+msgstr "0 Ingen tillgänglig"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:61
+#, python-format
+msgid "0 Not Delivered"
+msgstr "0 Ej Inlevererad"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:55
+#, python-format
+msgid "0 Ongoing"
+msgstr "0 Pågående"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:41
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+#, python-format
+msgid "All Bookings"
+msgstr "Alla bokningar"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:47
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+#, python-format
+msgid "Awaiting Response"
+msgstr "Avvaktar svar"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:53
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+#, python-format
+msgid "Ongoing"
+msgstr "Pågående"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:59
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+#, python-format
+msgid "Not Delivered"
+msgstr "Ej Inlevererad"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:65
+#, python-format
+msgid "Failed"
+msgstr "Ingen tillgänglig"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:71
+#, python-format
+msgid "Done"
+msgstr "Avslutad"

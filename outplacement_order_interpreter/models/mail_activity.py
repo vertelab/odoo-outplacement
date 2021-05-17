@@ -132,6 +132,31 @@ class MailActivity(models.Model):
     activity_status_for_interpreter = fields.Char(string="Activity Status for Interpreter",
                                                   compute='_compute_activity_status', store=True)
 
+    @api.model
+    def search(self, args, offset=0, limit=None, order=None, count=False):
+        if 'from_outplacement_interpreters_menu' in self._context:
+            type = self.env.ref('outplacement_order_interpreter.order_interpreter')
+            if type:
+                args += [('activity_type_id', '=', type.id)]
+        return super(MailActivity, self).search(args, offset, limit, order, count=count)
+
+    @api.model
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+        if 'from_outplacement_interpreters_menu' in self._context:
+            type = self.env.ref('outplacement_order_interpreter.order_interpreter')
+            if type:
+                domain += [('activity_type_id', '=', type.id)]
+        return super(MailActivity, self).search_read(domain=domain, fields=fields, offset=offset, limit=limit, order=order)
+
+    @api.model
+    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        if 'from_outplacement_interpreters_menu' in self._context:
+            type = self.env.ref('outplacement_order_interpreter.order_interpreter')
+            if type:
+                domain += [('activity_type_id', '=', type.id)]
+        return super(MailActivity, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby,
+                                                  lazy=lazy)
+
     @api.depends('_interpreter_booking_status', '_interpreter_booking_status_2', 'time_end', 'active')
     def _compute_activity_status(self):
         task_obj = self.env['project.task']

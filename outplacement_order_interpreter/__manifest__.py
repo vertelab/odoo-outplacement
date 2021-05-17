@@ -57,7 +57,8 @@
         'res_interpreter_gender_preference',
         'res_interpreter_type',
         'res_interpreter_remote_type',
-        'sale_outplacement'
+        'sale_outplacement',
+        'base_user_groups_dafa'
     ],
     'data': [
         'wizards/deliver_interpreter_view.xml',

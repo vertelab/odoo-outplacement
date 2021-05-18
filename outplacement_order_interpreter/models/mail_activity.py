@@ -224,6 +224,7 @@ class MailActivity(models.Model):
     @api.multi
     def write(self, vals):
         res = super(MailActivity, self).write(vals)
+        msg_obj = self.env['mail.message']
         if vals.get('_interpreter_booking_status') or vals.get('_interpreter_booking_status_2') or \
                 vals.get('interpreter_company') or vals.get('time_end'):
             statuses = {'1': _('Order received'),
@@ -232,32 +233,18 @@ class MailActivity(models.Model):
                         '4': _('Interpreter Booked'),
                         '5': _('Cancelled by Interpreter'),
                         '6': _('Cancelled by AF')}
-            for record in self:
-                tech_status = record._interpreter_booking_status
-                status = record._interpreter_booking_status_2
+            for activity in self:
+                tech_status = activity._interpreter_booking_status
+                status = activity._interpreter_booking_status_2
                 if tech_status == '2':
                     pass
-                elif (record.time_end
-                      and record.time_end < datetime.datetime.now()
+                elif (activity.time_end
+                      and activity.time_end < datetime.datetime.now()
                       and tech_status != '2'
                       and status == '4'):
                     pass
                 elif status in statuses:
                     if status == '4':
-                        msg_obj = self.env['mail.message']
-                        for activity in self:
-                            msg = _("Interpreter Booking is Confirmed")
-                            msg_obj.create({
-                                'body': msg,
-                                'author_id': self.env['res.users'].browse(
-                                    self.env.uid).partner_id.id,
-                                'res_id': activity.res_id,
-                                'model': activity.res_model,
-                            })
-                # Legacy
-                elif record.interpreter_company and tech_status == '1':
-                    msg_obj = self.env['mail.message']
-                    for activity in self:
                         msg = _("Interpreter Booking is Confirmed")
                         msg_obj.create({
                             'body': msg,
@@ -266,18 +253,26 @@ class MailActivity(models.Model):
                             'res_id': activity.res_id,
                             'model': activity.res_model,
                         })
+                # Legacy
+                elif activity.interpreter_company and tech_status == '1':
+                    msg = _("Interpreter Booking is Confirmed")
+                    msg_obj.create({
+                        'body': msg,
+                        'author_id': self.env['res.users'].browse(
+                            self.env.uid).partner_id.id,
+                        'res_id': activity.res_id,
+                        'model': activity.res_model,
+                    })
                 else:
                     if status == '4':
-                        msg_obj = self.env['mail.message']
-                        for activity in self:
-                            msg = _("Interpreter Booking is Confirmed")
-                            msg_obj.create({
-                                'body': msg,
-                                'author_id': self.env['res.users'].browse(
-                                    self.env.uid).partner_id.id,
-                                'res_id': activity.res_id,
-                                'model': activity.res_model,
-                            })
+                        msg = _("Interpreter Booking is Confirmed")
+                        msg_obj.create({
+                            'body': msg,
+                            'author_id': self.env['res.users'].browse(
+                                self.env.uid).partner_id.id,
+                            'res_id': activity.res_id,
+                            'model': activity.res_model,
+                        })
         return res
 
     @api.depends('_interpreter_booking_status',
@@ -519,9 +514,9 @@ class MailActivity(models.Model):
             _logger.error('Check KA-Number and that address is correct.')
             _logger.error(response.text)
             _logger.error(payload)
-            msg = _('Failed to book Interpreter, '
-                    'please check KA-Number and address in request.\n')
-            raise UserError(f'{msg}{json.loads(response.text)["message"]}')
+            # msg = _('Failed to book Interpreter, '
+            #         'please check KA-Number and address in request.\n')
+            # raise UserError(f'{msg}{json.loads(response.text)["message"]}')
         else:
             self._interpreter_booking_status = msg
             err_msg = (f'\n{msg}\n{_("Response text")}:\n{response.text}\n'

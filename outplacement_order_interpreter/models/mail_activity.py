@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-
+from collections import defaultdict
 import datetime
 import json
 import logging
 import pytz
-from collections import defaultdict
 from odoo.exceptions import UserError
 
 from odoo import api, models, fields, tools, _
@@ -22,29 +21,20 @@ class ProjectTask(models.Model):
                                          '|', ('active', '=', True), ('active', '=', False)])
             for activity in activities:
                 if task.outplacement_id:
-                    if activity.active == True and activity._interpreter_booking_status in ['1', 'Order received',
-                                                                                            'Order mottagen'] \
-                            and activity._interpreter_booking_status_2 in ['4', 'Interpreter Booked',
-                                                                           'Tolk bokad'] and \
+                    if activity.active and activity._interpreter_booking_status == '1' \
+                            and activity._interpreter_booking_status_2 == '4' and \
                             datetime.datetime.today() >= activity.time_end:
                         activity.activity_status_for_interpreter = 'not_delivered_booking'
-                    elif activity.active == True and activity._interpreter_booking_status in ['1', 'Order received',
-                                                                                              'Order mottagen'] \
-                            and activity._interpreter_booking_status_2 in ['3', '4', 'Order mottagen',
-                                                                           'Order received',
-                                                                           'Interpreter Booked', 'Tolk bokad']:
+                    elif activity.active and activity._interpreter_booking_status == '1' \
+                            and activity._interpreter_booking_status_2 in ['3', '4']:
                         activity.activity_status_for_interpreter = 'ongoing_booking'
-                    elif activity.active == True and activity._interpreter_booking_status in ['1', 'Order received',
-                                                                                              'Order mottagen'] \
-                            and activity._interpreter_booking_status_2 in ['1', '3', 'Order received',
-                                                                           'Order mottagen']:
+                    elif activity.active and activity._interpreter_booking_status == '1' \
+                            and activity._interpreter_booking_status_2 in ['1', '3']:
                         activity.activity_status_for_interpreter = 'awaiting_booking'
-                    elif activity.active == True and activity._interpreter_booking_status in ['1', 'Order received',
-                                                                                              'Order mottagen'] \
-                            and activity._interpreter_booking_status_2 in ['No available interpreter', '2',
-                                                                           'Ingen tillgänglig tolk']:
+                    elif activity.active and activity._interpreter_booking_status == '1' \
+                            and activity._interpreter_booking_status_2 == '2':
                         activity.activity_status_for_interpreter = 'failed_booking'
-                    elif activity.active == False:
+                    elif not activity.active:
                         activity.activity_status_for_interpreter = 'done_booking'
                     else:
                         activity.activity_status_for_interpreter = 'all_booking'
@@ -131,6 +121,21 @@ class MailActivity(models.Model):
         compute='_compute_resource_ref')
     activity_status_for_interpreter = fields.Char(string="Activity Status for Interpreter",
                                                   compute='_compute_activity_status', store=True)
+    partner_name = fields.Char("Partner Name", compute='_compute_outplacement_detail')
+    outplacement_name = fields.Char("Outplacement Name", compute='_compute_outplacement_detail')
+    order_name = fields.Char("Outplacement Order Name", compute='_compute_outplacement_detail')
+
+    def _compute_outplacement_detail(self):
+        task_obj = self.env['project.task']
+        for activity in self:
+            if activity.res_id:
+                task_id = activity.res_id
+                task = task_obj.browse(task_id)
+                if task.outplacement_id:
+                    activity.partner_name = task.outplacement_id.partner_name
+                    activity.outplacement_name = task.outplacement_id.name
+                    if task.outplacement_id.order_id:
+                        activity.order_name = task.outplacement_id.order_id.name
 
     @api.model
     def search(self, args, offset=0, limit=None, order=None, count=False):
@@ -165,21 +170,20 @@ class MailActivity(models.Model):
                 task_id = activity.res_id
                 task = task_obj.browse(task_id)
                 if task.outplacement_id:
-                    if activity.active == True and activity._interpreter_booking_status in ['1', 'Order received', 'Order mottagen'] \
-                        and activity._interpreter_booking_status_2 in ['4', 'Interpreter Booked', 'Tolk bokad'] and \
+                    if activity.active and activity._interpreter_booking_status == '1' \
+                        and activity._interpreter_booking_status_2 == '4' and \
                         datetime.datetime.today() >= activity.time_end:
                         activity.activity_status_for_interpreter = 'not_delivered_booking'
-                    elif activity.active == True and activity._interpreter_booking_status in ['1', 'Order received', 'Order mottagen'] \
-                        and activity._interpreter_booking_status_2 in ['3', '4', 'Order mottagen', 'Order received',
-                                           'Interpreter Booked', 'Tolk bokad']:
+                    elif activity.active and activity._interpreter_booking_status == '1' \
+                        and activity._interpreter_booking_status_2 in ['3', '4']:
                         activity.activity_status_for_interpreter = 'ongoing_booking'
-                    elif activity.active == True and activity._interpreter_booking_status in ['1', 'Order received', 'Order mottagen'] \
-                        and activity._interpreter_booking_status_2 in ['1', '3', 'Order received', 'Order mottagen']:
+                    elif activity.active and activity._interpreter_booking_status == '1' \
+                        and activity._interpreter_booking_status_2 in ['1', '3']:
                         activity.activity_status_for_interpreter = 'awaiting_booking'
-                    elif activity.active == True and activity._interpreter_booking_status in ['1', 'Order received', 'Order mottagen'] \
-                        and activity._interpreter_booking_status_2 in ['No available interpreter', '2', 'Ingen tillgänglig tolk']:
+                    elif activity.active and activity._interpreter_booking_status == '1' \
+                        and activity._interpreter_booking_status_2 == '2':
                         activity.activity_status_for_interpreter = 'failed_booking'
-                    elif activity.active == False:
+                    elif not activity.active:
                         activity.activity_status_for_interpreter = 'done_booking'
                     else:
                         activity.activity_status_for_interpreter = 'all_booking'
@@ -481,8 +485,7 @@ class MailActivity(models.Model):
             data.get('tekniskStatusTypId', self._interpreter_booking_status))
         self._interpreter_booking_status_2 = str(
             data.get('statusTypId', self._interpreter_booking_status_2))
-        self.interpreter_type = self.env["res.interpreter.type"].search(
-            [('code', '=', data.get('tolkTypId'))])  # noqa:E501
+        self.interpreter_type = self.env["res.interpreter.type"].search([('code', '=', data.get('tolkTypId'))])
         self.interpreter_remote_type = self.env["res.interpreter.remote_type"].search(
             [('code', '=', data.get('distanstolkTypId'))])  # noqa:E501
         self.time_start = change_tz(datetime.datetime.strptime(

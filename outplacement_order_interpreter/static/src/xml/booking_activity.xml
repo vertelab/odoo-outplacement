@@ -71,21 +71,11 @@
                             <t t-esc="activity.done_booking_count"/>
                             Done </button>
                         <span t-if="!activity.done_booking_count" class="o_no_activity float-right">0 Done</span>
-                        <!--                        <span t-if="!activity.active_booking_count" class="o_no_activity mr16">0 Bookings </span>-->
-                        <!--                        <button t-if="activity.active_booking_count" type="button" class="btn btn-link o_activity_filter_button mr16" t-att-data-res_model="activity.model" t-att-data-model_name="activity.name" data-filter='active_booking'><t t-esc="activity.active_booking_count"/> Bookings </button>-->
-                        <!--                        <span t-if="!activity.active_booking_count" class="o_no_activity mr16">0 Bookings </span>-->
-                        <!--                        <button t-if="activity.failed_booking_count" type="button" class="btn btn-link o_activity_filter_button mr16" t-att-data-res_model="activity.model" t-att-data-model_name="activity.name" data-filter='failed_booking'> <t t-esc="activity.failed_booking_count"/> Failed </button>-->
-                        <!--                        <span t-if="!activity.failed_booking_count" class="o_no_activity mr16">0 Failed </span>-->
-                        <!--                        <button t-if="activity.awaiting_booking_count" type="button" class="btn btn-link o_activity_filter_button float-right" t-att-data-res_model="activity.model" t-att-data-model_name="activity.name" data-filter='failed_booking'> <t t-esc="activity.awaiting_booking_count"/> Failed </button>-->
-                        <!--                        <span t-if="!activity.awaiting_booking_count" class="o_no_activity mr16">0 Failed </span>-->
-                        <!--                        <button t-if="activity.done_booking_count" type="button" class="btn btn-link o_activity_filter_button float-right" t-att-data-res_model="activity.model" t-att-data-model_name="activity.name" data-filter='done_booking'> <t t-esc="activity.done_booking_count"/> Done </button>-->
-                        <!--                        <span t-if="!activity.done_booking_count" class="o_no_activity float-right">0 Done</span>-->
                     </div>
                 </div>
             </div>
         </t>
     </t>
-
 
     <t t-name="Bookings.ActivityMenu">
         <li class="o_mail_systray_item" role="menuitem">

@@ -152,23 +152,31 @@
                 <field name="summary"/>
                 <field name="interpreter_type"/>
                 <field name="time_start"/>
-                <field name="time_end"/>
+                <field name="partner_name"/>
+                <field name="outplacement_name"/>
+                <field name="outplacement_name"/>
                 <field name="res_name"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
                             <div class="oe_kanban_details">
-                                <strong class="o_kanban_record_title">
-                                    <field name="res_name"/>
-                                </strong>
+                                <b>Partner Name</b>
+                                <field name="partner_name"/>
+                                <br/>
+                                <b>Outplacement:</b>
+                                <field name="outplacement_name"/>
+                                <br/>
+                                <b>Order:</b>
+                                <field name="order_name"/>
+                                <br/>
+                                <b>Task:</b>
+                                <field name="res_name"/>
                                 <br/>
                                 <field name="summary"/>
                                 <br/>
                                 <field name="interpreter_type"/>
                                 <br/>
                                 <field name="time_start"/>
-                                -
-                                <field name="time_end"/>
                             </div>
                         </div>
                     </t>
@@ -436,7 +444,6 @@
         <field name="search_view_id"
                ref="outplacement_order_interpreter.mail_activity_search_view_for_interpreters_menu"/>
         <field name="context">{'from_outplacement_interpreters_menu':1}</field>
-<!--        <field name="domain">[('activity_type_id', '=', self.env.ref("outplacement_order_interpreter.order_interpreter"))]</field>-->
     </record>
 
     <record id="interpreter_activity_action_form" model="ir.actions.act_window.view">

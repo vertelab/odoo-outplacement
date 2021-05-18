@@ -2,7 +2,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Outplacement Final Report send',
-    'version': '12.0.0.2.1',
+    'version': '12.0.0.2.2',
     'category': 'Outplacement',
     'description': """
 This module adds a button to the outplacement interface that allows the sending of final reports.
@@ -13,6 +13,7 @@ v12.0.0.1.3 added chatter message\n
 v12.0.0.1.4 made it so that you can only send a day after service end\n
 v12.0.0.2.0 Added reset for final report rejection check\n
 v12.0.0.2.1 Added check to make sure joint planning is sent before sending final report\n
+v12.0.0.2.2 Updated message text\n
 """,
 
     'author': "Vertel AB",

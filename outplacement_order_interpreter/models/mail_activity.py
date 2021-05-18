@@ -220,7 +220,6 @@ class MailActivity(models.Model):
             perf_op = record.get_outplacement_value('performing_operation_id')
             record.interpreter_ka_nr = perf_op.ka_nr if perf_op else None
 
-
     @api.multi
     def write(self, vals):
         res = super(MailActivity, self).write(vals)
@@ -514,9 +513,9 @@ class MailActivity(models.Model):
             _logger.error('Check KA-Number and that address is correct.')
             _logger.error(response.text)
             _logger.error(payload)
-            # msg = _('Failed to book Interpreter, '
-            #         'please check KA-Number and address in request.\n')
-            # raise UserError(f'{msg}{json.loads(response.text)["message"]}')
+            msg = _('Failed to book Interpreter, '
+                    'please check KA-Number and address in request.\n')
+            raise UserError(f'{msg}{json.loads(response.text)["message"]}')
         else:
             self._interpreter_booking_status = msg
             err_msg = (f'\n{msg}\n{_("Response text")}:\n{response.text}\n'

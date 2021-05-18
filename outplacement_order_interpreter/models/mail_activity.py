@@ -39,6 +39,16 @@ class ProjectTask(models.Model):
                     else:
                         activity.activity_status_for_interpreter = 'all_booking'
 
+    @api.model
+    def create(self, vals):
+        res = super(ProjectTask, self).create(vals)
+        task_subtype = self.env.ref('project.mt_task_new')
+        if res.outplacement_id:
+            for message in res.message_ids:
+                if message.subtype_id and message.subtype_id.id == task_subtype.id:
+                    message.unlink()
+        return res
+
 
 class MailActivity(models.Model):
     _inherit = "mail.activity"
@@ -209,6 +219,66 @@ class MailActivity(models.Model):
         for record in self:
             perf_op = record.get_outplacement_value('performing_operation_id')
             record.interpreter_ka_nr = perf_op.ka_nr if perf_op else None
+
+
+    @api.multi
+    def write(self, vals):
+        res = super(MailActivity, self).write(vals)
+        if vals.get('_interpreter_booking_status') or vals.get('_interpreter_booking_status_2') or \
+                vals.get('interpreter_company') or vals.get('time_end'):
+            statuses = {'1': _('Order received'),
+                        '2': _('No available interpreter'),
+                        '3': _('Order received'),
+                        '4': _('Interpreter Booked'),
+                        '5': _('Cancelled by Interpreter'),
+                        '6': _('Cancelled by AF')}
+            for record in self:
+                tech_status = record._interpreter_booking_status
+                status = record._interpreter_booking_status_2
+                if tech_status == '2':
+                    pass
+                elif (record.time_end
+                      and record.time_end < datetime.datetime.now()
+                      and tech_status != '2'
+                      and status == '4'):
+                    pass
+                elif status in statuses:
+                    if status == '4':
+                        msg_obj = self.env['mail.message']
+                        for activity in self:
+                            msg = _("Interpreter Booking is Confirmed")
+                            msg_obj.create({
+                                'body': msg,
+                                'author_id': self.env['res.users'].browse(
+                                    self.env.uid).partner_id.id,
+                                'res_id': activity.res_id,
+                                'model': activity.res_model,
+                            })
+                # Legacy
+                elif record.interpreter_company and tech_status == '1':
+                    msg_obj = self.env['mail.message']
+                    for activity in self:
+                        msg = _("Interpreter Booking is Confirmed")
+                        msg_obj.create({
+                            'body': msg,
+                            'author_id': self.env['res.users'].browse(
+                                self.env.uid).partner_id.id,
+                            'res_id': activity.res_id,
+                            'model': activity.res_model,
+                        })
+                else:
+                    if status == '4':
+                        msg_obj = self.env['mail.message']
+                        for activity in self:
+                            msg = _("Interpreter Booking is Confirmed")
+                            msg_obj.create({
+                                'body': msg,
+                                'author_id': self.env['res.users'].browse(
+                                    self.env.uid).partner_id.id,
+                                'res_id': activity.res_id,
+                                'model': activity.res_model,
+                            })
+        return res
 
     @api.depends('_interpreter_booking_status',
                  '_interpreter_booking_status_2',

@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Order Interpreter',
-    'version': '12.0.1.6.2',
+    'version': '12.0.1.6.3',
     'category': 'Outplacement',
     'description': """This module adds interpreter-functionality \n
     v12.0.0.2 changed the languagecodes from a full list to Tolkportalens list. AFC-1586 \n
@@ -45,6 +45,9 @@
     V12.0.1.6.0 AFC-2125: This version adds a widget for displaying interpreter-bookings. \n
     V12.0.1.6.1 AFC-2125: This version updates a widget for displaying interpreter-bookings with activity views and new filters. \n
     V12.0.1.6.2 AFC-2217: This version adds new menu 'Interpreters' for 'Interpreter Accountants'. \n
+    V12.0.1.6.3 AFC-2145: This version updates Interpreter booking Log messages.
+     Hide 'Task Created' log for Outplacement tasks, Added new log for 'Interpreter Booked' status.
+     Need to merge PR https://github.com/vertelab/odoo-project/pull/27 for AFC-2145.\n
     """,
     'author': "N-development",
     'license': 'AGPL-3',

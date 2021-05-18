@@ -15,6 +15,9 @@ class Outplacement(models.Model):
         if not self.interruption and delta.days > -1:
             raise UserError(_("You are not allowed to send final report before service end"
                             " unless there has been an interruption"))
+        if not self.jp_sent_date:
+            raise UserError(_("You need to send in a joint planning "
+                              "before sending in a final report"))
         already_sent = False
         if self.fr_send_date:
             already_sent = True

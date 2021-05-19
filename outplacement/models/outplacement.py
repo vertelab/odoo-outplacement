@@ -75,7 +75,7 @@ class Outplacement(models.Model):
              "Use this field anywhere a small image is required.")
     partner_id = fields.Many2one('res.partner')
     partner_name = fields.Char(
-        related='partner_id.name', string='Partner Name', readonly=False)
+        related='partner_id.name', string='Partner Name', readonly=False, store=True)
     partner_street = fields.Char(related="partner_id.street", readonly=False)
     partner_street2 = fields.Char(related="partner_id.street2", readonly=False)
     partner_zip = fields.Char(related="partner_id.zip", readonly=False)

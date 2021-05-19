@@ -4,11 +4,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0-20210131\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-30 12:10+0000\n"
-"PO-Revision-Date: 2021-05-04 05:37+0000\n"
-"Last-Translator: Nils Nyman-Waara <nils.nyman-waara@vertel.se>\n"
+"POT-Creation-Date: 2021-05-19 09:55+0000\n"
+"PO-Revision-Date: 2021-05-19 09:55+0000\n"
+"Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,10 +23,83 @@ msgid "!activity.is_interpreter_order"
 msgstr ""
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:426
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:43
+#, python-format
+msgid "0 All Bookings"
+msgstr "0 Alla bokningar"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:49
+#, python-format
+msgid "0 Awaiting Response"
+msgstr "0 Avvaktar svar"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:73
+#, python-format
+msgid "0 Done"
+msgstr "0 Avslutad"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:67
+#, python-format
+msgid "0 Failed"
+msgstr "0 Ingen tillgänglig"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:61
+#, python-format
+msgid "0 Not Delivered"
+msgstr "0 Ej Inlevererad"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:55
+#, python-format
+msgid "0 Ongoing"
+msgstr "0 Pågående"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_kanban_view_for_interpreter
+msgid "<b>Partner Name</b>"
+msgstr "<b>Deltagarnamn</b>"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_kanban_view_for_interpreter
+msgid "<br/>\n"
+"                                <b>Order:</b>"
+msgstr"<br/>\n"
+"                                <b>Genomförandereferens:</b>"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_kanban_view_for_interpreter
+msgid "<br/>\n"
+"                                <b>Outplacement:</b>"
+msgstr "<br/>\n"
+"                                <b>Avrop:</b>"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_kanban_view_for_interpreter
+msgid "<br/>\n"
+"                                <b>Task:</b>"
+msgstr  "<br/>\n"
+"                                <b>Tolkbokning:</b>"
+
+#. module: outplacement_order_interpreter
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:624
 #, python-format
 msgid "<p>Interpreter booking with ref: {ref} canceled<p>"
 msgstr "<p>Tolkbokning med referens: {ref} avbokad<p>"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_form_view_for_interpreter
+msgid "<strong>Recommended Activities</strong>"
+msgstr "<strong>Rekommenderade aktiviteter</strong>"
 
 #. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_outplacement_interpreter_delivery_wizard__absent_interpreter
@@ -39,9 +112,23 @@ msgid "Active"
 msgstr "Aktiv"
 
 #. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+msgid "Active Bookings"
+msgstr "Aktiva tolkbokningar"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:18
+#: model:ir.actions.act_window,name:outplacement_order_interpreter.interpreter_activity_action
 #: model:ir.model,name:outplacement_order_interpreter.model_mail_activity
+#, python-format
 msgid "Activity"
 msgstr "Aktivitet"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__activity_status_for_interpreter
+msgid "Activity Status for Interpreter"
+msgstr "Tolkbokningsstatus"
 
 #. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_outplacement_interpreter_delivery_wizard__additional_time
@@ -56,8 +143,35 @@ msgstr "Extra tid måste vara i 15 minuters intervall"
 
 #. module: outplacement_order_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_form_view_for_interpreter
 msgid "Address"
 msgstr "Adress"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:41
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+#, python-format
+msgid "All Bookings"
+msgstr "Alla bokningar"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:47
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+#, python-format
+msgid "Awaiting Response"
+msgstr "Avvaktar svar"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:83
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:84
+#, python-format
+msgid "Booking Activities"
+msgstr "Tolkbokningar"
 
 #. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__interpreter_booking_ref
@@ -75,19 +189,21 @@ msgid "Booking Status Internal"
 msgstr "Intern Bokningsstatus"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:294
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:487
 #, python-format
 msgid "Booking has to be an even {} minutes segment."
 msgstr "Bokningen måste vara i jämna {} minuters intervall."
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:101
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:234
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:288
 #, python-format
 msgid "Cancelled by AF"
 msgstr "Inställt av Arbetsförmedlingen"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:100
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:233
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:287
 #, python-format
 msgid "Cancelled by Interpreter"
 msgstr "Inställt av tolkleverantören"
@@ -102,6 +218,7 @@ msgstr "Kontrollera status på tolkorder."
 #. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__city
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_form_view_for_interpreter
 msgid "City"
 msgstr "Stad"
 
@@ -131,6 +248,7 @@ msgstr "Kan inte hitta en tilldelad tolk."
 #. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__country_id
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_form_view_for_interpreter
 msgid "Country"
 msgstr "Land"
 
@@ -145,7 +263,7 @@ msgid "Created on"
 msgstr "Skapad den"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:95
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:282
 #, python-format
 msgid "Delivered"
 msgstr "Levererad"
@@ -156,18 +274,44 @@ msgid "Display Name"
 msgstr "Visningsnamn"
 
 #. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:71
+#, python-format
+msgid "Done"
+msgstr "Klar"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+msgid "Done Bookings"
+msgstr "Klar"
+
+#. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__time_end
 msgid "End Time"
 msgstr "Sluttid"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:280
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:473
 #, python-format
 msgid "Endtime is before start time"
 msgstr "Sluttiden är före starttiden"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:323
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:65
+#, python-format
+msgid "Failed"
+msgstr "Ingen tillgänglig tolk"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+msgid "Failed Bookings"
+msgstr "Ingen tillgänglig tolk"
+
+#. module: outplacement_order_interpreter
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:516
 #, python-format
 msgid "Failed to book Interpreter, please check KA-Number and address in request.\n"
 ""
@@ -185,6 +329,11 @@ msgid "Gender Preference"
 msgstr "Föredrar tolk av könet"
 
 #. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreters_menu
+msgid "Group By"
+msgstr "Gruppera efter"
+
+#. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_outplacement_interpreter_delivery_wizard__id
 msgid "ID"
 msgstr ""
@@ -196,14 +345,22 @@ msgstr ""
 
 #. module: outplacement_order_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_form_view_for_interpreter
 msgid "Inleverera tolk"
 msgstr ""
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:99
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:232
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:286
 #, python-format
 msgid "Interpreter Booked"
 msgstr "Tolk bokad"
+
+#. module: outplacement_order_interpreter
+#: code:addons/outplacement_order_interpreter/wizards/deliver_interpreter.py:107
+#, python-format
+msgid "Interpreter Booking"
+msgstr "Tolkbokning"
 
 #. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_outplacement_interpreter_delivery_wizard__booking_ref
@@ -211,7 +368,15 @@ msgid "Interpreter Booking Reference"
 msgstr "Tolkbokningsreferens"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/wizards/deliver_interpreter.py:112
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:247
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:257
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:267
+#, python-format
+msgid "Interpreter Booking is Confirmed"
+msgstr "Tolkbokning är bekräftad"
+
+#. module: outplacement_order_interpreter
+#: code:addons/outplacement_order_interpreter/wizards/deliver_interpreter.py:113
 #, python-format
 msgid "Interpreter Delivery"
 msgstr "Tolkleverans"
@@ -227,6 +392,11 @@ msgstr "Tolkens kön"
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_res_users__interpreter_gender_preference
 msgid "Interpreter Gender Preference"
 msgstr "Föredrar tolk av könet"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__interpreter_ka_nr
+msgid "Interpreter Ka Nr"
+msgstr "Tolkbokningens KA-nr"
 
 #. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__interpreter_language
@@ -248,8 +418,14 @@ msgstr "Tolkens telefonnummer"
 
 #. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__interpreter_receiver
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreters_menu
 msgid "Interpreter Receiver"
 msgstr "Mottagare"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreters_menu
+msgid "Interpreter Reference"
+msgstr "Tolkbokningens referensnr"
 
 #. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__interpreter_remote_type
@@ -260,6 +436,7 @@ msgstr "Tolkens fjärrtyp"
 
 #. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__interpreter_company
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreters_menu
 msgid "Interpreter Supplier Company"
 msgstr "Tolkleverantör"
 
@@ -283,7 +460,7 @@ msgid "Interpreter Type"
 msgstr "Tolktyp"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/wizards/deliver_interpreter.py:107
+#: code:addons/outplacement_order_interpreter/wizards/deliver_interpreter.py:108
 #, python-format
 msgid "Interpreter booking with reference: {ref} delivered"
 msgstr "Tolkbokning med referens {ref} inlevererad"
@@ -297,6 +474,12 @@ msgstr "Tolkleverans"
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__interpreter_ref
 msgid "Interpreter reference"
 msgstr "Tolkreferens"
+
+#. module: outplacement_order_interpreter
+#: model:ir.actions.act_window,name:outplacement_order_interpreter.interpreters_menu_action
+#: model:ir.ui.menu,name:outplacement_order_interpreter.menu_outplacement_interpreters
+msgid "Interpreters"
+msgstr "Tolkadmin"
 
 #. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_outplacement_interpreter_delivery_wizard__kanr
@@ -319,24 +502,46 @@ msgid "Last Updated on"
 msgstr "Senast uppdaterad"
 
 #. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_form_view_for_interpreter
+msgid "Log a note..."
+msgstr "Registrera en notering..."
+
+#. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_outplacement_interpreter_delivery_wizard__mail_activity_id
 msgid "Mail Activity"
 msgstr "Emailaktivitet"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:97
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:230
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:284
 #, python-format
 msgid "No available interpreter"
 msgstr "Ingen tillgänglig tolk"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:73
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:11
+#, python-format
+msgid "No bookings planned."
+msgstr "Inga tolkbokningar planerade"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:59
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+#, python-format
+msgid "Not Delivered"
+msgstr "Ej Inlevererad"
+
+#. module: outplacement_order_interpreter
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:111
 #, python-format
 msgid "Not booked"
 msgstr "Inte bokad"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:111
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:298
 #, python-format
 msgid "Not delivered yet!"
 msgstr "Inte inleverarad!"
@@ -347,14 +552,25 @@ msgid "Office code"
 msgstr "Kontorskod"
 
 #. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:53
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+#, python-format
+msgid "Ongoing"
+msgstr "Pågående"
+
+#. module: outplacement_order_interpreter
 #: model:mail.activity.type,name:outplacement_order_interpreter.order_interpreter
 msgid "Order Interpreter"
 msgstr "Beställ tolk"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:94
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:96
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:98
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:229
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:231
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:281
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:283
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:285
 #, python-format
 msgid "Order received"
 msgstr "Order mottagen"
@@ -365,9 +581,29 @@ msgid "Outplacement"
 msgstr "Deltagare"
 
 #. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__outplacement_name
+msgid "Outplacement Name"
+msgstr "Avrop"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__order_name
+msgid "Outplacement Order Name"
+msgstr ""
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__partner_name
+msgid "Partner Name"
+msgstr "Deltagarnamn"
+
+#. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_outplacement_interpreter_delivery_wizard__project_code
 msgid "Project code"
 msgstr "Projektkod"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__task_id
+msgid "Record"
+msgstr "Post"
 
 #. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__time_start
@@ -375,7 +611,7 @@ msgid "Start Time"
 msgstr "Starttid"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:278
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:471
 #, python-format
 msgid "Start time cannot be before now."
 msgstr "Start tiden har redan passerat."
@@ -392,6 +628,7 @@ msgstr "Gata"
 
 #. module: outplacement_order_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_form_view_for_interpreter
 msgid "Street..."
 msgstr "Gata..."
 
@@ -399,6 +636,12 @@ msgstr "Gata..."
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__street2
 msgid "Street2"
 msgstr "Gata 2"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model,name:outplacement_order_interpreter.model_project_task
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_form_view_for_interpreter
+msgid "Task"
+msgstr "Aktivitet"
 
 #. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity___interpreter_booking_status
@@ -412,19 +655,30 @@ msgid "The occation still lies in the future"
 msgstr "Tillfället har inte passerat än"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:290
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:483
 #, python-format
 msgid "This type of booking needs to be atleast {min} minutes long."
 msgstr "Den här typen av bokning behöver vara minst {min} minuter långt."
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:313
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:506
 #, python-format
 msgid "Unknown error making Interpreter booking"
 msgstr "Okänt fel"
 
 #. module: outplacement_order_interpreter
+#: model:ir.actions.server,name:outplacement_order_interpreter.action_update_activity_status
+msgid "Update Activity Status"
+msgstr "Uppdatera aktivitetsstatus"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model,name:outplacement_order_interpreter.model_res_users
+msgid "Users"
+msgstr "Användare"
+
+#. module: outplacement_order_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_form_view_for_interpreter
 msgid "ZIP"
 msgstr "Postnummer"
 
@@ -434,6 +688,12 @@ msgid "Zip"
 msgstr "Postnummer"
 
 #. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_form_view_for_interpreter
+msgid "e.g. Discuss proposal"
+msgstr "e.g Diskutera offert"
+
+#. module: outplacement_order_interpreter
 #: model:ir.model,name:outplacement_order_interpreter.model_outplacement_interpreter_delivery_wizard
 msgid "outplacement.interpreter_delivery.wizard"
-msgstr ""
+msgstr "Inleverens"
+

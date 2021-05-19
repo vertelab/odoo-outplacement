@@ -41,8 +41,4 @@ class Outplacement(models.Model):
         else:
             raise UserError(_("No config found for final report"))
         self.fr_rejected = False
-        self.message_post(
-            body=_("Final report sent, note that if it's not accepted "
-                   "you will get that information from an administrative officer by email"))
-
-
+        self.message_post(body=_("Final report sent"))

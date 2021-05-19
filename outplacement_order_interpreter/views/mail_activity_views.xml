@@ -385,7 +385,9 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="interpreter_booking_ref"/>
-                <field name="interpreter_receiver"/>
+                <field name="user_id"/>
+                <field name="phone"/>
+                <field name="mobile"/>
                 <field name="time_start"/>
                 <field name="time_end"/>
                 <field name="interpreter_language"/>
@@ -402,13 +404,13 @@
         <field name="arch" type="xml">
             <search>
                 <field name="interpreter_booking_ref"/>
-                <field name="interpreter_receiver"/>
+                <field name="user_id"/>
                 <field name="interpreter_company"/>
                 <group expand="0" string="Group By">
                     <filter string="Interpreter Reference" name="interpreter_booking_ref"
                             context="{'group_by': 'interpreter_booking_ref'}"/>
                     <filter string="Interpreter Receiver" name="interpreter_receiver"
-                            context="{'group_by': 'interpreter_receiver'}"/>
+                            context="{'group_by': 'user_id'}"/>
                     <filter string="Interpreter Supplier Company" name="interpreter_company"
                             context="{'group_by': 'interpreter_company'}"/>
                 </group>
@@ -425,7 +427,9 @@
                 <sheet>
                     <group>
                         <field name="interpreter_booking_ref"/>
-                        <field name="interpreter_receiver"/>
+                        <field name="user_id"/>
+                        <field name="phone"/>
+                        <field name="mobile"/>
                         <field name="time_start"/>
                         <field name="time_end"/>
                         <field name="interpreter_language"/>

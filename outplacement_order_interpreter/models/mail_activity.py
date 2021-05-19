@@ -134,6 +134,8 @@ class MailActivity(models.Model):
     partner_name = fields.Char("Partner Name", compute='_compute_outplacement_detail')
     outplacement_name = fields.Char("Outplacement Name", compute='_compute_outplacement_detail')
     order_name = fields.Char("Outplacement Order Name", compute='_compute_outplacement_detail')
+    phone = fields.Char("Phone", related="user_id.phone")
+    mobile = fields.Char("Mobile", related="user_id.mobile")
 
     def _compute_outplacement_detail(self):
         task_obj = self.env['project.task']

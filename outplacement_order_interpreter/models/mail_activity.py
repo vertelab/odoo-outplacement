@@ -145,7 +145,7 @@ class MailActivity(models.Model):
                     activity.partner_name = task.outplacement_id.partner_name
                     activity.outplacement_name = task.outplacement_id.name
                     if task.outplacement_id.order_id:
-                        activity.order_name = task.outplacement_id.order_id.name
+                        activity.order_name = task.outplacement_id.order_id_origin
 
     @api.model
     def search(self, args, offset=0, limit=None, order=None, count=False):

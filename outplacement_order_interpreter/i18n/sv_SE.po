@@ -73,7 +73,7 @@ msgstr "<b>Deltagarnamn</b>"
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_kanban_view_for_interpreter
 msgid "<br/>\n"
 "                                <b>Order:</b>"
-msgstr"<br/>\n"
+msgstr "<br/>\n"
 "                                <b>Genomförandereferens:</b>"
 
 #. module: outplacement_order_interpreter

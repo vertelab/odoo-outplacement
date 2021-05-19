@@ -26,6 +26,9 @@ class Outplacement(models.Model):
         if client_config:
             response = client_config.post_request(self)
             if response.status_code != 201:
+                if already_sent:
+                    raise UserError(_("You have already sent a final report "
+                                      "for this outplacement"))
                 res_dict = json.loads(response.text)
                 tracking_id = res_dict.get("error_id", "")
                 message = res_dict.get("message", "")

@@ -134,11 +134,12 @@ class MailActivity(models.Model):
     partner_name = fields.Char("Partner Name", compute='_compute_outplacement_detail')
     outplacement_name = fields.Char("Outplacement Name", compute='_compute_outplacement_detail')
     order_name = fields.Char("Outplacement Order Name", compute='_compute_outplacement_detail')
-    phone = fields.Char("Phone", related="user_id.phone")
-    mobile = fields.Char("Mobile", related="user_id.mobile")
+    phone = fields.Char("Phone", compute='_compute_outplacement_detail')
+    mobile = fields.Char("Mobile", compute='_compute_outplacement_detail')
 
     def _compute_outplacement_detail(self):
         task_obj = self.env['project.task']
+        emp_obj = self.env['hr.employee']
         for activity in self:
             if activity.res_id:
                 task_id = activity.res_id
@@ -148,6 +149,11 @@ class MailActivity(models.Model):
                     activity.outplacement_name = task.outplacement_id.name
                     if task.outplacement_id.order_id:
                         activity.order_name = task.outplacement_id.order_id_origin
+            if activity.user_id:
+                emp = emp_obj.search([('user_id', '=', activity.user_id.id)], limit=1)
+                if emp:
+                    activity.phone = emp.work_phone
+                    activity.mobile = emp.mobile_phone
 
     @api.model
     def search(self, args, offset=0, limit=None, order=None, count=False):
@@ -173,6 +179,14 @@ class MailActivity(models.Model):
                 domain += [('activity_type_id', '=', type.id)]
         return super(MailActivity, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby,
                                                   lazy=lazy)
+
+    def cron_activity_status_order_interpreter(self):
+        activity_obj = self.env['mail.activity']
+        current_time = datetime.datetime.today()
+        for activity in activity_obj.search([('_interpreter_booking_status', '=', '1'),
+                                             ('_interpreter_booking_status_2', '=', '4'),
+                                             ('time_end', '<=', current_time)]):
+            activity.activity_status_for_interpreter = 'not_delivered_booking'
 
     @api.depends('_interpreter_booking_status', '_interpreter_booking_status_2', 'time_end', 'active')
     def _compute_activity_status(self):

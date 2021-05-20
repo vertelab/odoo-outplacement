@@ -388,6 +388,7 @@
                 <field name="user_id"/>
                 <field name="phone"/>
                 <field name="mobile"/>
+                <field name="email"/>
                 <field name="time_start"/>
                 <field name="time_end"/>
                 <field name="interpreter_language"/>
@@ -429,6 +430,7 @@
                         <field name="interpreter_booking_ref"/>
                         <field name="user_id"/>
                         <field name="phone"/>
+                        <field name="mobile"/>
                         <field name="mobile"/>
                         <field name="time_start"/>
                         <field name="time_end"/>

@@ -136,6 +136,7 @@ class MailActivity(models.Model):
     order_name = fields.Char("Outplacement Order Name", compute='_compute_outplacement_detail')
     phone = fields.Char("Phone", compute='_compute_outplacement_detail')
     mobile = fields.Char("Mobile", compute='_compute_outplacement_detail')
+    email = fields.Char("Email", compute='_compute_outplacement_detail')
 
     def _compute_outplacement_detail(self):
         task_obj = self.env['project.task']
@@ -154,6 +155,7 @@ class MailActivity(models.Model):
                 if emp:
                     activity.phone = emp.work_phone
                     activity.mobile = emp.mobile_phone
+                    activity.email = emp.work_email
 
     @api.model
     def search(self, args, offset=0, limit=None, order=None, count=False):

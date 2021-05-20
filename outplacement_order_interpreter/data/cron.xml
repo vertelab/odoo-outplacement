@@ -5,12 +5,24 @@
             <field name="model_id" ref="model_mail_activity"/>
             <field name="state">code</field>
             <field name="code">model.cron_order_interpreter()</field>
-            <field name="user_id" ref="base.user_root" />
+            <field name="user_id" ref="base.user_root"/>
             <field name="nextcall">2020-09-30 05:00:00</field>
             <field name="interval_number">15</field>
             <field name="interval_type">minutes</field>
             <field name="numbercall">-1</field>
-            <field eval="False" name="doall" />
+            <field eval="False" name="doall"/>
+        </record>
+
+        <record forcecreate="True" id="ir_cron_activity_status_order_interpreter" model="ir.cron">
+            <field name="name">Check activity status on Interpreter Order activity</field>
+            <field name="model_id" ref="model_mail_activity"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_activity_status_order_interpreter()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">10</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
         </record>
     </data>
 </odoo>

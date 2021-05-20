@@ -420,7 +420,7 @@ msgstr "Tolkens telefonnummer"
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__interpreter_receiver
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreters_menu
 msgid "Interpreter Receiver"
-msgstr "Mottagare"
+msgstr "Tolkanvändare"
 
 #. module: outplacement_order_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreters_menu

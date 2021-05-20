@@ -388,6 +388,7 @@
                 <field name="user_id"/>
                 <field name="phone"/>
                 <field name="mobile"/>
+                <field name="email"/>
                 <field name="time_start"/>
                 <field name="time_end"/>
                 <field name="interpreter_language"/>
@@ -430,6 +431,7 @@
                         <field name="user_id"/>
                         <field name="phone"/>
                         <field name="mobile"/>
+                        <field name="mobile"/>
                         <field name="time_start"/>
                         <field name="time_end"/>
                         <field name="interpreter_language"/>
@@ -450,14 +452,14 @@
         <field name="context">{'from_outplacement_interpreters_menu':1}</field>
     </record>
 
-    <record id="interpreter_activity_action_form" model="ir.actions.act_window.view">
+    <record id="interpreter_menu_action_form" model="ir.actions.act_window.view">
         <field name="sequence" eval="2"/>
         <field name="view_mode">form</field>
         <field name="view_id" ref="outplacement_order_interpreter.mail_activity_form_view_for_interpreters_menu"/>
         <field name="act_window_id" ref="interpreters_menu_action"/>
     </record>
 
-    <record id="interpreter_activity_action_kanban" model="ir.actions.act_window.view">
+    <record id="interpreter_menu_action_kanban" model="ir.actions.act_window.view">
         <field name="sequence" eval="1"/>
         <field name="view_mode">tree</field>
         <field name="view_id" ref="outplacement_order_interpreter.mail_activity_tree_view_for_interpreters_menu"/>

@@ -16,21 +16,20 @@ class Users(models.Model):
     def systray_get_booking_activities(self):
         query = """SELECT m.id, act.res_id, count(*), act.res_model as model,
                             CASE
-                                WHEN act.active = TRUE AND act._interpreter_booking_status = ANY (ARRAY['1','Order received', 'Order mottagen'])
-                                   AND act._interpreter_booking_status_2  = ANY (ARRAY['4','Interpreter Booked', 'Tolk bokad']) 
+                                WHEN act.active = TRUE AND act._interpreter_booking_status = '1'
+                                   AND act._interpreter_booking_status_2  = '4' 
                                    AND %(today)s::date - act.time_end::date >= 0
                                    Then 'not_delivered_booking'
 
-                                WHEN act.active = TRUE AND act._interpreter_booking_status = ANY (ARRAY['1','Order received', 'Order mottagen']) 
-                                   AND act._interpreter_booking_status_2 = ANY (ARRAY['3', '4', 'Order mottagen', 'Order received', 
-                                   'Interpreter Booked', 'Tolk bokad']) Then 'ongoing_booking'
+                                WHEN act.active = TRUE AND act._interpreter_booking_status = '1' 
+                                   AND act._interpreter_booking_status_2 = ANY (ARRAY['3', '4']) Then 'ongoing_booking'
 
-                                WHEN act.active = TRUE AND act._interpreter_booking_status = ANY (ARRAY['1','Order received', 'Order mottagen']) 
-                                   AND act._interpreter_booking_status_2 = ANY (ARRAY['1', '3', 'Order received', 'Order mottagen']) 
+                                WHEN act.active = TRUE AND act._interpreter_booking_status = '1' 
+                                   AND act._interpreter_booking_status_2 = ANY (ARRAY['1', '3']) 
                                    Then 'awaiting_booking'
                                     
-                                WHEN act.active = TRUE AND act._interpreter_booking_status = ANY (ARRAY['1','Order received', 'Order mottagen']) 
-                                   AND act._interpreter_booking_status_2  = ANY (ARRAY['No available interpreter', '2', 'Ingen tillgänglig tolk']) Then 'failed_booking'
+                                WHEN act.active = TRUE AND act._interpreter_booking_status = '1' 
+                                   AND act._interpreter_booking_status_2  = '2' Then 'failed_booking'
                                    
                                 WHEN act.active = FALSE THEN 'done_booking'
                                 

@@ -75,4 +75,7 @@ class Users(models.Model):
             if activity.get('states'):
                 user_activities[activity['model']]['%s_count' % activity['states']] += activity['count']
                 user_activities[activity['model']]['total_count'] += activity['count']
+        if 'project.task' in user_activities and 'total_count' in user_activities.get('project.task'):
+            total = user_activities.get('project.task').get('total_count')
+            user_activities.get('project.task').update({'all_booking_count': total})
         return list(user_activities.values())

@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Order Interpreter',
-    'version': '12.0.1.6.4',
+    'version': '12.0.1.6.5',
     'category': 'Outplacement',
     'description': """This module adds interpreter-functionality \n
     v12.0.0.2 changed the languagecodes from a full list to Tolkportalens list. AFC-1586 \n
@@ -47,6 +47,7 @@
     V12.0.1.6.2 AFC-2217: This version adds new menu 'Interpreters' for 'Interpreter Accountants'. \n
     V12.0.1.6.3 AFC-2145: This version updates Interpreter booking Log messages. \n
     V12.0.1.6.4 AFC-2145: This version adds email to case worker on Interpreter bookings \n.
+    V12.0.1.6.5 AFC-2217: Added fixes for duplicate status messages in the chatter-log \n.
      
     """,
     'author': "N-development",

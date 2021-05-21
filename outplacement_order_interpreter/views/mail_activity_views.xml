@@ -200,7 +200,10 @@
                         domain="[('user_id', '=', uid), ('active', '=', False),
                         ('activity_status_for_interpreter', '=', 'done_booking')]"/>
                 <filter string="All Bookings" name="activities_all_booking"
-                        domain="[('user_id', '=', uid), ('activity_status_for_interpreter', '=', 'all_booking')]"/>
+                        domain="[('user_id', '=', uid),
+                        ('activity_status_for_interpreter', 'in', ('all_booking', 'awaiting_booking', 'failed_booking',
+                        'done_booking', 'ongoing_booking', 'not_delivered_booking')),
+                        '|', ('active', '=', True), ('active', '=', False)]"/>
                 <filter string="Ongoing" name="activities_ongoing_booking"
                         domain="[('user_id', '=', uid), ('activity_status_for_interpreter', '=', 'ongoing_booking')]"/>
                 <filter string="Not Delivered" name="activities_not_delivered_booking"
@@ -362,6 +365,7 @@
         <field name="res_model">mail.activity</field>
         <field name="view_mode">kanban,form</field>
         <field name="view_id" ref="mail.mail_activity_view_search"/>
+        <field name="domain">[('user_id', '=', uid)]</field>
     </record>
 
     <record id="interpreter_activity_action_form" model="ir.actions.act_window.view">

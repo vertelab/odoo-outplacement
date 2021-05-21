@@ -137,6 +137,7 @@ class MailActivity(models.Model):
     phone = fields.Char("Phone", compute='_compute_outplacement_detail')
     mobile = fields.Char("Mobile", compute='_compute_outplacement_detail')
     email = fields.Char("Email", compute='_compute_outplacement_detail')
+    add_log_booking_confirmed = fields.Boolean("Added Log for Booking Confirmed?")
 
     def _compute_outplacement_detail(self):
         task_obj = self.env['project.task']
@@ -251,17 +252,29 @@ class MailActivity(models.Model):
                         '5': _('Cancelled by Interpreter'),
                         '6': _('Cancelled by AF')}
             for activity in self:
-                tech_status = activity._interpreter_booking_status
-                status = activity._interpreter_booking_status_2
-                if tech_status == '2':
-                    pass
-                elif (activity.time_end
-                      and activity.time_end < datetime.datetime.now()
-                      and tech_status != '2'
-                      and status == '4'):
-                    pass
-                elif status in statuses:
-                    if status == '4':
+                if not activity.add_log_booking_confirmed:
+                    tech_status = activity._interpreter_booking_status
+                    status = activity._interpreter_booking_status_2
+                    if tech_status == '2':
+                        pass
+                    elif (activity.time_end
+                          and activity.time_end < datetime.datetime.now()
+                          and tech_status != '2'
+                          and status == '4'):
+                        pass
+                    elif status in statuses:
+                        if status == '4':
+                            msg = _("Interpreter Booking is Confirmed")
+                            msg_obj.create({
+                                'body': msg,
+                                'author_id': self.env['res.users'].browse(
+                                    self.env.uid).partner_id.id,
+                                'res_id': activity.res_id,
+                                'model': activity.res_model,
+                            })
+                            activity.add_log_booking_confirmed = True
+                    # Legacy
+                    elif activity.interpreter_company and tech_status == '1':
                         msg = _("Interpreter Booking is Confirmed")
                         msg_obj.create({
                             'body': msg,
@@ -270,26 +283,18 @@ class MailActivity(models.Model):
                             'res_id': activity.res_id,
                             'model': activity.res_model,
                         })
-                # Legacy
-                elif activity.interpreter_company and tech_status == '1':
-                    msg = _("Interpreter Booking is Confirmed")
-                    msg_obj.create({
-                        'body': msg,
-                        'author_id': self.env['res.users'].browse(
-                            self.env.uid).partner_id.id,
-                        'res_id': activity.res_id,
-                        'model': activity.res_model,
-                    })
-                else:
-                    if status == '4':
-                        msg = _("Interpreter Booking is Confirmed")
-                        msg_obj.create({
-                            'body': msg,
-                            'author_id': self.env['res.users'].browse(
-                                self.env.uid).partner_id.id,
-                            'res_id': activity.res_id,
-                            'model': activity.res_model,
-                        })
+                        activity.add_log_booking_confirmed = True
+                    else:
+                        if status == '4':
+                            msg = _("Interpreter Booking is Confirmed")
+                            msg_obj.create({
+                                'body': msg,
+                                'author_id': self.env['res.users'].browse(
+                                    self.env.uid).partner_id.id,
+                                'res_id': activity.res_id,
+                                'model': activity.res_model,
+                            })
+                            activity.add_log_booking_confirmed = True
         return res
 
     @api.depends('_interpreter_booking_status',

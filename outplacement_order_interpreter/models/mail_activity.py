@@ -138,6 +138,9 @@ class MailActivity(models.Model):
     mobile = fields.Char("Mobile", compute='_compute_outplacement_detail')
     email = fields.Char("Email", compute='_compute_outplacement_detail')
     add_log_booking_confirmed = fields.Boolean("Added Log for Booking Confirmed?")
+    add_log_booking_delivered = fields.Boolean("Added Log for Booking Delivered?")
+    performing_operation_id = fields.Many2one('performing.operation', "Performing Operation",
+                                              compute="_compute_outplacement_detail")
 
     def _compute_outplacement_detail(self):
         task_obj = self.env['project.task']
@@ -151,6 +154,8 @@ class MailActivity(models.Model):
                     activity.outplacement_name = task.outplacement_id.name
                     if task.outplacement_id.order_id:
                         activity.order_name = task.outplacement_id.order_id_origin
+                    if task.outplacement_id.performing_operation_id:
+                        activity.performing_operation_id = task.outplacement_id.performing_operation_id.id
             if activity.user_id:
                 emp = emp_obj.search([('user_id', '=', activity.user_id.id)], limit=1)
                 if emp:
@@ -252,6 +257,16 @@ class MailActivity(models.Model):
                         '5': _('Cancelled by Interpreter'),
                         '6': _('Cancelled by AF')}
             for activity in self:
+                if not activity.add_log_booking_delivered and vals.get('_interpreter_booking_status') == '2':
+                    msg = _("Interpreter Booking is Delivered")
+                    msg_obj.create({
+                        'body': msg,
+                        'author_id': self.env['res.users'].browse(
+                            self.env.uid).partner_id.id,
+                        'res_id': activity.res_id,
+                        'model': activity.res_model,
+                    })
+                    activity.add_log_booking_delivered = True
                 if not activity.add_log_booking_confirmed:
                     tech_status = activity._interpreter_booking_status
                     status = activity._interpreter_booking_status_2

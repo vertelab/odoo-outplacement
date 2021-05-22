@@ -14,7 +14,7 @@
                         <!-- Not used by tolkportalen yet.
                         <field name="follow_up_code"/>
                         <field name="office_code"/> -->
-                        <field name="project_code"/>
+                        <field name="project_code" invisible="1"/>
                         <field name="absent_interpreter"/>
                         <field name="additional_time"/>
                     </group>

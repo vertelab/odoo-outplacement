@@ -22,9 +22,10 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Order Interpreter',
-    'version': '12.0.1.6.5',
+    'version': '12.0.1.6.6',
     'category': 'Outplacement',
     'description': """This module adds interpreter-functionality \n
+	This module is maintained from: https://github.com/vertelab/odoo-outplacement/tree/Dev-12.0-Fenix-Sprint-02/outplacement_order_interpreter \n
     v12.0.0.2 changed the languagecodes from a full list to Tolkportalens list. AFC-1586 \n
     v12.0.1.0.3 Added Category Outplacement \n
     v12.0.1.0.3 Added fields to Outplacement view \n
@@ -46,13 +47,14 @@
     V12.0.1.6.1 AFC-2125: This version updates a widget for displaying interpreter-bookings with activity views and new filters. \n
     V12.0.1.6.2 AFC-2217: This version adds new menu 'Interpreters' for 'Interpreter Accountants'. \n
     V12.0.1.6.3 AFC-2145: This version updates Interpreter booking Log messages. \n
-    V12.0.1.6.4 AFC-2145: This version adds email to case worker on Interpreter bookings \n.
-    V12.0.1.6.5 AFC-2217: Added fixes for duplicate status messages in the chatter-log \n.
+    V12.0.1.6.4 AFC-2145: This version adds email to case worker on Interpreter bookings. \n
+    V12.0.1.6.5 AFC-2217: Added fixes for duplicate status messages in the chatter-log. \n
+    V12.0.1.6.6 AFC-2125: Hide project code field in popup of Delivered button inside activity. \n
      
     """,
-    'author': "N-development",
+    'author': "Vertel AB",
     'license': 'AGPL-3',
-    'website': 'https://www.n-development.com',
+    'website': 'https://www.vertel.se',
     "depends": [
         'calendar',
         'mail',

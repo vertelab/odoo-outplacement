@@ -432,6 +432,9 @@
                 <sheet>
                     <group>
                         <field name="interpreter_booking_ref"/>
+                        <field name="performing_operation_id"/>
+                        <field name="outplacement_name"/>
+                        <field name="order_name"/>
                         <field name="user_id"/>
                         <field name="phone"/>
                         <field name="mobile"/>

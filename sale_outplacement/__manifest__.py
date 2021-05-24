@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Sale outplacement',
-    'version': '12.0.1.0.5',
+    'version': '12.0.1.0.6',
     'category': 'Outplacement',
     'description': """Receives a suborder and automatically create sale.order 
     and outplacement.outplacement objects.\n
@@ -30,6 +30,7 @@
     v 12.0.1.0.3 AFC-2000: added check to not accept duplicates \n
     v 12.0.1.0.4 AFC-2120: added sale_order.origin field to outplacements and related views \n
     v 12.0.1.0.5 AFC-2028: Made some fields readonly
+    v 12.0.1.0.6 AFC-2343: Disable buttons on sales, invoice and create,edit and delete disable for DAFA account read user    
     """,
     'maintainer': "Arbetsformedlingen",
     'author': "Vertel AB",
@@ -46,6 +47,8 @@
         'hr_skill',
         'partner_ssn',
         'res_interpreter_language',
+        'sale_management',
+        'base_user_groups_dafa',
     ],
     'data': [
         'data/product.xml',

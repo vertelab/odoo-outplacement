@@ -34,5 +34,5 @@ class AccountInvoice(models.Model):
                 node.set('edit', 'false')
                 node.set('delete', 'false')
                 res['arch'] = etree.tostring(tree_doc, encoding='unicode')
-                
+
         return res

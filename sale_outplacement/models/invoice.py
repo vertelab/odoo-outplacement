@@ -27,4 +27,12 @@ class AccountInvoice(models.Model):
                 node.set('edit', 'false')
                 node.set('delete', 'false')
             res['arch'] = etree.tostring(doc, encoding='unicode')
+        if view_type == 'tree':
+            tree_doc = etree.XML(res['arch'])
+            for node in tree_doc.xpath("//tree"):
+                node.set('create', 'false')
+                node.set('edit', 'false')
+                node.set('delete', 'false')
+                res['arch'] = etree.tostring(tree_doc, encoding='unicode')
+                
         return res

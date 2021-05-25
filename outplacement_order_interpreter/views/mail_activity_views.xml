@@ -130,6 +130,7 @@
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
                             <field name="interpreter_booking_ref" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+                            <field name="_interpreter_booking_status" invisible="1"/>
                             <button name="%(deliver_interpreter_action)d"
                                     attrs="{'invisible': ['|', '|', ('_interpreter_booking_status', '=', '2'),
                                               ('interpreter_booking_ref', '=', False),
@@ -322,6 +323,7 @@
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
                 <field name="interpreter_booking_ref" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
+                <field name="_interpreter_booking_status" invisible="1"/>
                 <button name="%(deliver_interpreter_action)d"
                         attrs="{'invisible': ['|', '|', ('_interpreter_booking_status', '=', '2'),
                                               ('interpreter_booking_ref', '=', False),

@@ -131,7 +131,7 @@
                             <field name="interpreter_booking_ref" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
                             <button name="%(deliver_interpreter_action)d"
-                                    attrs="{'invisible': ['|',
+                                    attrs="{'invisible': ['|', '|', ('_interpreter_booking_status', '=', '2'),
                                               ('interpreter_booking_ref', '=', False),
                                               ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
                                     type="action">Inleverera tolk
@@ -323,7 +323,7 @@
                 <field name="interpreter_booking_ref" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
                 <button name="%(deliver_interpreter_action)d"
-                        attrs="{'invisible': ['|',
+                        attrs="{'invisible': ['|', '|', ('_interpreter_booking_status', '=', '2'),
                                               ('interpreter_booking_ref', '=', False),
                                               ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
                         type="action">Inleverera tolk
@@ -357,6 +357,16 @@
         <field name="model_id" ref="project.model_project_task"/>
         <field name="code">
             records.update_activity_status()
+        </field>
+    </record>
+
+    <record id="action_remove_booking_confirmed_repetative_log" model="ir.actions.server">
+        <field name="name">Remove Booking Confirmed Repetative Log</field>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="model_id" ref="outplacement.model_outplacement"/>
+        <field name="code">
+            records.remove_booking_confirmed_repetative_log()
         </field>
     </record>
 

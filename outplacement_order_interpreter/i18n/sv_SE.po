@@ -84,6 +84,12 @@ msgstr "<br/>\n"
 "                                <b>Avrop ID:</b>"
 
 #. module: outplacement_order_interpreter
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:261
+#, python-format
+msgid "Interpreter Booking is Delivered"
+msgstr "Tolkbokning är Levererad"
+
+#. module: outplacement_order_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_kanban_view_for_interpreter
 msgid "<br/>\n"
 "                                <b>Task:</b>"

@@ -24,6 +24,11 @@ msgid "A main goal is required to send final report"
 msgstr "Huvudmål krävs för att skicka in slutredovisning"
 
 #. module: outplacement_final_report_ipf_client
+#: model_terms:ir.ui.view,arch_db:outplacement_final_report_ipf_client.view_outplacement_kanban_for_interruption
+msgid "<span style=\"color:red\">Cancelled by AF</span>"
+msgstr "<span style=\"color:red\">Avbruten av AF</span>"
+
+#. module: outplacement_final_report_ipf_client
 #: code:addons/outplacement_final_report_ipf_client/models/client_config.py:388
 #, python-format
 msgid "An alternative goal is required to send final report"

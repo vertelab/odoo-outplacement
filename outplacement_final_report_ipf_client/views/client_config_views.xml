@@ -24,36 +24,36 @@
                 </header>
                 <sheet>
                     <group>
-                    <group>
-                        <field name="url"/>
-                        <field name="environment"/>
-                        <field name="client_id"/>
-                        <field name="client_secret" password="True"/>
-                    </group>
-                    <group string="Requests" colspan="4">
-                        <field name="request_history_ids" nolabel="1"
-                               colspan="4">
-                            <tree>
-                                <field name="url"/>
-                                <field name="method"/>
-                                <field name="response_code"/>
-                                <field name="message"/>
-                            </tree>
-                            <form>
-                                <group>
+                        <group>
+                            <field name="url"/>
+                            <field name="environment"/>
+                            <field name="client_id"/>
+                            <field name="client_secret" password="True"/>
+                        </group>
+                        <group string="Requests" colspan="4">
+                            <field name="request_history_ids" nolabel="1"
+                                   colspan="4">
+                                <tree>
                                     <field name="url"/>
                                     <field name="method"/>
-                                    <field name="payload"/>
-                                    <field name="request_headers"/>
-                                    <field name="params"/>
                                     <field name="response_code"/>
-                                    <field name="response_headers"/>
                                     <field name="message"/>
-                                </group>
-                            </form>
-                        </field>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="url"/>
+                                        <field name="method"/>
+                                        <field name="payload"/>
+                                        <field name="request_headers"/>
+                                        <field name="params"/>
+                                        <field name="response_code"/>
+                                        <field name="response_headers"/>
+                                        <field name="message"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </group>
                     </group>
-                </group>
                 </sheet>
 
             </form>
@@ -71,4 +71,23 @@
               action="ipf_client_config_action_window"
               parent="base.menu_custom"
               sequence="120"/>
+
+    <record id="view_outplacement_kanban_for_interruption" model="ir.ui.view">
+        <field name="name">outplacement.view.kanban.inherit.for.interruption</field>
+        <field name="model">outplacement</field>
+        <field name="inherit_id" ref="outplacement.outplacement_kanban_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="interruption"/>
+            </field>
+            <xpath expr="//span[@class='o_kanban_record_subtitle']"
+                   position="inside">
+                <span style="text-align:right">
+                    <t t-if="record.interruption.raw_value">
+                        <span style="color:red">Cancelled by AF</span>
+                    </t>
+                </span>
+            </xpath>
+        </field>
+    </record>
 </data>

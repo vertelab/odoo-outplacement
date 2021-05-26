@@ -20,3 +20,15 @@ class Outplacement(models.Model):
     interpreter_remote_type = fields.Many2one(
         related='partner_id.interpreter_type',
         readonly=False)
+
+    def remove_booking_confirmed_repetative_log(self):
+        msg_obj = self.env['mail.message']
+        for record in self:
+            tasks = self.env['project.task'].search([('outplacement_id', '=', record.id)])
+            for task in tasks:
+                messages = msg_obj.search([('res_id','=',task.id),('model', '=', 'project.task'),
+                                ('body', 'ilike', 'Tolkbokning är bekräftad')])
+                if len(messages) > 1:
+                    messages = messages[1:]
+                    for msg in messages:
+                        msg.unlink()

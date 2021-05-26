@@ -454,12 +454,17 @@ class MailActivity(models.Model):
 
             for activity in interpreter_messages:
                 record = self.env[activity.res_model].browse(activity.res_id)
-                record.message_post_with_view(
-                    'mail.message_activity_done',
-                    values={'activity': activity},
-                    subtype_id=self.env['ir.model.data'].xmlid_to_res_id('mail.mt_activities'),
-                    mail_activity_type_id=activity.activity_type_id.id,
-                )
+                need_msg = True
+                if activity.res_model == 'project.task':
+                    if record.outplacement_id:
+                        need_msg = False
+                if need_msg:
+                    record.message_post_with_view(
+                        'mail.message_activity_done',
+                        values={'activity': activity},
+                        subtype_id=self.env['ir.model.data'].xmlid_to_res_id('mail.mt_activities'),
+                        mail_activity_type_id=activity.activity_type_id.id,
+                    )
 
                 activity_message = record.message_ids[0]
                 message_attachments = self.env['ir.attachment'].browse(activity_attachments[activity.id])

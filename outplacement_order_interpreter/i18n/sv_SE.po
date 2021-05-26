@@ -401,7 +401,7 @@ msgstr "Tolkbokning är bekräftad"
 #: code:addons/outplacement_order_interpreter/models/mail_activity.py:261
 #, python-format
 msgid "Interpreter Booking is Delivered"
-msgstr "Tolkbokning är inlevererad"
+msgstr "Tolkbokning är Levererad"
 
 #. module: outplacement_order_interpreter
 #: code:addons/outplacement_order_interpreter/wizards/deliver_interpreter.py:113

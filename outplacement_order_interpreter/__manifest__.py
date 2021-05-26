@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Order Interpreter',
-    'version': '12.0.1.6.7',
+    'version': '12.0.1.6.8',
     'category': 'Outplacement',
     'description': """This module adds interpreter-functionality \n
 	This module is maintained from: https://github.com/vertelab/odoo-outplacement/tree/Dev-12.0-Fenix-Sprint-02/outplacement_order_interpreter \n
@@ -51,6 +51,7 @@
     V12.0.1.6.5 AFC-2217: Added fixes for duplicate status messages in the chatter-log. \n
     V12.0.1.6.6 AFC-2125: Hide project code field in popup of Delivered button inside activity. \n
     V12.0.1.6.7 AFC-2363: Hide activity done log, Added server action to remove repetative booking confirmed log, Updated translation, Hide 'Inleverera tolk' button after delivered booking. \n
+    V12.0.1.6.8 AFC-2363: Enabled activity.js file to show popup when cancelling activity. \n
      
     """,
     'author': "Vertel AB",

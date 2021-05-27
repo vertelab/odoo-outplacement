@@ -24,7 +24,6 @@
 import datetime  # Used in test
 import random  # Used in test
 import string  # Used in test
-
 from odoo import api, fields, models, _ 
 from lxml import etree
 
@@ -32,10 +31,19 @@ import logging
 _logger = logging.getLogger(__name__)
 
 class SaleOrder(models.Model):
+
     _inherit = 'sale.order'
 
     @api.model
     def fields_view_get(self, view_id=None, view_type="form", toolbar=False, submenu=False):
+        """
+        :param view_id: Active view ID
+        :param view_type: Active view type
+        :param toolbar:
+        :param submenu:
+        :return: This function will disable CUD operations for active user if user has dafa accounting read access
+        and will disable all the button from form view except preview button.
+        """
         res = super(SaleOrder, self).fields_view_get(
             view_id=view_id,
             view_type=view_type,

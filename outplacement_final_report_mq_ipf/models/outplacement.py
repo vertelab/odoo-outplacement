@@ -25,8 +25,9 @@ import json
 import logging
 import stomp
 import ssl
-import time
 from queue import Queue, Empty
+from time import time
+
 
 
 _logger = logging.getLogger(__name__)
@@ -237,7 +238,7 @@ class Outplacement(models.Model):
                 cronstop = self.env["ir.config_parameter"].get_param(
                     "outplacement_final_report_mq_ipf.cronstop", "0"
                 )
-                if cronstop == "0":
+                if cronstop != "0":
                     break
             # Stop listening
             mqconn.unsubscribe(target)

@@ -28,6 +28,7 @@ import ssl
 import sys
 import time
 import threading
+from datetime import datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -187,6 +188,7 @@ class Outplacement(models.Model):
                                     outplacement.message_post(body=message_type)
                                 elif message_type == "Slutredovisning godkänd":
                                     outplacement.message_post(body=message_type)
+                                    outplacement.fr_report_approved_date = datetime.today()
                             else:
                                 _logger.error(f"Failed to find outplacement with jobseeker ref {jobseeker} "
                                               f"and order number {order}")

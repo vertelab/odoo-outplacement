@@ -20,6 +20,8 @@ class Outplacement(models.Model):
     
     fr_send_date = fields.Date(string="Final report send date")
     fr_report_date = fields.Date(string="Reporting date")
+    fr_report_approved_date = fields.Date(string="Final report approve date")
+    active = fields.Boolean("Active", default=True)
 
     main_goal_id = fields.Many2one(comodel_name="outplacement.goal")
     alternative_goal_id = fields.Many2one(comodel_name="outplacement.goal")

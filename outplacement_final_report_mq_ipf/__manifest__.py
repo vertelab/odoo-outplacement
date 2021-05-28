@@ -21,11 +21,12 @@
 
 {
     'name': "Outplacement final report MQ/IPF-update dispatcher",
-    'version': '12.0.0.1.1',
+    'version': '12.0.0.1.2',
     'category': '',
     'description': """
 
 v12.0.0.1.1 - Fixed cron data\n
+v12.0.0.1.1 - Refactored code from partner_mq_ipf\n
 """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',

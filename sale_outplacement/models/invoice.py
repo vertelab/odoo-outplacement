@@ -24,7 +24,6 @@ class AccountInvoice(models.Model):
             toolbar=toolbar,
             submenu=submenu,
         )
-
         if self.env.user.has_group('base_user_groups_dafa.group_dafa_admin_accounting_read'):
             if view_type == 'form':
                 doc = etree.XML(res['arch'])
@@ -34,15 +33,19 @@ class AccountInvoice(models.Model):
                             node.remove(item)
                 for node in doc.xpath("//form"):
                     node.set('create', 'false')
+                    node.set('forcecreate', 'false')
                     node.set('edit', 'false')
+                    node.set('forceedit', 'false')
                     node.set('delete', 'false')
                 res['arch'] = etree.tostring(doc, encoding='unicode')
+                return res
             if view_type == 'tree':
                 tree_doc = etree.XML(res['arch'])
                 for node in tree_doc.xpath("//tree"):
                     node.set('create', 'false')
                     node.set('edit', 'false')
                     node.set('delete', 'false')
-                    res['arch'] = etree.tostring(tree_doc, encoding='unicode')
+                res['arch'] = etree.tostring(tree_doc, encoding='unicode')
+                return res
 
         return res

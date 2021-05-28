@@ -58,7 +58,7 @@ class SaleOrder(models.Model):
                         if item.attrib.get('string') != "Preview":
                             node.remove(item)
                 for node in doc.xpath("//form"):
-                    node.set('create','false')
+                    node.set('create', 'false')
                     node.set('edit', 'false')
                     node.set('delete', 'false')
                 res['arch'] = etree.tostring(doc, encoding='unicode')

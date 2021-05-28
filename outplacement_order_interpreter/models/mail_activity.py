@@ -15,7 +15,8 @@ class ProjectTask(models.Model):
     _inherit = 'project.task'
     
     #
-    # Comment from Nils - check this code against line 204 - 208
+    # Comment from Nils - check this code against line 204 - 232
+    # The functional part of this code line 22 - 49 looks similar to line 204-232 and should be breaked out into one function that is called from these two locations.
     #
     
     def update_activity_status(self):

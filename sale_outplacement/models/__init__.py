@@ -25,3 +25,4 @@ from . import project
 from . import outplacement
 from . import mail_activity
 from . import sale
+from . import invoice

@@ -13,12 +13,7 @@ _logger = logging.getLogger(__name__)
 class ProjectTask(models.Model):
 
     _inherit = 'project.task'
-    
-    #
-    # Comment from Nils - check this code against line 204 - 232
-    # The functional part of this code line 22 - 49 looks similar to line 204-232 and should be breaked out into one function that is called from these two locations.
-    #
-    
+
     def update_activity_status(self):
         act_obj = self.env['mail.activity']
         for task in self:
@@ -26,20 +21,16 @@ class ProjectTask(models.Model):
                                          '|', ('active', '=', True), ('active', '=', False)])
             for activity in activities:
                 if task.outplacement_id:
-                    # (1) Not delivered and (1) "is booked" and date is "after date_end"
                     if activity.active and activity._interpreter_booking_status == '1' \
                             and activity._interpreter_booking_status_2 == '4' and \
                             datetime.datetime.today() >= activity.time_end:
                         activity.activity_status_for_interpreter = 'not_delivered_booking'
-                    # (1) Not delivered (3) "order recived" or (4) "interpreter booked"
                     elif activity.active and activity._interpreter_booking_status == '1' \
                             and activity._interpreter_booking_status_2 in ['3', '4']:
                         activity.activity_status_for_interpreter = 'ongoing_booking'
-                    # (1) Not delivered (1) "Order recieved" or (3) "Order recieved"
                     elif activity.active and activity._interpreter_booking_status == '1' \
                             and activity._interpreter_booking_status_2 in ['1', '3']:
                         activity.activity_status_for_interpreter = 'awaiting_booking'
-                    # (1) Not delivered (2) "No available interpreter"
                     elif activity.active and activity._interpreter_booking_status == '1' \
                             and activity._interpreter_booking_status_2 == '2':
                         activity.activity_status_for_interpreter = 'failed_booking'

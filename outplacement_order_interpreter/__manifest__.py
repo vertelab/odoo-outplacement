@@ -22,38 +22,8 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Order Interpreter',
-    'version': '12.0.1.6.8',
+    'version': '12.0.1.6.9',
     'category': 'Outplacement',
-    'description': """This module adds interpreter-functionality \n
-	This module is maintained from: https://github.com/vertelab/odoo-outplacement/tree/Dev-12.0-Fenix-Sprint-02/outplacement_order_interpreter \n
-    v12.0.0.2 changed the languagecodes from a full list to Tolkportalens list. AFC-1586 \n
-    v12.0.1.0.3 Added Category Outplacement \n
-    v12.0.1.0.3 Added fields to Outplacement view \n
-    v12.0.1.0.5 Hardening of interpreter-booking-parsing \n
-    v12.0.1.1.0 Made some fields obligatory.\n
-    v12.0.1.2.0 Added field adressat, removed edit and create from some fields.\n
-    v12.0.1.3.0 Changes to validation rules.\n
-    v12.0.1.4.0 Hide date due for interpreter bookings\n
-    v12.0.1.4.1 Bugfix of cronjob, Handling of removal of parent task.\n
-    v12.0.1.4.2 Added sequence to interpreter-booking-view.\n
-    v12.0.1.5.0 Archive instead of removing.\n
-    v12.0.1.5.1 Fixed crash at delivery.\n
-    v12.0.1.5.2 Fixed wrong status message on cancelation.\n
-    v12.0.1.5.3 Changed cancellation instruction message.\n
-    v12.0.1.5.4 Fixed typo in cancelling message.\n
-    v12.0.1.5.5 AFC-2028: Making fields readonly/not able to create on the fly. \n
-    v12.0.1.5.6 AFC-2145: Various text formating fixes, translations \n
-    V12.0.1.6.0 AFC-2125: This version adds a widget for displaying interpreter-bookings. \n
-    V12.0.1.6.1 AFC-2125: This version updates a widget for displaying interpreter-bookings with activity views and new filters. \n
-    V12.0.1.6.2 AFC-2217: This version adds new menu 'Interpreters' for 'Interpreter Accountants'. \n
-    V12.0.1.6.3 AFC-2145: This version updates Interpreter booking Log messages. \n
-    V12.0.1.6.4 AFC-2145: This version adds email to case worker on Interpreter bookings. \n
-    V12.0.1.6.5 AFC-2217: Added fixes for duplicate status messages in the chatter-log. \n
-    V12.0.1.6.6 AFC-2125: Hide project code field in popup of Delivered button inside activity. \n
-    V12.0.1.6.7 AFC-2363: Hide activity done log, Added server action to remove repetative booking confirmed log, Updated translation, Hide 'Inleverera tolk' button after delivered booking. \n
-    V12.0.1.6.8 AFC-2363: Enabled activity.js file to show popup when cancelling activity. \n
-     
-    """,
     'author': "Vertel AB",
     'license': 'AGPL-3',
     'website': 'https://www.vertel.se',

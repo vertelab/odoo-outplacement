@@ -1,7 +1,7 @@
 <odoo>
     <record id="view_outplacement_form" model="ir.ui.view">
         <field name="name">outplacement.view.form.inherit.final.report</field>
-        <field name="model">outplacement</field> 
+        <field name="model">outplacement</field>
         <field name="inherit_id" ref="outplacement.outplacement_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
@@ -20,6 +20,7 @@
                         <group>
                             <field name="fr_report_date" autocomplete="off"/>
                             <field name="fr_send_date" groups="base.group_no_one" autocomplete="off"/>
+                            <field name="fr_report_approved_date" autocomplete="off"/>
                             <field name="main_goal_id" domain="[('id','=',-1)]" context="{'main_goal': 1}"/>
                             <field name="alternative_goal_id" domain="[('id','=',-1)]" context="{'main_goal': 0}"/>
                         </group>
@@ -37,7 +38,8 @@
                             </tree>
                         </field>
                     </group>
-                    <label for="complementing_information" string="Is there complementing information for potential needs, limitations or conditions to seek education or employment that need to be communicated with Arbetsförmedlingen?"/>
+                    <label for="complementing_information"
+                           string="Is there complementing information for potential needs, limitations or conditions to seek education or employment that need to be communicated with Arbetsförmedlingen?"/>
                     <group>
                         <group>
                             <field name="complementing_information"/>
@@ -46,22 +48,31 @@
                     </group>
                 </page>
             </xpath>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive"
+                        attrs="{'invisible': [('fr_report_approved_date', '=', False)]}">
+                    <field name="active" widget="boolean_button" options='{"terminology": "active"}'/>
+                </button>
+            </xpath>
         </field>
     </record>
 
     <record id="view_outplacement_kanban" model="ir.ui.view">
-    <field name="name">outplacement.view.kanban.inherit.final.report</field>
-    <field name="model">outplacement</field>
-    <field name="inherit_id" ref="outplacement.outplacement_kanban_view"/>
+        <field name="name">outplacement.view.kanban.inherit.final.report</field>
+        <field name="model">outplacement</field>
+        <field name="inherit_id" ref="outplacement.outplacement_kanban_view"/>
         <field name="arch" type="xml">
             <field name="name" position="after">
                 <field name="fr_rejected"/>
             </field>
-            <xpath expr="//div[@class='o_kanban_record_headings']/strong[@class='o_kanban_record_title']" position="before">
+            <xpath expr="//div[@class='o_kanban_record_headings']/strong[@class='o_kanban_record_title']"
+                   position="before">
                 <div>
                     <t t-if="record.fr_rejected.raw_value" t-set="red">oe_kanban_text_red</t>
                     <t t-if="record.fr_rejected.raw_value">
-                        <span t-attf-class="#{red || ''}"><strong>Final report has been rejected</strong></span>
+                        <span t-attf-class="#{red || ''}">
+                            <strong>Final report has been rejected</strong>
+                        </span>
                     </t>
                 </div>
             </xpath>
@@ -77,9 +88,12 @@
                 <span invisible="context.get('main_goal')">description alternative goal</span>
                 descriptive text for goals
                 <group>
-                    <field name="field_of_work_id" domain="[('parent_id','=',False)]" options="{'no_create_edit':True, 'no_open': True}"/>
+                    <field name="field_of_work_id" domain="[('parent_id','=',False)]"
+                           options="{'no_create_edit':True, 'no_open': True}"/>
                     <field name="jobs_ids" invisible="1"/>
-                    <field name="job_id" domain="['&amp;', ('parent_id','child_of',field_of_work_id), ('id','in',jobs_ids)]" options="{'no_create_edit':True, 'no_open': True}"/>
+                    <field name="job_id"
+                           domain="['&amp;', ('parent_id','child_of',field_of_work_id), ('id','in',jobs_ids)]"
+                           options="{'no_create_edit':True, 'no_open': True}"/>
                     <field name="job_description"/>
                 </group>
                 <div>
@@ -100,8 +114,8 @@
                     <field name="step_ids" mode="tree">
                         <tree>
                             <field name="step_type"/>
-                            <field name="start_date" />
-                            <field name="end_date" />
+                            <field name="start_date"/>
+                            <field name="end_date"/>
                         </tree>
                     </field>
                 </group>
@@ -117,11 +131,16 @@
                 descriptive text for steps
                 <group>
                     <field name="step_type"/>
-                    <field name="complementing_effort_type" attrs="{'invisible': [('step_type', '!=', 'Lämpliga kompletterande insatser')]}"/>
-                    <field name="complementing_effort_description" attrs="{'invisible': [('complementing_effort_type', '!=', 'Annat')]}"/>
-                    <field name="step_name" string="Describe other step" attrs="{'invisible': [('step_type', '!=', 'Annat')]}"/>
-                    <field name="step_name" attrs="{'invisible': [('step_type', '!=', 'Studera reguljär utbildning')]}"/>
-                    <field name="education_level_id" attrs="{'invisible': [('step_type', '!=', 'Studera reguljär utbildning')]}"/>
+                    <field name="complementing_effort_type"
+                           attrs="{'invisible': [('step_type', '!=', 'Lämpliga kompletterande insatser')]}"/>
+                    <field name="complementing_effort_description"
+                           attrs="{'invisible': [('complementing_effort_type', '!=', 'Annat')]}"/>
+                    <field name="step_name" string="Describe other step"
+                           attrs="{'invisible': [('step_type', '!=', 'Annat')]}"/>
+                    <field name="step_name"
+                           attrs="{'invisible': [('step_type', '!=', 'Studera reguljär utbildning')]}"/>
+                    <field name="education_level_id"
+                           attrs="{'invisible': [('step_type', '!=', 'Studera reguljär utbildning')]}"/>
                     <field name="start_date" autocomplete="off"/>
                     <field name="end_date" autocomplete="off"/>
                 </group>
@@ -136,11 +155,14 @@
             <form>
                 <group>
                     <field name="visit_selection"/>
-                    <label for="name" string="Education organizer" attrs="{'invisible':[('visit_selection','=','education')]}"/>
+                    <label for="name" string="Education organizer"
+                           attrs="{'invisible':[('visit_selection','=','education')]}"/>
                     <label for="name" string="Workplace" attrs="{'invisible':[('visit_selection','!=','education')]}"/>
                     <field name="name" nolabel="1"/>
-                    <label for="visit_type" string="Field of education" attrs="{'invisible':[('visit_selection','=','education')]}"/>
-                    <label for="visit_type" string="Field of work" attrs="{'invisible':[('visit_selection','!=','education')]}"/>
+                    <label for="visit_type" string="Field of education"
+                           attrs="{'invisible':[('visit_selection','=','education')]}"/>
+                    <label for="visit_type" string="Field of work"
+                           attrs="{'invisible':[('visit_selection','!=','education')]}"/>
                     <field name="visit_type" nolabel="1"/>
                     <field name="reasoning"/>
                 </group>
@@ -152,19 +174,19 @@
         <field name="name">outplacement_goal</field>
         <field name="model">outplacement.goal</field>
         <field name="arch" type="xml">
-                <tree>
-                    <field name="field_of_work_id"/>
-                    <field name="job_id" />
-                    <field name="job_description"/>
-                    <field name="matches_interest"/>
-                    <field name="matches_ability"/>
-                    <field name="market_demand"/>
-                    <field name="complementing_education"/>
-                    <field name="complementing_experience"/>
-                    <field name="other_motivation"/>
-                    <field name="free_text" />
-                    <field name="step_ids" />
-                </tree>
+            <tree>
+                <field name="field_of_work_id"/>
+                <field name="job_id"/>
+                <field name="job_description"/>
+                <field name="matches_interest"/>
+                <field name="matches_ability"/>
+                <field name="market_demand"/>
+                <field name="complementing_education"/>
+                <field name="complementing_experience"/>
+                <field name="other_motivation"/>
+                <field name="free_text"/>
+                <field name="step_ids"/>
+            </tree>
         </field>
     </record>
 
@@ -174,12 +196,12 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="step_type"/>
-                <field name="complementing_effort_type" />
-                <field name="complementing_effort_description" />
-                <field name="step_name" />
-                <field name="education_level_id" />
-                <field name="start_date" />
-                <field name="end_date" />
+                <field name="complementing_effort_type"/>
+                <field name="complementing_effort_description"/>
+                <field name="step_name"/>
+                <field name="education_level_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
             </tree>
         </field>
     </record>

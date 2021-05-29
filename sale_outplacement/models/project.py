@@ -30,6 +30,12 @@ class ProjectTask(models.Model):
         # default=lambda self: self.env.context.get("default_project_id"),
         default=lambda self: self.env.context.get("default_outplacement_id"),
     )
+    order_id_origin = fields.Char(related='outplacement_id.order_id_origin')
+    outplacement_name = fields.Char(related='outplacement_id.name')
+    performing_operation_id = fields.Many2one('performing.operation',
+                                              related='outplacement_id.performing_operation_id')
+    partner_name = fields.Char(related='outplacement_id.partner_name')
+    employee_id = fields.Many2one('hr.employee', related='outplacement_id.employee_id')
     activity_id = fields.Many2one("res.joint_planning", "Activity")
     joint_planing_type = fields.Selection(
         [

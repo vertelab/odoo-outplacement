@@ -131,8 +131,10 @@
                             <field name="interpreter_booking_ref" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
                             <field name="_interpreter_booking_status" invisible="1"/>
+                            <field name="_interpreter_booking_status_2" invisible="1"/>
                             <button name="%(deliver_interpreter_action)d"
-                                    attrs="{'invisible': ['|', '|', ('_interpreter_booking_status', '=', '2'),
+                                    attrs="{'invisible': ['|', '|', '|', ('_interpreter_booking_status_2', '=', '2'),
+                                              ('_interpreter_booking_status', '=', '2'),
                                               ('interpreter_booking_ref', '=', False),
                                               ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
                                     type="action">Inleverera tolk
@@ -324,8 +326,10 @@
                 <field name="interpreter_booking_ref" readonly="1" attrs="{
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
                 <field name="_interpreter_booking_status" invisible="1"/>
+                <field name="_interpreter_booking_status_2" invisible="1"/>
                 <button name="%(deliver_interpreter_action)d"
-                        attrs="{'invisible': ['|', '|', ('_interpreter_booking_status', '=', '2'),
+                        attrs="{'invisible': ['|', '|', '|', ('_interpreter_booking_status_2', '=', '2'),
+                                              ('_interpreter_booking_status', '=', '2'),
                                               ('interpreter_booking_ref', '=', False),
                                               ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
                         type="action">Inleverera tolk
@@ -372,18 +376,45 @@
         </field>
     </record>
 
+    <record id="mail_activity_tree_view_for_interpreter" model="ir.ui.view">
+        <field name="name">mail.activity.tree.inherit.interpreters</field>
+        <field name="model">mail.activity</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="interpreter_booking_ref"/>
+                <field name="user_id"/>
+                <field name="phone"/>
+                <field name="mobile"/>
+                <field name="email"/>
+                <field name="time_start"/>
+                <field name="time_end"/>
+                <field name="interpreter_language"/>
+                <field name="interpreter_company"/>
+                <field name="interpreter_booking_status"/>
+            </tree>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="interpreter_activity_action">
         <field name="name">Activity</field>
         <field name="res_model">mail.activity</field>
-        <field name="view_mode">kanban,form</field>
+        <field name="view_mode">kanban,tree,form</field>
         <field name="view_id" ref="mail.mail_activity_view_search"/>
         <field name="domain">[('user_id', '=', uid)]</field>
     </record>
 
     <record id="interpreter_activity_action_form" model="ir.actions.act_window.view">
-        <field name="sequence" eval="2"/>
+        <field name="sequence" eval="3"/>
         <field name="view_mode">form</field>
         <field name="view_id" ref="outplacement_order_interpreter.mail_activity_form_view_for_interpreter"/>
+        <field name="act_window_id" ref="interpreter_activity_action"/>
+    </record>
+
+    <record id="interpreter_activity_action_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="outplacement_order_interpreter.mail_activity_tree_view_for_interpreter"/>
         <field name="act_window_id" ref="interpreter_activity_action"/>
     </record>
 

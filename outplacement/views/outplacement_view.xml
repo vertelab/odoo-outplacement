@@ -62,6 +62,7 @@
       <field name="model">outplacement</field>
       <field name="arch" type="xml">
         <tree create="false" edit="false" delete="false">
+          <field name="name" />
           <field name="partner_name" />
           <field name="booking_ref" />
           <field name="employee_id" />

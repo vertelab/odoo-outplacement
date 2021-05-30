@@ -40,7 +40,7 @@
                 <field name="meeting_remote" />
               </group>
               <group name="af_data" string="Authority data">
-                <field name="name" string="Outplacement id" groups="base.group_no_one" readonly="1"/>
+                <field name="name" string="Outplacement id" readonly="1"/>
                 <field name="employee_id" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
                 <field name="performing_operation_id" readonly="1"/>
                 <field name="uniq_ref" attrs="{'readonly':[('show_2nd_line','=', True)]}" groups="base.group_no_one" />

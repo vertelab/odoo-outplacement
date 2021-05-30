@@ -40,7 +40,7 @@ var Activity = MailActivity.include({
                                                          </p>'),
                                            'technical':'false',
                                            'buttons':[
-                                               {'text':'Markera som Avbokad', 'close':'true', 'click':function(){self.interpreter_cancel(options)}},
+//                                               {'text':'Markera som Avbokad', 'close':'true', 'click':function(){self.interpreter_cancel(options)}},
                                                {'text':'Stäng rutan utan att markera som avbokad', 'close':'true', 'classes':'btn-primary'}]})
             dialog.open()
             return

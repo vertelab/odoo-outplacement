@@ -5,10 +5,28 @@ import json
 import logging
 import pytz
 from odoo.exceptions import UserError
+from  datetime import timedelta
 
 from odoo import api, models, fields, tools, _
 
 _logger = logging.getLogger(__name__)
+
+class SaleOrder(models.Model):
+
+    _inherit = 'sale.order'
+
+    @api.multi
+    def name_get(self):
+        if 'from_outplacement_interpreters_menu' in self._context:
+            res = []
+            for record in self:
+                if record.origin:
+                    res.append((record.id, record.name + ' - ' + record.origin))
+                else:
+                    res.append((record.id, record.name))
+            return res
+        else:
+            return super(SaleOrder, self).name_get()
 
 class ProjectTask(models.Model):
 
@@ -81,6 +99,12 @@ class MailActivity(models.Model):
         default=lambda self: self._get_default_task_value('start_date'))
     time_end = fields.Datetime(string='End Time',
                                default=lambda self: self._get_end_time())
+    duration = fields.Char("Duration(In minutes)", compute='_compute_dates_duration', store=True)
+    date = fields.Date("Date", compute='_compute_dates_duration', store=True)
+    split_start_time = fields.Char("Start Time", compute='_compute_dates_duration', store=True)
+    split_end_time = fields.Char("End Time", compute='_compute_dates_duration', store=True)
+    additional_time = fields.Integer(string='Additional time (minutes)', default=0)
+
     interpreter_receiver = fields.Char(string='Interpreter Receiver')
     street = fields.Char(string='Street',
                          default=lambda self: self._get_address('street'))
@@ -134,6 +158,7 @@ class MailActivity(models.Model):
                                       store=True)
     partner_name = fields.Char("Partner Name", related='outplacement_id.partner_name', store=True)
     outplacement_name = fields.Char("Outplacement Name", related='outplacement_id.name', store=True)
+    order_id = fields.Many2one('sale.order', related='outplacement_id.order_id', store=True)
     order_name = fields.Char("Outplacement Order Name", related='outplacement_id.order_id_origin', store=True)
     phone = fields.Char("Phone", compute='_compute_outplacement_detail')
     mobile = fields.Char("Mobile", compute='_compute_outplacement_detail')
@@ -143,6 +168,18 @@ class MailActivity(models.Model):
     performing_operation_id = fields.Many2one('performing.operation', "Performing Operation",
                                              related="outplacement_id.performing_operation_id", store=True)
     employee_id = fields.Many2one('hr.employee', related='outplacement_id.employee_id', store=True)
+
+    @api.multi
+    @api.depends('time_start', 'time_end')
+    def _compute_dates_duration(self):
+        for activity in self:
+            if activity.time_start and activity.time_end:
+                activity.duration = ((activity.time_end - activity.time_start).total_seconds()) / 60
+                activity.date = activity.time_start.date()
+                start_date = activity.time_start + timedelta(hours=2)
+                end_date = activity.time_end + timedelta(hours=2)
+                activity.split_start_time = str(start_date.hour).zfill(2) + ':' + str(start_date.minute).zfill(2)
+                activity.split_end_time = str(end_date.hour).zfill(2) + ':' + str(end_date.minute).zfill(2)
 
     @api.multi
     @api.depends('res_id', 'res_model')

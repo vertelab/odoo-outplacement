@@ -28,7 +28,7 @@
                         <group>
                             <field name="activity_type_id" required="1" options="{'no_create': True, 'no_open': True}"/>
                             <field name="summary" placeholder="e.g. Discuss proposal"/>
-                            <field name="task_id" string="Task"/>
+                            <field name="task_outplacement_id" string="Task"/>
                             <field name="interpreter_type_code" invisible="1"/>
                             <field name='interpreter_type_code' invisible='1'/>
                             <field name="interpreter_type"
@@ -193,6 +193,12 @@
         <field name="model">mail.activity</field>
         <field name="arch" type="xml">
             <search string="Activity">
+                <field name="outplacement_name"/>
+                <field name="order_name"/>
+                <field name="employee_id"/>
+                <field name="interpreter_booking_ref"/>
+                <field name="partner_name"/>
+                <field name="performing_operation_id"/>
                 <filter string="My Activities" name="activities_my" domain="[('user_id', '=', uid)]"/>
                 <separator/>
                 <filter string="Late Activities" name="activities_overdue"
@@ -463,11 +469,11 @@
                     <group>
                         <field name="interpreter_booking_ref"/>
                         <field name="performing_operation_id"/>
-                        <field name="outplacement_name"/>
+                        <field name="outplacement_id"/>
+                        <field name="task_outplacement_id"/>
                         <field name="order_name"/>
                         <field name="user_id"/>
                         <field name="phone"/>
-                        <field name="mobile"/>
                         <field name="mobile"/>
                         <field name="time_start"/>
                         <field name="time_end"/>

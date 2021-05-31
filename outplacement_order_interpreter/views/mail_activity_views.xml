@@ -188,13 +188,21 @@
         </field>
     </record>
 
-
-    <record id="mail_activity_search_view_for_interpreter" model="ir.ui.view">
+    <record id="mail_activity_search_view_for_interpreter_booking" model="ir.ui.view">
         <field name="name">mail.activity.search.inherit.interpreter</field>
         <field name="model">mail.activity</field>
-        <field name="inherit_id" ref="mail.mail_activity_view_search"/>
         <field name="arch" type="xml">
-            <xpath expr="//filter[@name='activities_upcoming_all']" position="after">
+            <search string="Activity">
+                <filter string="My Activities" name="activities_my" domain="[('user_id', '=', uid)]"/>
+                <separator/>
+                <filter string="Late Activities" name="activities_overdue"
+                        domain="[('date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
+                        help="Show all records which has next action date is before today"/>
+                <filter string="Today Activities" name="activities_today"
+                        domain="[('date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Future Activities" name="activities_upcoming_all"
+                        domain="[('date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
                 <filter string="Awaiting Response" name="activities_awaiting_booking"
                         domain="[('user_id', '=', uid), ('activity_status_for_interpreter', '=', 'awaiting_booking')]"/>
                 <filter string="Failed Bookings" name="activities_failed_booking"
@@ -212,7 +220,13 @@
                 <filter string="Not Delivered" name="activities_not_delivered_booking"
                         domain="[('user_id', '=', uid),
                         ('activity_status_for_interpreter', '=', 'not_delivered_booking')]"/>
-            </xpath>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Deadline" name="date_deadline" context="{'group_by': 'date_deadline'}"/>
+                    <filter string="Created By" name="createdby" context="{'group_by': 'create_user_id'}"/>
+                    <filter string="Activity Type" name="activittype" context="{'group_by': 'activity_type_id'}"/>
+                </group>
+            </search>
         </field>
     </record>
 
@@ -350,12 +364,6 @@
         </field>
     </record>
 
-    <template id="assets_backend" name="mail assets" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <script type="text/javascript" src="/outplacement_order_interpreter/static/src/js/activity.js"></script>
-        </xpath>
-    </template>
-
     <record id="action_update_activity_status" model="ir.actions.server">
         <field name="name">Update Activity Status</field>
         <field name="type">ir.actions.server</field>
@@ -400,7 +408,7 @@
         <field name="name">Activity</field>
         <field name="res_model">mail.activity</field>
         <field name="view_mode">kanban,tree,form</field>
-        <field name="view_id" ref="mail.mail_activity_view_search"/>
+        <field name="view_id" ref="outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking"/>
         <field name="domain">[('user_id', '=', uid)]</field>
     </record>
 
@@ -445,27 +453,6 @@
         </field>
     </record>
 
-    <record id="mail_activity_search_view_for_interpreters_menu" model="ir.ui.view">
-        <field name="name">mail.activity.search.inherit.interpreters.menu</field>
-        <field name="model">mail.activity</field>
-        <field name="priority">100</field>
-        <field name="arch" type="xml">
-            <search>
-                <field name="interpreter_booking_ref"/>
-                <field name="user_id"/>
-                <field name="interpreter_company"/>
-                <group expand="0" string="Group By">
-                    <filter string="Interpreter Reference" name="interpreter_booking_ref"
-                            context="{'group_by': 'interpreter_booking_ref'}"/>
-                    <filter string="Interpreter Receiver" name="interpreter_receiver"
-                            context="{'group_by': 'user_id'}"/>
-                    <filter string="Interpreter Supplier Company" name="interpreter_company"
-                            context="{'group_by': 'interpreter_company'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-
     <record id="mail_activity_form_view_for_interpreters_menu" model="ir.ui.view">
         <field name="name">mail.activity.form.inherit.interpreters.menu</field>
         <field name="model">mail.activity</field>
@@ -498,7 +485,7 @@
         <field name="res_model">mail.activity</field>
         <field name="view_mode">tree,form</field>
         <field name="search_view_id"
-               ref="outplacement_order_interpreter.mail_activity_search_view_for_interpreters_menu"/>
+               ref="outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking"/>
         <field name="context">{'from_outplacement_interpreters_menu':1}</field>
     </record>
 

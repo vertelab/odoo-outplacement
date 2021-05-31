@@ -36,6 +36,7 @@ Different version submitted
 26. V12.0.1.6.8 AFC-2363: Enabled activity.js file to show popup when cancelling activity.
 27. v12.0.1.6.9 AFC-2405: Improved Transaltion, Added 'Booking' smart button inside Outplacement, Added README.rst file,
     Hide 'Deliver Interpreter' button for 'Not Available Interpreter' Bookings, For now Hide cancel booking functionality.
+28. v12.0.1.7.0 AFC-2405: Added different serach view for Interpreter bookings.
 
 
 Maintainers

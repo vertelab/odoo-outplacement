@@ -6,6 +6,8 @@ Receives a suborder and automatically create sale.order
 and outplacement.outplacement objects.
 
 The module is maintained here: https://github.com/vertelab/odoo-outplacement/tree/Dev-12.0-Fenix-Sprint-02/sale_outplacement
+
+
 Different version submitted
 ===========================
 1. v 12.0.1.0.2 AFC-2002: Updated order of service date fields

@@ -450,8 +450,13 @@
                 <field name="phone"/>
                 <field name="mobile"/>
                 <field name="email"/>
-                <field name="time_start"/>
-                <field name="time_end"/>
+                <field name="time_start" invisible="1"/>
+                <field name="time_end" invisible="1"/>
+                <field name="date"/>
+                <field name="split_start_time"/>
+                <field name="split_end_time"/>
+                <field name="duration"/>
+                <field name="additional_time"/>
                 <field name="interpreter_language"/>
                 <field name="interpreter_company"/>
                 <field name="interpreter_booking_status"/>
@@ -467,19 +472,42 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="interpreter_booking_ref"/>
+                        <group>
+                            <field name="interpreter_booking_ref"/>
+                            <field name="time_start"/>
+                            <field name="time_end"/>
+                            <field name="date"/>
+                            <field name="split_start_time"/>
+                            <field name="split_end_time"/>
+                            <field name="duration"/>
+                            <field name="additional_time"/>
+                            <field name="interpreter_language"/>
+                            <field name="interpreter_company"/>
+                            <field name="interpreter_booking_status"/>
+                        </group>
+                        <group>
+                            <field name="interpreter_receiver"/>
+                            <field name="user_id"/>
+                            <field name="phone"/>
+                            <field name="mobile"/>
+                            <field name="_interpreter_booking_status_2" invisible="1"/>
+                            <field name="_interpreter_booking_status" invisible="1"/>
+                            <field name="activity_type_id" invisible="1"/>
+                            <field name="res_model_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <button name="%(deliver_interpreter_action)d" groups="outplacement.group_outplacement_user_read"
+                            attrs="{'invisible': ['|', '|', '|', ('_interpreter_booking_status_2', '=', '2'),
+                                              ('_interpreter_booking_status', '=', '2'),
+                                              ('interpreter_booking_ref', '=', False),
+                                              ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
+                            type="action">Inleverera tolk
+                    </button>
+                    <group string="Supplier and Participent info">
                         <field name="performing_operation_id"/>
                         <field name="outplacement_id" groups="outplacement.group_outplacement_user_read"/>
                         <field name="task_outplacement_id" groups="outplacement.group_outplacement_user_read"/>
-                        <field name="order_name"/>
-                        <field name="user_id"/>
-                        <field name="phone"/>
-                        <field name="mobile"/>
-                        <field name="time_start"/>
-                        <field name="time_end"/>
-                        <field name="interpreter_language"/>
-                        <field name="interpreter_company"/>
-                        <field name="interpreter_booking_status"/>
+                        <field name="order_id"/>
                     </group>
                 </sheet>
             </form>

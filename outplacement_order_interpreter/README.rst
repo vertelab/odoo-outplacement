@@ -37,6 +37,7 @@ Different version submitted
 27. v12.0.1.6.9 AFC-2405: Improved Transaltion, Added 'Booking' smart button inside Outplacement, Added README.rst file,
     Hide 'Deliver Interpreter' button for 'Not Available Interpreter' Bookings, For now Hide cancel booking functionality.
 28. v12.0.1.7.0 AFC-2405: Added different serach view for Interpreter bookings.
+29. v12.0.1.7.1 AFC-2406: Redesign of the interpreter accountant formview.
 
 
 Maintainers

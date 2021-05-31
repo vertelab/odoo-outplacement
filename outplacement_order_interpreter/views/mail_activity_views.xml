@@ -469,8 +469,8 @@
                     <group>
                         <field name="interpreter_booking_ref"/>
                         <field name="performing_operation_id"/>
-                        <field name="outplacement_id"/>
-                        <field name="task_outplacement_id"/>
+                        <field name="outplacement_id" groups="outplacement.group_outplacement_user_read"/>
+                        <field name="task_outplacement_id" groups="outplacement.group_outplacement_user_read"/>
                         <field name="order_name"/>
                         <field name="user_id"/>
                         <field name="phone"/>

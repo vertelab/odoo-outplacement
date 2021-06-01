@@ -256,7 +256,7 @@ class DeviationReportWizard(models.TransientModel):
         _logger.debug("Deviation report payload json: %s" % json.dumps(payload))
 
         querystring = {"client_secret": api.client_secret, "client_id": api.client_id}
-        url = api.get_url("bar-avvikelserapport/v1/avvikelserapport")
+        url = api.get_url("")
         response = api.request_call(
             method="POST",
             url=url,

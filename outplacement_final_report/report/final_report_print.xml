@@ -309,6 +309,7 @@
                 name="outplacement_final_report.report_outplacement_final"
                 file="outplacement_final_report.report_outplacement_final"
                 print_report_name="'%s - Final Report' % (object.name)"
+                groups="base.group_no_one"
         />
     </data>
 </odoo>

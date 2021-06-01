@@ -92,6 +92,8 @@ class InterpreterDeliveryWizard(models.TransientModel):
             return
         elif status_code in error_codes:
             msg = json.loads(response.text).get('message')
+            if status_code == 500 and 'An error occurred when an interpreter reservation was delivered in KA:' in msg:
+                return
             ref = self.mail_activity_id.interpreter_booking_ref
             _logger.exception(error_codes[status_code].format(
                 ref=ref, msg=msg))
@@ -117,6 +119,7 @@ class InterpreterDeliveryWizard(models.TransientModel):
             'res_id': activity.res_id,
             'model': activity.res_model,
             })
+        activity._interpreter_booking_status = '2'
         activity.additional_time = self.additional_time
 
     def log_to_accounting(self):

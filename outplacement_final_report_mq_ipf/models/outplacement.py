@@ -226,9 +226,9 @@ class Outplacement(models.Model):
                             else:
                                 _logger.error(f"Failed to find outplacement with jobseeker ref {jobseeker} "
                                               f"and order number {order}")
-                    except Exception:
+                    except Exception as e:
                         _logger.exception(
-                            "Officer MQ Sender: error "
+                            f"Final report MQ Listener: error: {e}"
                         )
                     finally:
                         # close our new cursor

@@ -8,6 +8,7 @@ _logger = logging.getLogger(__name__)
 
 
 class Outplacement(models.Model):
+
     _inherit = 'outplacement'
 
     study_visit_ids = fields.One2many(comodel_name="outplacement.study_visit", inverse_name="outplacement_id")
@@ -45,6 +46,44 @@ class Outplacement(models.Model):
     def _constrain_study_visit_ids(self):
         if self.study_visit_ids and len(self.study_visit_ids) > 7:
             raise ValidationError(_('Number of study visits must not exceed 7'))
+
+    @api.multi
+    def action_final_report_send(self):
+        for outplacement in self:
+            ir_model_data = self.env['ir.model.data']
+            try:
+                template_id = ir_model_data.get_object_reference('outplacement_final_report', 'email_template_edi_final_report')[1]
+            except ValueError:
+                template_id = False
+            try:
+                compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
+            except ValueError:
+                compose_form_id = False
+            lang = self.env.context.get('lang')
+            template = template_id and self.env['mail.template'].browse(template_id)
+            if template and template.lang:
+                lang = template._render_template(template.lang, 'outplacement', self.ids[0])
+            record = outplacement.sudo(outplacement)
+            ctx = {
+                'default_model': 'outplacement',
+                'default_res_id': outplacement.ids[0],
+                'default_use_template': bool(template_id),
+                'default_template_id': template_id,
+                'default_composition_mode': 'comment',
+                'model_description': 'Outplacement',
+                'force_email': True,
+                'record': record,
+            }
+            return {
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'mail.compose.message',
+                'views': [(compose_form_id, 'form')],
+                'view_id': compose_form_id,
+                'target': 'new',
+                'context': ctx,
+            }
 
 
 class OutplacementGoal(models.Model):

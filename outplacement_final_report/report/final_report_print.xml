@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="report_outplacement_final">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang" t-value="user.sudo().lang"/>
+                    <t t-call="web.external_layout">
+
+                        <div class="page">
+                            <h2>
+                                <t t-esc="o.name"/>
+                            </h2>
+                            <h4>
+                                <t t-esc="o.partner_name"/>
+                            </h4>
+                            <br/>
+                            <table class="table" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2" style="border:none;padding:0" width="50%">
+                                            <b>
+                                                <h4>
+                                                    <u>Outplacement</u>
+                                                </h4>
+                                            </b>
+                                        </td>
+                                        <td colspan="2" style="border:none;padding:0" width="50%">
+                                            <b>
+                                                <h4>
+                                                    <u>Service</u>
+                                                </h4>
+                                            </b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:none;padding:0" width="25%">
+                                            <b>Social security number:</b>
+                                        </td>
+                                        <td style="border:none;padding:0" width="25%">
+                                            <t t-esc="o.partner_social_sec_nr"/>
+                                        </td>
+                                        <td style="border:none;padding:0" width="25%">
+                                            <b>Interrupted:</b>
+                                        </td>
+                                        <td style="border:none;padding:0" width="25%">
+                                            <t t-if="o.interruption">
+                                                Yes
+                                            </t>
+                                            <t t-else="">
+                                                No
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:none;padding:0">
+                                            <b>Email:</b>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <t t-esc="o.partner_email"/>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <b>Meeting Type:</b>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <t t-if="o.meeting_remote == 'no'">
+                                                On Premise
+                                            </t>
+                                            <t t-if="o.meeting_remote == 'yes'">
+                                                Remote
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:none;padding:0">
+                                            <b>Phone:</b>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <t t-esc="o.partner_mobile"/>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <b>Joint Planning Sent Date:</b>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <t t-esc="o.jp_sent_date"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:none;padding:0">
+                                            <b>Address:</b>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <t t-if="o.partner_street">
+                                                <t t-esc="o.partner_street"/>,
+                                                <br/>
+                                            </t>
+                                            <t t-if="o.partner_street2">
+                                                <t t-esc="o.partner_street2"/>,
+                                                <br/>
+                                            </t>
+                                            <t t-if="o.partner_zip">
+                                                <t t-esc="o.partner_zip"/>,
+                                            </t>
+                                            <t t-if="o.partner_city">
+                                                <t t-esc="o.partner_city"/>,
+                                                <br/>
+                                            </t>
+                                            <t t-if="o.partner_state_id">
+                                                <t t-esc="o.partner_state_id.name"/>,
+                                            </t>
+                                            <t t-if="o.country_id">
+                                                <t t-esc="o.country_id.name"/>
+                                                <br/>
+                                            </t>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <b>Service Start Date:</b>
+                                            <br/>
+                                            <b>Service End Date:</b>
+                                            <br/>
+                                            <b>Participitation Rate:</b>
+                                            <br/>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <t t-esc="o.service_start_date"/>
+                                            <br/>
+                                            <t t-esc="o.service_end_date"/>
+                                            <br/>
+                                            <t t-esc="o.participitation_rate"/>
+                                            <br/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="border:none;padding:20px 0 0 0;">
+                                            <b>
+                                                <h4>
+                                                    <u>Authority data</u>
+                                                </h4>
+                                            </b>
+                                        </td>
+                                        <td colspan="2" style="border:none;padding:20px 0 0 0;">
+                                            <b>
+                                                <h4>
+                                                    <u>Final Report</u>
+                                                </h4>
+                                            </b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:none;padding:0;">
+                                            <b>Source Document
+                                            </b>
+                                        </td>
+                                        <td style="border:none;padding:0;">
+                                            <t t-esc="o.order_id_origin"/>
+                                        </td>
+                                        <td style="border:none;padding:0;">
+                                            <b>Reporting Date
+                                            </b>
+                                        </td>
+                                        <td style="border:none;padding:0;">
+                                            <t t-esc="o.fr_report_date"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:none;padding:0">
+                                            <b>Coach
+                                            </b>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <t t-if="o.employee_id">
+                                                <t t-esc="o.employee_id.name"/>
+                                            </t>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <b>Final Report Send Date
+                                            </b>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <t t-esc="o.fr_send_date"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:none;padding:0">
+                                            <b>Management team
+                                            </b>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <t t-if="o.management_team_id">
+                                                <t t-esc="o.management_team_id.name"/>
+                                            </t>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <b>Final report approve date
+                                            </b>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <t t-esc="o.fr_report_approved_date"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:none;padding:0">
+                                            <b>Performing Operation
+                                            </b>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <t t-if="o.performing_operation_id">
+                                                <t t-esc="o.performing_operation_id.name"/>
+                                            </t>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <b>Main Goal</b>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <t t-if="o.main_goal_id">
+                                                <t t-esc="o.main_goal_id.job_description"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:none;padding:0">
+                                            <b>Performing Address
+                                            </b>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <t t-esc="o.per_op_address_text"/>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <b>Alternative Goal</b>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <t t-if="o.alternative_goal_id">
+                                                <t t-esc="o.alternative_goal_id.job_description"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:none;padding:0">
+                                            <b>File Reference Number
+                                            </b>
+                                        </td>
+                                        <td style="border:none;padding:0">
+                                            <t t-esc="o.file_reference_number"/>
+                                        </td>
+                                        <td style="border:none;padding:0"/>
+                                        <td style="border:none;padding:0"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br/>
+                            <h4>
+                                    <u>Study visit</u>
+                            </h4>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>Organizer</th>
+                                    <th>Education Organizer/Workspace Name</th>
+                                    <th>Field of study/Work</th>
+                                    <th>In what way has the study visit become important in the career service?</th>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.study_visit_ids" t-as="visit">
+                                        <td>
+                                            <t t-if="visit.visit_selection == 'workspace'">
+                                                Workspace
+                                            </t>
+                                            <t t-elif="visit.visit_selection == 'education'">
+                                                Education Organizer
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <t t-esc="visit.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="visit.visit_type"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="visit.reasoning"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <span>
+                                Is there complementing information for potential needs, limitations or conditions to
+                                seek education or employment that need to be communicated with Arbetsförmedlingen?
+                            </span><br/>
+                            <b>Complementing information: </b>
+                            <t t-if="o.complementing_information == 'komm_info_01'">
+                                Information has been communicated
+                            </t>
+                             <t t-elif="o.complementing_information == 'komm_info_02'">
+                                Information has not been communicated
+                            </t>
+                             <t t-elif="o.complementing_information == 'komm_info_03'">
+                                Information missing
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <report
+                id="outplacement_final_report"
+                model="outplacement"
+                string="Final Report"
+                report_type="qweb-pdf"
+                name="outplacement_final_report.report_outplacement_final"
+                file="outplacement_final_report.report_outplacement_final"
+                print_report_name="'%s - Final Report' % (object.name)"
+        />
+    </data>
+</odoo>

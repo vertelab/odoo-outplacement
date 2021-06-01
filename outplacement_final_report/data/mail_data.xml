@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="email_template_edi_final_report" model="mail.template">
+            <field name="name">Outplacement Final Report: Send by email</field>
+            <field name="model_id" ref="outplacement.model_outplacement"/>
+            <field name="email_from">${object.employee_id.work_email |safe}</field>
+            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="subject">${object.name} - Final Report
+            </field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${object.partner_id.name}
+                        % if object.partner_id.parent_id:
+                        (${object.partner_id.parent_id.name})
+                        % endif
+                        <br/>
+                        <br/>
+                        Here is in attachment your Final Report for
+                        <strong>${object.name}</strong>
+                        % if object.order_id_origin:
+                        (with reference: ${object.order_id_origin} )
+                        % endif
+                        <br/>
+                        <br/>
+                        Do not hesitate to contact us if you have any question.
+                    </p>
+                </div>
+            </field>
+            <field name="report_template" ref="outplacement_final_report"/>
+            <field name="report_name">${(object.name or '')} - Final Report</field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="False"/>
+        </record>
+    </data>
+</odoo>

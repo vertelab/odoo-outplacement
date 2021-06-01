@@ -27,6 +27,7 @@ import stomp
 import ssl
 from queue import Queue, Empty
 from time import time
+from datetime import datetime
 
 
 
@@ -222,6 +223,7 @@ class Outplacement(models.Model):
                                     outplacement.message_post(body=message_type)
                                 elif message_type == "Slutredovisning godkänd":
                                     outplacement.message_post(body=message_type)
+                                    outplacement.fr_report_approved_date = datetime.today()
                                 frlsnr.ack_message(message)
                             else:
                                 _logger.error(f"Failed to find outplacement with jobseeker ref {jobseeker} "

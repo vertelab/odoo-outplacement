@@ -5,10 +5,28 @@ import json
 import logging
 import pytz
 from odoo.exceptions import UserError
+from  datetime import timedelta
 
 from odoo import api, models, fields, tools, _
 
 _logger = logging.getLogger(__name__)
+
+class SaleOrder(models.Model):
+
+    _inherit = 'sale.order'
+
+    @api.multi
+    def name_get(self):
+        if 'from_outplacement_interpreters_menu' in self._context:
+            res = []
+            for record in self:
+                if record.origin:
+                    res.append((record.id, record.name + ' - ' + record.origin))
+                else:
+                    res.append((record.id, record.name))
+            return res
+        else:
+            return super(SaleOrder, self).name_get()
 
 class ProjectTask(models.Model):
 
@@ -81,6 +99,12 @@ class MailActivity(models.Model):
         default=lambda self: self._get_default_task_value('start_date'))
     time_end = fields.Datetime(string='End Time',
                                default=lambda self: self._get_end_time())
+    duration = fields.Char("Duration(In minutes)", compute='_compute_dates_duration', store=True)
+    date = fields.Date("Date", compute='_compute_dates_duration', store=True)
+    split_start_time = fields.Char("Start Time", compute='_compute_dates_duration', store=True)
+    split_end_time = fields.Char("End Time", compute='_compute_dates_duration', store=True)
+    additional_time = fields.Integer(string='Additional time (minutes)', default=0)
+
     interpreter_receiver = fields.Char(string='Interpreter Receiver')
     street = fields.Char(string='Street',
                          default=lambda self: self._get_address('street'))
@@ -126,36 +150,51 @@ class MailActivity(models.Model):
         readonly=True)
 
     interpreter_ka_nr = fields.Char(compute='_compute_ka_nr')
-    task_id = fields.Reference(
-        string='Record', selection='_selection_target_model',
-        compute='_compute_resource_ref')
+    task_outplacement_id = fields.Many2one('project.task', string="Task", compute='_compute_outplacement_task', store=True)
     activity_status_for_interpreter = fields.Char(string="Activity Status for Interpreter",
                                                   compute='_compute_activity_status', store=True)
-    partner_name = fields.Char("Partner Name", compute='_compute_outplacement_detail')
-    outplacement_name = fields.Char("Outplacement Name", compute='_compute_outplacement_detail')
-    order_name = fields.Char("Outplacement Order Name", compute='_compute_outplacement_detail')
+
+    outplacement_id = fields.Many2one('outplacement', string="Outplacement", compute='_compute_outplacement_task',
+                                      store=True)
+    partner_name = fields.Char("Partner Name", related='outplacement_id.partner_name', store=True)
+    outplacement_name = fields.Char("Outplacement Name", related='outplacement_id.name', store=True)
+    order_id = fields.Many2one('sale.order', related='outplacement_id.order_id', store=True)
+    order_name = fields.Char("Outplacement Order Name", related='outplacement_id.order_id_origin', store=True)
     phone = fields.Char("Phone", compute='_compute_outplacement_detail')
     mobile = fields.Char("Mobile", compute='_compute_outplacement_detail')
     email = fields.Char("Email", compute='_compute_outplacement_detail')
     add_log_booking_confirmed = fields.Boolean("Added Log for Booking Confirmed?")
     add_log_booking_delivered = fields.Boolean("Added Log for Booking Delivered?")
     performing_operation_id = fields.Many2one('performing.operation', "Performing Operation",
-                                              compute="_compute_outplacement_detail")
+                                             related="outplacement_id.performing_operation_id", store=True)
+    employee_id = fields.Many2one('hr.employee', related='outplacement_id.employee_id', store=True)
+
+    @api.multi
+    @api.depends('time_start', 'time_end')
+    def _compute_dates_duration(self):
+        for activity in self:
+            if activity.time_start and activity.time_end:
+                activity.duration = ((activity.time_end - activity.time_start).total_seconds()) / 60
+                activity.date = activity.time_start.date()
+                start_date = activity.time_start + timedelta(hours=2)
+                end_date = activity.time_end + timedelta(hours=2)
+                activity.split_start_time = str(start_date.hour).zfill(2) + ':' + str(start_date.minute).zfill(2)
+                activity.split_end_time = str(end_date.hour).zfill(2) + ':' + str(end_date.minute).zfill(2)
+
+    @api.multi
+    @api.depends('res_id', 'res_model')
+    def _compute_outplacement_task(self):
+        task_obj = self.env['project.task']
+        for activity in self:
+            if activity.res_model and activity.res_id and activity.res_model == 'project.task':
+                task = task_obj.browse(int(activity.res_id))
+                if task and task.outplacement_id:
+                    activity.outplacement_id = task.outplacement_id.id
+                    activity.task_outplacement_id = task.id
 
     def _compute_outplacement_detail(self):
-        task_obj = self.env['project.task']
         emp_obj = self.env['hr.employee']
         for activity in self:
-            if activity.res_id:
-                task_id = activity.res_id
-                task = task_obj.browse(task_id)
-                if task.outplacement_id:
-                    activity.partner_name = task.outplacement_id.partner_name
-                    activity.outplacement_name = task.outplacement_id.name
-                    if task.outplacement_id.order_id:
-                        activity.order_name = task.outplacement_id.order_id_origin
-                    if task.outplacement_id.performing_operation_id:
-                        activity.performing_operation_id = task.outplacement_id.performing_operation_id.id
             if activity.user_id:
                 emp = emp_obj.search([('user_id', '=', activity.user_id.id)], limit=1)
                 if emp:

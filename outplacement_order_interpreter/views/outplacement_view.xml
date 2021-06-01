@@ -4,6 +4,12 @@
         <field name="model">outplacement</field> 
         <field name="inherit_id" ref="outplacement.outplacement_form_view" />
         <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button class="oe_stat_button" icon="fa-address-card"
+                        name="open_outplacement_activity" type="object">
+                    <field name="total_activity" widget="statinfo" string="Bookings"/>
+                </button>
+            </xpath>
             <group name="outplacement" position="inside">
                 <field name="interpreter_language" 
                        options="{'no_quick_create': True, 'no_create_edit' : True}"/>

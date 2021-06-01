@@ -167,8 +167,8 @@ class Outplacement(models.Model):
         mqconn = stomp.Connection10(host_port)
 
         if (
-            self.env["ir.config_parameter"].get_param("outplacement_final_report_mq_ipf.mqusessl", "1")
-            == "1"
+                self.env["ir.config_parameter"].get_param("outplacement_final_report_mq_ipf.mqusessl", "1")
+                == "1"
         ):
             mqconn.set_ssl(for_hosts=host_port, ssl_version=ssl.PROTOCOL_TLS)
             _logger.debug("Final report MQ Listener - Using TLS")

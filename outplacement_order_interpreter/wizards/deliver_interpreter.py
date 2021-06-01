@@ -37,11 +37,12 @@ class InterpreterDeliveryWizard(models.TransientModel):
         """Gets KA number from parents parent (Outplacement)."""
         # Cannot use self.mail_activity_id here as it has not been set
         # when initiating the class.
-        mail_activity_id = self.env['mail.activity'].browse(
-            self.env.context.get('active_id'))
-        perf_op = mail_activity_id.get_outplacement_value(
-             'performing_operation_id')
-        return perf_op.ka_nr
+        mail_activity_id = self.env['mail.activity'].browse(self.env.context.get('active_id'))
+        perf_op = mail_activity_id.get_outplacement_value('performing_operation_id')
+        if perf_op:
+            return perf_op.ka_nr
+        else:
+            return ''
 
     def deliver_interpreter(self):
         """Deliver interpreter booking to Tolkportalen."""
@@ -116,12 +117,12 @@ class InterpreterDeliveryWizard(models.TransientModel):
             'res_id': activity.res_id,
             'model': activity.res_model,
             })
+        activity.additional_time = self.additional_time
 
     def log_to_accounting(self):
         """Create an acounting row with the amount of hours logged."""
         activity = self.mail_activity_id
-        analytic_id = activity.get_outplacement_value(
-            'analytic_account_id')
+        analytic_id = activity.get_outplacement_value('analytic_account_id')
         extra = datetime.timedelta(minutes=self.additional_time)
         timedelta = activity.time_end - activity.time_start + extra
 

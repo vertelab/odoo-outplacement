@@ -75,6 +75,26 @@
       <xpath expr="//div[@class='oe_kanban_bottom_right']" position="attributes">
         <attribute name="invisible">1</attribute>
       </xpath>
+      <xpath expr="//field[@name='color']" position="after">
+        <field name="outplacement_id"/>
+      </xpath>
+      <xpath expr="//div[hasclass('o_kanban_record_body')]" position="inside">
+        <t t-if="record.order_id_origin.raw_value">
+          <b>Source Document: </b><field name="order_id_origin"/><br/>
+        </t>
+        <t t-if="record.outplacement_name.raw_value">
+          <b>Outplacement: </b><field name="outplacement_name"/><br/>
+        </t>
+        <t t-if="record.partner_name.raw_value">
+          <b>Partner Name: </b><field name="partner_name"/><br/>
+        </t>
+        <t t-if="record.performing_operation_id.raw_value">
+          <b>Performing Operation: </b><field name="performing_operation_id"/> <br/>
+        </t>
+        <t t-if="record.employee_id.raw_value">
+          <b>Coach: </b><field name="employee_id"/><br/>
+        </t>
+      </xpath>
     </field>
   </record>
   <record id="view_task_tree2" model="ir.ui.view">

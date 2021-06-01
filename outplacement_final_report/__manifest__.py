@@ -1,6 +1,6 @@
 {
     'name': 'Outplacement final report',
-    'version': '12.0.0.2.0',
+    'version': '12.0.0.2.2',
     'category': 'Outplacement',
     'description': """
 Module to handle outplacement (Avrop) final reports.
@@ -10,6 +10,8 @@ v12.0.0.1.2 changed some field names\n
 v12.0.0.1.3 Updated views, relations and translations\n
 v12.0.0.1.4 Added timing dependent interruption text\n
 v12.0.0.2.0 Added check and view for rejected final report\n
+v12.0.0.2.1 Added Final report Approved date and Archive button.\n
+v12.0.0.2.2 AFC-2407 Added PDF report to print Final report and Added button to send Final report via Email.\n
     """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',
@@ -18,11 +20,14 @@ v12.0.0.2.0 Added check and view for rejected final report\n
         'outplacement', 
         'res_ssyk',
         'base_user_groups_dafa',
-        'partner_education'
+        'partner_education',
+        'mail'
         ],
     'data': [
         'views/outplacement_view.xml',
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'report/final_report_print.xml',
+        'data/mail_data.xml'
     ],
     'installable': True,
 }

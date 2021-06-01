@@ -11,7 +11,7 @@
             id="outplacement_configuration"
             parent="outplacement.parent_menu_outplacement"
             name="Configuration"
-            groups="outplacement.group_outplacement_user_read"
+            groups="outplacement.group_outplacement_admin"
             sequence="75"/>
     </data>
 </odoo>

@@ -222,6 +222,7 @@ class Outplacement(models.Model):
                                     outplacement.message_post(body=message_type)
                                 elif message_type == "Slutredovisning godkänd":
                                     outplacement.message_post(body=message_type)
+                                frlsnr.ack_message(message)
                             else:
                                 _logger.error(f"Failed to find outplacement with jobseeker ref {jobseeker} "
                                               f"and order number {order}")

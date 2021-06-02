@@ -38,7 +38,7 @@
                                         <td style="border:none;padding:0" width="25%">
                                             <b>Social security number:</b>
                                         </td>
-                                        <td style="border:none;padding:0" width="25%">
+                                        <td style="border:none;padding:0 5px 0 0" width="25%">
                                             <t t-esc="o.partner_social_sec_nr"/>
                                         </td>
                                         <td style="border:none;padding:0" width="25%">
@@ -57,7 +57,7 @@
                                         <td style="border:none;padding:0">
                                             <b>Email:</b>
                                         </td>
-                                        <td style="border:none;padding:0">
+                                        <td style="border:none;padding:0 5px 0 0">
                                             <t t-esc="o.partner_email"/>
                                         </td>
                                         <td style="border:none;padding:0">
@@ -76,7 +76,7 @@
                                         <td style="border:none;padding:0">
                                             <b>Phone:</b>
                                         </td>
-                                        <td style="border:none;padding:0">
+                                        <td style="border:none;padding:0 5px 0 0">
                                             <t t-esc="o.partner_mobile"/>
                                         </td>
                                         <td style="border:none;padding:0">
@@ -90,7 +90,7 @@
                                         <td style="border:none;padding:0">
                                             <b>Address:</b>
                                         </td>
-                                        <td style="border:none;padding:0">
+                                        <td style="border:none;padding:0 5px 0 0">
                                             <t t-if="o.partner_street">
                                                 <t t-esc="o.partner_street"/>,
                                                 <br/>
@@ -152,7 +152,7 @@
                                             <b>Source Document
                                             </b>
                                         </td>
-                                        <td style="border:none;padding:0;">
+                                        <td style="border:none;padding:0 5px 0 0">
                                             <t t-esc="o.order_id_origin"/>
                                         </td>
                                         <td style="border:none;padding:0;">
@@ -168,7 +168,7 @@
                                             <b>Coach
                                             </b>
                                         </td>
-                                        <td style="border:none;padding:0">
+                                        <td style="border:none;padding:0 5px 0 0">
                                             <t t-if="o.employee_id">
                                                 <t t-esc="o.employee_id.name"/>
                                             </t>
@@ -186,7 +186,7 @@
                                             <b>Management team
                                             </b>
                                         </td>
-                                        <td style="border:none;padding:0">
+                                        <td style="border:none;padding:0 5px 0 0">
                                             <t t-if="o.management_team_id">
                                                 <t t-esc="o.management_team_id.name"/>
                                             </t>
@@ -204,18 +204,14 @@
                                             <b>Performing Operation
                                             </b>
                                         </td>
-                                        <td style="border:none;padding:0">
+                                        <td style="border:none;padding:0 5px 0 0">
                                             <t t-if="o.performing_operation_id">
                                                 <t t-esc="o.performing_operation_id.name"/>
                                             </t>
                                         </td>
                                         <td style="border:none;padding:0">
-                                            <b>Main Goal</b>
                                         </td>
                                         <td style="border:none;padding:0">
-                                            <t t-if="o.main_goal_id">
-                                                <t t-esc="o.main_goal_id.job_description"/>
-                                            </t>
                                         </td>
                                     </tr>
                                     <tr>
@@ -223,16 +219,12 @@
                                             <b>Performing Address
                                             </b>
                                         </td>
-                                        <td style="border:none;padding:0">
+                                        <td style="border:none;padding:0 5px 0 0">
                                             <t t-esc="o.per_op_address_text"/>
                                         </td>
                                         <td style="border:none;padding:0">
-                                            <b>Alternative Goal</b>
                                         </td>
                                         <td style="border:none;padding:0">
-                                            <t t-if="o.alternative_goal_id">
-                                                <t t-esc="o.alternative_goal_id.job_description"/>
-                                            </t>
                                         </td>
                                     </tr>
                                     <tr>
@@ -240,7 +232,7 @@
                                             <b>File Reference Number
                                             </b>
                                         </td>
-                                        <td style="border:none;padding:0">
+                                        <td style="border:none;padding:0 5px 0 0">
                                             <t t-esc="o.file_reference_number"/>
                                         </td>
                                         <td style="border:none;padding:0"/>
@@ -249,8 +241,394 @@
                                 </tbody>
                             </table>
                             <br/>
+                            <t t-if="o.main_goal_id">
+                                <h4>
+                                    <u>Main Goal</u>
+                                </h4>
+                                <table class="table" width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Field of work</b>
+                                            </td>
+                                            <td style="border:none;padding:0 5px 0 0" width="25%">
+                                                <t t-esc="o.main_goal_id.field_of_work_id.name"/>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Matches interest</b>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <t t-if="o.main_goal_id.matches_interest">
+                                                    Yes
+                                                </t>
+                                                <t t-else="">
+                                                    No
+                                                </t>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Job Title</b>
+                                            </td>
+                                            <td style="border:none;padding:0 5px 0 0" width="25%">
+                                                <t t-esc="o.main_goal_id.job_id.name"/>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Matches Ability</b>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <t t-if="o.main_goal_id.matches_ability">
+                                                    Yes
+                                                </t>
+                                                <t t-else="">
+                                                    No
+                                                </t>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Job Description</b>
+                                            </td>
+                                            <td style="border:none;padding:0 5px 0 0" width="25%">
+                                                <t t-esc="o.main_goal_id.job_description"/>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Market Demand</b>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <t t-if="o.main_goal_id.market_demand">
+                                                    Yes
+                                                </t>
+                                                <t t-else="">
+                                                    No
+                                                </t>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:none;padding:0" width="25%">
+                                            </td>
+                                            <td style="border:none;padding:0 5px 0 0" width="25%">
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Complementing education</b>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <t t-if="o.main_goal_id.complementing_education">
+                                                    Yes
+                                                </t>
+                                                <t t-else="">
+                                                    No
+                                                </t>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:none;padding:0" width="25%">
+                                            </td>
+                                            <td style="border:none;padding:0 5px 0 0" width="25%">
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Complementing Experience</b>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <t t-if="o.main_goal_id.complementing_experience">
+                                                    Yes
+                                                </t>
+                                                <t t-else="">
+                                                    No
+                                                </t>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:none;padding:0" width="25%">
+                                            </td>
+                                            <td style="border:none;padding:0 5px 0 0" width="25%">
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Other</b>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <t t-if="o.main_goal_id.other_motivation">
+                                                    Yes
+                                                </t>
+                                                <t t-else="">
+                                                    No
+                                                </t>
+                                                <br/>
+                                                <b>Free Text</b>
+                                                <t t-esc="o.main_goal_id.free_text"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br/><br/><br/><br/><br/><br/><br/>
+                                <b>Steps</b>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <th>Type</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="o.main_goal_id.step_ids" t-as="step">
+                                            <td>
+                                                <t t-if="step.step_type == 'Studera reguljär utbildning'">
+                                                    Study
+                                                    <br/>
+                                                    <b>Name:</b> <t t-esc="step.step_name"/>
+                                                    <br/>
+                                                    <b>Education level:</b>
+                                                    <t t-if="step.education_level_id">
+                                                        <t t-esc="step.education_level_id.name"/>
+                                                        <span> </span>
+                                                        <t t-esc="step.education_level_id.description"/>
+                                                    </t>
+                                                </t>
+                                                <t t-elif="step.step_type == 'Lämpliga kompletterande insatser'">
+                                                    fitting complementing efforts
+                                                    <br/>
+                                                    <b>Complementing effort type:</b>
+                                                    <t t-if="step.complementing_effort_type == 'Studiemotiverande insats'">
+                                                        study motivating effort
+                                                    </t>
+                                                    <t t-elif="step.complementing_effort_type == 'Rusta inför arbete'">
+                                                        prepare for work
+                                                    </t>
+                                                    <t t-elif="step.complementing_effort_type == 'Matcha till arbete'">
+                                                        match to work
+                                                    </t>
+                                                    <t t-elif="step.complementing_effort_type == 'Utreda arbetsförmågan'">
+                                                        evaluate ability to work
+                                                    </t>
+                                                    <t t-elif="step.complementing_effort_type == 'Delta i en arbetsmarknadsutbildning/Praktik/Validering'">
+                                                        partake in education/internship/validation
+                                                    </t>
+                                                    <t t-elif="step.complementing_effort_type == 'Svenskastudier inom valt område'">
+                                                        Swedish studies in chosen field
+                                                    </t>
+                                                    <t t-elif="step.complementing_effort_type == 'Översättning av betyg'">
+                                                        translation of grades
+                                                    </t>
+                                                    <t t-elif="step.complementing_effort_type == 'Bedömning och komplettering av utländsk utbildning'">
+                                                        evaluation and complementation of foreign education
+                                                    </t>
+                                                    <t t-elif="step.complementing_effort_type == 'Annat'">
+                                                        Other<br/>
+                                                        <b><t t-esc="step.complementing_effort_description"/></b>
+                                                    </t>
+                                                </t>
+                                                <t t-elif="step.step_type == 'Annat'">
+                                                    Other
+                                                    <br/>
+                                                    <b>Describe Other Step:</b>
+                                                    <t t-esc="step.step_name"/>
+                                                </t>
+                                            </td>
+                                            <td>
+                                                <t t-esc="step.start_date"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="step.end_date"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br/>
+                            </t>
+                             <t t-if="o.alternative_goal_id">
+                                <h4>
+                                    <u>Alternative Goal</u>
+                                </h4>
+                                <table class="table" width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Field of work</b>
+                                            </td>
+                                            <td style="border:none;padding:0 5px 0 0" width="25%">
+                                                <t t-esc="o.alternative_goal_id.field_of_work_id.name"/>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Matches interest</b>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <t t-if="o.alternative_goal_id.matches_interest">
+                                                    Yes
+                                                </t>
+                                                <t t-else="">
+                                                    No
+                                                </t>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Job Title</b>
+                                            </td>
+                                            <td style="border:none;padding:0 5px 0 0" width="25%">
+                                                <t t-esc="o.alternative_goal_id.job_id.name"/>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Matches Ability</b>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <t t-if="o.alternative_goal_id.matches_ability">
+                                                    Yes
+                                                </t>
+                                                <t t-else="">
+                                                    No
+                                                </t>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Job Description</b>
+                                            </td>
+                                            <td style="border:none;padding:0 5px 0 0" width="25%">
+                                                <t t-esc="o.alternative_goal_id.job_description"/>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Market Demand</b>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <t t-if="o.alternative_goal_id.market_demand">
+                                                    Yes
+                                                </t>
+                                                <t t-else="">
+                                                    No
+                                                </t>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:none;padding:0" width="25%">
+                                            </td>
+                                            <td style="border:none;padding:0 5px 0 0" width="25%">
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Complementing education</b>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <t t-if="o.alternative_goal_id.complementing_education">
+                                                    Yes
+                                                </t>
+                                                <t t-else="">
+                                                    No
+                                                </t>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:none;padding:0" width="25%">
+                                            </td>
+                                            <td style="border:none;padding:0 5px 0 0" width="25%">
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Complementing Experience</b>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <t t-if="o.alternative_goal_id.complementing_experience">
+                                                    Yes
+                                                </t>
+                                                <t t-else="">
+                                                    No
+                                                </t>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:none;padding:0" width="25%">
+                                            </td>
+                                            <td style="border:none;padding:0 5px 0 0" width="25%">
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <b>Other</b>
+                                            </td>
+                                            <td style="border:none;padding:0" width="25%">
+                                                <t t-if="o.alternative_goal_id.other_motivation">
+                                                    Yes
+                                                </t>
+                                                <t t-else="">
+                                                    No
+                                                </t>
+                                                <br/>
+                                                <b>Free Text</b>
+                                                <t t-esc="o.alternative_goal_id.free_text"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                                <b>Steps</b>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <th>Type</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="o.alternative_goal_id.step_ids" t-as="step">
+                                            <td>
+                                                <t t-if="step.step_type == 'Studera reguljär utbildning'">
+                                                    Study
+                                                    <br/>
+                                                    <b>Name:</b> <t t-esc="step.step_name"/>
+                                                    <br/>
+                                                    <b>Education level:</b>
+                                                    <t t-if="step.education_level_id">
+                                                        <t t-esc="step.education_level_id.name"/>
+                                                        <span> </span>
+                                                        <t t-esc="step.education_level_id.description"/>
+                                                    </t>
+                                                </t>
+                                                <t t-elif="step.step_type == 'Lämpliga kompletterande insatser'">
+                                                    fitting complementing efforts
+                                                    <br/>
+                                                    <b>Complementing effort type:</b>
+                                                    <t t-if="step.complementing_effort_type == 'Studiemotiverande insats'">
+                                                        study motivating effort
+                                                    </t>
+                                                    <t t-elif="step.complementing_effort_type == 'Rusta inför arbete'">
+                                                        prepare for work
+                                                    </t>
+                                                    <t t-elif="step.complementing_effort_type == 'Matcha till arbete'">
+                                                        match to work
+                                                    </t>
+                                                    <t t-elif="step.complementing_effort_type == 'Utreda arbetsförmågan'">
+                                                        evaluate ability to work
+                                                    </t>
+                                                    <t t-elif="step.complementing_effort_type == 'Delta i en arbetsmarknadsutbildning/Praktik/Validering'">
+                                                        partake in education/internship/validation
+                                                    </t>
+                                                    <t t-elif="step.complementing_effort_type == 'Svenskastudier inom valt område'">
+                                                        Swedish studies in chosen field
+                                                    </t>
+                                                    <t t-elif="step.complementing_effort_type == 'Översättning av betyg'">
+                                                        translation of grades
+                                                    </t>
+                                                    <t t-elif="step.complementing_effort_type == 'Bedömning och komplettering av utländsk utbildning'">
+                                                        evaluation and complementation of foreign education
+                                                    </t>
+                                                    <t t-elif="step.complementing_effort_type == 'Annat'">
+                                                        Other<br/>
+                                                        <b><t t-esc="step.complementing_effort_description"/></b>
+                                                    </t>
+                                                </t>
+                                                <t t-elif="step.step_type == 'Annat'">
+                                                    Other
+                                                    <br/>
+                                                    <b>Describe Other Step:</b>
+                                                    <t t-esc="step.step_name"/>
+                                                </t>
+                                            </td>
+                                            <td>
+                                                <t t-esc="step.start_date"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="step.end_date"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br/>
+                            </t>
                             <h4>
-                                    <u>Study visit</u>
+                                <u>Study visit</u>
                             </h4>
                             <table class="table table-bordered">
                                 <thead>
@@ -284,15 +662,16 @@
                             <span>
                                 Is there complementing information for potential needs, limitations or conditions to
                                 seek education or employment that need to be communicated with Arbetsförmedlingen?
-                            </span><br/>
-                            <b>Complementing information: </b>
+                            </span>
+                            <br/>
+                            <b>Complementing information:</b>
                             <t t-if="o.complementing_information == 'komm_info_01'">
                                 Information has been communicated
                             </t>
-                             <t t-elif="o.complementing_information == 'komm_info_02'">
+                            <t t-elif="o.complementing_information == 'komm_info_02'">
                                 Information has not been communicated
                             </t>
-                             <t t-elif="o.complementing_information == 'komm_info_03'">
+                            <t t-elif="o.complementing_information == 'komm_info_03'">
                                 Information missing
                             </t>
                         </div>

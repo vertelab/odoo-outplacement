@@ -121,6 +121,7 @@ msgstr "Aktiva tolkbokningar"
 #: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:18
 #: model:ir.actions.act_window,name:outplacement_order_interpreter.interpreter_activity_action
 #: model:ir.model,name:outplacement_order_interpreter.model_mail_activity
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
 #, python-format
 msgid "Activity"
 msgstr "Aktivitet"
@@ -162,6 +163,7 @@ msgstr "Adress"
 #: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:41
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
 #, python-format
 msgid "All Bookings"
 msgstr "Alla bokningar"
@@ -171,6 +173,7 @@ msgstr "Alla bokningar"
 #: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:47
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
 #, python-format
 msgid "Awaiting Response"
 msgstr "Avvaktar svar"
@@ -305,6 +308,7 @@ msgstr "Klar"
 #. module: outplacement_order_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
 msgid "Done Bookings"
 msgstr "Klar"
 
@@ -334,6 +338,7 @@ msgstr "Ingen tillgänglig tolk"
 #. module: outplacement_order_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
 msgid "Failed Bookings"
 msgstr "Ingen tillgänglig tolk"
 
@@ -568,6 +573,7 @@ msgstr "Inga tolkbokningar planerade"
 #: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:59
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
 #, python-format
 msgid "Not Delivered"
 msgstr "Ej Inlevererad"
@@ -594,6 +600,7 @@ msgstr "Kontorskod"
 #: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:53
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
 #, python-format
 msgid "Ongoing"
 msgstr "Pågående"
@@ -755,3 +762,42 @@ msgstr "e.g Diskutera offert"
 msgid "outplacement.interpreter_delivery.wizard"
 msgstr "Inleverens"
 
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
+msgid "Created By"
+msgstr "Skapad av"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
+msgid "Deadline"
+msgstr "Tidsfrist"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
+msgid "Activity Type"
+msgstr "Aktivitetstyp"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
+msgid "Future Activities"
+msgstr "Framtida aktivieteter"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
+msgid "Group By"
+msgstr "Gruppera efter"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
+msgid "Late Activities"
+msgstr "Försenade aktiviteter"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
+msgid "My Activities"
+msgstr "Mina aktivieteter"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
+msgid "Today Activities"
+msgstr "Dagens aktiviteter"

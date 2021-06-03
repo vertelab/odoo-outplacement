@@ -220,7 +220,11 @@ class Outplacement(models.Model):
                                 # Slutredovisning godkänd
                                 if message_type == "Slutredovisning ej godkänd":
                                     outplacement.fr_rejected = True
-                                    outplacement.message_post(body=message_type)
+                                    outplacement.message_post(body=_(f"Hello.\n"
+                                                                     f"The Employment service has decided "
+                                                                     f"to reject the final report for "
+                                                                     f"order id : %s\nMotivation:"
+                                                                     f"\n%s" % (self.order_id_origin, comment)))
                                 elif message_type == "Slutredovisning godkänd":
                                     outplacement.message_post(body=message_type)
                                     outplacement.fr_report_approved_date = datetime.today()

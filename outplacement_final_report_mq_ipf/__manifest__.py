@@ -26,7 +26,7 @@
     'description': """
 
 v12.0.0.1.1 - Fixed cron data\n
-v12.0.0.1.2 - refactored code and bugfixes\n
+v12.0.0.1.2 - refactored code and bugfixes and better rejection message\n
 """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',

@@ -24,6 +24,15 @@
     'version': '12.0.0.1.2',
     'category': '',
     'description': """
+To set up set system parameters:
+outplacement_final_report_mq_ipf.mqhostport - ipfmq<1-3>-<environment>.arbetsformedlingen.se:61613
+outplacement_final_report_mq_ipf.mquser - dafa
+outplacement_final_report_mq_ipf.mqpwd
+optional:
+outplacement_final_report_mq_ipf.mqusessl - set to 0 if testing with activemq 
+outplacement_final_report_mq_ipf.stomp_logger - DEBUG if debugging is needed
+
+
 
 v12.0.0.1.1 - Fixed cron data\n
 v12.0.0.1.2 - refactored code and bugfixes and better rejection message\n

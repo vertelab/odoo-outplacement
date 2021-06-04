@@ -227,7 +227,7 @@ class Outplacement(models.Model):
                                                                      f"\n%s" % (self.order_id_origin, comment)))
                                 elif message_type == "Slutredovisning godkänd":
                                     outplacement.message_post(body=message_type)
-                                    outplacement.fr_report_approved_date = datetime.today()
+                                    outplacement.fr_report_approved_date = datetime.today().date()
                                 frlsnr.ack_message(message)
                             else:
                                 _logger.error(f"Failed to find outplacement with jobseeker ref {jobseeker} "

@@ -21,7 +21,7 @@
 
 {
     'name': "Outplacement final report MQ/IPF-update dispatcher",
-    'version': '12.0.0.1.2',
+    'version': '12.0.0.1.3',
     'category': '',
     'description': """
 To set up set system parameters:
@@ -36,6 +36,7 @@ outplacement_final_report_mq_ipf.stomp_logger - DEBUG if debugging is needed
 
 v12.0.0.1.1 - Fixed cron data\n
 v12.0.0.1.2 - refactored code and bugfixes and better rejection message\n
+v12.0.0.1.3 - fixed datetime date mismatch\n
 """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',

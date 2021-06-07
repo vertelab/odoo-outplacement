@@ -59,6 +59,13 @@
                             <t t-esc="activity.not_delivered_booking_count"/>
                             Not Delivered </button>
                         <span t-if="!activity.not_delivered_booking_count" class="o_no_activity float-right">0 Not Delivered</span>
+                        <button t-if="activity.cancelled_by_interpreter_count" type="button"
+                                class="btn btn-link o_activity_filter_button mr16" t-att-data-res_model="activity.model"
+                                t-att-data-model_name="activity.name" data-filter='cancelled_by_interpreter'>
+                            <t t-esc="activity.cancelled_by_interpreter_count"/>
+                            Cancelled By Interpreter </button>
+                        <span t-if="!activity.cancelled_by_interpreter_count" class="o_no_activity float-right">
+                            0 Cancelled By Interpreter</span>
                         <button t-if="activity.failed_booking_count" type="button"
                                 class="btn btn-link o_activity_filter_button mr16" t-att-data-res_model="activity.model"
                                 t-att-data-model_name="activity.name" data-filter='failed_booking'>

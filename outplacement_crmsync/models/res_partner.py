@@ -198,58 +198,7 @@ class Outplacement(models.Model):
             }
         )
 
-    @api.one
-    def get_jobseeker_dataIII(self):
-        """
-        Test utan komplexa data
-        """
-
-        xmlrpc = crm_serverII(self.env)
-
-        partner = xmlrpc.common.env["res.partner"].browse(
-            xmlrpc.common.env["res.partner"].search(
-                [("social_sec_nr", "=", self.social_sec_nr)], limit=1
-            )
-        )
-        # ~ xmlrpc.common.env['res.partner'].search([('id','=',26)],limit=1))
-
-        self.write(
-            {
-                "name": partner.name,
-                "street": partner.street,
-                "street2": partner.street2,
-                "zip": partner.zip,
-                "city": partner.city,
-                "phone": partner.phone,
-                "email": partner.email,
-            }
-        )
-
-    @api.one
-    def get_jobseeker_dataIV(self):
-        """
-        Test mot demo-data / utan partner_ssn
-        """
-
-        xmlrpc = crm_serverII(self.env)
-
-        partner = xmlrpc.common.env["res.partner"].browse(
-            xmlrpc.common.env["res.partner"].search([("id", "=", 26)], limit=1)
-        )
-        # ~ xmlrpc.common.env['res.partner'].search([('id','=',26)],limit=1))
-
-        self.write(
-            {
-                "name": partner.name,
-                "street": partner.street,
-                "street2": partner.street2,
-                "zip": partner.zip,
-                "city": partner.city,
-                "phone": partner.phone,
-                "email": partner.email,
-            }
-        )
-
+    
     @api.one
     def get_jobseeker_dataV(self):
         FIELDS = [

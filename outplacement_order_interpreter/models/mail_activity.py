@@ -52,6 +52,8 @@ class ProjectTask(models.Model):
                     elif activity.active and activity._interpreter_booking_status == '1' \
                             and activity._interpreter_booking_status_2 == '2':
                         activity.activity_status_for_interpreter = 'failed_booking'
+                    elif activity.active and activity._interpreter_booking_status_2 == '5':
+                        activity.activity_status_for_interpreter = 'cancelled_by_interpreter'
                     elif not activity.active:
                         activity.activity_status_for_interpreter = 'done_booking'
                     else:
@@ -128,7 +130,7 @@ class MailActivity(models.Model):
                                   readonly=True)
     interpreter_booking_status = fields.Char(string='Booking Status',
                                              readonly=True,
-                                             compute='_compute_booking_status')
+                                             compute='_compute_booking_status', store=True)
     # Internal booking status to hold certain data to be computed.
     _interpreter_booking_status = fields.Char(string='Technical Booking Status Internal',
                                               readonly=True,
@@ -256,6 +258,8 @@ class MailActivity(models.Model):
                     elif activity.active and activity._interpreter_booking_status == '1' \
                         and activity._interpreter_booking_status_2 == '2':
                         activity.activity_status_for_interpreter = 'failed_booking'
+                    elif activity.active and activity._interpreter_booking_status_2 == '5':
+                        activity.activity_status_for_interpreter = 'cancelled_by_interpreter'
                     elif not activity.active:
                         activity.activity_status_for_interpreter = 'done_booking'
                     else:

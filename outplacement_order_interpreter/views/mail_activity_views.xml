@@ -193,12 +193,12 @@
         <field name="model">mail.activity</field>
         <field name="arch" type="xml">
             <search string="Activity">
-                <field name="outplacement_name"/>
-                <field name="order_name"/>
-                <field name="employee_id"/>
                 <field name="interpreter_booking_ref"/>
                 <field name="partner_name"/>
                 <field name="performing_operation_id"/>
+                <field name="outplacement_name"/>
+                <field name="order_name"/>
+                <field name="employee_id"/>
                 <filter string="My Activities" name="activities_my" domain="[('user_id', '=', uid)]"/>
                 <separator/>
                 <filter string="Late Activities" name="activities_overdue"
@@ -226,11 +226,16 @@
                 <filter string="Not Delivered" name="activities_not_delivered_booking"
                         domain="[('user_id', '=', uid),
                         ('activity_status_for_interpreter', '=', 'not_delivered_booking')]"/>
+                <filter string="Cancelled By Interpreter" name="activities_cancelled_by_interpreter"
+                        domain="[('user_id', '=', uid),
+                        ('activity_status_for_interpreter', '=', 'cancelled_by_interpreter')]"/>
                 <separator/>
                 <group expand="0" string="Group By">
                     <filter string="Deadline" name="date_deadline" context="{'group_by': 'date_deadline'}"/>
                     <filter string="Created By" name="createdby" context="{'group_by': 'create_user_id'}"/>
                     <filter string="Activity Type" name="activittype" context="{'group_by': 'activity_type_id'}"/>
+                    <filter string="Booking Status" name="booking_status"
+                            context="{'group_by': 'interpreter_booking_status'}"/>
                 </group>
             </search>
         </field>
@@ -410,16 +415,42 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="mail_activity_pivot_view_for_interpreter">
+        <field name="name">mail.activity.pivot</field>
+        <field name="model">mail.activity</field>
+        <field name="arch" type="xml">
+            <pivot string="Interpreter Booking" disable_linking="True">
+                <field name="user_id" type="row"/>
+                <field name="interpreter_remote_type" type="row"/>
+                <field name="interpreter_language" type="row"/>
+                <field name="date" interval="month" type="col"/>
+                <field name="additional_time" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="mail_activity_calendar_view_for_interpreter" model="ir.ui.view">
+        <field name="name">mail.activity.calendar</field>
+        <field name="model">mail.activity</field>
+        <field name="arch" type="xml">
+            <calendar date_start="time_start" date_stop="time_end" string="Intepreter" color="user_id"
+                readonly_form_view_id="%(outplacement_order_interpreter.mail_activity_form_view_for_interpreter)s"
+                event_open_popup="true">
+                <field name="task_outplacement_id"/>
+            </calendar>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="interpreter_activity_action">
         <field name="name">Activity</field>
         <field name="res_model">mail.activity</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,tree,calendar,form</field>
         <field name="view_id" ref="outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking"/>
         <field name="domain">[('user_id', '=', uid)]</field>
     </record>
 
     <record id="interpreter_activity_action_form" model="ir.actions.act_window.view">
-        <field name="sequence" eval="3"/>
+        <field name="sequence" eval="4"/>
         <field name="view_mode">form</field>
         <field name="view_id" ref="outplacement_order_interpreter.mail_activity_form_view_for_interpreter"/>
         <field name="act_window_id" ref="interpreter_activity_action"/>
@@ -436,6 +467,13 @@
         <field name="sequence" eval="1"/>
         <field name="view_mode">kanban</field>
         <field name="view_id" ref="outplacement_order_interpreter.mail_activity_kanban_view_for_interpreter"/>
+        <field name="act_window_id" ref="interpreter_activity_action"/>
+    </record>
+
+      <record id="interpreter_activity_action_calendar" model="ir.actions.act_window.view">
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="outplacement_order_interpreter.mail_activity_calendar_view_for_interpreter"/>
         <field name="act_window_id" ref="interpreter_activity_action"/>
     </record>
 
@@ -517,14 +555,14 @@
     <record model="ir.actions.act_window" id="interpreters_menu_action">
         <field name="name">Interpreters</field>
         <field name="res_model">mail.activity</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,pivot,calendar</field>
         <field name="search_view_id"
                ref="outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking"/>
         <field name="context">{'from_outplacement_interpreters_menu':1}</field>
     </record>
 
     <record id="interpreter_menu_action_form" model="ir.actions.act_window.view">
-        <field name="sequence" eval="2"/>
+        <field name="sequence" eval="4"/>
         <field name="view_mode">form</field>
         <field name="view_id" ref="outplacement_order_interpreter.mail_activity_form_view_for_interpreters_menu"/>
         <field name="act_window_id" ref="interpreters_menu_action"/>
@@ -534,6 +572,20 @@
         <field name="sequence" eval="1"/>
         <field name="view_mode">tree</field>
         <field name="view_id" ref="outplacement_order_interpreter.mail_activity_tree_view_for_interpreters_menu"/>
+        <field name="act_window_id" ref="interpreters_menu_action"/>
+    </record>
+
+    <record id="interpreter_menu_action_pivot" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="outplacement_order_interpreter.mail_activity_pivot_view_for_interpreter"/>
+        <field name="act_window_id" ref="interpreters_menu_action"/>
+    </record>
+
+     <record id="interpreter_menu_action_calendar" model="ir.actions.act_window.view">
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="outplacement_order_interpreter.mail_activity_calendar_view_for_interpreter"/>
         <field name="act_window_id" ref="interpreters_menu_action"/>
     </record>
 

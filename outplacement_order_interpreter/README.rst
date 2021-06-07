@@ -1,6 +1,6 @@
-=================
+==============================
 Outplacement Order Interpreter
-=================
+==============================
 
 This module adds interpreter-functionality.
 
@@ -38,6 +38,8 @@ Different version submitted
     Hide 'Deliver Interpreter' button for 'Not Available Interpreter' Bookings, For now Hide cancel booking functionality.
 28. v12.0.1.7.0 AFC-2405: Added different serach view for Interpreter bookings.
 29. v12.0.1.7.1 AFC-2406: Redesign of the interpreter accountant formview.
+29. v12.0.1.7.2 AFC-2441 AFC-2445: Added groupby Booking status, Added Calender & Pivot view for Interpreter Booking,
+Added new filter 'Cancelled By Interpreter' in Interpreter tray widget.
 
 
 Maintainers

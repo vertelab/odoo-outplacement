@@ -31,6 +31,9 @@ class Users(models.Model):
                                 WHEN act.active = TRUE AND act._interpreter_booking_status = '1' 
                                    AND act._interpreter_booking_status_2  = '2' Then 'failed_booking'
                                    
+                                WHEN act.active = TRUE AND act._interpreter_booking_status_2  = '5' 
+                                   Then 'cancelled_by_interpreter'
+                                   
                                 WHEN act.active = FALSE THEN 'done_booking'
                                 
                                 WHEN act.active = TRUE Then 'all_booking'
@@ -71,6 +74,7 @@ class Users(models.Model):
                     'done_booking_count': 0,
                     'failed_booking_count': 0,
                     'awaiting_booking_count': 0,
+                    'cancelled_by_interpreter_count': 0,
                 }
             if activity.get('states'):
                 user_activities[activity['model']]['%s_count' % activity['states']] += activity['count']

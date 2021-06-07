@@ -129,6 +129,7 @@ odoo.define('mail.Bookings.ActivityMenu', function (require) {
                 context['search_default_activities_not_delivered_booking'] = 1;
                 context['search_default_activities_failed_booking'] = 1;
                 context['search_default_activities_done_booking'] = 1;
+                context['search_default_activities_cancelled_by_interpreter'] = 1;
             } else {
                 context['search_default_activities_' + data.filter] = 1;
             }
@@ -149,6 +150,9 @@ odoo.define('mail.Bookings.ActivityMenu', function (require) {
             }
             if (data.filter === 'not_delivered_booking') {
                context['search_default_activities_not_delivered_booking'] = 1;
+            }
+             if (data.filter === 'cancelled_by_interpreter') {
+               context['search_default_cancelled_by_interpreter'] = 1;
             }
             this.do_action('outplacement_order_interpreter.interpreter_activity_action', {
                additional_context: context,

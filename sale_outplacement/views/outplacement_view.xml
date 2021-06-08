@@ -1,0 +1,47 @@
+<odoo>
+    <data>
+        <record id="outplacement_form_view" model="ir.ui.view">
+            <field name="name">Outplacement</field>
+            <field name="model">outplacement</field>
+            <field name="inherit_id" ref="outplacement.outplacement_form_view"/>
+            <field name="arch" type="xml">
+                <field name="employee_id" position="after">
+                    <field name='management_team_id'/>
+                </field>
+                <group name="service" position="inside">
+                    <field name="service_start_date"/>
+                    <field name="service_end_date"/>
+                    <field name="order_start_date"/>
+                    <field name="order_close_date"/>
+                    <field name="participitation_rate"/>
+                </group>
+                <group name="af_data" position="inside">
+                    <field name="file_reference_number"/>
+                </group>
+            </field>
+        </record>
+
+        <record id="task_type_edit" model="ir.ui.view">
+            <field name="name">project.task.type.outplacement</field>
+            <field name="model">project.task.type</field>
+            <field name="inherit_id" ref="project.task_type_edit"/>
+            <field name="arch" type="xml">
+                <field name="auto_validation_kanban_state" position="after">
+                    <field name="is_outplacement"/>                
+                </field>
+            </field>
+        </record>
+        <record id="task_type_tree" model="ir.ui.view">
+            <field name="name">project.task.type.outplacement.tree</field>
+            <field name="model">project.task.type</field>
+            <field name="inherit_id" ref="project.task_type_tree"/>
+            <field name="arch" type="xml">
+                <field name="fold" position="after">
+                    <field name="is_outplacement"/>                
+                </field>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

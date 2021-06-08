@@ -1,0 +1,13 @@
+<odoo>
+    <record id="view_outplacement_form" model="ir.ui.view">
+        <field name="name">outplacement.view.form.inherit.interpreter</field>
+        <field name="model">outplacement</field> 
+        <field name="inherit_id" ref="outplacement.outplacement_form_view" />
+        <field name="arch" type="xml">
+            <group name="outplacement" position="inside">
+                <field name="interpreter_language"/>
+                <field name="interpreter_gender_preference"/>
+            </group>
+        </field>
+    </record>
+</odoo>

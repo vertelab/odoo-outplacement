@@ -1,0 +1,26 @@
+<odoo>
+    <record id="outplacement_form_view_skill" model="ir.ui.view">
+        <field name="name">outplacement.view.form.inherit.skill</field>
+        <field name="model">outplacement</field>
+        <field name="inherit_id" ref="outplacement.outplacement_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="skills" string="Skills">
+                    <group>
+                        <field name="strengths" widget="many2many_tags"/>
+                        <field name="interests" widget="many2many_tags"/>
+                        <field name="other_experiences" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <field name="partner_skill_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="skill_id"  string="Skill"/>
+                                <field name="level" widget="priority" invisible="1"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,146 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* outplacement_order_interpretor
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0-20201022\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-12-30 13:12+0000\n"
+"PO-Revision-Date: 2020-12-30 13:12+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+
+#. module: outplacement_order_interpreter
+#: model:ir.model,name:outplacement_order_interpreter.model_mail_activity
+msgid "Activity"
+msgstr "Aktivitet"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.inerpretor
+msgid "Address"
+msgstr "Adress"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__interpeter_booking_ref
+msgid "Booking Reference"
+msgstr ""
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__Interpreteter_booking_status
+msgid "Booking Status"
+msgstr ""
+
+#. module: outplacement_order_interpreter
+#: model:ir.actions.server,name:outplacement_order_interpreter.ir_cron_order_interpreter_ir_actions_server
+#: model:ir.cron,cron_name:outplacement_order_interpreter.ir_cron_order_interpreter
+#: model:ir.cron,name:outplacement_order_interpreter.ir_cron_order_interpreter
+msgid "Check status on Interpreter Order"
+msgstr ""
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__city
+msgid "City"
+msgstr "Stad"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model,name:outplacement_order_interpreter.model_res_partner
+msgid "Contact"
+msgstr "Kontakt"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__department_id
+msgid "Department"
+msgstr "Avdelning"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__time_end
+msgid "End Time"
+msgstr ""
+
+#. module: outplacement_order_interpreter
+#: selection:mail.activity,interpreter_gender_preference:0
+#: selection:res.partner,interpreter_gender_preference:0
+msgid "Female"
+msgstr "Kvinna"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__interpreter_gender_preference
+msgid "Gender Preference"
+msgstr "Föredrar tolk av könet"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_res_partner__interpreter_gender_preference
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_res_users__interpreter_gender_preference
+msgid "Interpreter Gender Preference"
+msgstr "Föredrar tolk av könet"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__interpreter_language
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_res_partner__interpreter_language
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_res_users__interpreter_language
+msgid "Interpreter Language"
+msgstr "Tolkspråk"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__location_type
+msgid "Location"
+msgstr ""
+
+#. module: outplacement_order_interpreter
+#: selection:mail.activity,interpreter_gender_preference:0
+#: selection:res.partner,interpreter_gender_preference:0
+msgid "Male"
+msgstr "Man"
+
+#. module: outplacement_order_interpreter
+#: selection:mail.activity,location_type:0
+msgid "On premise"
+msgstr ""
+
+#. module: outplacement_order_interpreter
+#: model:mail.activity.type,name:outplacement_order_interpreter.order_interpreter
+msgid "Order Interpreter"
+msgstr "Beställ tolk"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__phone
+msgid "Phone"
+msgstr "Telefon"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__time_start
+msgid "Start Time"
+msgstr ""
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__state_id
+msgid "State"
+msgstr "Status"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__street
+msgid "Street"
+msgstr "Gata"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__street2
+msgid "Street2"
+msgstr "Gata 2"
+
+#. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__zip
+msgid "Zip"
+msgstr "Postnummer"
+
+#. module: outplacement_order_interpreter
+#: selection:mail.activity,interpreter_gender_preference:0
+#: selection:res.partner,interpreter_gender_preference:0
+msgid "no preference"
+msgstr "Ingen preferens"
+

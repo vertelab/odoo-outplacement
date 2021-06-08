@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<odoo>
+  <record id="view_task_form2" model="ir.ui.view">
+    <field name="name">project.task.form</field>
+    <field name="model">project.task</field>
+    <field name="inherit_id" ref="project.view_task_form2" />
+    <field name="arch" type="xml">
+      <field name="email_from" position="after">
+        <field name="outplacement_id" />
+      </field>
+      <field name="date_deadline" position="replace">
+        <field name="date_deadline" widget="date"/>
+      </field>
+      <field name="date_deadline" position="before">
+        <field name="start_date" widget="date"/>
+      </field>
+      <field name="project_id" position="before">
+        <field name="instructions"/>
+      </field>
+      <field name="project_id" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </field>
+      <field name="tag_ids" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </field>
+      <field name="email_from" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </field>      
+    </field>
+  </record>
+  <record id="view_task_kanban" model="ir.ui.view">
+    <field name="name">project.task.kanban</field>
+    <field name="model">project.task</field>
+    <field name="inherit_id" ref="project.view_task_kanban" />
+    <field name="arch" type="xml">
+      <xpath expr="//div[@class='oe_kanban_bottom_left']/field[@name='priority']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+      <xpath expr="//div[@class='oe_kanban_bottom_left']/field[@name='activity_ids']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>        
+      <xpath expr="//kanban/field[@name='color']" position="after">
+        <field name="instructions"/>
+        <field name="start_date"/>
+      </xpath>
+      <field name="name" position="after">
+        <field name="instructions"/>
+      </field>
+      <xpath expr="//div[@class='o_kanban_record_headings']/small/span/i/field[@name='date_deadline']" position="before">
+        <field name="start_date" widget="date"/>
+      </xpath>
+    </field>
+  </record>
+  <record id="view_task_tree2" model="ir.ui.view">
+    <field name="name">project.task.tree2</field>
+    <field name="model">project.task</field>
+    <field name="inherit_id" ref="project.view_task_tree2" />
+    <field name="arch" type="xml">
+      <field name="user_id" position="after">
+        <field name="start_date"/>
+        <field name="date_deadline"/>
+      </field>
+    </field>
+  </record>
+
+  <record id="view_task_quick_form" model="ir.ui.view">
+    <field name="name">project.task.quick.form</field>
+    <field name="model">project.task</field>
+    <field name="inherit_id" ref="project.quick_create_task_form" />
+    <field name="arch" type="xml">
+      <field name="name" position="after">
+        <field name="instructions"/>
+      </field>
+      <field name="user_id" position="after">
+        <field name="parent_id"/>
+      </field>
+    </field>
+  </record>
+  
+</odoo>

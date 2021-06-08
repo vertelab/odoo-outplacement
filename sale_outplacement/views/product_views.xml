@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="product_template_only_form_view" model="ir.ui.view">
+        <field name="name">product.product.sale_outplacement</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <div name="options" position="inside">
+                <div>
+                    <field name="is_suborder"/>
+                    <label for="is_suborder"/>
+                </div>
+            </div>
+            <field name="categ_id" position='after'>
+                <field name="tlr_ref"/>
+            </field>
+            <notebook position="inside">
+                <page string="Suborder" name="suborder" attrs="{'invisible': [('is_suborder','=',False)]}">
+                    <field name="mail_activity_ids">
+            <tree string="" editable="bottom">
+                 <control>
+                                        <create string="Add a product"/>
+                                    </control>
+                
+                
+                          <field name="summary"/>
+                          <field name="activity_type_id"/>
+                          <field name="due_days"/>
+                      </tree>
+                  </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

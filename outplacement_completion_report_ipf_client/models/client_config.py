@@ -26,7 +26,7 @@ import json
 import uuid
 import logging
 import requests
-from odoo import api, models, fields
+from odoo import api, models, fields, _
 from odoo.exceptions import Warning
 
 _logger = logging.getLogger(__name__)
@@ -144,7 +144,7 @@ class ClientConfig(models.Model):
                          % outplacement.performing_operation_id.ka_nr)
 
         if not outplacement.meeting_remote:
-            raise Warning("Meeting type for outplacement not set.")
+            raise Warning(_("Meeting type for outplacement not set."))
         if not dep_id:
             raise Warning("KA nr. not set on performing operation.")
 

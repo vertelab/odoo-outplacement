@@ -19,4 +19,4 @@ msgstr ""
 #: code:addons/outplacement_completion_report_ipf_client/models/client_config.py:147
 #, python-format
 msgid "Meeting type for outplacement not set."
-msgstr "Ska välja Mötestyp innan man skickar in GP"
+msgstr "Du behöver välja mötestyp innan du skickar in en gemensam planering."

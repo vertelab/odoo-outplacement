@@ -68,4 +68,45 @@
             web_icon="account,static/description/icon.png"
             sequence="40"/>
 
+
+    <!-- Removing Internal user Group from base menus -->
+
+
+    <menuitem
+        id="mail.menu_root_discuss"
+        name="Discuss"
+        action="mail.action_discuss"
+        web_icon="mail,static/description/icon.png"
+        groups="-base.group_user,base.group_no_one"
+        sequence="1"/>
+
+    <menuitem
+        id="calendar.mail_menu_calendar"
+        name="Calendar"
+        sequence="2"
+        action="calendar.action_calendar_event"
+        web_icon="calendar,static/description/icon.png"
+        groups="-base.group_user,base.group_no_one"/>
+
+    <menuitem
+            id="hr.menu_hr_root"
+            name="Employees"
+            groups="hr.group_hr_manager,hr.group_hr_user,-base.group_user,base.group_no_one"
+            web_icon="hr,static/description/icon.png"
+            sequence="75"/>
+
+    <menuitem
+        name="Leaves"
+        id="hr_holidays.menu_hr_holidays_root,"
+        sequence="95"
+        web_icon="hr_holidays,static/description/icon.png"
+        groups="-base.group_user,base.group_no_one"/>
+
+
+    <menuitem name="Project"
+            id="project.menu_main_pm"
+            groups="project.group_project_manager,project.group_project_user,group_disable_dafa_hide"
+            web_icon="project,static/description/icon.png"
+            sequence="50"/>
+
 </odoo>

@@ -691,7 +691,7 @@ class MailActivity(models.Model):
     @api.multi
     def activity_format(self):
         """Add is_interpreter_order field to activity"""
-        activities = super().activity_format()
+        activities = super(MailActivity).activity_format()
         type_id = self.env['ir.model.data'].xmlid_to_res_id(
             'outplacement_order_interpreter.order_interpreter')
         for activity in activities:

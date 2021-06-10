@@ -173,7 +173,7 @@ class OutplacementGoalStep(models.Model):
             ('Bedömning och komplettering av utländsk utbildning',
             'evaluation and complementation of foreign education'),
             ('Annat', 'Other')
-            ])
+            ], default='Annat')
     complementing_effort_description = fields.Char(
         string="Complementing effort")
     step_name = fields.Char(string="Name")

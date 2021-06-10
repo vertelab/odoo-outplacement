@@ -19,9 +19,9 @@ class Outplacement(models.Model):
         ('komm_info_03', 'Information missing'),
     ], default="komm_info_03")
     
-    fr_send_date = fields.Date(string="Final report send date")
+    fr_send_date = fields.Date(string="Final report send date", readonly=True)
     fr_report_date = fields.Date(string="Reporting date")
-    fr_report_approved_date = fields.Date(string="Final report approve date")
+    fr_report_approved_date = fields.Date(string="Final report approved date", readonly=True)
     active = fields.Boolean("Active", default=True)
 
     main_goal_id = fields.Many2one(comodel_name="outplacement.goal")

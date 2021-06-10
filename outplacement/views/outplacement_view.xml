@@ -22,7 +22,8 @@
             <field name="show_2nd_line" invisible="1"/>
             <group col="3">
               <group name="outplacement" string="Outplacement">
-                <field name="partner_social_sec_nr" attrs="{'readonly':[('show_2nd_line','=', True)]}" /> 
+                <field name="partner_social_sec_nr" attrs="{'readonly':[('show_2nd_line','=', True)]}"
+                  groups="base_user_groups_dafa.group_dafa_employees_read"/>
                 <field name="partner_email" />
                 <field name="partner_mobile" />
                 <label for="street" string="Address"/>

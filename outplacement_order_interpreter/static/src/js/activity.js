@@ -5,7 +5,6 @@ var core = require('web.core');
 var _t = core._t;
 var Dialog = require('web.Dialog')
 
-
 var MailActivity = require('mail.Activity')
 
 // -----------------------------------------------------------------------------
@@ -35,7 +34,7 @@ var Activity = MailActivity.include({
             let dialog = new Dialog(this, {'title': 'Avboka tolkbokningen',
                                            '$content': $('<p>
                                                          <b>Avboka tolkbokningen</b> <br>
-                                                         Avboka tolken genom att skicka ett epostmeddelande till&nbsp<a href="mailto:team-crm@arbetsformedlingen.se?subject=Avboka tolk med referens ' + activity.interpreter_booking_ref + '. "> team-crm@arbetsformedlingen.se och ange referensnummer&nbsp'+ activity.interpreter_booking_ref +'.<br/>
+                                                         Avboka tolken genom att skicka ett epostmeddelande till&nbsp<a href="mailto:team-crm@arbetsformedlingen.se?subject=Avboka tolk med referens ' + activity.interpreter_booking_ref + ' och KA-Nr: ' + activity.interpreter_ka_nr + '."> team-crm@arbetsformedlingen.se</a> &nbsp och ange referensnummer&nbsp'+ activity.interpreter_booking_ref +'.<br/>
                                                          Aktuellt KA-Nr:&nbsp'+activity.interpreter_ka_nr+'
                                                          </p>'),
                                            'technical':'false',

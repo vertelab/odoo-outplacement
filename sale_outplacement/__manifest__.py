@@ -42,6 +42,8 @@
         'sale_management',
         'base_user_groups_dafa',
         'account',
+        'calendar',
+        'hr_holidays'
     ],
     'data': [
         'security/security_view.xml',

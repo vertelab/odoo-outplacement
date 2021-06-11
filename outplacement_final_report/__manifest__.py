@@ -12,6 +12,7 @@ v12.0.0.1.4 Added timing dependent interruption text\n
 v12.0.0.2.0 Added check and view for rejected final report\n
 v12.0.0.2.1 Added Final report Approved date and Archive button.\n
 v12.0.0.2.2 AFC-2407 Added PDF report to print Final report and Added button to send Final report via Email.\n
+v12.0.0.2.3 AFC-2473, AFC-2455 Made sent and approved date fields readonly, added default value to complementing effort type\n
     """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',

@@ -15,6 +15,7 @@ Different version submitted
 5. v 12.0.1.0.6 AFC-2343: Disable buttons on sales, invoice and create,edit and delete disable for DAFA account read user \n
 6. v 12.0.1.0.7 AFC-2343: Hide the customers, quotation and sales team menu for Data accounting read user, added
    RST file for better description of module, added comment on added code.
+7. v 12.0.1.0.8 AFC-2319: Added filter by order_id_origin in outplacement search filter.
 
 
 Usage

@@ -1,11 +1,12 @@
 # coding: utf-8
 
-from xmlrpc.client import ServerProxy
-from odoo import api, fields, models
-from odoo.exceptions import Warning
-import pprint
-
 import logging
+import pprint
+from odoo.exceptions import Warning
+from xmlrpc.client import ServerProxy
+
+from odoo import api, fields, models
+
 _logger = logging.getLogger(__name__)
 
 try:
@@ -13,33 +14,34 @@ try:
 except:
     _logger.info("outplacement_crmsync needs odoorpc. pip install odoorpc")
 
+
 class crm_server(object):
     def __init__(self, env):
 
         self.server_url = (
             env["ir.config_parameter"]
-            .sudo()
-            .get_param("outplacement_crmsync.server_url", "http[s]://<domain>")
+                .sudo()
+                .get_param("outplacement_crmsync.server_url", "http[s]://<domain>")
         )
         self.server_port = (
             env["ir.config_parameter"]
-            .sudo()
-            .get_param("outplacement_crmsync.server_port", "8069")
+                .sudo()
+                .get_param("outplacement_crmsync.server_port", "8069")
         )
         self.server_db = (
             env["ir.config_parameter"]
-            .sudo()
-            .get_param("outplacement_crmsync.server_db", "database")
+                .sudo()
+                .get_param("outplacement_crmsync.server_db", "database")
         )
         self.server_login = (
             env["ir.config_parameter"]
-            .sudo()
-            .get_param("outplacement_crmsync.server_login", "userid")
+                .sudo()
+                .get_param("outplacement_crmsync.server_login", "userid")
         )
         self.server_pw = (
             env["ir.config_parameter"]
-            .sudo()
-            .get_param("outplacement_crmsync.server_pw", "password")
+                .sudo()
+                .get_param("outplacement_crmsync.server_pw", "password")
         )
 
         self.url_common = f"{self.server_url}:{self.server_port}/xmlrpc/2/common"
@@ -67,19 +69,20 @@ class crm_server(object):
 class crm_serverII(object):
     def __init__(self, env):
         # self.server_url =  env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_url','http[s]://%s')
-        self.server_host =  env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_host','<domain>')
-        self.server_protocol =  env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_protocol','jsonrpc+ssl')
-        self.server_port = env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_port','8069')
-        self.server_db =   env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_db','database')
-        self.server_login = env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_login','userid')
-        self.server_pw =   env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_pw','password')
+        self.server_host = env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_host', '<domain>')
+        self.server_protocol = env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_protocol',
+                                                                           'jsonrpc+ssl')
+        self.server_port = env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_port', '8069')
+        self.server_db = env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_db', 'database')
+        self.server_login = env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_login', 'userid')
+        self.server_pw = env['ir.config_parameter'].sudo().get_param('outplacement_crmsync.server_pw', 'password')
 
         try:
-            self.common = odoorpc.ODOO(host=self.server_host,protocol=self.server_protocol,port=self.server_port)
+            self.common = odoorpc.ODOO(host=self.server_host, protocol=self.server_protocol, port=self.server_port)
             # self.common = odoorpc.ODOO(host="http://172.16.42.112",port=8069)
             # self.common = odoorpc.ODOO(host="172.16.42.112",port='8069')
             _logger.warn("DAER crm_serverII INIT")
-            self.common.login(db=self.server_db,login=self.server_login,password=self.server_pw)
+            self.common.login(db=self.server_db, login=self.server_login, password=self.server_pw)
             # self.common.login(db="odoocrm", login="admin", password="admin")
             _logger.warn("DAER crm_serverII LOGIN")
 
@@ -136,14 +139,14 @@ class Outplacement(models.Model):
                         [
                             e.id
                             for e in self.env["res.partner.education"].search(
-                                [
-                                    (
-                                        "sun_id",
-                                        "in",
-                                        partner.education_ids.mapped("sun_id"),
-                                    )
-                                ]
-                            )
+                            [
+                                (
+                                    "sun_id",
+                                    "in",
+                                    partner.education_ids.mapped("sun_id"),
+                                )
+                            ]
+                        )
                         ],
                     )
                 ],
@@ -159,14 +162,14 @@ class Outplacement(models.Model):
                         [
                             e.id
                             for e in self.env["res.drivers_license"].search(
-                                [
-                                    (
-                                        "name",
-                                        "in",
-                                        partner.drivers_license_ids.mapped("name"),
-                                    )
-                                ]
-                            )
+                            [
+                                (
+                                    "name",
+                                    "in",
+                                    partner.drivers_license_ids.mapped("name"),
+                                )
+                            ]
+                        )
                         ],
                     )
                 ],
@@ -179,8 +182,8 @@ class Outplacement(models.Model):
                         [
                             e.id
                             for e in self.env["res.jobs"].search(
-                                [("name", "in", partner.job_ids.mapped("name"))]
-                            )
+                            [("name", "in", partner.job_ids.mapped("name"))]
+                        )
                         ],
                     )
                 ],
@@ -301,10 +304,11 @@ class Outplacement(models.Model):
                 self.partner_id.education_ids = [(0, 0, {
                     'sun_id': self.env['res.sun'].search(
                         [('code', '=', code)], limit=1)[0].id,
-                    'education_level_id': self.env['res.partner.education.education_level'].search([('name', '=', level)], limit=1)[0].id,
+                    'education_level_id':
+                        self.env['res.partner.education.education_level'].search([('name', '=', level)], limit=1)[0].id,
                     'foreign_education': foreign,
                     'foreign_education_approved': approved
-                    })]
+                })]
 
             # drivers_license_ids
             self.partner_id.drivers_license_ids = [
@@ -314,33 +318,35 @@ class Outplacement(models.Model):
             self.partner_id.job_ids = [(6, 0, [])]
             for ssyk_code, exp_length, exp, edu, sun_code, edu_lvl, edu_f, edu_fa in rec['job_ids']:  # noqa: E501
                 _logger.debug('ssyk code %s %s,exp lenght %s,exp %s,edu %s' % (
-                        ssyk_code, self.env['res.ssyk'].search(
-                            [('code', '=', ssyk_code)], limit=1)[0],
-                        exp_length, exp, edu))
+                    ssyk_code, self.env['res.ssyk'].search(
+                        [('code', '=', ssyk_code)], limit=1)[0],
+                    exp_length, exp, edu))
                 values = {
-                        'partner_id': self.id,
-                        'ssyk_id': self.env['res.ssyk'].search(
-                            [('code', '=', code)], limit=1)[0],
-                        'experience_length': exp_length,
-                        'education': edu,
-                        'experience': exp
-                    }
+                    'partner_id': self.id,
+                    'ssyk_id': self.env['res.ssyk'].search(
+                        [('code', '=', code)], limit=1)[0],
+                    'experience_length': exp_length,
+                    'education': edu,
+                    'experience': exp
+                }
                 sun_id = self.env['res.sun'].search([('code', '=', sun_code)], limit=1)[0]
-                edu_level = self.env['res.partner.education.education_level'].search([('name', '=', edu_lvl)], limit=1)[0]
-                education_id = self.env['res.partner.education'].search([('partner_id','=',self.partner_id.id),
-                                                                        ('sun_id','=',sun_id.id),
-                                                                        ('education_level_id','=',edu_level.id),
-                                                                        ('foreign_education','=',edu_f),
-                                                                        ('foreign_education_approved','=',edu_fa)], limit=1)[0]
+                edu_level = self.env['res.partner.education.education_level'].search([('name', '=', edu_lvl)], limit=1)[
+                    0]
+                education_id = self.env['res.partner.education'].search([('partner_id', '=', self.partner_id.id),
+                                                                         ('sun_id', '=', sun_id.id),
+                                                                         ('education_level_id', '=', edu_level.id),
+                                                                         ('foreign_education', '=', edu_f),
+                                                                         ('foreign_education_approved', '=', edu_fa)],
+                                                                        limit=1)[0]
                 _logger.debug('sun code %s %s, edu level %s %s, edu_f %s'
                               ', edu_fa %s, education %s' % (
-                                sun_code, sun_id, edu_lvl, edu_level,
-                                edu_f, edu_fa, education_id))
+                                  sun_code, sun_id, edu_lvl, edu_level,
+                                  edu_f, edu_fa, education_id))
                 values['education_id'] = education_id.id
                 self.partner_id.job_ids = [(0, 0, values)]
         else:
             raise Warning("Partner not found in CRM")
-            
+
             # ~ self.partner_id.job_ids = [0,0,(self.env['res.ssyk'].search([('code','=',code)],limit=1)[0],
             # ~ self.env['res.partner.education_level'].search([('name','=',level)],limit=1)[0],
             # ~ length,approved,experience)]
@@ -391,5 +397,4 @@ class ResPartner(models.Model):
 
     @api.one
     def get_jobseeker_data(self):
-
         xmlrpc = crm_server(self.env)

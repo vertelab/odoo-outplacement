@@ -24,10 +24,6 @@
     'name': 'IPF CompletionReport Client',
     'version': '12.0.0.1.1',
     'category': 'Outplacement',
-    'description': """This module adds joint_planing (Gemensam planering) to Outplacement module.\n
-    v12.0.0.1.1 AFC-2438 Added translation for Meeting type warning when Send outplacement to GP.
-    """,
-
     'author': "N-development",
     'license': 'AGPL-3',
     'website': 'https://vertel.se',

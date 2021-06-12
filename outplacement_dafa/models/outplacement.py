@@ -20,9 +20,10 @@
 #
 ###############################################################################
 
+import logging
+
 from odoo import models, api
 
-import logging
 _logger = logging.getLogger(__name__)
 
 
@@ -50,11 +51,11 @@ class Outplacement(models.Model):
                     self.env.user.mapped('performing_operation_ids.id'))],
                 order=order)
         return employees.search(
-                [(
-                    'id',
-                    'in',
-                    self.env.user.mapped('employee_ids.id'))],
-                order=order)
+            [(
+                'id',
+                'in',
+                self.env.user.mapped('employee_ids.id'))],
+            order=order)
 
     @api.model
     def _read_group_performing_operation_ids(

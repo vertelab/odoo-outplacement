@@ -360,7 +360,13 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <br/><br/><br/><br/><br/><br/><br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
                                 <b>Steps</b>
                                 <table class="table table-bordered">
                                     <thead>
@@ -374,12 +380,13 @@
                                                 <t t-if="step.step_type == 'Studera reguljär utbildning'">
                                                     Study
                                                     <br/>
-                                                    <b>Name:</b> <t t-esc="step.step_name"/>
+                                                    <b>Name:</b>
+                                                    <t t-esc="step.step_name"/>
                                                     <br/>
                                                     <b>Education level:</b>
                                                     <t t-if="step.education_level_id">
                                                         <t t-esc="step.education_level_id.name"/>
-                                                        <span> </span>
+                                                        <span></span>
                                                         <t t-esc="step.education_level_id.description"/>
                                                     </t>
                                                 </t>
@@ -412,8 +419,11 @@
                                                         evaluation and complementation of foreign education
                                                     </t>
                                                     <t t-elif="step.complementing_effort_type == 'Annat'">
-                                                        Other<br/>
-                                                        <b><t t-esc="step.complementing_effort_description"/></b>
+                                                        Other
+                                                        <br/>
+                                                        <b>
+                                                            <t t-esc="step.complementing_effort_description"/>
+                                                        </b>
                                                     </t>
                                                 </t>
                                                 <t t-elif="step.step_type == 'Annat'">
@@ -434,7 +444,7 @@
                                 </table>
                                 <br/>
                             </t>
-                             <t t-if="o.alternative_goal_id">
+                            <t t-if="o.alternative_goal_id">
                                 <h4>
                                     <u>Alternative Goal</u>
                                 </h4>
@@ -553,7 +563,17 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
                                 <b>Steps</b>
                                 <table class="table table-bordered">
                                     <thead>
@@ -567,12 +587,13 @@
                                                 <t t-if="step.step_type == 'Studera reguljär utbildning'">
                                                     Study
                                                     <br/>
-                                                    <b>Name:</b> <t t-esc="step.step_name"/>
+                                                    <b>Name:</b>
+                                                    <t t-esc="step.step_name"/>
                                                     <br/>
                                                     <b>Education level:</b>
                                                     <t t-if="step.education_level_id">
                                                         <t t-esc="step.education_level_id.name"/>
-                                                        <span> </span>
+                                                        <span></span>
                                                         <t t-esc="step.education_level_id.description"/>
                                                     </t>
                                                 </t>
@@ -605,8 +626,11 @@
                                                         evaluation and complementation of foreign education
                                                     </t>
                                                     <t t-elif="step.complementing_effort_type == 'Annat'">
-                                                        Other<br/>
-                                                        <b><t t-esc="step.complementing_effort_description"/></b>
+                                                        Other
+                                                        <br/>
+                                                        <b>
+                                                            <t t-esc="step.complementing_effort_description"/>
+                                                        </b>
                                                     </t>
                                                 </t>
                                                 <t t-elif="step.step_type == 'Annat'">

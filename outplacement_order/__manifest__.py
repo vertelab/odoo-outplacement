@@ -23,14 +23,6 @@
     "name": "Outplacement Order (Ordertjansten Order)",
     "version": "12.0.1.0.5",
     "category": "Outplacement",
-    "description": """
-Outplacement Order (Ordertjansten Order)\n
-===============================================================================\n
-This module listen for updates for an order\n
-v12.0.1.0.3: Versions before version handling\n
-v12.0.1.0.4 AFC-2105: added update to field service_end_date when interupting outplacement\n
-v12.0.1.0.5 AFC-2151: fixed bug that caused us to check status on canceled orders\n
-""",
     "author": "Vertel AB",
     "license": "AGPL-3",
     "website": "https://vertel.se",

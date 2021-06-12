@@ -64,7 +64,7 @@
             </field>
         </record>
 
-         <record id="inherit_outplacement_search_view_for_origin" model="ir.ui.view">
+        <record id="inherit_outplacement_search_view_for_origin" model="ir.ui.view">
             <field name="name">inherit.outplacement.search.view.for.origin</field>
             <field name="model">outplacement</field>
             <field name="inherit_id" ref="outplacement.outplacement_filter_view"/>

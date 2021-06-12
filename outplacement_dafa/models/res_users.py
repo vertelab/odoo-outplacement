@@ -20,9 +20,10 @@
 #
 ###############################################################################
 
+import logging
+
 from odoo import models, api
 
-import logging
 _logger = logging.getLogger(__name__)
 
 
@@ -34,9 +35,9 @@ class Users(models.Model):
         # Despite model decorator, this function is executed on a user record
         try:
             xml_ids = (
-                'group_dafa_admin_accounting_read',     # Hantera Ekonomi
-                'group_dafa_org_admin_read',            # Hantera Organisation
-                '1_line_support'                        # Servicedesk
+                'group_dafa_admin_accounting_read',  # Hantera Ekonomi
+                'group_dafa_org_admin_read',  # Hantera Organisation
+                '1_line_support'  # Servicedesk
             )
             superuser = False
             sudo_self = self.sudo()

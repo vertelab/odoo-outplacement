@@ -21,8 +21,9 @@
 
 import logging
 from datetime import datetime, date
-from odoo import api, models, fields, tools, _
 from odoo.exceptions import Warning
+
+from odoo import api, models, fields, tools, _
 
 _logger = logging.getLogger(__name__)
 

@@ -20,11 +20,13 @@
 #
 ################################################################################
 
-import logging
 import json
-from odoo import http
+import logging
 from odoo.addons.hr_jobseeker_deviationreport_ipf_server.controllers.token import \
     validate_token, valid_response, invalid_response
+
+from odoo import http
+
 _logger = logging.getLogger(__name__)
 
 
@@ -34,7 +36,6 @@ class IpfReportServer(http.Controller):
     @http.route("/v1/genomforande-avvikelserapport-created", methods=["POST"],
                 type="http", auth="none", csrf=False)
     def leverantorsavrop(self, *args, **kwargs):
-
         values = http.request.httprequest.get_data()
         values_dict = json.loads(values.decode())
         missing_values = []

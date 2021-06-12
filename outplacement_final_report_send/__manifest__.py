@@ -4,20 +4,6 @@
     'name': 'Outplacement Final Report send',
     'version': '12.0.1.2.3',
     'category': 'Outplacement',
-    'description': """
-This module adds a button to the outplacement interface that allows the sending of final reports.
-This module is maintained in: https://github.com/vertelab/odoo-outplacement
-===================================================================================================
-v12.0.0.1.1 Fixed views and made error messages more readable\n
-v12.0.0.1.2 Added warning stopping the user from sending too early\n
-v12.0.0.1.3 added chatter message\n
-v12.0.0.1.4 made it so that you can only send a day after service end\n
-v12.0.0.2.0 Added reset for final report rejection check\n
-v12.0.0.2.1 Added check to make sure joint planning is sent before sending final report\n
-v12.0.1.2.2 Fixed messages AFC-2174 \n
-v12.0.1.2.3 Fixed messages AFC-2128 \n
-""",
-
     'author': "Vertel AB",
     'license': 'AGPL-3',
     'website': 'https://vertel.se',

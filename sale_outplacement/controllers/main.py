@@ -22,9 +22,10 @@
 
 import logging
 import traceback
-from odoo import api
-from odoo.http import request
 from odoo.addons.sale_suborder_ipf_server.controllers.main import IpfServer
+from odoo.http import request
+
+from odoo import api
 
 _logger = logging.getLogger(__name__)
 

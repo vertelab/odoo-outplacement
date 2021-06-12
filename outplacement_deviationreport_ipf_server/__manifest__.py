@@ -24,24 +24,17 @@
     'name': 'IPF Report Server',
     'version': '12.0.0.0.1',
     'category': 'sale',
-    'description': """
-
-            """,
     'author': "N-development",
     'license': 'AGPL-3',
     'website': 'https://www.n-development.com',
     'depends': [
-        'base',
         "web"
     ],
     'data': [
-
     ],
     'installable': True,
     'qweb': [
-
     ],
-
     'images': [
         'static/description/img.png'
     ],

@@ -25,8 +25,6 @@
     'name': 'Outplacement DAFA',
     'version': '12.0.1.1.0',
     'category': 'Outplacement',
-    'description': "Module to handle outplacement (Avrop) for "
-                   "Arbetsförmedlingen DAFA""",
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',

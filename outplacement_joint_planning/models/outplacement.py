@@ -21,11 +21,12 @@
 ###############################################################################
 
 
-from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
-from datetime import date, timedelta
-
 import logging
+from datetime import date, timedelta
+from odoo.exceptions import ValidationError
+
+from odoo import api, fields, models, _
+
 _logger = logging.getLogger(__name__)
 
 
@@ -40,6 +41,7 @@ class Outplacement(models.Model):
         for outplacement in self:
             outplacement.task_count = self.env['project.task'].search_count(
                 [('outplacement_id', '=', outplacement.id)])
+
     task_count = fields.Integer(
         compute='_compute_task_count', string="Task Count")
 
@@ -58,7 +60,7 @@ class Outplacement(models.Model):
     def send_gp_to_bar(self):
         if self.date_by_adding_business_days(self.service_start_date, 5) > date.today():
             raise ValidationError(_("You are not allowed to send GP until the 6th working day "
-                            "since the service start date"))
+                                    "since the service start date"))
         client = self.env['ipf.completion_report.client.config'].search(
             [], limit=1)
         if not client:

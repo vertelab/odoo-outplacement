@@ -25,18 +25,10 @@
     'name': 'Outplacement',
     'version': '12.0.1.2.5',
     'category': 'Outplacement',
-    'description': """
-	 Module to handle outplacement (Avrop)\n
-	 v12.0.1.2.0 - changed version number to standard-format.\n
-	 v12.0.1.2.1 - AFC-1116 Changes due to Performing Operations.\n
-	 v12.0.1.2.3 - AFC-2120 Made some fields hidden outside of debug mode.\n
-     v12.0.1.2.4 - AFC-2028 Made some fields readonly.\n
-     v12.0.1.2.5 - AFC-2319 Added Name in Outplacement Tree view.\n
-    """,
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['base', 'hr', 'mail', 'partner_ssn'],
+    'depends': ['hr', 'mail', 'partner_ssn'],
     'data': [
         'security/outplacement_security.xml',
         'security/ir.model.access.csv',

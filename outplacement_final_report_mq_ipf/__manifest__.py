@@ -23,24 +23,6 @@
     'name': "Outplacement final report MQ/IPF-update dispatcher",
     'version': '12.0.0.1.4',
     'category': '',
-    'description': """
-To set up set system parameters:
-outplacement_final_report_mq_ipf.mqhostport - ipfmq<1-3>-<environment>.arbetsformedlingen.se:61613
-outplacement_final_report_mq_ipf.mquser - dafa
-outplacement_final_report_mq_ipf.mqpwd
-optional:
-outplacement_final_report_mq_ipf.mqusessl - set to 0 if testing with activemq 
-outplacement_final_report_mq_ipf.stomp_logger - DEBUG if debugging is needed
-outplacement_final_report_mq_ipf.cronstop - set to 0 as normal, 1 to disable
-
-
-
-v12.0.0.1.1 - Fixed cron data\n
-v12.0.0.1.2 - refactored code and bugfixes and better rejection message\n
-v12.0.0.1.3 - fixed datetime date mismatch\n
-v12.0.0.1.4 - fixed datetime date mismatch\n
-
-""",
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',

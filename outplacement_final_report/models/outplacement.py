@@ -1,14 +1,13 @@
 # -*- coding: UTF-8 -*-
 import logging
+from odoo.exceptions import ValidationError
 
 from odoo import fields, models, api, _
-from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
 
 class Outplacement(models.Model):
-
     _inherit = 'outplacement'
 
     study_visit_ids = fields.One2many(comodel_name="outplacement.study_visit", inverse_name="outplacement_id")
@@ -18,7 +17,7 @@ class Outplacement(models.Model):
         ('komm_info_02', 'Information has not been communicated'),
         ('komm_info_03', 'Information missing'),
     ], default="komm_info_03")
-    
+
     fr_send_date = fields.Date(string="Final report send date", readonly=True)
     fr_report_date = fields.Date(string="Reporting date")
     fr_report_approved_date = fields.Date(string="Final report approved date", readonly=True)
@@ -52,7 +51,8 @@ class Outplacement(models.Model):
         for outplacement in self:
             ir_model_data = self.env['ir.model.data']
             try:
-                template_id = ir_model_data.get_object_reference('outplacement_final_report', 'email_template_edi_final_report')[1]
+                template_id = \
+                ir_model_data.get_object_reference('outplacement_final_report', 'email_template_edi_final_report')[1]
             except ValueError:
                 template_id = False
             try:
@@ -88,6 +88,7 @@ class Outplacement(models.Model):
 
 class OutplacementGoal(models.Model):
     _name = "outplacement.goal"
+    _description = "Outplacement Goal"
 
     outplacement_id = fields.Many2one(comodel_name="outplacement")
     field_of_work_id = fields.Many2one(
@@ -148,11 +149,11 @@ class OutplacementGoal(models.Model):
             display_value = goal.job_description if goal.job_description else goal.job_id.name
             data.append((goal.id, display_value))
         return data
-    
 
 
 class OutplacementGoalStep(models.Model):
     _name = "outplacement.goal.step"
+    _description = "Outplacement Goal Step"
 
     goal_id = fields.Many2one(comodel_name="outplacement.goal")
     step_type = fields.Selection(selection=[
@@ -171,9 +172,9 @@ class OutplacementGoalStep(models.Model):
              'Swedish studies in chosen field'),
             ('Översättning av betyg', 'translation of grades'),
             ('Bedömning och komplettering av utländsk utbildning',
-            'evaluation and complementation of foreign education'),
+             'evaluation and complementation of foreign education'),
             ('Annat', 'Other')
-            ], default='Annat')
+        ], default='Annat')
     complementing_effort_description = fields.Char(
         string="Complementing effort")
     step_name = fields.Char(string="Name")
@@ -193,13 +194,13 @@ class OutplacementGoalStep(models.Model):
     def _constrain_other_step_name(self):
         if self.other_step_name and len(self.other_step_name) > 1000:
             raise ValidationError(_('Number of characters in the name field must not exceed 1000'))
-    
+
     @api.constrains('complementing_effort_description')
     @api.one
     def _constrain_complementing_effort_description(self):
         if self.complementing_effort_description and len(self.complementing_effort_description) > 1000:
             raise ValidationError(_('Number of characters in the description field must not exceed 1000'))
-    
+
     @api.multi
     def name_get(self):
         data = []
@@ -211,6 +212,7 @@ class OutplacementGoalStep(models.Model):
 
 class OutplacementStudyVisit(models.Model):
     _name = "outplacement.study_visit"
+    _description = "Outplacement Study Visit"
 
     outplacement_id = fields.Many2one(comodel_name="outplacement", string="Outplacement")
     visit_selection = fields.Selection(string="Select organizer",

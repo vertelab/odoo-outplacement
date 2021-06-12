@@ -20,17 +20,20 @@
 #
 ###############################################################################
 
-from odoo.tools import pycompat
 import json
-import uuid
 import logging
 import requests
+import uuid
+from odoo.tools import pycompat
+
 from odoo import api, models, fields
 
 _logger = logging.getLogger(__name__)
 
+
 class ClientConfig(models.Model):
     _name = 'ipf.report.client.config'
+    _description = "IPF Report Client Config"
     _rec_name = 'url'
 
     url = fields.Char(string='Url',
@@ -149,12 +152,12 @@ class ClientConfig(models.Model):
                 "namn": "test",
                 "leverantor_id": "2767362",
                 "rapportor": {
-                "fornamn": "fornamn",
-                "efternamn": "efternamn"
+                    "fornamn": "fornamn",
+                    "efternamn": "efternamn"
                 },
                 "utforande_verksamhet": {
-                "namn": "test",
-                "utforande_verksamhet_id": "10011118"
+                    "namn": "test",
+                    "utforande_verksamhet_id": "10011118"
                 }
             },
             "franvaro": {
@@ -164,10 +167,10 @@ class ClientConfig(models.Model):
                 "starttid": "08:00",
                 "sluttid": "17:00",
                 "forvantad_narvaro": {
-                "starttid": "08:00",
-                "sluttid": "17:00"
+                    "starttid": "08:00",
+                    "sluttid": "17:00"
                 },
-                "motivation":"text"
+                "motivation": "text"
             }
         }
         return self.post_report(payload)

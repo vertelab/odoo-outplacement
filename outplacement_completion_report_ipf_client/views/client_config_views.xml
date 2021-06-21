@@ -24,36 +24,36 @@
                 </header>
                 <sheet>
                     <group>
-                    <group>
-                        <field name="url"/>
-                        <field name="environment"/>
-                        <field name="client_id"/>
-                        <field name="client_secret" password="True"/>
-                    </group>
-                    <group string="Requests" colspan="4">
-                        <field name="request_history_ids" nolabel="1"
-                               colspan="4">
-                            <tree>
-                                <field name="url"/>
-                                <field name="method"/>
-                                <field name="response_code"/>
-                                <field name="message"/>
-                            </tree>
-                            <form>
-                                <group>
+                        <group>
+                            <field name="url"/>
+                            <field name="environment"/>
+                            <field name="client_id"/>
+                            <field name="client_secret" password="True"/>
+                        </group>
+                        <group string="Requests" colspan="4">
+                            <field name="request_history_ids" nolabel="1"
+                                   colspan="4">
+                                <tree>
                                     <field name="url"/>
                                     <field name="method"/>
-                                    <field name="payload"/>
-                                    <field name="request_headers"/>
-                                    <field name="params"/>
                                     <field name="response_code"/>
-                                    <field name="response_headers"/>
                                     <field name="message"/>
-                                </group>
-                            </form>
-                        </field>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="url"/>
+                                        <field name="method"/>
+                                        <field name="payload"/>
+                                        <field name="request_headers"/>
+                                        <field name="params"/>
+                                        <field name="response_code"/>
+                                        <field name="response_headers"/>
+                                        <field name="message"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </group>
                     </group>
-                </group>
                 </sheet>
 
             </form>

@@ -25,7 +25,7 @@
         <field name="domain">[]</field>
     </record>
     <record id="contacts.menu_contacts" model="ir.ui.menu">
-        <field name="groups_id" eval="[(6, 0, [ref('base_user_groups_dafa.1_line_support')])]" />
+        <field name="groups_id" eval="[(6, 0, [ref('base_user_groups_dafa.1_line_support')])]"/>
     </record>
     <!-- Fix for access rights issue from web_one2many_kanban. Doesn't seem to affect anything. -->
     <record id="hr_kanban_view_employees_kanban" model="ir.ui.view">

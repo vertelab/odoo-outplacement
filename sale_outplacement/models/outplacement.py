@@ -22,12 +22,13 @@
 
 
 import datetime  # Used in test
+import logging
 import random  # Used in test
 import string  # Used in test
+from odoo.exceptions import Warning
 
 from odoo import api, fields, models, _
-from odoo.exceptions import Warning
-import logging
+
 _logger = logging.getLogger(__name__)
 
 
@@ -72,8 +73,8 @@ class Outplacement(models.Model):
                  ('res_model_id.model', '=', self._name),
                  ('res_id', '=', self.id)]).unlink()
             for activity in self.order_id.mapped('order_line').filtered(
-                "product_id.is_suborder").mapped(
-                    'product_id.mail_activity_ids'):
+                    "product_id.is_suborder").mapped(
+                'product_id.mail_activity_ids'):
                 self.env['mail.activity'].create({
                     'res_id': self.id,
                     'res_model_id': self.env.ref(
@@ -217,16 +218,16 @@ class Outplacement(models.Model):
             "bokat_sfi": False,
             "startdatum_insats": '%s' % datetime.date.today(),
             "slutdatum_insats": str(
-                datetime.date.today()+datetime.timedelta(days=365)),
+                datetime.date.today() + datetime.timedelta(days=365)),
             "startdatum_avrop": str(datetime.date.today()),
             "slutdatum_avrop": str(
-                datetime.date.today()+datetime.timedelta(days=90)),
+                datetime.date.today() + datetime.timedelta(days=90)),
             "aktnummer_diariet": "Af-2021/0000 " +
                                  ''.join(random.sample(string.digits, k=4)),
             "telefonnummer_handlaggargrupp": "+46734176359",
             "epost_handlaggargrupp": ''.join(
                 random.sample(string.digits, k=4)) + "@test.com"
-            })
+        })
 
     @api.model
     def create(self, values):
@@ -253,7 +254,7 @@ class Outplacement(models.Model):
         analytic_accounts_to_delete = self.env['account.analytic.account']
         for outplacement in self:
             if (outplacement.analytic_account_id and not
-                    outplacement.analytic_account_id.line_ids):
+            outplacement.analytic_account_id.line_ids):
                 analytic_accounts_to_delete |= outplacement.analytic_account_id
         result = super(Outplacement, self).unlink()
         analytic_accounts_to_delete.unlink()

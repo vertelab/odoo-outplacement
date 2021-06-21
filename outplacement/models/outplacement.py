@@ -1,11 +1,11 @@
 import base64
+import logging
 import uuid
-
 from datetime import timedelta
-from odoo import api, fields, models, tools, _
 from odoo.modules.module import get_module_resource
 
-import logging
+from odoo import api, fields, models, tools, _
+
 _logger = logging.getLogger(__name__)
 
 
@@ -46,12 +46,12 @@ class Outplacement(models.Model):
     color = fields.Integer('Kanban Color Index')
     meeting_remote = fields.Selection(string='Meeting type',
                                       selection=[('no', 'On Premise'),
-                                                 ('yes', 'Remote')],)
+                                                 ('yes', 'Remote')], )
     uniq_ref = fields.Char(string='Uniq Id', size=64, trim=True)
     performing_operation_id = fields.Many2one(
         comodel_name='performing.operation',
         string='Performing Operation',
-        group_expand='_read_group_performing_operation_ids',)
+        group_expand='_read_group_performing_operation_ids', )
     late = fields.Boolean(string="Sent late")
     interruption = fields.Boolean(string="Interrupted")
     incomplete = fields.Boolean(string="Incomplete")
@@ -62,7 +62,7 @@ class Outplacement(models.Model):
     image = fields.Binary(
         "Photo", default=_default_image, attachment=True,
         help="This field holds the image used as photo for the employee, "
-        "limited to 1024x1024px.")
+             "limited to 1024x1024px.")
     image_medium = fields.Binary(
         "Medium-sized photo", attachment=True,
         help="Medium-sized photo of the employee. It is automatically "
@@ -88,8 +88,8 @@ class Outplacement(models.Model):
     country_id = fields.Many2one(related="partner_id.country_id",
                                  readonly=False)
     partner_mobile = fields.Char(string="Phone",
-                                related="partner_id.mobile",
-                                readonly=False)
+                                 related="partner_id.mobile",
+                                 readonly=False)
     partner_email = fields.Char(string="Email",
                                 related="partner_id.email",
                                 readonly=False)
@@ -246,7 +246,7 @@ class Outplacement(models.Model):
                     ('partner_id', '=', False),
                     ('email_from', '=', new_partner.email),
                     ('stage_id.fold', '=', False)]).write(
-                        {'partner_id': new_partner.id})
+                    {'partner_id': new_partner.id})
         return super(Outplacement, self)._message_post_after_hook(
             message, *args, **kwargs)
 
@@ -257,15 +257,15 @@ class Outplacement(models.Model):
         if product:
             for activity in product.mail_activity_ids:
                 self.env['mail.activity'].create({
-                        'res_id': record.id,
-                        'res_model': record._name,
-                        'res_model_id': self.env['ir.model'].search(
-                            [('model', '=', record._name)]).id,
-                        'activity_type_id': activity.activity_type_id.id,
-                        'date_deadline': fields.Date.today() + timedelta(
-                            days=activity.due_days),
-                        'summary': activity.summary,
-                        'user_id': record.employee_id.user_id.id,
+                    'res_id': record.id,
+                    'res_model': record._name,
+                    'res_model_id': self.env['ir.model'].search(
+                        [('model', '=', record._name)]).id,
+                    'activity_type_id': activity.activity_type_id.id,
+                    'date_deadline': fields.Date.today() + timedelta(
+                        days=activity.due_days),
+                    'summary': activity.summary,
+                    'user_id': record.employee_id.user_id.id,
                 })
 
 

@@ -18,8 +18,10 @@
                     <group>
                         <field name="deviation_date"/>
                         <field name="deviation_allday"/>
-                        <field name="deviation_timestart" widget="float_time" attrs="{'invisible': [('deviation_allday', '=', True)]}"/>
-                        <field name="deviation_timeend" widget="float_time" attrs="{'invisible': [('deviation_allday', '=', True)]}"/>
+                        <field name="deviation_timestart" widget="float_time"
+                               attrs="{'invisible': [('deviation_allday', '=', True)]}"/>
+                        <field name="deviation_timeend" widget="float_time"
+                               attrs="{'invisible': [('deviation_allday', '=', True)]}"/>
                         <field name="expected_time_start" widget="float_time"/>
                         <field name="expected_time_end" widget="float_time"/>
                     </group>
@@ -29,22 +31,57 @@
                         <field name='deviation_type' widget="radio"/>
                     </group>
                     <group>
-                        <field name='deviation_code' attrs="{'invisible': [('deviation_type', '!=', 'deviation')], 'required': [('deviation_type', '==', 'deviation')]}"/>
-                        <field name='deviation_leave_code' attrs="{'invisible': [('deviation_type', '!=', 'leave')], 'required': [('deviation_type', '==', 'leave')]}"/>
+                        <field name='deviation_code'
+                               attrs="{'invisible': [('deviation_type', '!=', 'deviation')],
+                               'required': [('deviation_type', '==', 'deviation')]}"/>
+                        <field name='deviation_leave_code'
+                               attrs="{'invisible': [('deviation_type', '!=', 'leave')],
+                               'required': [('deviation_type', '==', 'leave')]}"/>
                     </group>
                 </group>
                 <group>
-                    <field name="deviation_18_alternatives" attrs="{'invisible': ['|', ('deviation_leave_code', '!=', '18'), ('deviation_type', '!=', 'leave')], 'required': [('deviation_leave_code', '==', '18'), ('deviation_type', '==', 'leave')]}"/>
-                    <field name="deviation_18_other_reason" attrs="{'invisible': ['|', ('deviation_18_alternatives', '!=', '5'), ('deviation_type', '!=', 'leave')], 'required': [('deviation_18_alternatives', '==', '5'), ('deviation_type', '==', 'leave')]}"/>
-                    <field name="deviation_19_activity" attrs="{'invisible': ['|', ('deviation_code', '!=', '19'), ('deviation_type', '!=', 'deviation')], 'required': [('deviation_code', '==', '19'), ('deviation_type', '==', 'deviation')]}"/>
-                    <field name="deviation_19_reason" attrs="{'invisible': ['|', ('deviation_code', '!=', '19'), ('deviation_type', '!=', 'deviation')]}"/>
-                    <field name="deviation_20_job" attrs="{'invisible': ['|', ('deviation_code', '!=', '20'), ('deviation_type', '!=', 'deviation')], 'required': [('deviation_code', '==', '20'), ('deviation_type', '==', 'deviation')]}"/>
-                    <field name="deviation_20_reason" attrs="{'invisible': ['|', ('deviation_code', '!=', '20'), ('deviation_type', '!=', 'deviation')]}"/>
-                    <field name="deviation_28_reason" attrs="{'invisible': ['|', ('deviation_code', '!=', '28'), ('deviation_type', '!=', 'deviation')], 'required': [('deviation_code', '==', '28'), ('deviation_type', '==', 'deviation')]}"/>
-                    <field name="deviation_21_reason" attrs="{'invisible': ['|', ('deviation_code', '!=', '21'), ('deviation_type', '!=', 'deviation')], 'required': [('deviation_code', '==', '21'), ('deviation_type', '==', 'deviation')]}"/>
-                    <field name="deviation_21_action" attrs="{'invisible': ['|', ('deviation_code', '!=', '21'), ('deviation_type', '!=', 'deviation')], 'required': [('deviation_code', '==', '21'), ('deviation_type', '==', 'deviation')]}" />
-                    <field name="deviation_22_reason" attrs="{'invisible': ['|', ('deviation_code', '!=', '22'), ('deviation_type', '!=', 'deviation')], 'required': [('deviation_code', '==', '22'), ('deviation_type', '==', 'deviation')]}"/>
-                    <field name="deviation_22_action" attrs="{'invisible': ['|', ('deviation_code', '!=', '22'), ('deviation_type', '!=', 'deviation')], 'required': [('deviation_code', '==', '22'), ('deviation_type', '==', 'deviation')]}"/>
+                    <field name="deviation_18_alternatives"
+                           attrs="{'invisible': ['|', ('deviation_leave_code', '!=', '18'),
+                           ('deviation_type', '!=', 'leave')],
+                           'required': [('deviation_leave_code', '==', '18'), ('deviation_type', '==', 'leave')]}"/>
+                    <field name="deviation_18_other_reason"
+                           attrs="{'invisible': ['|', ('deviation_18_alternatives', '!=', '5'),
+                            ('deviation_type', '!=', 'leave')],
+                            'required': [('deviation_18_alternatives', '==', '5'), ('deviation_type', '==', 'leave')]}"/>
+                    <field name="deviation_19_activity"
+                           attrs="{'invisible': ['|', ('deviation_code', '!=', '19'),
+                           ('deviation_type', '!=', 'deviation')],
+                           'required': [('deviation_code', '==', '19'), ('deviation_type', '==', 'deviation')]}"/>
+                    <field name="deviation_19_reason"
+                           attrs="{'invisible': ['|', ('deviation_code', '!=', '19'),
+                           ('deviation_type', '!=', 'deviation')]}"/>
+                    <field name="deviation_20_job"
+                           attrs="{'invisible': ['|', ('deviation_code', '!=', '20'),
+                            ('deviation_type', '!=', 'deviation')],
+                            'required': [('deviation_code', '==', '20'), ('deviation_type', '==', 'deviation')]}"/>
+                    <field name="deviation_20_reason"
+                           attrs="{'invisible': ['|', ('deviation_code', '!=', '20'),
+                            ('deviation_type', '!=', 'deviation')]}"/>
+                    <field name="deviation_28_reason"
+                           attrs="{'invisible': ['|', ('deviation_code', '!=', '28'),
+                           ('deviation_type', '!=', 'deviation')],
+                            'required': [('deviation_code', '==', '28'), ('deviation_type', '==', 'deviation')]}"/>
+                    <field name="deviation_21_reason"
+                           attrs="{'invisible': ['|', ('deviation_code', '!=', '21'),
+                           ('deviation_type', '!=', 'deviation')],
+                            'required': [('deviation_code', '==', '21'), ('deviation_type', '==', 'deviation')]}"/>
+                    <field name="deviation_21_action"
+                           attrs="{'invisible': ['|', ('deviation_code', '!=', '21'),
+                           ('deviation_type', '!=', 'deviation')],
+                           'required': [('deviation_code', '==', '21'), ('deviation_type', '==', 'deviation')]}"/>
+                    <field name="deviation_22_reason"
+                           attrs="{'invisible': ['|', ('deviation_code', '!=', '22'),
+                           ('deviation_type', '!=', 'deviation')],
+                           'required': [('deviation_code', '==', '22'), ('deviation_type', '==', 'deviation')]}"/>
+                    <field name="deviation_22_action"
+                           attrs="{'invisible': ['|', ('deviation_code', '!=', '22'),
+                           ('deviation_type', '!=', 'deviation')],
+                           'required': [('deviation_code', '==', '22'), ('deviation_type', '==', 'deviation')]}"/>
                 </group>
                 <footer>
                     <button name="action_send" type="object" string="Send" class="btn-primary"/>

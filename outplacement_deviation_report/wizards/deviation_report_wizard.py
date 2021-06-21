@@ -1,15 +1,16 @@
 import json
 import logging
 import uuid
+from odoo.exceptions import UserError, Warning
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError, Warning
 
 _logger = logging.getLogger(__name__)
 
 
 class DeviationReportWizard(models.TransientModel):
     _name = "outplacement.deviation.report.wizard"
+    _description = "Outplacement Deviation Report Wizard"
 
     outplacement_id = fields.Many2one(
         comodel_name="outplacement",
@@ -157,8 +158,8 @@ class DeviationReportWizard(models.TransientModel):
         # A013 = KVL
         service_code = (
             self.env["ir.config_parameter"]
-            .sudo()
-            .get_param("dafa.service_code", "A013")
+                .sudo()
+                .get_param("dafa.service_code", "A013")
         )
         if self.deviation_type == "leave":
             franvaro_dict = {

@@ -42,12 +42,12 @@
         </record>
 
         <menuitem
-            id="menu_outplacement_stage"
-            parent="outplacement.outplacement_configuration"
-            action="outplacement.outplacement_stage_action"
-            name="Stages"
-            groups="outplacement.group_outplacement_admin"
-            sequence="10"/>
+                id="menu_outplacement_stage"
+                parent="outplacement.outplacement_configuration"
+                action="outplacement.outplacement_stage_action"
+                name="Stages"
+                groups="outplacement.group_outplacement_admin"
+                sequence="10"/>
 
     </data>
 </odoo>

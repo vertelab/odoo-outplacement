@@ -26,7 +26,8 @@
                     </group>
                     <group>
                         <group>
-                            <field name="activity_type_id" required="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="activity_type_id" required="1"
+                                   options="{'no_create': True, 'no_open': True}"/>
                             <field name="summary" placeholder="e.g. Discuss proposal"/>
                             <field name="task_outplacement_id" string="Task"/>
                             <field name="interpreter_type_code" invisible="1"/>
@@ -210,9 +211,11 @@
                         domain="[('date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
                 <separator/>
                 <filter string="Awaiting Response" name="activities_awaiting_booking"
-                        domain="[('user_id', '=', uid), ('activity_status_for_interpreter', '=', 'awaiting_booking')]"/>
+                        domain="[('user_id', '=', uid),
+                         ('activity_status_for_interpreter', '=', 'awaiting_booking')]"/>
                 <filter string="Failed Bookings" name="activities_failed_booking"
-                        domain="[('user_id', '=', uid), ('activity_status_for_interpreter', '=', 'failed_booking')]"/>
+                        domain="[('user_id', '=', uid),
+                         ('activity_status_for_interpreter', '=', 'failed_booking')]"/>
                 <filter string="Done Bookings" name="activities_done_booking"
                         domain="[('user_id', '=', uid), ('active', '=', False),
                         ('activity_status_for_interpreter', '=', 'done_booking')]"/>
@@ -434,8 +437,8 @@
         <field name="model">mail.activity</field>
         <field name="arch" type="xml">
             <calendar date_start="time_start" date_stop="time_end" string="Intepreter" color="user_id"
-                readonly_form_view_id="%(outplacement_order_interpreter.mail_activity_form_view_for_interpreter)s"
-                event_open_popup="true">
+                      readonly_form_view_id="%(outplacement_order_interpreter.mail_activity_form_view_for_interpreter)s"
+                      event_open_popup="true">
                 <field name="task_outplacement_id"/>
             </calendar>
         </field>
@@ -470,7 +473,7 @@
         <field name="act_window_id" ref="interpreter_activity_action"/>
     </record>
 
-      <record id="interpreter_activity_action_calendar" model="ir.actions.act_window.view">
+    <record id="interpreter_activity_action_calendar" model="ir.actions.act_window.view">
         <field name="sequence" eval="3"/>
         <field name="view_mode">calendar</field>
         <field name="view_id" ref="outplacement_order_interpreter.mail_activity_calendar_view_for_interpreter"/>
@@ -582,7 +585,7 @@
         <field name="act_window_id" ref="interpreters_menu_action"/>
     </record>
 
-     <record id="interpreter_menu_action_calendar" model="ir.actions.act_window.view">
+    <record id="interpreter_menu_action_calendar" model="ir.actions.act_window.view">
         <field name="sequence" eval="3"/>
         <field name="view_mode">calendar</field>
         <field name="view_id" ref="outplacement_order_interpreter.mail_activity_calendar_view_for_interpreter"/>

@@ -1,9 +1,11 @@
+import datetime
+import json
+import logging
+from odoo.exceptions import UserError
+
 from odoo import api, fields, models, tools
 from odoo import tools, _
-from odoo.exceptions import UserError
-import logging
-import json
-import datetime
+
 _logger = logging.getLogger(__name__)
 
 
@@ -14,7 +16,7 @@ class Outplacement(models.Model):
         delta = self.service_end_date - datetime.datetime.now().date()
         if not self.interruption and delta.days > -1:
             raise UserError(_("You are not allowed to send final report before service end"
-                            " unless there has been an interruption"))
+                              " unless there has been an interruption"))
         if not self.jp_sent_date:
             raise UserError(_("You need to send in a joint planning "
                               "before sending in a final report"))

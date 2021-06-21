@@ -20,10 +20,11 @@
 #
 ###############################################################################
 
-from odoo import fields, models, api, _
+import logging
 from odoo.exceptions import AccessError
 
-import logging
+from odoo import fields, models, api, _
+
 _logger = logging.getLogger(__name__)
 
 
@@ -50,8 +51,10 @@ class Employee(models.Model):
     def _write_performing_operations(self):
         """ Check if user is allowed to change operations, and sync them to user.
         """
-        permission_lvl = (self.env.user._is_system() or self.env.user.has_group('base_user_groups_dafa.group_dafa_org_admin_write')) and 2
-        permission_lvl = permission_lvl or (self.env.user.has_group('base_user_groups_dafa.group_dafa_employees_write') and 1)
+        permission_lvl = (self.env.user._is_system() or self.env.user.has_group(
+            'base_user_groups_dafa.group_dafa_org_admin_write')) and 2
+        permission_lvl = permission_lvl or (
+                    self.env.user.has_group('base_user_groups_dafa.group_dafa_employees_write') and 1)
 
         if not permission_lvl:
             raise AccessError(_("You are not permitted to change operations."))
@@ -79,7 +82,7 @@ class Employee(models.Model):
             employee.user_id.sudo().write({
                 'performing_operation_ids': [
                     (6, 0, employee.mapped('performing_operation_ids.id'))
-                    ]})
+                ]})
 
     @api.model
     def _search_performing_operations(self, op, value):

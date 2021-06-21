@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
-from collections import defaultdict
 import datetime
 import json
 import logging
 import pytz
+from collections import defaultdict
+from datetime import timedelta
 from odoo.exceptions import UserError
-from  datetime import timedelta
 
 from odoo import api, models, fields, tools, _
 
 _logger = logging.getLogger(__name__)
 
-class SaleOrder(models.Model):
 
+class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     @api.multi
@@ -28,8 +28,8 @@ class SaleOrder(models.Model):
         else:
             return super(SaleOrder, self).name_get()
 
-class ProjectTask(models.Model):
 
+class ProjectTask(models.Model):
     _inherit = 'project.task'
 
     def update_activity_status(self):
@@ -152,7 +152,8 @@ class MailActivity(models.Model):
         readonly=True)
 
     interpreter_ka_nr = fields.Char(compute='_compute_ka_nr')
-    task_outplacement_id = fields.Many2one('project.task', string="Task", compute='_compute_outplacement_task', store=True)
+    task_outplacement_id = fields.Many2one('project.task', string="Task", compute='_compute_outplacement_task',
+                                           store=True)
     activity_status_for_interpreter = fields.Char(string="Activity Status for Interpreter",
                                                   compute='_compute_activity_status', store=True)
 
@@ -168,7 +169,7 @@ class MailActivity(models.Model):
     add_log_booking_confirmed = fields.Boolean("Added Log for Booking Confirmed?")
     add_log_booking_delivered = fields.Boolean("Added Log for Booking Delivered?")
     performing_operation_id = fields.Many2one('performing.operation', "Performing Operation",
-                                             related="outplacement_id.performing_operation_id", store=True)
+                                              related="outplacement_id.performing_operation_id", store=True)
     employee_id = fields.Many2one('hr.employee', related='outplacement_id.employee_id', store=True)
 
     @api.multi
@@ -218,7 +219,8 @@ class MailActivity(models.Model):
             type = self.env.ref('outplacement_order_interpreter.order_interpreter')
             if type:
                 domain += [('activity_type_id', '=', type.id)]
-        return super(MailActivity, self).search_read(domain=domain, fields=fields, offset=offset, limit=limit, order=order)
+        return super(MailActivity, self).search_read(domain=domain, fields=fields, offset=offset, limit=limit,
+                                                     order=order)
 
     @api.model
     def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
@@ -226,8 +228,9 @@ class MailActivity(models.Model):
             type = self.env.ref('outplacement_order_interpreter.order_interpreter')
             if type:
                 domain += [('activity_type_id', '=', type.id)]
-        return super(MailActivity, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby,
-                                                  lazy=lazy)
+        return super(MailActivity, self).read_group(domain, fields, groupby, offset=offset, limit=limit,
+                                                    orderby=orderby,
+                                                    lazy=lazy)
 
     def cron_activity_status_order_interpreter(self):
         activity_obj = self.env['mail.activity']
@@ -246,17 +249,17 @@ class MailActivity(models.Model):
                 task = task_obj.browse(task_id)
                 if task.outplacement_id:
                     if activity.active and activity._interpreter_booking_status == '1' \
-                        and activity._interpreter_booking_status_2 == '4' and \
-                        datetime.datetime.today() >= activity.time_end:
+                            and activity._interpreter_booking_status_2 == '4' and \
+                            datetime.datetime.today() >= activity.time_end:
                         activity.activity_status_for_interpreter = 'not_delivered_booking'
                     elif activity.active and activity._interpreter_booking_status == '1' \
-                        and activity._interpreter_booking_status_2 in ['3', '4']:
+                            and activity._interpreter_booking_status_2 in ['3', '4']:
                         activity.activity_status_for_interpreter = 'ongoing_booking'
                     elif activity.active and activity._interpreter_booking_status == '1' \
-                        and activity._interpreter_booking_status_2 in ['1', '3']:
+                            and activity._interpreter_booking_status_2 in ['1', '3']:
                         activity.activity_status_for_interpreter = 'awaiting_booking'
                     elif activity.active and activity._interpreter_booking_status == '1' \
-                        and activity._interpreter_booking_status_2 == '2':
+                            and activity._interpreter_booking_status_2 == '2':
                         activity.activity_status_for_interpreter = 'failed_booking'
                     elif activity.active and activity._interpreter_booking_status_2 == '5':
                         activity.activity_status_for_interpreter = 'cancelled_by_interpreter'

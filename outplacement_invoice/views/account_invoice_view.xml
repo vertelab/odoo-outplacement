@@ -19,7 +19,8 @@
             <h1 class="mt0" position="replace">
                 <h1 class="mt0">
                     <div>
-                        <label for="raindance_ref" string="SELF INVOICE"/><br/>
+                        <label for="raindance_ref" string="SELF INVOICE"/>
+                        <br/>
                         <field name="raindance_ref" string="Number" readonly="1"/>
                     </div>
                 </h1>
@@ -31,7 +32,10 @@
                     <group>
                         <field name="date_invoice" options="{'datepicker': {'warn_future': true}}"/>
                         <field name="date"/>
-                        <field name="date_due" attrs="{'readonly': ['|',('payment_term_id','!=',False), ('state', 'in', ['open', 'in_payment', 'paid'])]}" force_save="1"/>
+                        <field name="date_due"
+                               attrs="{'readonly': ['|',('payment_term_id','!=',False),
+                                ('state', 'in', ['open', 'in_payment', 'paid'])]}"
+                               force_save="1"/>
                         <field name="payment_term_id"/>
                         <field name="move_name" invisible="1"/>
                     </group>
@@ -41,7 +45,7 @@
                         <field name="company_id" readonly="1"/>
                         <label for="street" string="Address"/>
                         <div class="o_address_format">
-                            <div class="oe_edit_only"></div>
+                            <div class="oe_edit_only"/>
                             <field name="company_partner_street" readonly="1" class="o_address_street"/>
                             <field name="company_partner_city" readonly="1" class="o_address_city"/>
                             <field name="company_partner_zip" readonly="1" class="o_address_zip"/>
@@ -51,7 +55,11 @@
                         <field name="company_company_registry" readonly="1"/>
                     </group>
                     <group string="Buyer">
-                        <field string="Customer" name="partner_id" widget="res_partner_many2one" context="{'search_default_customer':1, 'show_address': 1, 'default_is_company': True, 'show_vat': True}" options="{&quot;always_reload&quot;: True, &quot;no_quick_create&quot;: True}" domain="[('customer', '=', True)]" required="1"/>
+                        <field string="Customer" name="partner_id" widget="res_partner_many2one"
+                               context="{'search_default_customer':1, 'show_address': 1,
+                               'default_is_company': True, 'show_vat': True}"
+                               options="{&quot;always_reload&quot;: True, &quot;no_quick_create&quot;: True}"
+                               domain="[('customer', '=', True)]" required="1"/>
                         <field name="partner_vat"/>
                         <field name="partner_company_registry"/>
                     </group>

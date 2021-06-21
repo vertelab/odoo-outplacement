@@ -1,10 +1,9 @@
+from lxml import etree
 
 from odoo import api, fields, models, _
-from lxml import etree
 
 
 class AccountInvoice(models.Model):
-
     _inherit = 'account.invoice'
 
     @api.model

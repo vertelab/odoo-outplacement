@@ -3,7 +3,7 @@
 
     <!-- Extra groups needs to assign for normal user to enable hides menu of accounting dafa read user -->
     <record id="group_disable_dafa_hide" model="res.groups">
-        <field name="name"> Disable Dafa hide</field>
+        <field name="name">Disable Dafa hide</field>
     </record>
 
 

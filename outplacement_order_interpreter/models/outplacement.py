@@ -27,8 +27,8 @@ class Outplacement(models.Model):
         for record in self:
             tasks = self.env['project.task'].search([('outplacement_id', '=', record.id)])
             for task in tasks:
-                messages = msg_obj.search([('res_id','=',task.id),('model', '=', 'project.task'),
-                                ('body', 'ilike', 'Tolkbokning är bekräftad')])
+                messages = msg_obj.search([('res_id', '=', task.id), ('model', '=', 'project.task'),
+                                           ('body', 'ilike', 'Tolkbokning är bekräftad')])
                 if len(messages) > 1:
                     messages = messages[1:]
                     for msg in messages:
@@ -42,8 +42,8 @@ class Outplacement(models.Model):
             activities = []
             if tasks:
                 activities = activity_obj.search([('res_id', 'in', tasks.ids),
-                                                               ('res_model', '=', 'project.task'), '|',
-                                                               ('active', '=', True), ('active', '=', False)]).ids
+                                                  ('res_model', '=', 'project.task'), '|',
+                                                  ('active', '=', True), ('active', '=', False)]).ids
             outplacement.total_activity = len(activities)
 
     def open_outplacement_activity(self):
@@ -52,7 +52,8 @@ class Outplacement(models.Model):
         activities = []
         if tasks:
             activities = self.env['mail.activity'].search([('res_id', 'in', tasks.ids),
-             ('res_model', '=', 'project.task'), '|', ('active','=',True), ('active','=',False)]).ids
-        action =  self.env.ref('outplacement_order_interpreter.interpreter_activity_action').read([])[0]
+                                                           ('res_model', '=', 'project.task'), '|',
+                                                           ('active', '=', True), ('active', '=', False)]).ids
+        action = self.env.ref('outplacement_order_interpreter.interpreter_activity_action').read([])[0]
         action['domain'] = [('id', 'in', activities), '|', ('active', '=', True), ('active', '=', False)]
         return action

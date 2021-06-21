@@ -19,17 +19,15 @@
 #
 ##############################################################################
 
-from odoo import models, fields, api, _, registry
-
 import json
 import logging
-import stomp
 import ssl
+import stomp
+from datetime import datetime
 from queue import Queue, Empty
 from time import time
-from datetime import datetime
 
-
+from odoo import models, fields, api, _, registry
 
 _logger = logging.getLogger(__name__)
 
@@ -209,7 +207,7 @@ class Outplacement(models.Model):
                                           f"comment {comment}, "
                                           f"type {message_type}")
                             # not sure how specific the search has to be to find the right object
-                            outplacement = env_new['outplacement'].search([# '&',
+                            outplacement = env_new['outplacement'].search([  # '&',
                                 # ('partner_social_sec_nr', '=', jobseeker),
                                 # ('some_field', '=', employer),
                                 ('name', '=', order)])

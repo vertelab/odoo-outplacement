@@ -25,8 +25,6 @@
     'name': 'Outplacement Education',
     'version': '12.0.0.2.0',
     'category': 'Outplacement',
-    'description': """Partner Education Level""",
-
     'author': "Vertel AB",
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',

@@ -9,7 +9,7 @@ class Partner(models.Model):
         inverse_name="company_id",
         string="Performing operations",
         related="company_id.performing_operation_ids",
-        )
+    )
     jobseeker_operation_id = fields.Many2one(
         comodel_name='performing.operation', string='Perf. Op. Jobseeker')
     performing_operation_id = fields.Many2one(
@@ -21,7 +21,8 @@ class Partner(models.Model):
         comodel_name="outplacement",
         inverse_name="partner_id",
         string="Outplacement"
-        )
+    )
+
 
 class Users(models.Model):
     _inherit = 'res.users'
@@ -41,4 +42,4 @@ class ResCompany(models.Model):
         comodel_name="performing.operation",
         inverse_name="company_id",
         string="Performing operations"
-        )
+    )

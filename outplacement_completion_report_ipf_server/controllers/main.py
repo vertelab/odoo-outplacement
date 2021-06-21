@@ -20,11 +20,13 @@
 #
 ################################################################################
 
-import logging
 import json
+import logging
+
 from odoo import http
 from .token import \
     validate_token, valid_response, invalid_response
+
 _logger = logging.getLogger(__name__)
 
 
@@ -34,7 +36,6 @@ class IpfReportServer(http.Controller):
     @http.route("/v1/gemensam-planering", methods=["POST"],
                 type="http", auth="none", csrf=False)
     def gemensam_planering(self, *args, **kwargs):
-
         values = http.request.httprequest.get_data()
         values_dict = json.loads(values.decode())
         missing_values = []

@@ -135,20 +135,17 @@ class Outplacement(models.Model):
 
     @api.model
     def suborder_process_data(self, data):
-        _logger.info(data)
         data = super(Outplacement, self).suborder_process_data(data)
         partner = self._get_partner(data)
 
         order_number = data["ordernummer"]
         no_outplacement = self.env["outplacement"].search_count(
             [("name", "=", order_number)]
-        ) + self.env["outplacement"].search_count(
-            [("partner_id", "=", partner.id)]
         )
         if no_outplacement:
             _logger.warning(
-                "Rejected outplacement because of duplicate. Either because of outplacement.name: %s or partner_id: %s"
-                % (order_number, partner.id)
+                "Rejected outplacement because of duplicate. Either because of outplacement.name: %s"
+                % order_number
             )
             return 400
 
@@ -172,8 +169,8 @@ class Outplacement(models.Model):
             'partner_id': partner.id,
             'skill_id': skill.id if skill else None,
             'participitation_rate': data['deltagandegrad'],
-            'service_start_date': data['startdatum_insats'],
-            'service_end_date': data['slutdatum_insats'],
+            'service_start_date': data['startdatum_avrop'],
+            'service_end_date': data['slutdatum_avrop'],
             'order_start_date': data['startdatum_avrop'],
             'order_close_date': data['slutdatum_avrop'],
             'file_reference_number': data['aktnummer_diariet'],

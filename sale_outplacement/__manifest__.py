@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Sale outplacement',
-    'version': '12.0.1.0.9',
+    'version': '12.0.1.1.0',
     'category': 'Outplacement',
     'maintainer': "Arbetsformedlingen",
     'author': "Vertel AB",
@@ -56,7 +56,5 @@
         'views/sale_views.xml',
     ],
     'installable': True,
-    'images': [
-        'static/description/img.png'
-    ],
+    'images': [],
 }

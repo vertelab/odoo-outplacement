@@ -21,13 +21,15 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Outplacement DAFA Sync',
-    'version': '12.0.1.0.1',
+    'version': '12.0.1.0.2',
     'category': 'Outplacement',
     'description': """This module sync data from CRM to DAFA 
         
         partnersyncCrm2Dafa(ssn,host,user,password)
         
-        This is the CRM-part of the DAFA sync
+        This is the CRM-part of the DAFA sync\n
+        
+        1. v12.0.1.0.2 - AFC-2505 Sent Jobseeker info to DAFA.
         
         """,
     'author': "Vertel AB",
@@ -38,6 +40,7 @@
         'partner_firstname',
         #'partner_education_views',
         'partner_desired_jobs',
+        'partner_view_360'
     ],
     'installable': True,
     'images': [

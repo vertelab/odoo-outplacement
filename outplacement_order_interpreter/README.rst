@@ -40,7 +40,7 @@ Different version submitted
 29. v12.0.1.7.1 AFC-2406: Redesign of the interpreter accountant formview.
 30. v12.0.1.7.2 AFC-2441 AFC-2445: Added groupby Booking status, Added Calender & Pivot view for Interpreter Booking,
     Added new filter 'Cancelled By Interpreter' in Interpreter tray widget.
-
+31. v12.0.1.7.3 AFC-2505 Added Jobseeker category in Interpreter booking.
 
 Maintainers
 ~~~~~~~~~~~

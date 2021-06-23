@@ -239,6 +239,8 @@
                     <filter string="Activity Type" name="activittype" context="{'group_by': 'activity_type_id'}"/>
                     <filter string="Booking Status" name="booking_status"
                             context="{'group_by': 'interpreter_booking_status'}"/>
+                    <filter string="Jobseeker Category" name="jobseeker_category"
+                            context="{'group_by': 'jobseeker_category'}"/>
                 </group>
             </search>
         </field>
@@ -487,6 +489,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="interpreter_booking_ref"/>
+                <field name="jobseeker_category"/>
                 <field name="user_id"/>
                 <field name="phone"/>
                 <field name="mobile"/>
@@ -547,6 +550,7 @@
                     <group string="Supplier and Participent info">
                         <field name="performing_operation_id"/>
                         <field name="outplacement_id" groups="outplacement.group_outplacement_user_read"/>
+                        <field name="jobseeker_category"/>
                         <field name="task_outplacement_id" groups="outplacement.group_outplacement_user_read"/>
                         <field name="order_id"/>
                     </group>

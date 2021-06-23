@@ -23,12 +23,12 @@
 
 {
     'name': 'Outplacement',
-    'version': '12.0.1.2.5',
+    'version': '12.0.1.2.6',
     'category': 'Outplacement',
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['hr', 'mail', 'partner_ssn'],
+    'depends': ['hr', 'mail', 'partner_ssn', 'partner_view_360'],
     'data': [
         'security/outplacement_security.xml',
         'security/ir.model.access.csv',

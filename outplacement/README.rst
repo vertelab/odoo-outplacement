@@ -13,6 +13,7 @@ Different version submitted
 3. v12.0.1.2.3 - AFC-2120 Made some fields hidden outside of debug mode.
 4. v12.0.1.2.4 - AFC-2028 Made some fields readonly.
 5. v12.0.1.2.5 - AFC-2319 Added Name in Outplacement Tree view.
+6. v12.0.1.2.6 - AFC-2505 Added Jobseeker Category in Outplacement form view.
 
 Maintainers
 ~~~~~~~~~~~

@@ -109,126 +109,6 @@ class Outplacement(models.Model):
             raise Warning("Connection established!")
 
     @api.one
-    def get_jobseeker_dataII(self):
-
-        xmlrpc = crm_serverII(self.env)
-
-        partner = xmlrpc.common.env["res.partner"].browse(
-            xmlrpc.common.env["res.partner"].search(
-                [("social_sec_nr", "=", self.social_sec_nr)], limit=1
-            )
-        )
-        # ~ xmlrpc.common.env['res.partner'].search([('id','=',26)],limit=1))
-
-        self.write(
-            {
-                "name": partner.name,
-                "street": partner.street,
-                "street2": partner.street2,
-                "zip": partner.zip,
-                "city": partner.city,
-                "phone": partner.phone,
-                "email": partner.email,
-                #
-                # outplacement_education
-                #
-                "education_ids": [
-                    (
-                        6,
-                        0,
-                        [
-                            e.id
-                            for e in self.env["res.partner.education"].search(
-                            [
-                                (
-                                    "sun_id",
-                                    "in",
-                                    partner.education_ids.mapped("sun_id"),
-                                )
-                            ]
-                        )
-                        ],
-                    )
-                ],
-                "cv": partner.cv,
-                "cv_file_name": partner.cv_file_name,
-                "references": partner.references,
-                "references_file_name": partner.references_file_name,
-                "has_drivers_license": partner.has_drivers_license,
-                "drivers_license_ids": [
-                    (
-                        6,
-                        0,
-                        [
-                            e.id
-                            for e in self.env["res.drivers_license"].search(
-                            [
-                                (
-                                    "name",
-                                    "in",
-                                    partner.drivers_license_ids.mapped("name"),
-                                )
-                            ]
-                        )
-                        ],
-                    )
-                ],
-                "has_car": partner.has_car,
-                # ~ # jobs
-                "job_ids": [
-                    (
-                        6,
-                        0,
-                        [
-                            e.id
-                            for e in self.env["res.jobs"].search(
-                            [("name", "in", partner.job_ids.mapped("name"))]
-                        )
-                        ],
-                    )
-                ],
-                # skills
-                # ~ skills = fields.Many2many('hr.skill', string="Skill")
-                # ~ skill_id = fields.Char(string="Skill", related="skills.complete_name")
-                # ~ other_experiences = fields.Many2many(comodel_name='outplacement.other_experiences', string="Other Experience")
-                # ~ strengths = fields.Many2many(comodel_name='outplacement.strengths', string="Strengths")
-                # ~ interests = fields.Many2many(comodel_name='outplacement.interests', string="Interests")
-                # ~ partner_skill_ids = fields.One2many(
-                # ~ string='Skills',
-                # ~ comodel_name='hr.employee.skill',
-                # ~ inverse_name='partner_id',
-                # ~ )
-            }
-        )
-
-    @api.one
-    def get_jobseeker_dataIII(self):
-        """
-        Test utan komplexa data
-        """
-
-        xmlrpc = crm_serverII(self.env)
-
-        partner = xmlrpc.common.env["res.partner"].browse(
-            xmlrpc.common.env["res.partner"].search(
-                [("social_sec_nr", "=", self.social_sec_nr)], limit=1
-            )
-        )
-        # ~ xmlrpc.common.env['res.partner'].search([('id','=',26)],limit=1))
-
-        self.write(
-            {
-                "name": partner.name,
-                "street": partner.street,
-                "street2": partner.street2,
-                "zip": partner.zip,
-                "city": partner.city,
-                "phone": partner.phone,
-                "email": partner.email,
-            }
-        )
-
-    @api.one
     def get_jobseeker_dataIV(self):
         """
         Test mot demo-data / utan partner_ssn
@@ -291,15 +171,28 @@ class Outplacement(models.Model):
             "company_type",
             "contact_address",
             "age",
+            "jobseeker_category_id"
         ]
         xmlrpc = crm_serverII(self.env)
         rec = xmlrpc.common.env['res.partner'].partnersyncCrm2DafaSSN(
             self.partner_social_sec_nr)
         _logger.debug(rec)
         if rec:
-            self.partner_id.write({f: rec['partner'][f] for f in FIELDS})
+            self.partner_id.write({f: rec['partner'][f] if f != 'jobseeker_category_id' else '' for f in FIELDS})
             # education_ids
             self.partner_id.education_ids = [(6, 0, [])]
+            if rec.get('partner').get('jobseeker_category_id'):
+                jobeeker_category = self.env['res.partner.skat'].search(
+                    [('name', '=', rec.get('partner').get('jobseeker_category_id')[1])])
+                if jobeeker_category:
+                    self.partner_id.jobseeker_category_id = jobeeker_category.id
+                else:
+                    categ_code = ''
+                    if rec.get('jobseeker_category_code'):
+                        categ_code = rec.get('jobseeker_category_code')
+                    category = self.env['res.partner.skat'].sudo().create({'name': rec.get('partner').get('jobseeker_category_id')[1],
+                                                         'code': categ_code})
+                    self.partner_id.jobseeker_category_id = category.id
             for code, level, foreign, approved in rec['education_ids']:
                 self.partner_id.education_ids = [(0, 0, {
                     'sun_id': self.env['res.sun'].search(

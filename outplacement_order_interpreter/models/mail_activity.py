@@ -171,6 +171,22 @@ class MailActivity(models.Model):
     performing_operation_id = fields.Many2one('performing.operation', "Performing Operation",
                                               related="outplacement_id.performing_operation_id", store=True)
     employee_id = fields.Many2one('hr.employee', related='outplacement_id.employee_id', store=True)
+    jobseeker_category_id = fields.Many2one(comodel_name="res.partner.skat",
+                                            related='outplacement_id.partner_id.jobseeker_category_id',
+                                            store=True)  # is added in partner_extension_af
+    jobseeker_category = fields.Char(
+        string="Jobseeker category", compute="combine_category_name_code", store=True
+    )
+
+    @api.multi
+    @api.depends('jobseeker_category_id')
+    def combine_category_name_code(self):
+        for rec in self:
+            if rec.jobseeker_category_id:
+                rec.jobseeker_category = "%s %s" % (
+                    rec.jobseeker_category_id.code,
+                    rec.jobseeker_category_id.name,
+                )
 
     @api.multi
     @api.depends('time_start', 'time_end')

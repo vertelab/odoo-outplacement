@@ -26,5 +26,8 @@
             <field name="order_id_state">cancel</field>
             <field name="sequence">40</field>
         </record>
+        <record id="sale.action_orders" model="ir.actions.act_window">
+            <field name="domain"></field>
+        </record>
     </data>
 </odoo>

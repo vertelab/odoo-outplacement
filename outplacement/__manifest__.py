@@ -28,7 +28,7 @@
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['hr', 'mail', 'partner_ssn', 'partner_view_360'],
+    'depends': ['hr', 'mail', 'partner_ssn', 'partner_view_360_DAFA'],
     'data': [
         'security/outplacement_security.xml',
         'security/ir.model.access.csv',

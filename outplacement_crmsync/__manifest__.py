@@ -31,7 +31,7 @@
         'outplacement_partner_jobs',
         # ~ 'outplacement_partner_skills',
         'partner_firstname',
-        'partner_view_360'
+        'partner_view_360_DAFA'
     ],
     'data': [
         'data/data.xml',

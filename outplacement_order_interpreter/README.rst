@@ -41,6 +41,7 @@ Different version submitted
 30. v12.0.1.7.2 AFC-2441 AFC-2445: Added groupby Booking status, Added Calender & Pivot view for Interpreter Booking,
     Added new filter 'Cancelled By Interpreter' in Interpreter tray widget.
 31. v12.0.1.7.3 AFC-2505 Added Jobseeker category in Interpreter booking.
+32. v12.0.1.7.4 AFC-2358 Added server action and updated code to update duration of booking in two decimal, Added text 'Please submit Interpreter' on kanban if booking is not delivered, Added breadcrumbs for activity.
 
 Maintainers
 ~~~~~~~~~~~

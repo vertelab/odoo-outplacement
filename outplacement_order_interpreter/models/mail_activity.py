@@ -72,6 +72,7 @@ class ProjectTask(models.Model):
 
 class MailActivity(models.Model):
     _inherit = "mail.activity"
+    _rec_name = 'activity_type_id'
 
     active = fields.Boolean(default=True)
     interpreter_language = fields.Many2one(
@@ -188,12 +189,20 @@ class MailActivity(models.Model):
                     rec.jobseeker_category_id.name,
                 )
 
+    def update_activity_duration(self):
+        for activity in self:
+            if activity.time_start and activity.time_end:
+                activity.duration = format((((activity.time_end - activity.time_start).total_seconds()) / 60),
+                                           '.2f')
+
+
     @api.multi
     @api.depends('time_start', 'time_end')
     def _compute_dates_duration(self):
         for activity in self:
             if activity.time_start and activity.time_end:
-                activity.duration = ((activity.time_end - activity.time_start).total_seconds()) / 60
+                activity.duration = format((((activity.time_end - activity.time_start).total_seconds()) / 60),
+                                           '.2f')
                 activity.date = activity.time_start.date()
                 start_date = activity.time_start + timedelta(hours=2)
                 end_date = activity.time_end + timedelta(hours=2)

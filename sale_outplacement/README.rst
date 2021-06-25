@@ -19,8 +19,8 @@ Different version submitted
    RST file for better description of module, added comment on added code.
 7. V 12.0.1.0.8 AFC-2319: Added 'Source document' in outplacement search filter.
 8. V 12.0.1.0.9 AFC-2405: Added Outplacement's fields on Task kanban view.
-8. V 12.0.1.1.0 AFC-2070: Removed limitation that only allows one outplacement per jobseeker
-
+9. V 12.0.1.1.0 AFC-2070: Removed limitation that only allows one outplacement per jobseeker
+10. V 12.0.1.1.1 AFC-2456 Removed the default value for language requested field which is “False”.
 
 Usage
 =====

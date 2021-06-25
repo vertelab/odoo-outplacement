@@ -74,5 +74,15 @@
                 </field>
             </field>
         </record>
+
+         <record id="ir_actions_update_lang_support_req" model="ir.actions.server">
+            <field name="name">Update Language Support Requested</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="outplacement.model_outplacement"/>
+            <field name="binding_model_id" ref="outplacement.model_outplacement"/>
+            <field name="state">code</field>
+            <field name="code">records.update_lang_support_req()</field>
+        </record>
+
     </data>
 </odoo>

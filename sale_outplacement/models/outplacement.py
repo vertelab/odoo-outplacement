@@ -190,11 +190,17 @@ class Outplacement(models.Model):
         partner.interpreter_language = lang.id if lang else False
         # Temporary hack until language is fixed in TLR
         if interpreter_need and not lang:
-            outplacement.temp_lang = interpreter_need
+            outplacement.temp_lang = interpreter_need if interpreter_need != 'false' else ''
         order.outplacement_id = outplacement.id
         self.env['project.task'].init_joint_planning(outplacement.id)
         self.env['project.task'].init_joint_planning_stages(outplacement.id)
         return data
+
+    @api.multi
+    def update_lang_support_req(self):
+        for rec in self:
+            if rec.temp_lang == 'false':
+                rec.temp_lang = ''
 
     # For test. ToDo: Rename with a test in function name.
     @api.model

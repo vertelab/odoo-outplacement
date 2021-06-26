@@ -58,6 +58,13 @@ class Outplacement(models.Model):
                 if today > next_5_days:
                     rec.time_to_submit_jp = True
 
+    def cron_check_joint_planning_submit_time(self):
+        today = datetime.date.today()
+        for rec in self.search([('service_start_date', '!=', False), ('jp_sent_date', '=', False)]):
+            next_5_days = self.date_by_adding_business_days(rec.service_start_date, 5)
+            if today > next_5_days:
+                rec.time_to_submit_jp = True
+
     def _compute_task_count(self):
         for outplacement in self:
             outplacement.task_count = self.env['project.task'].search_count(

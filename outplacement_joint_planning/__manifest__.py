@@ -36,6 +36,7 @@
     ],
     'data': [
         'views/outplacement_view.xml',
+        'data/data.xml'
     ],
     'installable': True,
 }

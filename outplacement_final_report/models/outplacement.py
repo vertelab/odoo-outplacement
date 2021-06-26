@@ -52,6 +52,13 @@ class Outplacement(models.Model):
                 if today > next_5_days:
                     rec.time_to_submit_fr = True
 
+    def cron_check_final_report_time(self):
+        today = datetime.date.today()
+        for rec in self.search([('fr_send_date', '=', False), ('service_end_date', '!=', False)]):
+            next_5_days = self.date_by_adding_business_days(rec.service_end_date, 5)
+            if today > next_5_days:
+                rec.time_to_submit_fr = True
+
     @api.onchange('service_start_date', 'service_end_date')
     @api.multi
     def _compute_interrupted_early(self):

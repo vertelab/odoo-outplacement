@@ -72,3 +72,7 @@ msgstr ""
 msgid "You are not allowed to send GP until the 6th working day since the service start date"
 msgstr "Du kan inte skicka in GP förrän efter den 6e arbetsdagen sedan tjänstens startdatum."
 
+#. module: outplacement_joint_planning
+#: model_terms:ir.ui.view,arch_db:outplacement_joint_planning.view_outplacement_kanban_for_jp_submit_time
+msgid "<br/><span style=\"color:red;font-size:12px\">Time to submit joint planning</span>"
+msgstr "<br/><span style=\"color:red;font-size:12px\">Dags att skicka in gemensam planering</span>"

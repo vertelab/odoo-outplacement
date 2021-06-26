@@ -55,5 +55,21 @@
                 </div>
             </field>
         </record>
+
+        <record id="view_outplacement_kanban_for_jp_submit_time" model="ir.ui.view">
+            <field name="name">outplacement.view.kanban.inherit.for.jp.submit.time</field>
+            <field name="model">outplacement</field>
+            <field name="inherit_id" ref="outplacement.outplacement_kanban_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="time_to_submit_jp"/>
+                </field>
+                <xpath expr="//div[@class='o_kanban_record_body']" position="inside">
+                     <t t-if="record.time_to_submit_jp.raw_value">
+                        <br/><span style="color:red;font-size:12px">Time to submit joint planning</span>
+                     </t>
+                </xpath>
+            </field>
+        </record>
     </data>
 </odoo>

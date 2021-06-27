@@ -72,6 +72,7 @@ class ProjectTask(models.Model):
 
 class MailActivity(models.Model):
     _inherit = "mail.activity"
+    _rec_name = 'activity_type_id'
 
     active = fields.Boolean(default=True)
     interpreter_language = fields.Many2one(
@@ -171,13 +172,37 @@ class MailActivity(models.Model):
     performing_operation_id = fields.Many2one('performing.operation', "Performing Operation",
                                               related="outplacement_id.performing_operation_id", store=True)
     employee_id = fields.Many2one('hr.employee', related='outplacement_id.employee_id', store=True)
+    jobseeker_category_id = fields.Many2one(comodel_name="res.partner.skat",
+                                            related='outplacement_id.partner_id.jobseeker_category_id',
+                                            store=True)  # is added in partner_extension_af
+    jobseeker_category = fields.Char(
+        string="Jobseeker category", compute="combine_category_name_code", store=True
+    )
+
+    @api.multi
+    @api.depends('jobseeker_category_id')
+    def combine_category_name_code(self):
+        for rec in self:
+            if rec.jobseeker_category_id:
+                rec.jobseeker_category = "%s %s" % (
+                    rec.jobseeker_category_id.code,
+                    rec.jobseeker_category_id.name,
+                )
+
+    def update_activity_duration(self):
+        for activity in self:
+            if activity.time_start and activity.time_end:
+                activity.duration = format((((activity.time_end - activity.time_start).total_seconds()) / 60),
+                                           '.2f')
+
 
     @api.multi
     @api.depends('time_start', 'time_end')
     def _compute_dates_duration(self):
         for activity in self:
             if activity.time_start and activity.time_end:
-                activity.duration = ((activity.time_end - activity.time_start).total_seconds()) / 60
+                activity.duration = format((((activity.time_end - activity.time_start).total_seconds()) / 60),
+                                           '.2f')
                 activity.date = activity.time_start.date()
                 start_date = activity.time_start + timedelta(hours=2)
                 end_date = activity.time_end + timedelta(hours=2)

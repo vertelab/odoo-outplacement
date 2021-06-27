@@ -23,7 +23,6 @@ class Partner(models.Model):
         string="Outplacement"
     )
 
-
 class Users(models.Model):
     _inherit = 'res.users'
 

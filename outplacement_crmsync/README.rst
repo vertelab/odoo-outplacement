@@ -17,6 +17,7 @@ The module is maintained here: https://github.com/vertelab/odoo-outplacement/tre
 Different version submitted
 ===========================
 
+1. v12.0.1.0.2 - AFC-2505 Synced Jobskeer Category.
 
 Maintainers
 ~~~~~~~~~~~

@@ -23,7 +23,7 @@
 
 import logging
 from datetime import date, timedelta
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 
 from odoo import api, fields, models, _
 
@@ -68,6 +68,19 @@ class Outplacement(models.Model):
                 _('Please, configure the configuration to send this report.'))
 
         for outplacement in self:
-            outplacement.jp_sent_date = date.today()
             joint_plannings = self.env['res.joint_planning'].search([])
-            client.post_request(outplacement, joint_plannings)
+            try:
+                response = client.post_request(outplacement, joint_plannings)
+                if response.status_code == 201:
+                    outplacement.jp_sent_date = date.today()
+                else:
+                    _logger.error("Something went wrong with sending GP to BÄR Outplacement %s" % outplacement.name)
+                    error_msg = str(response.status_code) + " - " + response.reason
+                    _logger.error("Getting %s Response" % error_msg)
+                    raise UserError(_("%s \n Something went wrong with sending GP to BÄR, "
+                                      "please check that you've filled out all "
+                                      "necessary fields" % error_msg))
+            except Exception as e:
+                _logger.error("Something went wrong with sending GP to BÄR Outplacement %s" % outplacement.name)
+                _logger.error(str(e))
+                raise UserError(_(str(e)))

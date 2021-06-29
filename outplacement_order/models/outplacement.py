@@ -85,18 +85,20 @@ class Outplacement(models.Model):
                             order.confirmation_date = datetime.strptime(
                                 confirm_date, "%Y-%m-%d"
                             )
-                        for order_line_ext in res.get("artikelList", []):
-                            tlr_id = order_line_ext.get("tlrId")
-                            for order_line in order.order_line:
-                                order_line_product = self.env.ref(
-                                    PRODUCT_MAPPING[tlr_id]
-                                )
-                                if order_line.product_id == order_line_product:
-                                    order_line.price_unit = order_line_ext.get(
-                                        "nuvarandeAPris", 0
+                        try:
+                            for order_line_ext in res.get("artikelList", []):
+                                tlr_id = order_line_ext.get("tlrId")
+                                for order_line in order.order_line:
+                                    order_line_product = self.env.ref(
+                                        PRODUCT_MAPPING[tlr_id]
                                     )
-                                    break
-
+                                    if order_line.product_id == order_line_product:
+                                        order_line.price_unit = order_line_ext.get(
+                                            "nuvarandeAPris", 0
+                                        )
+                                        break
+                        except:
+                            _logger.exception("Could not update product/price from ordertjänsten.")
                     else:
                         _logger.warn(
                             "Outplacement does not have a sale order: %s"

@@ -51,6 +51,8 @@ class ResPartner(models.Model):
             job_tuple = job_tuple + ()
             job_ids.append(job_tuple)
         values["job_ids"] = job_ids
+        if partner.jobseeker_category_id:
+            values["jobseeker_category_code"] = partner.jobseeker_category_id.code
         return values
 
     @api.model

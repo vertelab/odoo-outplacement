@@ -64,6 +64,56 @@ class Outplacement(models.Model):
 
     # Temporary solution
     temp_lang = fields.Char(string='Language support requested')
+    sale_order_id = fields.Many2one('sale.order', string="Sale Order", compute='compute_sale_order', store=True)
+    currency_id = fields.Many2one('res.currency', related='sale_order_id.currency_id', store=True)
+    total_sale_amt = fields.Float(compute="compute_sale_invoice_amt", store=True)
+    total_invoice_amt = fields.Float(compute="compute_sale_invoice_amt", store=True)
+    invoice_status = fields.Selection([
+        ('upselling', 'Upselling Opportunity'),
+        ('invoiced', 'Fully Invoiced'),
+        ('to invoice', 'To Invoice'),
+        ('no', 'Nothing to Invoice')
+    ], compute="compute_sale_invoice_amt", store=True)
+
+    @api.depends('sale_order_id')
+    def compute_sale_invoice_amt(self):
+        for rec in self:
+            if rec.sale_order_id:
+                sale_order = rec.sale_order_id
+                rec.total_sale_amt = sale_order.amount_total
+                inv_amt = 0
+                for invoice in sale_order.invoice_ids:
+                    inv_amt += invoice.amount_total
+                rec.total_invoice_amt = inv_amt
+                rec.invoice_status = sale_order.invoice_status
+
+    @api.depends('name')
+    def compute_sale_order(self):
+        sale_obj = self.env['sale.order']
+        for rec in self:
+            if rec.name:
+                sale = sale_obj.search([('name', '=', rec.name)], limit=1)
+                if sale:
+                    rec.sale_order_id = sale.id
+
+    def open_outplacement_sales(self):
+        self.ensure_one()
+        action = self.env.ref('sale.action_quotations_with_onboarding').read([])[0]
+        if self.sale_order_id:
+            action['domain'] = [('id', '=', self.sale_order_id.id)]
+        else:
+            action['domain'] = [('id', '=', False)]
+        return action
+
+    def open_outplacement_invoices(self):
+        self.ensure_one()
+        invoices = []
+        if self.sale_order_id:
+            for invoice in self.sale_order_id.invoice_ids:
+                invoices.append(invoice.id)
+        action = self.env.ref('account.action_invoice_tree1').read([])[0]
+        action['domain'] = [('id', 'in', invoices)]
+        return action
 
     @api.onchange('employee_id')
     def _employee_activites(self):

@@ -191,7 +191,7 @@ class ClientConfig(models.Model):
                 'beskrivning': task.description if task else '',
             })
         _logger.warn(payload)
-        api.post_report(payload)
+        response = api.post_report(payload)
 
     def test_post_report(self):
         payload = {

@@ -29,6 +29,7 @@
     "depends": [
         "outplacement",
         "sale_showorder_ipf_client",
+        "sale"
     ],
     "data": [
         "data/cron.xml",

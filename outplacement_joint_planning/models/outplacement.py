@@ -99,10 +99,18 @@ class Outplacement(models.Model):
 
         for outplacement in self:
             joint_plannings = self.env['res.joint_planning'].search([])
-            response = client.post_request(outplacement, joint_plannings)
-            if response.status_code == 201:
-                outplacement.jp_sent_date = date.today()
-            else:
-                raise UserError(_("Something went wrong with sending GP to BÄR, "
-                                  "please check that you've filled out all "
-                                  "necessary fields"))
+            try:
+                response = client.post_request(outplacement, joint_plannings)
+                if response.status_code == 201:
+                    outplacement.jp_sent_date = date.today()
+                else:
+                    _logger.error("Something went wrong with sending GP to BÄR Outplacement %s" % outplacement.name)
+                    error_msg = str(response.status_code) + " - " + response.reason
+                    _logger.error("Getting %s Response" % error_msg)
+                    raise UserError(_("%s \n Something went wrong with sending GP to BÄR, "
+                                      "please check that you've filled out all "
+                                      "necessary fields" % error_msg))
+            except Exception as e:
+                _logger.error("Something went wrong with sending GP to BÄR Outplacement %s" % outplacement.name)
+                _logger.error(str(e))
+                raise UserError(_(str(e)))

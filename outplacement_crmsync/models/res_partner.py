@@ -109,31 +109,6 @@ class Outplacement(models.Model):
             raise Warning("Connection established!")
 
     @api.one
-    def get_jobseeker_dataIV(self):
-        """
-        Test mot demo-data / utan partner_ssn
-        """
-
-        xmlrpc = crm_serverII(self.env)
-
-        partner = xmlrpc.common.env["res.partner"].browse(
-            xmlrpc.common.env["res.partner"].search([("id", "=", 26)], limit=1)
-        )
-        # ~ xmlrpc.common.env['res.partner'].search([('id','=',26)],limit=1))
-
-        self.write(
-            {
-                "name": partner.name,
-                "street": partner.street,
-                "street2": partner.street2,
-                "zip": partner.zip,
-                "city": partner.city,
-                "phone": partner.phone,
-                "email": partner.email,
-            }
-        )
-
-    @api.one
     def get_jobseeker_dataV(self):
         FIELDS = [
             "title",
@@ -283,11 +258,3 @@ class Outplacement(models.Model):
                     "email": partner.email,
                 }
             )
-
-
-class ResPartner(models.Model):
-    _inherit = "res.partner"
-
-    @api.one
-    def get_jobseeker_data(self):
-        xmlrpc = crm_server(self.env)

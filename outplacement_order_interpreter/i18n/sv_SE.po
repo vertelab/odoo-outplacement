@@ -801,3 +801,8 @@ msgstr "Mina aktivieteter"
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
 msgid "Today Activities"
 msgstr "Dagens aktiviteter"
+
+#. module: outplacement_order_interpreter
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_kanban_view_for_interpreter
+msgid "<span style=\"color:red;\">Please submit the Interpreter</span>"
+msgstr "<span style=\"color:red;\">Vänligen gör inleverens</span>"

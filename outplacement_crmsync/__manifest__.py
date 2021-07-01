@@ -20,8 +20,8 @@
 ################################################################################
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
-    'name': 'Outplacement CRM Sync',
-    'version': '12.0.1.0.1',
+    'name': 'Outplacement Sync from CRM',
+    'version': '12.0.1.1.3',
     'category': 'Outplacement',
     'author': "Vertel AB",
     'license': 'AGPL-3',
@@ -31,6 +31,7 @@
         'outplacement_partner_jobs',
         # ~ 'outplacement_partner_skills',
         'partner_firstname',
+        'partner_view_360_DAFA'
     ],
     'data': [
         'data/data.xml',

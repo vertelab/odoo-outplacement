@@ -107,6 +107,21 @@ class Outplacement(models.Model):
     sprakstod = fields.Char()
 
     show_2nd_line = fields.Boolean(compute="_compute_readonly")
+    jobseeker_category_id = fields.Many2one(comodel_name="res.partner.skat", related='partner_id.jobseeker_category_id',
+                                            store=True)  # is added in partner_extension_af
+    jobseeker_category = fields.Char(
+        string="Jobseeker category", compute="combine_category_name_code", store=True
+    )
+
+    @api.multi
+    @api.depends('jobseeker_category_id')
+    def combine_category_name_code(self):
+        for rec in self:
+            if rec.jobseeker_category_id:
+                rec.jobseeker_category = "%s %s" % (
+                    rec.jobseeker_category_id.code,
+                    rec.jobseeker_category_id.name,
+                )
 
     @api.one
     def _compute_readonly(self):

@@ -2,7 +2,7 @@
 Outplacement CRM Sync
 =====================
 
-This module sync data to CRM ...
+This module syncs data from CRM to DAFA.
 
         * outplacement_crmsync.server_url  - http[s]://x.y.se
         * outplacement_crmsync.server_host - <domain>
@@ -17,6 +17,8 @@ The module is maintained here: https://github.com/vertelab/odoo-outplacement/tre
 Different version submitted
 ===========================
 
+1. v12.0.1.0.2 - AFC-2505 Synced Jobskeer Category.
+2. v12.0.1.0.3 - AFC-2469 Removed unused actions.
 
 Maintainers
 ~~~~~~~~~~~

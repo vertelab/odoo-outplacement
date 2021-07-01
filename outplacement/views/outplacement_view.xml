@@ -24,8 +24,7 @@
                         <field name="show_2nd_line" invisible="1"/>
                         <group col="3">
                             <group name="outplacement" string="Outplacement">
-                                <field name="partner_social_sec_nr" attrs="{'readonly':[('show_2nd_line','=', True)]}"
-                                       groups="base_user_groups_dafa.group_dafa_employees_read"/>
+                                <field name="partner_social_sec_nr" attrs="{'readonly':[('show_2nd_line','=', True)]}"/>
                                 <field name="partner_email"/>
                                 <field name="partner_mobile"/>
                                 <label for="street" string="Address"/>
@@ -54,6 +53,7 @@
                             </group>
                             <group name="af_data" string="Authority data">
                                 <field name="name" string="Outplacement id" readonly="1"/>
+                                <field name="jobseeker_category" groups="base.group_no_one"/>
                                 <field name="employee_id" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
                                 <field name="performing_operation_id" readonly="1"/>
                                 <field name="uniq_ref" attrs="{'readonly':[('show_2nd_line','=', True)]}"

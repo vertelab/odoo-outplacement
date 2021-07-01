@@ -23,8 +23,10 @@
 
 import logging
 from datetime import date, timedelta
-from odoo.exceptions import ValidationError
 import datetime
+
+from odoo.exceptions import ValidationError, UserError
+
 from odoo import api, fields, models, _
 
 _logger = logging.getLogger(__name__)
@@ -96,6 +98,11 @@ class Outplacement(models.Model):
                 _('Please, configure the configuration to send this report.'))
 
         for outplacement in self:
-            outplacement.jp_sent_date = date.today()
             joint_plannings = self.env['res.joint_planning'].search([])
-            client.post_request(outplacement, joint_plannings)
+            response = client.post_request(outplacement, joint_plannings)
+            if response.status_code == 201:
+                outplacement.jp_sent_date = date.today()
+            else:
+                raise UserError(_("Something went wrong with sending GP to BÄR, "
+                                  "please check that you've filled out all "
+                                  "necessary fields"))

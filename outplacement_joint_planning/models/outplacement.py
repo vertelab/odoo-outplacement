@@ -23,6 +23,8 @@
 
 import logging
 from datetime import date, timedelta
+import datetime
+
 from odoo.exceptions import ValidationError, UserError
 
 from odoo import api, fields, models, _
@@ -36,6 +38,34 @@ class Outplacement(models.Model):
     jp_sent_date = fields.Date(string="Joint Planning Sent Date",
                                track_visibility='onchange',
                                help="Latest Sent Date for Joint Planning")
+    time_to_submit_jp = fields.Boolean(compute="compute_time_to_submit_jp", store=True)
+
+    def date_by_adding_business_days(self, from_date, add_days):
+        business_days_to_add = add_days
+        current_date = from_date
+        while business_days_to_add > 0:
+            current_date += datetime.timedelta(days=1)
+            weekday = current_date.weekday()
+            if weekday >= 5:  # sunday = 6
+                continue
+            business_days_to_add -= 1
+        return current_date
+
+    @api.depends('jp_sent_date', 'service_start_date')
+    def compute_time_to_submit_jp(self):
+        today = datetime.date.today()
+        for rec in self:
+            if rec.service_start_date and not rec.jp_sent_date:
+                next_5_days = self.date_by_adding_business_days(rec.service_start_date, 5)
+                if today > next_5_days:
+                    rec.time_to_submit_jp = True
+
+    def cron_check_joint_planning_submit_time(self):
+        today = datetime.date.today()
+        for rec in self.search([('service_start_date', '!=', False), ('jp_sent_date', '=', False)]):
+            next_5_days = self.date_by_adding_business_days(rec.service_start_date, 5)
+            if today > next_5_days:
+                rec.time_to_submit_jp = True
 
     def _compute_task_count(self):
         for outplacement in self:

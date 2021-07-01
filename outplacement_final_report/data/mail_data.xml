@@ -34,5 +34,17 @@
             <field name="user_signature" eval="False"/>
             <field name="auto_delete" eval="False"/>
         </record>
+
+        <record forcecreate="True" id="ir_cron_final_report_time" model="ir.cron">
+            <field name="name">Check Final report submit time</field>
+            <field name="model_id" ref="outplacement.model_outplacement"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_check_final_report_time()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+        </record>
+
     </data>
 </odoo>

@@ -17,6 +17,7 @@ Different version submitted
 6. v12.0.0.2.1 Added Final report Approved date and Archive button.
 7. v12.0.0.2.2 AFC-2407 Added PDF report to print Final report and Added button to send Final report via Email.
 8. v12.0.0.2.3 AFC-2473, AFC-2455 Made sent and approved date fields readonly, added default value to complementing effort type.
+9. v12.0.0.2.4 AFC-2357 Added visual aids on the kanban-view to help the caseworker to remember to submit Final Report.
 
 Maintainers
 ~~~~~~~~~~~

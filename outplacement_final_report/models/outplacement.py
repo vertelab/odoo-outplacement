@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+import datetime
 import logging
 from odoo.exceptions import ValidationError
 
@@ -29,6 +30,34 @@ class Outplacement(models.Model):
     interrupted_early = fields.Boolean(string="Interrupted early", compute="_compute_interrupted_early", readonly=True)
 
     fr_rejected = fields.Boolean(string="Rejected")
+    time_to_submit_fr = fields.Boolean(compute="compute_time_to_submit_fr", store=True)
+
+    def date_by_adding_business_days(self, from_date, add_days):
+        business_days_to_add = add_days
+        current_date = from_date
+        while business_days_to_add > 0:
+            current_date += datetime.timedelta(days=1)
+            weekday = current_date.weekday()
+            if weekday >= 5:  # sunday = 6
+                continue
+            business_days_to_add -= 1
+        return current_date
+
+    @api.depends('fr_send_date', 'service_end_date')
+    def compute_time_to_submit_fr(self):
+        today = datetime.date.today()
+        for rec in self:
+            if rec.service_end_date and not rec.fr_send_date:
+                next_5_days = self.date_by_adding_business_days(rec.service_end_date, 5)
+                if today > next_5_days:
+                    rec.time_to_submit_fr = True
+
+    def cron_check_final_report_time(self):
+        today = datetime.date.today()
+        for rec in self.search([('fr_send_date', '=', False), ('service_end_date', '!=', False)]):
+            next_5_days = self.date_by_adding_business_days(rec.service_end_date, 5)
+            if today > next_5_days:
+                rec.time_to_submit_fr = True
 
     @api.onchange('service_start_date', 'service_end_date')
     @api.multi
@@ -52,7 +81,8 @@ class Outplacement(models.Model):
             ir_model_data = self.env['ir.model.data']
             try:
                 template_id = \
-                ir_model_data.get_object_reference('outplacement_final_report', 'email_template_edi_final_report')[1]
+                    ir_model_data.get_object_reference('outplacement_final_report', 'email_template_edi_final_report')[
+                        1]
             except ValueError:
                 template_id = False
             try:

@@ -144,9 +144,13 @@ msgid "Display Name"
 msgstr "Visningsnamn"
 
 #. module: outplacement
-#: model:ir.model.fields,field_description:outplacement.field_outplacement__email_from
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__partner_email
 msgid "Email"
+msgstr "E-post"
+
+#. module: outplacement
+#: model:ir.model.fields,field_description:outplacement.field_outplacement__email_from
+msgid "Email From"
 msgstr "E-post"
 
 #. module: outplacement
@@ -558,7 +562,6 @@ msgstr "Starta deltagande"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__partner_state_id
-#: model:ir.model.fields,field_description:outplacement.field_outplacement__stage_id
 #: model_terms:ir.ui.view,arch_db:outplacement.outplacement_form_view
 msgid "State"
 msgstr "Status"

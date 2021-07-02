@@ -70,7 +70,7 @@
                 <field name="fr_rejected"/>
                 <field name="time_to_submit_fr"/>
             </field>
-            <xpath expr="//div[@class='o_kanban_record_headings']/strong[@class='o_kanban_record_title']"
+            <xpath expr="//div[hasclass('o_kanban_record_headings')]/strong[hasclass('o_kanban_record_title')]"
                    position="before">
                 <div>
                     <t t-if="record.fr_rejected.raw_value" t-set="red">oe_kanban_text_red</t>
@@ -81,7 +81,7 @@
                     </t>
                 </div>
             </xpath>
-            <xpath expr="//div[@class='o_kanban_record_body']" position="inside">
+            <xpath expr="//div[hasclass('o_kanban_record_body')]" position="inside">
                  <t t-if="record.time_to_submit_fr.raw_value">
                     <br/><span style="color:red;font-size:12px">Time to submit Final Report</span>
                  </t>

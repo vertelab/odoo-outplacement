@@ -51,8 +51,8 @@
                             <field name="company_partner_zip" readonly="1" class="o_address_zip"/>
                             <field name="company_partner_country_id" readonly="1" class="o_address_country"/>
                         </div>
-                        <field name="company_vat" readonly="1"/>
-                        <field name="company_company_registry" readonly="1"/>
+                        <field name="company_vat" readonly="1" string="Tax ID"/>
+                        <field name="company_company_registry" readonly="1" string="Company Registry"/>
                     </group>
                     <group string="Buyer">
                         <field string="Customer" name="partner_id" widget="res_partner_many2one"

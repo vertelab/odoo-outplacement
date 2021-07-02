@@ -34,7 +34,7 @@ class Outplacement(models.Model):
 
     name = fields.Char(string="Name")
     stage_id = fields.Many2one(comodel_name='outplacement.stage',
-                               string="State",
+                               string="Status",
                                ondelete='restrict',
                                track_visibility='onchange',
                                index=True, copy=False,
@@ -82,7 +82,7 @@ class Outplacement(models.Model):
     partner_city = fields.Char(related="partner_id.city", readonly=False)
     partner_state_id = fields.Many2one(related="partner_id.state_id",
                                        readonly=False)
-    email_from = fields.Char(related="partner_id.email")
+    email_from = fields.Char(related="partner_id.email", string="Email From")
     # Because of a strange bug with partner_state_id this field must
     # have this name.
     country_id = fields.Many2one(related="partner_id.country_id",

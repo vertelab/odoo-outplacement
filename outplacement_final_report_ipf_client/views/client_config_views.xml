@@ -80,7 +80,7 @@
             <field name="name" position="after">
                 <field name="interruption"/>
             </field>
-            <xpath expr="//span[@class='o_kanban_record_subtitle']"
+            <xpath expr="//span[hasclass('o_kanban_record_subtitle')]"
                    position="inside">
                 <span style="text-align:right">
                     <t t-if="record.interruption.raw_value">

@@ -45,7 +45,7 @@ class DeviationReportWizard(models.TransientModel):
     #      related="outplacement_id.management_team_id.af_signature",
     #      readonly=True,
     #      string='Responsible superviser')
-    performing_operation_name = fields.Char(
+    performing_operation_name = fields.Char(string="Performing Operation Name",
         related="outplacement_id.performing_operation_id.name", readonly=True
     )
     performing_operation_nr = fields.Integer(

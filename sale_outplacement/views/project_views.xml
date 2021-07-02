@@ -11,8 +11,10 @@
             <field name="date_deadline" position="after">
                 <field name="start_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
                 <field name="end_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
-                <field name="child_start_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
-                <field name="child_end_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
+                <field name="child_start_date" attrs="{'invisible': [('parent_id','=',False)]}"
+                 string="Start Date"/>
+                <field name="child_end_date" attrs="{'invisible': [('parent_id','=',False)]}"
+                string="End Date"/>
             </field>
             <field name="parent_id" position="replace"/>
             <field name="project_id" position="before">
@@ -55,26 +57,28 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_kanban"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@class='oe_kanban_bottom_left']/field[@name='priority']" position="attributes">
+            <xpath expr="//div[hasclass('oe_kanban_bottom_left')]/field[@name='priority']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <xpath expr="//div[@class='oe_kanban_bottom_left']/field[@name='activity_ids']" position="attributes">
+            <xpath expr="//div[hasclass('oe_kanban_bottom_left')]/field[@name='activity_ids']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <xpath expr="//div[@class='o_kanban_record_headings']/small/span/i/field[@name='date_deadline']"
+            <xpath expr="//div[hasclass('o_kanban_record_headings')]/small/span/i/field[@name='date_deadline']"
                    position="before">
                 <field name="instructions"/>
                 <field name="start_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
                 <field name="end_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
-                <field name="child_start_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
-                <field name="child_end_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
+                <field name="child_start_date" attrs="{'invisible': [('parent_id','=',False)]}"
+                string="Start Date"/>
+                <field name="child_end_date" attrs="{'invisible': [('parent_id','=',False)]}"
+                string="End Date"/>
                 <field name="parent_id" invisible="1"/>
             </xpath>
-            <xpath expr="//div[@class='o_kanban_record_headings']/small/span/i/field[@name='date_deadline']"
+            <xpath expr="//div[hasclass('o_kanban_record_headings')]/small/span/i/field[@name='date_deadline']"
                    position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <xpath expr="//div[@class='oe_kanban_bottom_right']" position="attributes">
+            <xpath expr="//div[hasclass('oe_kanban_bottom_right')]" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//field[@name='color']" position="after">

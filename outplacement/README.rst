@@ -15,6 +15,7 @@ Different version submitted
 5. v12.0.1.2.5 - AFC-2319 Added Name in Outplacement Tree view.
 6. v12.0.1.2.6 - AFC-2505 Added Jobseeker Category in Outplacement form view.
 7. v12.0.1.2.7 - AFC-2468 Removed Security group from SSN.
+8. v12.0.1.2.8 - AFC-2542 Added Social security number to outplacement filter view.
 
 Maintainers
 ~~~~~~~~~~~

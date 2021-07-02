@@ -23,7 +23,7 @@
 
 {
     'name': 'Outplacement',
-    'version': '12.0.1.2.7',
+    'version': '12.0.1.2.8',
     'category': 'Outplacement',
     'author': 'Vertel AB',
     'license': 'AGPL-3',

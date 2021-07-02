@@ -176,6 +176,7 @@
                     <field name="employee_id"/>
                     <field name="booking_ref"/>
                     <field name="partner_name"/>
+                    <field name="partner_social_sec_nr"/>
                     <field name="performing_operation_id"/>
                     <filter name="my_performing_operation" string="My Performing Operation"
                             domain="[('my_performing_operation', '=', True)]"/>

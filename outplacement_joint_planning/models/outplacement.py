@@ -21,10 +21,9 @@
 ###############################################################################
 
 
+import datetime
 import logging
 from datetime import date, timedelta
-import datetime
-
 from odoo.exceptions import ValidationError, UserError
 
 from odoo import api, fields, models, _
@@ -96,7 +95,9 @@ class Outplacement(models.Model):
         if not client:
             raise ValidationError(
                 _('Please, configure the configuration to send this report.'))
-
+        email_to = self.env['ir.config_parameter'].sudo().get_param('system_parameter_to_send_api_error')
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        model_obj = self.env['ir.model.data']
         for outplacement in self:
             joint_plannings = self.env['res.joint_planning'].search([])
             try:
@@ -107,10 +108,26 @@ class Outplacement(models.Model):
                     _logger.error("Something went wrong with sending GP to BÄR Outplacement %s" % outplacement.name)
                     error_msg = str(response.status_code) + " - " + response.reason
                     _logger.error("Getting %s Response" % error_msg)
-                    raise UserError(_("%s \n Something went wrong with sending GP to BÄR, "
-                                      "please check that you've filled out all "
-                                      "necessary fields" % error_msg))
+                    if email_to:
+                        menu_id = model_obj.get_object_reference('outplacement', 'menu_outplacement')[1]
+                        action_id = model_obj.get_object_reference('outplacement', 'outplacement_action')[1]
+                        url = base_url + "/web?#id=" + str(
+                            outplacement.id) + "&view_type=form&model=outplacement&menu_id=" + str(
+                            menu_id) + "&action=" + str(action_id)
+                        template = self.env.ref(
+                            'outplacement_joint_planning.email_template_to_report_error_on_jp')
+                        template.with_context(email_to=email_to, url=url,
+                                              error_msg=str(error_msg)).send_mail(outplacement.id, force_send=True)
             except Exception as e:
                 _logger.error("Something went wrong with sending GP to BÄR Outplacement %s" % outplacement.name)
                 _logger.error(str(e))
-                raise UserError(_(str(e)))
+                if email_to:
+                    menu_id = model_obj.get_object_reference('outplacement', 'menu_outplacement')[1]
+                    action_id = model_obj.get_object_reference('outplacement', 'outplacement_action')[1]
+                    url = base_url + "/web?#id=" + str(
+                        outplacement.id) + "&view_type=form&model=outplacement&menu_id=" + str(
+                        menu_id) + "&action=" + str(action_id)
+                    template = self.env.ref(
+                        'outplacement_joint_planning.email_template_to_report_error_on_jp')
+                    template.with_context(email_to=email_to, url=url,
+                                          error_msg=str(e)).send_mail(outplacement.id, force_send=True)

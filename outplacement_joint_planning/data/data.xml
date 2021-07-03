@@ -12,5 +12,32 @@
             <field eval="False" name="doall"/>
         </record>
 
+        <record forcecreate="True" id="system_parameter_to_send_api_error" model="ir.config_parameter">
+            <field name="key">system_parameter_to_send_api_error</field>
+            <field name="value">team-crm@arbetsformedlingen.se</field>
+        </record>
+
+        <record id="email_template_to_report_error_on_jp" model="mail.template">
+            <field name="name">Outplacement Report erron on Sending GP to BÄR</field>
+            <field name="model_id" ref="outplacement.model_outplacement"/>
+            <field name="email_from">${(user.email or '')|safe}</field>
+            <field name="email_to">${ctx.get('email_to')}</field>
+            <field name="subject">Error on Sending GP to  BÄR Outplacement - ${object.name}
+            </field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        <h4>Error on Sending GP to  BÄR Outplacement ${object.name}</h4><br/>
+                        <b>Name of API: </b> Gemensam Planering <br/>
+                        <b>Record: </b> <a href="${ctx.get('url')}">${object.name}</a><br/>
+                        <b>Error: </b>" + ${ctx.get('error_msg')}
+                    </p>
+                </div>
+            </field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
     </data>
 </odoo>

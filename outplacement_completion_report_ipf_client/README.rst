@@ -10,6 +10,7 @@ The module is maintained here: https://github.com/vertelab/odoo-outplacement/tre
 Different version submitted
 ===========================
 1. v12.0.0.1.1 AFC-2438 Added translation for Meeting type warning when Send outplacement to GP.
+1. v12.0.0.1.2 AFC-2457 Added translation for IPF CompletionReport Client Config menu action.
 
 Maintainers
 ~~~~~~~~~~~

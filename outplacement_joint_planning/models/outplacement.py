@@ -116,8 +116,11 @@ class Outplacement(models.Model):
                             menu_id) + "&action=" + str(action_id)
                         template = self.env.ref(
                             'outplacement_joint_planning.email_template_to_report_error_on_jp')
-                        template.with_context(email_to=email_to, url=url,
+                        mail = template.with_context(email_to=email_to, url=url,
                                               error_msg=str(error_msg)).send_mail(outplacement.id, force_send=True)
+                        mail = self.env['mail.mail'].browse(mail)
+                        mail.mail_message_id.body = (_('There was an error when sending the joint planning.' 
+                                                    ' It has been reported to Service desk and will be handled. '))
             except Exception as e:
                 _logger.error("Something went wrong with sending GP to BÄR Outplacement %s" % outplacement.name)
                 _logger.error(str(e))
@@ -129,5 +132,9 @@ class Outplacement(models.Model):
                         menu_id) + "&action=" + str(action_id)
                     template = self.env.ref(
                         'outplacement_joint_planning.email_template_to_report_error_on_jp')
-                    template.with_context(email_to=email_to, url=url,
-                                          error_msg=str(e)).send_mail(outplacement.id, force_send=True)
+                    mail = template.with_context(email_to=email_to, url=url,
+                                                 error_msg=str(e)).send_mail(outplacement.id, force_send=True)
+                    mail = self.env['mail.mail'].browse(mail)
+                    mail.mail_message_id.body = (_('There was an error when sending the joint planning.' 
+                                                      ' It has been reported to Service desk and will be handled. '))
+

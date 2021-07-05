@@ -76,3 +76,10 @@ msgstr "Du kan inte skicka in GP förrän efter den 6e arbetsdagen sedan tjänst
 #: model_terms:ir.ui.view,arch_db:outplacement_joint_planning.view_outplacement_kanban_for_jp_submit_time
 msgid "<br/><span style=\"color:red;font-size:12px\">Time to submit joint planning</span>"
 msgstr "<br/><span style=\"color:red;font-size:12px\">Dags att skicka in gemensam planering</span>"
+
+#. module: outplacement_joint_planning
+#: code:addons/outplacement_joint_planning/models/outplacement.py:122
+#: code:addons/outplacement_joint_planning/models/outplacement.py:138
+#, python-format
+msgid "There was an error when sending the joint planning. It has been reported to Service desk and will be handled. "
+msgstr "Det uppstod ett fel vid överföringen av den gemensamma planeringen. Felet är rapporterat till ServiceDesk och kommer att åtgärdas. Du blir kontaktad om du behöver göra något mer."

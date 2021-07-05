@@ -1,9 +1,6 @@
-==============================
 Outplacement Order Interpreter
 ==============================
-
 This module adds interpreter-functionality.
-
 This module is maintained from: https://github.com/vertelab/odoo-outplacement/tree/Dev-12.0-Fenix-Sprint-02/outplacement_order_interpreter
 
 Different version submitted
@@ -46,11 +43,10 @@ Different version submitted
 Maintainers
 ~~~~~~~~~~~
 
-This module is maintained by Vertal.
+This module is maintained by Vertel.
 
 Contributors
 ~~~~~~~~~~~~
-
 * Anil Kesariya <anil.r.kesariya@gmail.com>
 
 

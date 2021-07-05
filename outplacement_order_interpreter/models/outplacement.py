@@ -16,9 +16,11 @@ class Outplacement(models.Model):
         readonly=False)
     interpreter_type = fields.Many2one(
         related='partner_id.interpreter_type',
+        string = "Interpreter Type",
         readonly=False)
     interpreter_remote_type = fields.Many2one(
         related='partner_id.interpreter_type',
+        string='Interpreter Remote Type',
         readonly=False)
     total_activity = fields.Integer(compute='compute_total_activity')
 

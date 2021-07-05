@@ -64,7 +64,7 @@
                 <field name="name" position="after">
                     <field name="time_to_submit_jp"/>
                 </field>
-                <xpath expr="//div[@class='o_kanban_record_body']" position="inside">
+                <xpath expr="//div[hasclass('o_kanban_record_body')]" position="inside">
                      <t t-if="record.time_to_submit_jp.raw_value">
                         <br/><span style="color:red;font-size:12px">Time to submit joint planning</span>
                      </t>

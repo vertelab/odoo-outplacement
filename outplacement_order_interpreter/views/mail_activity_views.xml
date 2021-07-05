@@ -513,8 +513,8 @@
                 <field name="time_start" invisible="1"/>
                 <field name="time_end" invisible="1"/>
                 <field name="date"/>
-                <field name="split_start_time"/>
-                <field name="split_end_time"/>
+                <field name="split_start_time" string="Start Time"/>
+                <field name="split_end_time" string="End Time"/>
                 <field name="duration"/>
                 <field name="additional_time"/>
                 <field name="interpreter_language"/>
@@ -537,8 +537,8 @@
                             <field name="time_start"/>
                             <field name="time_end"/>
                             <field name="date"/>
-                            <field name="split_start_time"/>
-                            <field name="split_end_time"/>
+                            <field name="split_start_time" string="Start Time"/>
+                            <field name="split_end_time" string="End Time"/>
                             <field name="duration"/>
                             <field name="additional_time"/>
                             <field name="interpreter_language"/>

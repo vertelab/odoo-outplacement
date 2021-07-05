@@ -29,7 +29,7 @@ _logger = logging.getLogger(__name__)
 class Outplacement(models.Model):
     _inherit = "outplacement"
 
-    skills = fields.Many2many('hr.skill', string="Skill")
+    skills = fields.Many2many('hr.skill', string="All Skills")
     skill_id = fields.Char(string="Skill", related="skills.complete_name")
 
     other_experiences = fields.Many2many(comodel_name='outplacement.other_experiences', string="Other Experience")

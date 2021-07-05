@@ -28,8 +28,17 @@ msgid "Check for Outplacement Invoices"
 msgstr "Sök efter nya fakturor"
 
 #. module: outplacement_invoice
-#: model:ir.model.fields,field_description:outplacement_invoice.field_account_invoice__company_company_registry
 #: model:ir.model.fields,field_description:outplacement_invoice.field_account_invoice__partner_company_registry
+msgid "Company Registry"
+msgstr "Organisationsnummer"
+
+#. module: outplacement_invoice
+#: model:ir.model.fields,field_description:outplacement_invoice.field_account_invoice__company_company_registry
+msgid "Company's Company Registry"
+msgstr "Organisationsnummer"
+
+#. module: outplacement_invoice
+#: model_terms:ir.ui.view,arch_db:outplacement_invoice.invoice_form_inherited
 msgid "Company Registry"
 msgstr "Organisationsnummer"
 
@@ -116,6 +125,11 @@ msgstr "Säljare"
 #. module: outplacement_invoice
 #: model:ir.model.fields,field_description:outplacement_invoice.field_account_invoice__company_vat
 #: model:ir.model.fields,field_description:outplacement_invoice.field_account_invoice__partner_vat
+msgid "Company Tax ID"
+msgstr "Momsregistreringsnummer"
+
+#. module: outplacement_invoice
+#: model_terms:ir.ui.view,arch_db:outplacement_invoice.invoice_form_inherited
 msgid "Tax ID"
 msgstr "Momsregistreringsnummer"
 

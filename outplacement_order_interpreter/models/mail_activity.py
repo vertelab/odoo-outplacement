@@ -104,8 +104,8 @@ class MailActivity(models.Model):
                                default=lambda self: self._get_end_time())
     duration = fields.Char("Duration(In minutes)", compute='_compute_dates_duration', store=True)
     date = fields.Date("Date", compute='_compute_dates_duration', store=True)
-    split_start_time = fields.Char("Start Time", compute='_compute_dates_duration', store=True)
-    split_end_time = fields.Char("End Time", compute='_compute_dates_duration', store=True)
+    split_start_time = fields.Char("Split Start Time", compute='_compute_dates_duration', store=True)
+    split_end_time = fields.Char("Split End Time", compute='_compute_dates_duration', store=True)
     additional_time = fields.Integer(string='Additional time (minutes)', default=0)
 
     interpreter_receiver = fields.Char(string='Interpreter Receiver')

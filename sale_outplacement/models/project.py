@@ -17,10 +17,10 @@ class ProjectTask(models.Model):
 
     start_date = fields.Datetime(string="Start date")
     end_date = fields.Datetime(string="End date")
-    child_end_date = fields.Datetime(string="End date",
+    child_end_date = fields.Datetime(string="Child End date",
                                      related="end_date",
                                      readonly=False)
-    child_start_date = fields.Datetime(string="Start date",
+    child_start_date = fields.Datetime(string="Child Start date",
                                        related="start_date",
                                        readonly=False)
     duration = fields.Float(string="Duration")

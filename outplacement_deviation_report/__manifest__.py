@@ -1,7 +1,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Deviation Report',
-    'version': '12.0.0.1.5',
+    'version': '12.0.0.1.6',
     'category': 'Outplacement',
     'author': "Vertel AB",
     'license': 'AGPL-3',

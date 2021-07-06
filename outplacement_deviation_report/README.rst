@@ -13,6 +13,7 @@ Different version submitted
 3. v12.0.0.1.3: improved error messages
 4. v12.0.0.1.4: added checks and error messages
 5. v12.0.0.1.5: removed hardcoded endpoint
+6. v12.0.0.1.6: AFC-2560 Fixed better error message for IPF Config.
 
 Maintainers
 ~~~~~~~~~~~

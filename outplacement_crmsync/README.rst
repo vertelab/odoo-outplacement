@@ -19,6 +19,7 @@ Different version submitted
 
 1. v12.0.1.0.2 - AFC-2505 Synced Jobskeer Category.
 2. v12.0.1.0.3 - AFC-2469 Removed unused actions.
+3. v12.0.1.0.4 - AFC-2567 Sent mail and chatter log if error on Getting Jobseeker from CRM.
 
 Maintainers
 ~~~~~~~~~~~

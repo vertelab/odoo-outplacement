@@ -24,7 +24,7 @@
 import datetime
 import logging
 from datetime import date, timedelta
-from odoo.exceptions import ValidationError, UserError
+from odoo.exceptions import ValidationError, UserError, Warning
 import json
 from odoo import api, fields, models, _
 
@@ -88,6 +88,16 @@ class Outplacement(models.Model):
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         model_obj = self.env['ir.model.data']
         for outplacement in self:
+            if 'department_ref' in outplacement.performing_operation_id:
+                dep_id = outplacement.performing_operation_id.ka_nr
+            else:
+                dep_id = outplacement.performing_operation_id.ka_nr
+
+            if not outplacement.meeting_remote:
+                raise Warning(_("Meeting type for outplacement not set."))
+            if not dep_id:
+                raise Warning(_("KA nr. not set on performing operation."))
+
             joint_plannings = self.env['res.joint_planning'].search([])
             try:
                 response = client.post_request(outplacement, joint_plannings)

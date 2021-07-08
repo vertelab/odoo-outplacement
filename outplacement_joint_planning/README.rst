@@ -15,6 +15,7 @@ Different version submitted
 4. v12.0.1.0.6 AFC-2028 Made fields readonly.
 5. v12.0.1.0.7 AFC-2357 Added visual aids on the kanban-view to help the caseworker to remember to submit Joint Planning.
 6. v12.0.1.0.8 AFC-2457 Sent mail when error on sending GP to Bar.
+7. v12.0.1.0.9 AFC-2576 Updated code of sending GP to Bar to prevent error email on success and to show full error message.
 
 Maintainers
 ~~~~~~~~~~~

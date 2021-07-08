@@ -29,7 +29,7 @@
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
                         <h4>Error on Sending GP to  BÄR Outplacement ${object.name}</h4><br/>
                         <b>Name of API: </b> Gemensam Planering <br/>
-                        <b>Record: </b> <a href="${ctx.get('url')}">${object.name}</a><br/>
+                        <b>Record: </b> <a href="${ctx.get('url')}" target="new">${object.name}</a><br/>
                         <b>Error: </b>" + ${ctx.get('error_msg')}
                     </p>
                 </div>

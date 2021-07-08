@@ -25,7 +25,7 @@ import datetime
 import logging
 from datetime import date, timedelta
 from odoo.exceptions import ValidationError, UserError
-
+import json
 from odoo import api, fields, models, _
 
 _logger = logging.getLogger(__name__)
@@ -74,17 +74,6 @@ class Outplacement(models.Model):
     task_count = fields.Integer(
         compute='_compute_task_count', string="Task Count")
 
-    def date_by_adding_business_days(self, from_date, add_days):
-        business_days_to_add = add_days
-        current_date = from_date
-        while business_days_to_add > 0:
-            current_date += timedelta(days=1)
-            weekday = current_date.weekday()
-            if weekday >= 5:
-                continue
-            business_days_to_add -= 1
-        return current_date
-
     @api.one
     def send_gp_to_bar(self):
         if self.date_by_adding_business_days(self.service_start_date, 5) > date.today():
@@ -102,11 +91,11 @@ class Outplacement(models.Model):
             joint_plannings = self.env['res.joint_planning'].search([])
             try:
                 response = client.post_request(outplacement, joint_plannings)
-                if response.status_code == 201:
-                    outplacement.jp_sent_date = date.today()
-                else:
+                outplacement.jp_sent_date = date.today()
+                if response and response.status_code != 201:
                     _logger.error("Something went wrong with sending GP to BÄR Outplacement %s" % outplacement.name)
                     error_msg = str(response.status_code) + " - " + response.reason
+                    error_msg += "\n" + str(json.loads(response.content))
                     _logger.error("Getting %s Response" % error_msg)
                     if email_to:
                         menu_id = model_obj.get_object_reference('outplacement', 'menu_outplacement')[1]

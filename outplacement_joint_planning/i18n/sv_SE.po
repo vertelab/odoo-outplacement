@@ -83,3 +83,9 @@ msgstr "<br/><span style=\"color:red;font-size:12px\">Dags att skicka in gemensa
 #, python-format
 msgid "There was an error when sending the joint planning. It has been reported to Service desk and will be handled. "
 msgstr "Det uppstod ett fel vid överföringen av den gemensamma planeringen. Felet är rapporterat till ServiceDesk och kommer att åtgärdas. Du blir kontaktad om du behöver göra något mer."
+
+#. module: outplacement_joint_planning
+#: code:addons/outplacement_joint_planning/models/outplacement.py:97
+#, python-format
+msgid "Meeting type for outplacement not set."
+msgstr "Du behöver välja mötestyp innan du skickar in en gemensam planering."

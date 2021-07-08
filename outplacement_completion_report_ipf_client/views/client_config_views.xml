@@ -67,7 +67,7 @@
     </record>
 
     <menuitem id="ipf_client_config"
-              name="IPF CompletionReport Client Config"
+              name="IPF Joint Planning Client Config"
               action="ipf_client_config_action_window"
               parent="base.menu_custom"
               sequence="120"/>

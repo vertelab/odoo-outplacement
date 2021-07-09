@@ -18,6 +18,7 @@ Different version submitted
 7. v12.0.1.2.2 Fixed messages AFC-2174.
 8. v12.0.1.2.3 Fixed messages AFC-2128.
 9. v12.0.1.2.4 AFC-2560 Fixed better error message for IPF Config.
+10. v12.0.1.2.5 AFC-2582 Adjusted calculation of allowed time to send Final Report.
 
 Maintainers
 ~~~~~~~~~~~

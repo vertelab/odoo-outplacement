@@ -30,7 +30,9 @@ class Outplacement(models.Model):
     interrupted_early = fields.Boolean(string="Interrupted early", compute="_compute_interrupted_early", readonly=True)
 
     fr_rejected = fields.Boolean(string="Rejected")
-    time_to_submit_fr = fields.Boolean(compute="compute_time_to_submit_fr", store=True)
+    time_to_submit_fr_1_4 = fields.Boolean(compute="compute_time_to_submit_fr", store=True)
+    time_to_submit_fr_5_20 = fields.Boolean(compute="compute_time_to_submit_fr", store=True)
+    time_to_submit_fr_21 = fields.Boolean(compute="compute_time_to_submit_fr", store=True)
 
     def date_by_adding_business_days(self, from_date, add_days):
         business_days_to_add = add_days
@@ -47,17 +49,47 @@ class Outplacement(models.Model):
     def compute_time_to_submit_fr(self):
         today = datetime.date.today()
         for rec in self:
-            if rec.service_end_date and not rec.fr_send_date:
+            if rec.stage_id and rec.stage_id.id != self.env.ref('outplacement.cancelled_stage').id and \
+                    rec.service_end_date and not rec.fr_send_date:
+                next_1_days = self.date_by_adding_business_days(rec.service_end_date, 1)
+                next_4_days = self.date_by_adding_business_days(rec.service_end_date, 4)
                 next_5_days = self.date_by_adding_business_days(rec.service_end_date, 5)
-                if today > next_5_days:
-                    rec.time_to_submit_fr = True
+                next_20_days = self.date_by_adding_business_days(rec.service_end_date, 20)
+                next_21_days = self.date_by_adding_business_days(rec.service_end_date, 21)
+                if today >= next_1_days and today <= next_4_days:
+                    rec.time_to_submit_fr_1_4 = True
+                else:
+                    rec.time_to_submit_fr_1_4 = False
+                if today >= next_5_days and today <= next_20_days:
+                    rec.time_to_submit_fr_5_20 = True
+                else:
+                    rec.time_to_submit_fr_5_20 = False
+                if today >= next_21_days:
+                    rec.time_to_submit_fr_21 = True
+                else:
+                    rec.time_to_submit_fr_21 = False
 
     def cron_check_final_report_time(self):
         today = datetime.date.today()
         for rec in self.search([('fr_send_date', '=', False), ('service_end_date', '!=', False)]):
-            next_5_days = self.date_by_adding_business_days(rec.service_end_date, 5)
-            if today > next_5_days:
-                rec.time_to_submit_fr = True
+            if rec.stage_id and rec.stage_id.id != self.env.ref('outplacement.cancelled_stage').id:
+                next_1_days = self.date_by_adding_business_days(rec.service_end_date, 1)
+                next_4_days = self.date_by_adding_business_days(rec.service_end_date, 4)
+                next_5_days = self.date_by_adding_business_days(rec.service_end_date, 5)
+                next_20_days = self.date_by_adding_business_days(rec.service_end_date, 20)
+                next_21_days = self.date_by_adding_business_days(rec.service_end_date, 21)
+                if today >= next_1_days and today <= next_4_days:
+                    rec.time_to_submit_fr_1_4 = True
+                else:
+                    rec.time_to_submit_fr_1_4 = False
+                if today >= next_5_days and today <= next_20_days:
+                    rec.time_to_submit_fr_5_20 = True
+                else:
+                    rec.time_to_submit_fr_5_20 = False
+                if today >= next_21_days:
+                    rec.time_to_submit_fr_21 = True
+                else:
+                    rec.time_to_submit_fr_21 = False
 
     @api.onchange('service_start_date', 'service_end_date')
     @api.multi

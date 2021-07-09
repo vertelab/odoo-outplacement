@@ -182,8 +182,8 @@
                             domain="[('my_performing_operation', '=', True)]"/>
                     <filter name="my_outplacement" string="My Outplacement" domain="[('my_outplacement', '=', True)]"/>
                     <separator/>
-                    <filter name="month" string="Service Start Date" date="service_start_date"/>
-                    <filter name="month" string="Service End Date" date="service_end_date"/>
+                    <filter name="service_start_date" string="Service Start Date" date="service_start_date"/>
+                    <filter name="service_end_date" string="Service End Date" date="service_end_date"/>
                     <group expand="0" string="Group By">
                         <filter string="Performing Operation" name="performing_operation"
                                 context="{'group_by': 'performing_operation_id'}"/>

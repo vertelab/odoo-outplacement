@@ -525,6 +525,12 @@ msgid "KA-Number"
 msgstr "KA-nummer"
 
 #. module: outplacement_order_interpreter
+#: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__date
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
+msgid "Date"
+msgstr "Datum"
+
+#. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_outplacement_interpreter_delivery_wizard____last_update
 msgid "Last Modified on"
 msgstr "Senast redigerad"

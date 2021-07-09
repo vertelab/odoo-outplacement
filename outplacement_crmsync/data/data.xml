@@ -24,7 +24,15 @@
             <field name="state">code</field>
             <field name="code">record.get_af_management_team()</field>
         </record>
-
+<!--         Temporary fix to update jobseeker category. Should be removed before 2021-SEPT-01-->
+         <record id="ir_actions_update_jobseeker_from_partner" model="ir.actions.server">
+            <field name="name">Update JobSeeker (contacts) from CRM</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="binding_model_id" ref="base.model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">records.update_jobseeker_data()</field>
+        </record>
         <record id="email_temp_to_report_error_on_get_jobseeker_from_crm" model="mail.template">
             <field name="name">Outplacement Report error on CRM Sync Get Jobseeker</field>
             <field name="model_id" ref="outplacement.model_outplacement"/>

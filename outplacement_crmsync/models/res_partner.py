@@ -89,6 +89,35 @@ class crm_serverII(object):
         except Exception as e:
             raise Warning("Login %s" % e)
 
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+
+    # Temporary fix to update jobseeker category. Should be removed before 2021-SEPT-01
+    def update_jobseeker_data(self):
+        job_categ_obj = self.env['res.partner.skat']
+        for partner in self:
+            try:
+                xmlrpc = crm_serverII(self.env)
+                rec = xmlrpc.common.env['res.partner'].partnersyncCrm2DafaSSN(
+                    partner.social_sec_nr)
+                if rec:
+                    if rec.get('partner').get('jobseeker_category_id'):
+                        jobeeker_category = job_categ_obj.search(
+                            [('name', '=', rec.get('partner').get('jobseeker_category_id')[1])], limit=1)
+                        if jobeeker_category:
+                            partner.sudo().jobseeker_category_id = jobeeker_category.id
+                        else:
+                            categ_code = ''
+                            if rec.get('jobseeker_category_code'):
+                                categ_code = rec.get('jobseeker_category_code')
+                            category = job_categ_obj.sudo().create(
+                                {'name': rec.get('partner').get('jobseeker_category_id')[1],
+                                 'code': categ_code})
+                            partner.sudo().jobseeker_category_id = category.id
+            except Exception as e:
+                _logger.error("Something went wrong when updating the Jobseeker category from CRM!")
+                _logger.error(str(e))
+                raise Warning(str(e))
 
 class Outplacement(models.Model):
     _inherit = "outplacement"

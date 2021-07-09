@@ -512,11 +512,13 @@ msgstr "Om tjänsten"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__service_end_date
+#: model_terms:ir.ui.view,arch_db:outplacement.outplacement_filter_view
 msgid "Service End Date"
 msgstr "Tjänstens slutdatum"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement__service_start_date
+#: model_terms:ir.ui.view,arch_db:outplacement.outplacement_filter_view
 msgid "Service Start Date"
 msgstr "Tjänstens startdatum"
 

@@ -115,7 +115,7 @@ class ResPartner(models.Model):
                                  'code': categ_code})
                             partner.sudo().jobseeker_category_id = category.id
             except Exception as e:
-                _logger.error("Something went wrong when updationg Jobseeker category From CRM!")
+                _logger.error("Something went wrong when updating the Jobseeker category from CRM!")
                 _logger.error(str(e))
                 raise Warning(str(e))
 

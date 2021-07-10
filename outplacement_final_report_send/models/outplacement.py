@@ -1,11 +1,12 @@
 import datetime
+import datetime
 import json
 import logging
 from odoo.exceptions import UserError
 
 from odoo import api, fields, models, tools
 from odoo import tools, _
-import datetime
+
 _logger = logging.getLogger(__name__)
 
 
@@ -26,7 +27,7 @@ class Outplacement(models.Model):
     def send_final_report(self):
         today = datetime.date.today()
         next_41_days = self.date_by_adding_business_days(self.service_end_date, 41)
-        if self.stage_id and self.stage_id.id == self.env.ref('outplacement.cancelled_stage').id or  \
+        if self.stage_id and self.stage_id.id == self.env.ref('outplacement.cancelled_stage').id or \
                 today >= next_41_days:
             raise UserError(_("The Final Report can only be sent after the Service has ended."))
         delta = self.service_end_date - datetime.datetime.now().date()
@@ -54,16 +55,16 @@ class Outplacement(models.Model):
                     cause_dict = res_dict.get("cause", {})
                     code = cause_dict.get("code", _("Unknown error code"))
                     cause_message = cause_dict.get("message", _("Unknown cause"))
-                    error_text = _("Error %s: %s\nCause: %s\nTracking ID: %s") % (code, message, cause_message, tracking_id)
-                    _logger.error("Something went wrong with sending Final Report for Outplacement %s" % self.name)
-                    _logger.error(error_text)
+                    error_text = _("Error %s: %s\nCause: %s\nTracking ID: %s") % (
+                    code, message, cause_message, tracking_id)
+                    _logger.error("Something went wrong with sending Final Report for Outplacement %s. %s" % (
+                    self.name, str(error_text)))
                     raise UserError(error_text)
                 _logger.debug("Successfully created final report")
                 self.fr_rejected = False
                 self.message_post(body=_("Final report sent"))
             except Exception as e:
-                _logger.error("Something went wrong with sending Final Report for Outplacement %s" % self.name)
-                _logger.error(str(e))
+                _logger.error(
+                    "Something went wrong with sending Final Report for Outplacement %s. %s" % (self.name, str(e)))
         else:
             raise UserError(_("No config found for final report"))
-

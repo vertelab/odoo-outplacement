@@ -38,8 +38,7 @@
             <field name="model_id" ref="outplacement.model_outplacement"/>
             <field name="email_from">${(user.email or '')|safe}</field>
             <field name="email_to">${ctx.get('email_to')}</field>
-            <field name="subject">Error on Getting Jobseeker From CRM Outplacement - ${object.name}
-            </field>
+            <field name="subject">Error on Getting Jobseeker From CRM Outplacement - ${object.name}</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">

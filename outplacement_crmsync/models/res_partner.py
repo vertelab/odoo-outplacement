@@ -115,8 +115,7 @@ class ResPartner(models.Model):
                                  'code': categ_code})
                             partner.sudo().jobseeker_category_id = category.id
             except Exception as e:
-                _logger.error("Something went wrong when updating the Jobseeker category from CRM!")
-                _logger.error(str(e))
+                _logger.error("Something went wrong when updating the Jobseeker category from CRM! %s" % str(e))
                 raise Warning(str(e))
 
 class Outplacement(models.Model):
@@ -248,8 +247,7 @@ class Outplacement(models.Model):
             else:
                 raise Warning("Partner not found in CRM")
         except Exception as e:
-            _logger.error("Something went wrong when Getting Jobseeker from CRM.")
-            _logger.error(str(e))
+            _logger.error("Something went wrong when Getting Jobseeker from CRM. %s" % str(e))
             if email_to:
                 menu_id = model_obj.get_object_reference('outplacement', 'menu_outplacement')[1]
                 action_id = model_obj.get_object_reference('outplacement', 'outplacement_action')[1]

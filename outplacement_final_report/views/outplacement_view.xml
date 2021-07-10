@@ -65,6 +65,7 @@
         <field name="name">outplacement.view.kanban.inherit.final.report</field>
         <field name="model">outplacement</field>
         <field name="inherit_id" ref="outplacement.outplacement_kanban_view"/>
+        <field name="priority">20</field>
         <field name="arch" type="xml">
             <field name="name" position="after">
                 <field name="fr_rejected"/>

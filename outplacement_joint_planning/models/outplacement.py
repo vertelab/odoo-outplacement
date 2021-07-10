@@ -22,10 +22,11 @@
 
 
 import datetime
+import json
 import logging
 from datetime import date, timedelta
 from odoo.exceptions import ValidationError, UserError, Warning
-import json
+
 from odoo import api, fields, models, _
 
 _logger = logging.getLogger(__name__)
@@ -103,10 +104,10 @@ class Outplacement(models.Model):
                 response = client.post_request(outplacement, joint_plannings)
                 outplacement.jp_sent_date = date.today()
                 if response and response.status_code != 201:
-                    _logger.error("Something went wrong with sending GP to BÄR Outplacement %s" % outplacement.name)
                     error_msg = str(response.status_code) + " - " + response.reason
                     error_msg += "\n" + str(json.loads(response.content))
-                    _logger.error("Getting %s Response" % error_msg)
+                    _logger.error("Something went wrong with sending GP to BÄR Outplacement %s. Getting %s Response" % (
+                    outplacement.name, error_msg))
                     if email_to:
                         menu_id = model_obj.get_object_reference('outplacement', 'menu_outplacement')[1]
                         action_id = model_obj.get_object_reference('outplacement', 'outplacement_action')[1]
@@ -116,13 +117,14 @@ class Outplacement(models.Model):
                         template = self.env.ref(
                             'outplacement_joint_planning.email_template_to_report_error_on_jp')
                         mail = template.with_context(email_to=email_to, url=url,
-                                              error_msg=str(error_msg)).send_mail(outplacement.id, force_send=True)
+                                                     error_msg=str(error_msg)).send_mail(outplacement.id,
+                                                                                         force_send=True)
                         mail = self.env['mail.mail'].browse(mail)
-                        mail.mail_message_id.body = (_('There was an error when sending the joint planning.' 
-                                                    ' It has been reported to Service desk and will be handled. '))
+                        mail.mail_message_id.body = (_('There was an error when sending the joint planning.'
+                                                       ' It has been reported to Service desk and will be handled. '))
             except Exception as e:
-                _logger.error("Something went wrong with sending GP to BÄR Outplacement %s" % outplacement.name)
-                _logger.error(str(e))
+                _logger.error(
+                    "Something went wrong with sending GP to BÄR Outplacement %s. %s" % (outplacement.name, str(e)))
                 if email_to:
                     menu_id = model_obj.get_object_reference('outplacement', 'menu_outplacement')[1]
                     action_id = model_obj.get_object_reference('outplacement', 'outplacement_action')[1]
@@ -134,6 +136,5 @@ class Outplacement(models.Model):
                     mail = template.with_context(email_to=email_to, url=url,
                                                  error_msg=str(e)).send_mail(outplacement.id, force_send=True)
                     mail = self.env['mail.mail'].browse(mail)
-                    mail.mail_message_id.body = (_('There was an error when sending the joint planning.' 
-                                                      ' It has been reported to Service desk and will be handled. '))
-
+                    mail.mail_message_id.body = (_('There was an error when sending the joint planning.'
+                                                   ' It has been reported to Service desk and will be handled. '))

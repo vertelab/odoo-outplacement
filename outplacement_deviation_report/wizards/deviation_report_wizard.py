@@ -281,5 +281,5 @@ class DeviationReportWizard(models.TransientModel):
             )
         except Exception as e:
             _logger.error(
-                "Something went wrong with sending Deviation Report for Outplacement %s" % self.outplacement_id.name)
-            _logger.error(str(e))
+                "Something went wrong with sending Deviation Report for Outplacement %s. %s" % (
+                self.outplacement_id.name, str(e)))

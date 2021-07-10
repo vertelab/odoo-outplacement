@@ -5,14 +5,30 @@ from odoo.exceptions import UserError
 
 from odoo import api, fields, models, tools
 from odoo import tools, _
-
+import datetime
 _logger = logging.getLogger(__name__)
 
 
 class Outplacement(models.Model):
     _inherit = 'outplacement'
 
+    def date_by_adding_business_days(self, from_date, add_days):
+        business_days_to_add = add_days
+        current_date = from_date
+        while business_days_to_add > 0:
+            current_date += datetime.timedelta(days=1)
+            weekday = current_date.weekday()
+            if weekday >= 5:  # sunday = 6
+                continue
+            business_days_to_add -= 1
+        return current_date
+
     def send_final_report(self):
+        today = datetime.date.today()
+        next_41_days = self.date_by_adding_business_days(self.service_end_date, 41)
+        if self.stage_id and self.stage_id.id == self.env.ref('outplacement.cancelled_stage').id or  \
+                today >= next_41_days:
+            raise UserError(_("The Final Report can only be sent after the Service has ended."))
         delta = self.service_end_date - datetime.datetime.now().date()
         if not self.interruption and delta.days > -1:
             raise UserError(_("You are not allowed to send final report before service end"

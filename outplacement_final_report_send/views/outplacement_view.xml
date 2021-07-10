@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="outplacement.outplacement_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button type="object" string="Send report" name="send_final_report"/>
+                <button type="object" string="Send FP report" name="send_final_report"/>
             </xpath>
         </field>
     </record>

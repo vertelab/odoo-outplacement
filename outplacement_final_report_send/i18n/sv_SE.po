@@ -48,8 +48,14 @@ msgstr "Deltagare"
 
 #. module: outplacement_final_report_send
 #: model_terms:ir.ui.view,arch_db:outplacement_final_report_send.view_partner_form
-msgid "Send report"
+msgid "Send FP report"
 msgstr "Skicka in slutredovisning"
+
+#. module: outplacement_final_report_send
+#: code:addons/outplacement_final_report_send/models/outplacement.py:31
+#, python-format
+msgid "The Final Report can only be sent after the Service has ended."
+msgstr "Slutrapporten kan bara skickas efter att tjänsten har avslutats."
 
 #. module: outplacement_final_report_send
 #: code:addons/outplacement_final_report_send/models/outplacement.py:34

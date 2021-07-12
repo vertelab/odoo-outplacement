@@ -11,7 +11,7 @@ The module is maintained here: https://github.com/vertelab/odoo-outplacement/tre
 Different version submitted
 ===========================
 
-1. v12.0.1.2.2 - AFC-2586 Displayed customer name corretly in outplacement invoice.
+1. v12.0.1.2.2 - AFC-2586 Displayed customer name correctly in outplacement invoice.
 
 Maintainers
 ~~~~~~~~~~~

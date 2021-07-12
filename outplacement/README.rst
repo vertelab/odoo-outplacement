@@ -17,6 +17,7 @@ Different version submitted
 7. v12.0.1.2.7 - AFC-2468 Removed Security group from SSN.
 8. v12.0.1.2.8 - AFC-2542 Added Social security number to outplacement filter view.
 9. v12.0.1.2.9 - AFC-2851 Added dynamic Service start and end date filter to outplacement filter view.
+10. v12.0.1.3.0 - AFC-2585 Added SYV field into Outplacement.
 
 Maintainers
 ~~~~~~~~~~~

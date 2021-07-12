@@ -155,8 +155,8 @@ msgstr "E-post"
 
 #. module: outplacement
 #: model_terms:ir.ui.view,arch_db:outplacement.outplacement_filter_view
-msgid "Employee"
-msgstr "Anställd"
+msgid "Coach"
+msgstr "Handledare"
 
 #. module: outplacement
 #: model:ir.model.fields,field_description:outplacement.field_outplacement_stage__fold

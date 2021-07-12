@@ -43,6 +43,8 @@ class Outplacement(models.Model):
                                )
     employee_id = fields.Many2one(
         'hr.employee', string="Coach", group_expand='_read_group_employee_ids')
+    syv_id = fields.Many2one(
+        'hr.employee', string="SYV", group_expand='_read_group_employee_ids')
     color = fields.Integer('Kanban Color Index')
     meeting_remote = fields.Selection(string='Meeting type',
                                       selection=[('no', 'On Premise'),

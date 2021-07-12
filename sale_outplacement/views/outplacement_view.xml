@@ -9,7 +9,7 @@
                     <field name="order_id_origin" readonly="1"/>
                     <field name="invoice_status"/>
                 </field>
-                <field name="employee_id" position="after">
+                <field name="syv_id" position="after">
                     <field name='management_team_id' readonly="1"/>
                 </field>
                 <group name="service" position="inside">

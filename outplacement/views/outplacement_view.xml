@@ -55,6 +55,7 @@
                                 <field name="name" string="Outplacement id" readonly="1"/>
                                 <field name="jobseeker_category" groups="base.group_no_one"/>
                                 <field name="employee_id" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                                <field name="syv_id" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
                                 <field name="performing_operation_id" readonly="1"/>
                                 <field name="uniq_ref" attrs="{'readonly':[('show_2nd_line','=', True)]}"
                                        groups="base.group_no_one"/>
@@ -174,6 +175,7 @@
                 <search string="Outplacement">
                     <field name="name"/>
                     <field name="employee_id"/>
+                    <field name="syv_id"/>
                     <field name="booking_ref"/>
                     <field name="partner_name"/>
                     <field name="partner_social_sec_nr"/>
@@ -187,7 +189,8 @@
                     <group expand="0" string="Group By">
                         <filter string="Performing Operation" name="performing_operation"
                                 context="{'group_by': 'performing_operation_id'}"/>
-                        <filter string="Employee" name="employee" context="{'group_by': 'employee_id'}"/>
+                        <filter string="Coach" name="employee" context="{'group_by': 'employee_id'}"/>
+                        <filter string="SYV" name="syv" context="{'group_by': 'syv_id'}"/>
                         <filter string="Stage" name="stage" context="{'group_by': 'stage_id'}"/>
                     </group>
                 </search>

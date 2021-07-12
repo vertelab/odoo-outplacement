@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Outplacement Invoice',
-    'version': '12.0.1.2.1',
+    'version': '12.0.1.2.2',
     'category': 'Outplacement',
     'author': "Vertel AB",
     'license': 'AGPL-3',

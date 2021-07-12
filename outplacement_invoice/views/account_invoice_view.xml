@@ -56,8 +56,7 @@
                     </group>
                     <group string="Buyer">
                         <field string="Customer" name="partner_id" widget="res_partner_many2one"
-                               context="{'search_default_customer':1, 'show_address': 1,
-                               'default_is_company': True, 'show_vat': True}"
+                               context="{'search_default_customer':1, 'default_is_company': True}"
                                options="{&quot;always_reload&quot;: True, &quot;no_quick_create&quot;: True}"
                                domain="[('customer', '=', True)]" required="1"/>
                         <field name="partner_vat"/>

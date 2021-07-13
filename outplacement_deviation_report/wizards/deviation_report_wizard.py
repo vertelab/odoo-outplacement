@@ -266,7 +266,7 @@ class DeviationReportWizard(models.TransientModel):
                 headers=api.get_headers(),
                 params=querystring,
             )
-            if response.status_code not in (200, 201):
+            if response and response.status_code not in (200, 201):
                 res_dict = json.loads(response.text)
                 tracking_id = res_dict.get("error_id", "")
                 message = res_dict.get("message", "")

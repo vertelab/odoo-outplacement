@@ -45,7 +45,7 @@ class Outplacement(models.Model):
         if client_config:
             try:
                 response = client_config.post_request(self)
-                if response.status_code != 201:
+                if response and response.status_code != 201:
                     if already_sent:
                         raise UserError(_("You have already sent a final report "
                                           "for this outplacement"))

@@ -76,11 +76,12 @@ class SaleOrder(models.Model):
         # res = client_config.get_invoices(order_id="AKTTEST-2272")
         # res = client_config.get_invoices(order_id="AKTTEST-4925")
         # res = client_config.get_invoices(order_id="AKTTEST-4923")
-        for invoice in res.get('invoices', []):
-            invoice_id = invoice.get('invoice_number')
-            if invoice_id:
-                res_invoice = client_config.get_invoice(invoice_id=invoice_id)
-                new_invoice = self.create_invoice(res_invoice)
+        if res:
+            for invoice in res.get('invoices', []):
+                invoice_id = invoice.get('invoice_number')
+                if invoice_id:
+                    res_invoice = client_config.get_invoice(invoice_id=invoice_id)
+                    new_invoice = self.create_invoice(res_invoice)
 
     @api.one
     def create_invoice(self, invoice):

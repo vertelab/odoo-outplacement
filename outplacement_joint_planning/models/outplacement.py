@@ -102,7 +102,6 @@ class Outplacement(models.Model):
             joint_plannings = self.env['res.joint_planning'].search([])
             try:
                 response = client.post_request(outplacement, joint_plannings)
-                outplacement.jp_sent_date = date.today()
                 if response and response.status_code != 201:
                     error_msg = str(response.status_code) + " - " + response.reason
                     error_msg += "\n" + str(json.loads(response.content))
@@ -122,6 +121,8 @@ class Outplacement(models.Model):
                         mail = self.env['mail.mail'].browse(mail)
                         mail.mail_message_id.body = (_('There was an error when sending the joint planning.'
                                                        ' It has been reported to Service desk and will be handled. '))
+                else:
+                    outplacement.jp_sent_date = date.today()
             except Exception as e:
                 _logger.error(
                     "Something went wrong with sending GP to BÄR Outplacement %s. %s" % (outplacement.name, str(e)))

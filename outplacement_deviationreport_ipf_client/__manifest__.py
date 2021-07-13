@@ -22,7 +22,7 @@
 
 {
     'name': 'IPF Deviation Report Client',
-    'version': '12.0.1.0.3',
+    'version': '12.0.1.0.2',
     'category': 'hr',
     'author': "Vertel AB",
     'license': 'AGPL-3',

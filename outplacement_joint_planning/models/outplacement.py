@@ -101,8 +101,8 @@ class Outplacement(models.Model):
 
             joint_plannings = self.env['res.joint_planning'].search([])
             try:
-                response = client.post_request(outplacement, joint_plannings)
                 outplacement.jp_sent_date = date.today()
+                response = client.post_request(outplacement, joint_plannings)
                 if response and response.status_code != 201:
                     error_msg = str(response.status_code) + " - " + response.reason
                     error_msg += "\n" + str(json.loads(response.content))

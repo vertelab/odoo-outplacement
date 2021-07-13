@@ -8,7 +8,7 @@ The module is maintained here: https://github.com/vertelab/odoo-outplacement/tre
 
 Different version submitted
 ===========================
-
+1. v12.0.1.0.3 AFC-2566 Added request history to technical menu.
 
 Maintainers
 ~~~~~~~~~~~

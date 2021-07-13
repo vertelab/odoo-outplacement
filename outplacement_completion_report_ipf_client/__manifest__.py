@@ -22,18 +22,18 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'IPF CompletionReport Client',
-    'version': '12.0.0.1.2',
+    'version': '12.0.0.1.3',
     'category': 'Outplacement',
-    'author': "N-development",
+    'author': "Vertel AB",
     'license': 'AGPL-3',
     'website': 'https://vertel.se',
-    'depends': ['res_joint_planning_af', 'partner_firstname'],
+    'depends': ['res_joint_planning_af', 'partner_firstname', 'api_ipf'],
     'data': [
         "security/ir.model.access.csv",
         'views/client_config_views.xml',
     ],
     'installable': True,
     'images': [
-        'static/description/img.png'
+        'static/description/icon.png'
     ],
 }

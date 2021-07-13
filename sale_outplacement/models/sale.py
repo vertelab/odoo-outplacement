@@ -76,22 +76,23 @@ class SaleOrder(models.Model):
     def update_order_from_ordertjansten(self):
         res = self.env['ipf.showorder.client.config'].get_order_id(self.name)
         # ~ res = self.env['sale.order'].get_order_from_ordertjansten()
-        for artikel in res.get('artikelList', []):
-            if not artikel['tlrId'] in self.order_line.mapped('product_id.tlr_ref'):
-                product = self.env['product.product'].search([('tlr_ref', '=', artikel['tlrId'])], limit=1)
-                if not product:
-                    product = self.env['product.product'].create({
-                        "tlr_ref": artikel["tlrId"],
-                        "name": artikel["namn"],
-                        "list_price": artikel["nuvarandeAPris"],
+        if res:
+            for artikel in res.get('artikelList', []):
+                if not artikel['tlrId'] in self.order_line.mapped('product_id.tlr_ref'):
+                    product = self.env['product.product'].search([('tlr_ref', '=', artikel['tlrId'])], limit=1)
+                    if not product:
+                        product = self.env['product.product'].create({
+                            "tlr_ref": artikel["tlrId"],
+                            "name": artikel["namn"],
+                            "list_price": artikel["nuvarandeAPris"],
 
+                        })
+                    self.env['sale.order.line'].create({
+                        'order_id': self.id,
+                        'product_id': product.id,
+                        'qty': int(artikel['nuvarandeAntal']),
+                        'forvantatantal': int(artikel['forvantatAntal']),
                     })
-                self.env['sale.order.line'].create({
-                    'order_id': self.id,
-                    'product_id': product.id,
-                    'qty': int(artikel['nuvarandeAntal']),
-                    'forvantatantal': int(artikel['forvantatAntal']),
-                })
 
     @api.model
     def get_order_from_ordertjansten(self):

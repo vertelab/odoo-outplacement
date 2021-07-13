@@ -46,6 +46,7 @@ Maintainers
 ~~~~~~~~~~~
 
 This module is maintained by Vertel AB <www.vertel.se> on behalf of Arbetsförmedlingen <www.arbetsformedlingen.se>
+
 This module is maintained from: https://github.com/vertelab/odoo-outplacement/tree/Dev-12.0-Fenix-Sprint-02/outplacement_order_interpreter
 
 Contributors

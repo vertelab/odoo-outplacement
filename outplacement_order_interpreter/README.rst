@@ -1,7 +1,6 @@
 Outplacement Order Interpreter
 ==============================
 This module adds interpreter-functionality.
-This module is maintained from: https://github.com/vertelab/odoo-outplacement/tree/Dev-12.0-Fenix-Sprint-02/outplacement_order_interpreter
 
 Different version submitted
 ===========================
@@ -41,14 +40,20 @@ Different version submitted
 32. v12.0.1.7.4 AFC-2358 Added server action and updated code to update duration of booking in two decimal, Added text 'Please submit Interpreter' on kanban if booking is not delivered, Added breadcrumbs for activity.
 33. v12.0.1.7.5 AFC-2568 Made 'Interpreter Gender Preference' editable.
 34. v12.0.1.7.6 AFC-2581 Added dynamic date filter to outplacement interpreter booking filter view.
+35. Added info about informing the interpreter when the interpreter is cancelled in activity.js-file
 
 Maintainers
 ~~~~~~~~~~~
 
-This module is maintained by Vertel.
+This module is maintained by Vertel AB <www.vertel.se> on behalf of Arbetsförmedlingen <www.arbetsformedlingen.se>
+This module is maintained from: https://github.com/vertelab/odoo-outplacement/tree/Dev-12.0-Fenix-Sprint-02/outplacement_order_interpreter
 
 Contributors
 ~~~~~~~~~~~~
+* Anders Wallenquist <anders.wallenquist@vertel.se>
 * Anil Kesariya <anil.r.kesariya@gmail.com>
+* Fredrik Arvas <fredrik.arvas@vertel.se>
+* Rupareliya Hemangi <rupareliyahemangi145@gmail.com>
+* Nils Nyman-Waara <nils.nyman-waara@vertel.se>
 
 

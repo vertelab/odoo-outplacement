@@ -89,9 +89,9 @@
         </field>
     </record>
     <record model="ir.actions.act_window" id="ipf_completion_report_client_config_request_history_action_window">
-    <field name="name">IPF CompletionReport Client Config Request History</field>
-    <field name="res_model">ipf.completion_report.request.history</field>
-    <field name="view_mode">tree</field>
+		<field name="name">IPF CompletionReport Client Config Request History</field>
+		<field name="res_model">ipf.completion_report.request.history</field>
+		<field name="view_mode">tree</field>
     </record>
     <menuitem id="menu_ipf_completion_report_client_config_request_history"
               name="IPF Joint Planning"

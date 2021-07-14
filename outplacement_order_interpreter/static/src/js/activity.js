@@ -38,6 +38,7 @@ var Activity = MailActivity.include({
                                                          1 Informera tolken om att ni inte kan använda tiden.<br/>
                                                          2 Skicka ett epostmeddelande till&nbsp<a href="mailto:team-crm@arbetsformedlingen.se?subject=Avboka tolk med referens ' + activity.interpreter_booking_ref + ' och KA-Nr: ' + activity.interpreter_ka_nr + '."> team-crm@arbetsformedlingen.se</a> &nbsp och ange referensnummer&nbsp'+ activity.interpreter_booking_ref +'.<br/>
                                                          Aktuellt KA-Nr:&nbsp'+activity.interpreter_ka_nr+'.<br/>
+                                                         3 Klicka på inleverera tolken.<br/>
                                                          </p>'),
                                            'technical':'false',
                                            'buttons':[

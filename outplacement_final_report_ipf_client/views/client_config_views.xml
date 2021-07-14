@@ -112,8 +112,8 @@
         <field name="res_model">ipf.final_report.request.history</field>
         <field name="view_mode">tree</field>
     </record>
-    <menuitem id="ipf_final_report_client_config_request_history"
-              name="IPF Final Report"
+    <menuitem id="menu_ipf_final_report_client_config_request_history"
+              name="IPF Final"
               action="ipf_final_report_client_config_request_history_action_window"
               parent="api_ipf.client_config_request_history_parent_menu"
               sequence="5"/>

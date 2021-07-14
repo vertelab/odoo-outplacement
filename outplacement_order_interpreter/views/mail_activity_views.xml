@@ -579,6 +579,7 @@
         <field name="name">Interpreters</field>
         <field name="res_model">mail.activity</field>
         <field name="view_mode">tree,form,pivot,calendar</field>
+        <field name="domain">['|', ('active', '=', True), ('active', '=', False)]</field>
         <field name="search_view_id"
                ref="outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking"/>
         <field name="context">{'from_outplacement_interpreters_menu':1}</field>

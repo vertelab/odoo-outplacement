@@ -94,7 +94,7 @@
         <field name="res_model">ipf.report.request.history</field>
         <field name="view_mode">tree</field>
     </record>
-    <menuitem id="ipf_deviation_report_client_config_request_history"
+    <menuitem id="menu_ipf_deviation_report_client_config_request_history"
               name="IPF Deviation Report"
               action="ipf_deviation_report_client_config_request_history_action_window"
               parent="api_ipf.client_config_request_history_parent_menu"

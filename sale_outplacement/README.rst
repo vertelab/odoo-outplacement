@@ -23,6 +23,8 @@ Different version submitted
 10. V 12.0.1.1.1 AFC-2456 Removed the default value for language requested field which is “False”.
 11. V 12.0.1.1.2 AFC-2356 Added Sales & Invoiced smart buttons and Invoice status field in outplacement.
 12. V 12.0.1.1.3 AFC-2560 Improved code to remove error.
+13. V 12.0.1.1.4 AFC-2443-2433 Updated access right for dafa hide menus
+
 
 Usage
 =====

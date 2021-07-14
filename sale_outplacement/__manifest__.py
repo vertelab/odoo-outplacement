@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Sale outplacement',
-    'version': '12.0.1.1.3',
+    'version': '12.0.1.1.4',
     'category': 'Outplacement',
     'maintainer': "Arbetsformedlingen",
     'author': "Vertel AB",
@@ -43,7 +43,8 @@
         'base_user_groups_dafa',
         'account',
         'calendar',
-        'hr_holidays'
+        'hr_holidays',
+        'hr_office'
     ],
     'data': [
         'security/security_view.xml',

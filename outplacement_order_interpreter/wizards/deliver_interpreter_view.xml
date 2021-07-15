@@ -2,30 +2,30 @@
 <odoo>
 
     <record id="deliver_interpreter" model="ir.ui.view">
-            <field name="name">interpreter_delivery.wizard</field>
-            <field name="model">outplacement.interpreter_delivery.wizard</field>
-            <field name="arch" type="xml">
+        <field name="name">interpreter_delivery.wizard</field>
+        <field name="model">outplacement.interpreter_delivery.wizard</field>
+        <field name="arch" type="xml">
 
-                <form>
-                    <group>
-                        <field name="mail_activity_id" invisible="1"/>
-                        <field name="booking_ref"/>
-                        <field name="kanr"/>
-                        <!-- Not used by tolkportalen yet.
-                        <field name="follow_up_code"/>
-                        <field name="office_code"/> -->
-                        <field name="project_code" invisible="1"/>
-                        <field name="absent_interpreter"/>
-                        <field name="additional_time"/>
-                    </group>
+            <form>
+                <group>
+                    <field name="mail_activity_id" invisible="1"/>
+                    <field name="booking_ref"/>
+                    <field name="kanr"/>
+                    <!-- Not used by tolkportalen yet.
+                    <field name="follow_up_code"/>
+                    <field name="office_code"/> -->
+                    <field name="project_code" invisible="1"/>
+                    <field name="absent_interpreter"/>
+                    <field name="additional_time"/>
+                </group>
 
-                    <footer>
-                        <button name="deliver_interpreter"
-                                string="Inleverera"
-                                type="object"/>
-                    </footer>
-                </form>
-            </field>
+                <footer>
+                    <button name="deliver_interpreter"
+                            string="Inleverera"
+                            type="object"/>
+                </footer>
+            </form>
+        </field>
     </record>
 
     <record model="ir.actions.act_window" id="deliver_interpreter_action">

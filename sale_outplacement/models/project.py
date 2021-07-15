@@ -1,24 +1,26 @@
 import base64
 import logging
+from datetime import datetime
+from odoo.exceptions import ValidationError, AccessError, Warning
+from odoo.modules.module import get_module_resource
 
 from odoo import api, fields, models, tools, SUPERUSER_ID
 from odoo import tools, _
-from odoo.exceptions import ValidationError, AccessError, Warning
-from odoo.modules.module import get_module_resource
-from datetime import datetime
 
 _logger = logging.getLogger(__name__)
 
 xmlid_module = '__outplacement__'
+
+
 class ProjectTask(models.Model):
     _inherit = "project.task"
 
     start_date = fields.Datetime(string="Start date")
     end_date = fields.Datetime(string="End date")
-    child_end_date = fields.Datetime(string="End date", 
-                                       related="end_date",
-                                       readonly=False)
-    child_start_date = fields.Datetime(string="Start date", 
+    child_end_date = fields.Datetime(string="Child End date",
+                                     related="end_date",
+                                     readonly=False)
+    child_start_date = fields.Datetime(string="Child Start date",
                                        related="start_date",
                                        readonly=False)
     duration = fields.Float(string="Duration")
@@ -95,7 +97,7 @@ class ProjectTask(models.Model):
     @api.model
     def init_joint_planning_stages(self, outplacement_id):
         for stage in self.env["project.task.type"].search(
-            [("is_outplacement", "=", True)]
+                [("is_outplacement", "=", True)]
         ):
             stage.outplacement_ids = [(4, outplacement_id)]
 
@@ -112,11 +114,11 @@ class ProjectTask(models.Model):
             stage_todo = self.env.ref(".".join([xmlid_module, 'stage_todo']))
             stage_optional = self.env.ref(".".join([xmlid_module, 'stage_optional']))
         except ValueError:
-                raise ValueError(_("Not all stages were found"))
+            raise ValueError(_("Not all stages were found"))
         if self.task_type == "mandatory" and self.stage_id.id == stage_optional.id:
             self.stage_id = stage_todo.id
             raise ValidationError(
-                _("%s is a required task and can not be made optional.") 
+                _("%s is a required task and can not be made optional.")
                 % self.name)
         elif self.task_type == "optional" and (self.stage_id.id == stage_todo.id and not self.child_ids):
             self.stage_id = stage_optional.id
@@ -131,32 +133,32 @@ class ProjectTask(models.Model):
         elif not self.task_type and (self.stage_id.id == stage_todo.id or self.stage_id.id == stage_optional.id):
             self.stage_id == False
             raise ValidationError(_("You are not allowed to add new required or optional tasks."))
-        
+
     @api.depends("stage_id")
     def move_children(self):
         try:
             stage_done = self.env.ref(".".join([xmlid_module, 'stage_done']))
         except ValueError:
-                raise ValueError(_("Done stage not found"))
+            raise ValueError(_("Done stage not found"))
         if self.stage_id.id == stage_done.id:
-            for child in self.child_ids: 
+            for child in self.child_ids:
                 # close task here (how?)
                 child.stage_id = stage_done.id
-    
+
     @api.multi
     def unlink(self):
         for task in self:
             if task.task_type == "mandatory":
                 raise Warning(_('You are not allowed to remove requred tasks'))
         return models.Model.unlink(self)
-    
+
     @api.model
     def create(self, vals):
         try:
             stage_todo = self.env.ref(".".join([xmlid_module, 'stage_todo']))
             stage_optional = self.env.ref(".".join([xmlid_module, 'stage_optional']))
         except ValueError:
-                raise ValueError(_("Not all stages were found"))
+            raise ValueError(_("Not all stages were found"))
         if vals.get('parent_id'):
             parent = self.env['project.task'].browse(vals['parent_id'])
             if parent.task_type != "optional":
@@ -205,12 +207,12 @@ class ProjectTaskType(models.Model):
         if default_outplacement_id:
             shared_stages = self.filtered(
                 lambda x: len(x.outplacement_ids) > 1
-                and default_outplacement_id in x.outplacement_ids.ids
+                          and default_outplacement_id in x.outplacement_ids.ids
             )
             tasks = (
                 self.env["project.task"]
-                .with_context(active_test=False)
-                .search(
+                    .with_context(active_test=False)
+                    .search(
                     [
                         ("outplacement_id", "=", default_outplacement_id),
                         ("stage_id", "in", self.ids),

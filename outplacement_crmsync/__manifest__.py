@@ -20,20 +20,9 @@
 ################################################################################
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
-    'name': 'Outplacement CRM Sync',
-    'version': '12.0.1.0.1',
+    'name': 'Outplacement Sync from CRM',
+    'version': '12.0.1.1.5',
     'category': 'Outplacement',
-    'description': """This module sync data to CRM ...
-        
-        * outplacement_crmsync.server_url  - http[s]://x.y.se
-        * outplacement_crmsync.server_host - <domain>
-        * outplacement_crmsync.server_port - 8069
-        * outplacement_crmsync.server_db - database
-        * outplacement_crmsync.server_protocol - jsonrpc+ssl
-        * outplacement_crmsync.server_login - userid
-        * outplacement_crmsync.server_pw - password
-        
-        """,
     'author': "Vertel AB",
     'license': 'AGPL-3',
     'website': 'https://vertel.se',
@@ -42,6 +31,7 @@
         'outplacement_partner_jobs',
         # ~ 'outplacement_partner_skills',
         'partner_firstname',
+        'partner_view_360_DAFA'
     ],
     'data': [
         'data/data.xml',

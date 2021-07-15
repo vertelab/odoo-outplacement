@@ -1,11 +1,11 @@
 import base64
+import logging
 import uuid
-
 from datetime import timedelta
-from odoo import api, fields, models, tools, _
 from odoo.modules.module import get_module_resource
 
-import logging
+from odoo import api, fields, models, tools, _
+
 _logger = logging.getLogger(__name__)
 
 
@@ -34,7 +34,7 @@ class Outplacement(models.Model):
 
     name = fields.Char(string="Name")
     stage_id = fields.Many2one(comodel_name='outplacement.stage',
-                               string="State",
+                               string="Status",
                                ondelete='restrict',
                                track_visibility='onchange',
                                index=True, copy=False,
@@ -43,15 +43,17 @@ class Outplacement(models.Model):
                                )
     employee_id = fields.Many2one(
         'hr.employee', string="Coach", group_expand='_read_group_employee_ids')
+    syv_id = fields.Many2one(
+        'hr.employee', string="SYV", group_expand='_read_group_employee_ids')
     color = fields.Integer('Kanban Color Index')
     meeting_remote = fields.Selection(string='Meeting type',
                                       selection=[('no', 'On Premise'),
-                                                 ('yes', 'Remote')],)
+                                                 ('yes', 'Remote')], )
     uniq_ref = fields.Char(string='Uniq Id', size=64, trim=True)
     performing_operation_id = fields.Many2one(
         comodel_name='performing.operation',
         string='Performing Operation',
-        group_expand='_read_group_performing_operation_ids',)
+        group_expand='_read_group_performing_operation_ids', )
     late = fields.Boolean(string="Sent late")
     interruption = fields.Boolean(string="Interrupted")
     incomplete = fields.Boolean(string="Incomplete")
@@ -62,7 +64,7 @@ class Outplacement(models.Model):
     image = fields.Binary(
         "Photo", default=_default_image, attachment=True,
         help="This field holds the image used as photo for the employee, "
-        "limited to 1024x1024px.")
+             "limited to 1024x1024px.")
     image_medium = fields.Binary(
         "Medium-sized photo", attachment=True,
         help="Medium-sized photo of the employee. It is automatically "
@@ -82,14 +84,14 @@ class Outplacement(models.Model):
     partner_city = fields.Char(related="partner_id.city", readonly=False)
     partner_state_id = fields.Many2one(related="partner_id.state_id",
                                        readonly=False)
-    email_from = fields.Char(related="partner_id.email")
+    email_from = fields.Char(related="partner_id.email", string="Email From")
     # Because of a strange bug with partner_state_id this field must
     # have this name.
     country_id = fields.Many2one(related="partner_id.country_id",
                                  readonly=False)
     partner_mobile = fields.Char(string="Phone",
-                                related="partner_id.mobile",
-                                readonly=False)
+                                 related="partner_id.mobile",
+                                 readonly=False)
     partner_email = fields.Char(string="Email",
                                 related="partner_id.email",
                                 readonly=False)
@@ -107,6 +109,21 @@ class Outplacement(models.Model):
     sprakstod = fields.Char()
 
     show_2nd_line = fields.Boolean(compute="_compute_readonly")
+    jobseeker_category_id = fields.Many2one(comodel_name="res.partner.skat", related='partner_id.jobseeker_category_id',
+                                            store=True)  # is added in partner_extension_af
+    jobseeker_category = fields.Char(
+        string="Jobseeker category", compute="combine_category_name_code", store=True
+    )
+
+    @api.multi
+    @api.depends('jobseeker_category_id')
+    def combine_category_name_code(self):
+        for rec in self:
+            if rec.jobseeker_category_id:
+                rec.jobseeker_category = "%s %s" % (
+                    rec.jobseeker_category_id.code,
+                    rec.jobseeker_category_id.name,
+                )
 
     @api.one
     def _compute_readonly(self):
@@ -246,7 +263,7 @@ class Outplacement(models.Model):
                     ('partner_id', '=', False),
                     ('email_from', '=', new_partner.email),
                     ('stage_id.fold', '=', False)]).write(
-                        {'partner_id': new_partner.id})
+                    {'partner_id': new_partner.id})
         return super(Outplacement, self)._message_post_after_hook(
             message, *args, **kwargs)
 
@@ -257,15 +274,15 @@ class Outplacement(models.Model):
         if product:
             for activity in product.mail_activity_ids:
                 self.env['mail.activity'].create({
-                        'res_id': record.id,
-                        'res_model': record._name,
-                        'res_model_id': self.env['ir.model'].search(
-                            [('model', '=', record._name)]).id,
-                        'activity_type_id': activity.activity_type_id.id,
-                        'date_deadline': fields.Date.today() + timedelta(
-                            days=activity.due_days),
-                        'summary': activity.summary,
-                        'user_id': record.employee_id.user_id.id,
+                    'res_id': record.id,
+                    'res_model': record._name,
+                    'res_model_id': self.env['ir.model'].search(
+                        [('model', '=', record._name)]).id,
+                    'activity_type_id': activity.activity_type_id.id,
+                    'date_deadline': fields.Date.today() + timedelta(
+                        days=activity.due_days),
+                    'summary': activity.summary,
+                    'user_id': record.employee_id.user_id.id,
                 })
 
 

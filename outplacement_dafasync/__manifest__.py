@@ -23,20 +23,13 @@
     'name': 'Outplacement DAFA Sync',
     'version': '12.0.1.0.1',
     'category': 'Outplacement',
-    'description': """This module sync data from CRM to DAFA 
-        
-        partnersyncCrm2Dafa(ssn,host,user,password)
-        
-        This is the CRM-part of the DAFA sync
-        
-        """,
     'author': "Vertel AB",
     'license': 'AGPL-3',
     'website': 'https://vertel.se',
     "depends": [
         'partner_ssn',
         'partner_firstname',
-        #'partner_education_views',
+        # 'partner_education_views',
         'partner_desired_jobs',
     ],
     'installable': True,

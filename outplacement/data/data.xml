@@ -1,43 +1,43 @@
 <odoo>
-  <data noupdate="0">
-    <record id="incoming_stage" model="outplacement.stage">
-      <field name="name">Incoming</field>
-      <field name="sequence">10</field>
-    </record>
-    <record id="in-progress_stage" model="outplacement.stage">
-      <field name="name">In-Progress</field>
-      <field name="sequence">20</field>
-    </record>
-    <record id="outplacement.sent_stage" model="outplacement.stage">
-      <field name="fold">1</field>
-      <field name="name">Sent</field>
-      <field name="sequence">30</field>
-    </record>
-    <record id="outplacement.cancelled_stage" model="outplacement.stage">
-      <field name="fold">1</field>
-      <field name="name">Cancelled</field>
-      <field name="sequence">40</field>
-    </record>
+    <data noupdate="0">
+        <record id="incoming_stage" model="outplacement.stage">
+            <field name="name">Incoming</field>
+            <field name="sequence">10</field>
+        </record>
+        <record id="in-progress_stage" model="outplacement.stage">
+            <field name="name">In-Progress</field>
+            <field name="sequence">20</field>
+        </record>
+        <record id="outplacement.sent_stage" model="outplacement.stage">
+            <field name="fold">1</field>
+            <field name="name">Sent</field>
+            <field name="sequence">30</field>
+        </record>
+        <record id="outplacement.cancelled_stage" model="outplacement.stage">
+            <field name="fold">1</field>
+            <field name="name">Cancelled</field>
+            <field name="sequence">40</field>
+        </record>
 
-    <!-- Removed for now, leaving code in case we need it later. -->
-    <!-- <record id="ir_actions_start_outplacement" model="ir.actions.server">
-      <field name="name">Start outplacement</field>
-      <field name="type">ir.actions.server</field>
-      <field name="model_id" ref="model_outplacement" />
-      <field name="binding_model_id" ref="outplacement.model_outplacement" />
-      <field name="state">code</field>
-      <field name="code">
-env['outplacement'].create_activities(record)
-      </field>
-    </record> -->
+        <!-- Removed for now, leaving code in case we need it later. -->
+        <!-- <record id="ir_actions_start_outplacement" model="ir.actions.server">
+          <field name="name">Start outplacement</field>
+          <field name="type">ir.actions.server</field>
+          <field name="model_id" ref="model_outplacement" />
+          <field name="binding_model_id" ref="outplacement.model_outplacement" />
+          <field name="state">code</field>
+          <field name="code">
+    env['outplacement'].create_activities(record)
+          </field>
+        </record> -->
 
-    <record id="seq_outplacement_id" model="ir.sequence">
-        <field name="name">Outplacement Number</field>
-        <field name="code">outplacement.uniqid</field>
-        <field name="prefix">AVR</field>
-        <field name="padding">3</field>
-        <field name="company_id" eval="False"/>
-    </record>
+        <record id="seq_outplacement_id" model="ir.sequence">
+            <field name="name">Outplacement Number</field>
+            <field name="code">outplacement.uniqid</field>
+            <field name="prefix">AVR</field>
+            <field name="padding">3</field>
+            <field name="company_id" eval="False"/>
+        </record>
 
-  </data>
+    </data>
 </odoo>

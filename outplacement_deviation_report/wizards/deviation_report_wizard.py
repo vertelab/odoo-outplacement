@@ -1,15 +1,16 @@
 import json
 import logging
 import uuid
+from odoo.exceptions import UserError, Warning
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError, Warning
 
 _logger = logging.getLogger(__name__)
 
 
 class DeviationReportWizard(models.TransientModel):
     _name = "outplacement.deviation.report.wizard"
+    _description = "Outplacement Deviation Report Wizard"
 
     outplacement_id = fields.Many2one(
         comodel_name="outplacement",
@@ -44,9 +45,9 @@ class DeviationReportWizard(models.TransientModel):
     #      related="outplacement_id.management_team_id.af_signature",
     #      readonly=True,
     #      string='Responsible superviser')
-    performing_operation_name = fields.Char(
-        related="outplacement_id.performing_operation_id.name", readonly=True
-    )
+    performing_operation_name = fields.Char(string="Performing Operation Name",
+                                            related="outplacement_id.performing_operation_id.name", readonly=True
+                                            )
     performing_operation_nr = fields.Integer(
         related="outplacement_id.performing_operation_id.ka_nr", readonly=True
     )
@@ -157,8 +158,8 @@ class DeviationReportWizard(models.TransientModel):
         # A013 = KVL
         service_code = (
             self.env["ir.config_parameter"]
-            .sudo()
-            .get_param("dafa.service_code", "A013")
+                .sudo()
+                .get_param("dafa.service_code", "A013")
         )
         if self.deviation_type == "leave":
             franvaro_dict = {
@@ -257,23 +258,28 @@ class DeviationReportWizard(models.TransientModel):
 
         querystring = {"client_secret": api.client_secret, "client_id": api.client_id}
         url = api.get_url("")
-        response = api.request_call(
-            method="POST",
-            url=url,
-            payload=json.dumps(payload),
-            headers=api.get_headers(),
-            params=querystring,
-        )
-        if response.status_code not in (200, 201):
-            res_dict = json.loads(response.text)
-            tracking_id = res_dict.get("error_id", "")
-            message = res_dict.get("message", "")
-            cause_dict = res_dict.get("cause", {})
-            code = cause_dict.get("code", response.status_code)
-            cause_message = cause_dict.get("message", _("Unknown cause"))
-            error_text = _("Error %s: %s\nCause: %s\nTracking ID: %s") % (code, message, cause_message, tracking_id)
-            _logger.debug(f"Error: {res_dict}")
-            raise UserError(error_text)
-        self.outplacement_id.message_post(
-            body=_("Deviation report sent")
-        )
+        try:
+            response = api.request_call(
+                method="POST",
+                url=url,
+                payload=json.dumps(payload),
+                headers=api.get_headers(),
+                params=querystring,
+            )
+            if response and response.status_code not in (200, 201):
+                res_dict = json.loads(response.text)
+                tracking_id = res_dict.get("error_id", "")
+                message = res_dict.get("message", "")
+                cause_dict = res_dict.get("cause", {})
+                code = cause_dict.get("code", response.status_code)
+                cause_message = cause_dict.get("message", _("Unknown cause"))
+                error_text = _("Error %s: %s\nCause: %s\nTracking ID: %s") % (code, message, cause_message, tracking_id)
+                _logger.error(f"Error: {res_dict}")
+                raise UserError(error_text)
+            self.outplacement_id.message_post(
+                body=_("Deviation report sent")
+            )
+        except Exception as e:
+            _logger.error(
+                "Something went wrong with sending Deviation Report for Outplacement %s. %s" % (
+                self.outplacement_id.name, str(e)))

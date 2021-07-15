@@ -21,13 +21,14 @@
 #                                                                      #
 ########################################################################
 
-from odoo.tools import pycompat
 import json
-import uuid
 import logging
 import requests
-from odoo import api, models, fields, _
+import uuid
 from odoo.exceptions import Warning
+from odoo.tools import pycompat
+
+from odoo import api, models, fields, _
 
 _logger = logging.getLogger(__name__)
 
@@ -153,7 +154,7 @@ class ClientConfig(models.Model):
         if len(unikt_id) == 1:
             unikt_id = unikt_id[0] + '_0'
         else:
-            unikt_id = f'{unikt_id[0]}_{int(unikt_id[1])+1}'
+            unikt_id = f'{unikt_id[0]}_{int(unikt_id[1]) + 1}'
         outplacement.write({'uniq_ref': unikt_id})
 
         payload = {
@@ -180,7 +181,7 @@ class ClientConfig(models.Model):
         for planned in self.env['res.joint_planning'].search(
                 [('send2server', '=', True)], order="sequence"):
             _logger.debug("send2server for %s %s" % (planned.activity_id,
-                                                    planned.send2server))
+                                                     planned.send2server))
             task = outplacement.task_ids.filtered(
                 lambda t: t.activity_id == planned.activity_id)
             payload['innehall'].append({
@@ -190,7 +191,7 @@ class ClientConfig(models.Model):
                 'beskrivning': task.description if task else '',
             })
         _logger.warn(payload)
-        api.post_report(payload)
+        response = api.post_report(payload)
 
     def test_post_report(self):
         payload = {

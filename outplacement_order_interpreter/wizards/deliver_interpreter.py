@@ -1,9 +1,9 @@
 import datetime
 import json
 import logging
+from odoo.exceptions import UserError
 
 from odoo import models, fields, api, _  # noqa:F401
-from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -11,6 +11,8 @@ _logger = logging.getLogger(__name__)
 class InterpreterDeliveryWizard(models.TransientModel):
     """Wizard for delivery of an interpreter booking."""
     _name = 'outplacement.interpreter_delivery.wizard'
+    _description = "Outplacement Intepreter Delivery Wizard"
+
     mail_activity_id = fields.Many2one(
         comodel_name='mail.activity', string='Mail Activity',
         default=lambda self: self.env['mail.activity'].browse(
@@ -88,7 +90,7 @@ class InterpreterDeliveryWizard(models.TransientModel):
                        404: 'Faulty reference ({ref}),'
                             'could not find booking\n{msg}',
                        500: 'Unknown Error\n{msg}'}
-        if status_code in (200, ):
+        if status_code in (200,):
             return
         elif status_code in error_codes:
             msg = json.loads(response.text).get('message')
@@ -98,7 +100,7 @@ class InterpreterDeliveryWizard(models.TransientModel):
             raise UserError(_(error_codes[status_code]).format(
                 ref=ref, msg=msg))
         else:
-            msg = 'Unkown status_code:\n '\
+            msg = 'Unkown status_code:\n ' \
                   '{response.status_code}\n{response.text}'
             _logger.error(msg.format(response=response))
             raise UserError(_(msg).format(response=response))
@@ -116,7 +118,7 @@ class InterpreterDeliveryWizard(models.TransientModel):
                 self.env.uid).partner_id.id,
             'res_id': activity.res_id,
             'model': activity.res_model,
-            })
+        })
         activity.additional_time = self.additional_time
 
     def log_to_accounting(self):

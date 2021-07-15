@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <data>
-    <record model="ir.ui.view" id="ipf_client_config_view_list">
+    <record model="ir.ui.view" id="ipf_completion_report_client_config_view_list">
         <field name="name">IPF CompletionReport Client Config View List</field>
         <field name="model">ipf.completion_report.client.config</field>
         <field name="arch" type="xml">
@@ -13,7 +13,7 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="ipf_client_config_view_form">
+    <record model="ir.ui.view" id="ipf_completion_report_client_config_view_form">
         <field name="name">IPF CompletionReport Client Config View Form</field>
         <field name="model">ipf.completion_report.client.config</field>
         <field name="arch" type="xml">
@@ -24,51 +24,82 @@
                 </header>
                 <sheet>
                     <group>
-                    <group>
-                        <field name="url"/>
-                        <field name="environment"/>
-                        <field name="client_id"/>
-                        <field name="client_secret" password="True"/>
-                    </group>
-                    <group string="Requests" colspan="4">
-                        <field name="request_history_ids" nolabel="1"
-                               colspan="4">
-                            <tree>
-                                <field name="url"/>
-                                <field name="method"/>
-                                <field name="response_code"/>
-                                <field name="message"/>
-                            </tree>
-                            <form>
-                                <group>
+                        <group>
+                            <field name="url"/>
+                            <field name="environment"/>
+                            <field name="client_id"/>
+                            <field name="client_secret" password="True"/>
+                        </group>
+                        <group string="Requests" colspan="4">
+                            <field name="request_history_ids" nolabel="1"
+                                   colspan="4">
+                                <tree>
                                     <field name="url"/>
                                     <field name="method"/>
-                                    <field name="payload"/>
-                                    <field name="request_headers"/>
-                                    <field name="params"/>
                                     <field name="response_code"/>
-                                    <field name="response_headers"/>
                                     <field name="message"/>
-                                </group>
-                            </form>
-                        </field>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="url"/>
+                                        <field name="method"/>
+                                        <field name="payload"/>
+                                        <field name="request_headers"/>
+                                        <field name="params"/>
+                                        <field name="response_code"/>
+                                        <field name="response_headers"/>
+                                        <field name="message"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </group>
                     </group>
-                </group>
                 </sheet>
 
             </form>
         </field>
     </record>
 
-    <record model="ir.actions.act_window" id="ipf_client_config_action_window">
+    <record model="ir.actions.act_window" id="ipf_completion_report_client_config_act_window">
         <field name="name">IPF CompletionReport Client Config</field>
         <field name="res_model">ipf.completion_report.client.config</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="ipf_client_config"
-              name="IPF CompletionReport Client Config"
-              action="ipf_client_config_action_window"
-              parent="base.menu_custom"
-              sequence="120"/>
+    <menuitem id="menu_ipf_completion_report_client_config"
+              name="IPF Joint Planning"
+              action="ipf_completion_report_client_config_act_window"
+              parent="api_ipf.api_client_config_parent_menu"
+              sequence="3"/>
+
+    <record model="ir.ui.view" id="ipf_completion_report_client_config_req_history_view_list">
+        <field name="name">IPF CompletionReport Client Config Request History View List</field>
+        <field name="model">ipf.completion_report.request.history</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="config_id"/>
+                <field name="url"/>
+                <field name="method"/>
+                <field name="payload"/>
+                <field name="request_headers"/>
+                <field name="response_headers"/>
+                <field name="params"/>
+                <field name="response_code"/>
+                <field name="message"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="ipf_completion_report_client_config_req_history_act_window">
+        <field name="name">IPF CompletionReport Client Config Request History</field>
+        <field name="res_model">ipf.completion_report.request.history</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem id="menu_ipf_completion_report_client_config_request_history"
+              name="IPF Joint Planning"
+              action="ipf_completion_report_client_config_req_history_act_window"
+              parent="api_ipf.client_config_request_history_parent_menu"
+              sequence="3"/>
+
 </data>

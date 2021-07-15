@@ -23,12 +23,6 @@
     'name': 'Outplacement partner skills',
     'version': '12.0.2.0',
     'category': '',
-    'description': """
-Adds skills to the Outplacement view
-================================================================================================
-- Lägg till en modul för kompetenser - AFC-1152
-- This module adds a tab with skills to the contact-card based partner_skills
-""",
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',

@@ -1,60 +1,59 @@
 <odoo>
-  <data>
-    <record id="ir_actions_update_jobseeker_respartner" model="ir.actions.server">
-      <field name="name">Get JobSeeker from CRM</field>
-      <field name="type">ir.actions.server</field>
-      <field name="model_id" ref="outplacement.model_outplacement" />
-      <field name="binding_model_id" ref="outplacement.model_outplacement" />
-      <field name="state">code</field>
-      <field name="code">record.partner_id.get_jobseeker_data()</field>
-    </record>
-    <record id="ir_actions_update_jobseeker" model="ir.actions.server">
-      <field name="name">CRMSYNC: Test connection</field>
-      <field name="type">ir.actions.server</field>
-      <field name="model_id" ref="outplacement.model_outplacement" />
-      <field name="binding_model_id" ref="outplacement.model_outplacement" />
-      <field name="state">code</field>
-      <field name="code">record.check_connection()</field>
-    </record>
-    <record id="ir_actions_update_jobseekerII" model="ir.actions.server">
-      <field name="name">Get JobSeeker (outplacement) from CRM II (odoorpc-biblioteket)</field>
-      <field name="type">ir.actions.server</field>
-      <field name="model_id" ref="outplacement.model_outplacement" />
-      <field name="binding_model_id" ref="outplacement.model_outplacement" />
-      <field name="state">code</field>
-      <field name="code">record.get_jobseeker_dataII()</field>
-    </record>
-    <record id="ir_actions_update_jobseekerIII" model="ir.actions.server">
-      <field name="name">Get JobSeeker (outplacement) from CRM III (utan komplexa data)</field>
-      <field name="type">ir.actions.server</field>
-      <field name="model_id" ref="outplacement.model_outplacement" />
-      <field name="binding_model_id" ref="outplacement.model_outplacement" />
-      <field name="state">code</field>
-      <field name="code">record.get_jobseeker_dataIII()</field>
-    </record>
-    <record id="ir_actions_update_jobseekerIV" model="ir.actions.server">
-      <field name="name">Get JobSeeker (outplacement) from CRM IV (utan parner_ssn/med demodata brandon)</field>
-      <field name="type">ir.actions.server</field>
-      <field name="model_id" ref="outplacement.model_outplacement" />
-      <field name="binding_model_id" ref="outplacement.model_outplacement" />
-      <field name="state">code</field>
-      <field name="code">record.get_jobseeker_dataIV()</field>
-    </record>
-    <record id="ir_actions_update_jobseekerIV" model="ir.actions.server">
-      <field name="name">Get JobSeeker (outplacement) from CRM V (utan parner_ssn/med demodata brandon)</field>
-      <field name="type">ir.actions.server</field>
-      <field name="model_id" ref="outplacement.model_outplacement" />
-      <field name="binding_model_id" ref="outplacement.model_outplacement" />
-      <field name="state">code</field>
-      <field name="code">record.get_jobseeker_dataV()</field>
-    </record>
-    <record id="ir_actions_update_managament_team" model="ir.actions.server">
-      <field name="name">Get Management team from CRM</field>
-      <field name="type">ir.actions.server</field>
-      <field name="model_id" ref="outplacement.model_outplacement" />
-      <field name="binding_model_id" ref="outplacement.model_outplacement" />
-      <field name="state">code</field>
-      <field name="code">record.get_af_management_team()</field>
-    </record>
-  </data>
+    <data>
+        <record id="ir_actions_update_jobseeker" model="ir.actions.server">
+            <field name="name">CRMSYNC: Test connection</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="outplacement.model_outplacement"/>
+            <field name="binding_model_id" ref="outplacement.model_outplacement"/>
+            <field name="state">code</field>
+            <field name="code">record.check_connection()</field>
+        </record>
+        <record id="ir_actions_update_jobseekerIV" model="ir.actions.server">
+            <field name="name">Get JobSeeker (outplacement) from CRM V (utan parner_ssn/med demodata brandon)</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="outplacement.model_outplacement"/>
+            <field name="binding_model_id" ref="outplacement.model_outplacement"/>
+            <field name="state">code</field>
+            <field name="code">record.get_jobseeker_dataV()</field>
+        </record>
+        <record id="ir_actions_update_managament_team" model="ir.actions.server">
+            <field name="name">Get Management team from CRM</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="outplacement.model_outplacement"/>
+            <field name="binding_model_id" ref="outplacement.model_outplacement"/>
+            <field name="state">code</field>
+            <field name="code">record.get_af_management_team()</field>
+        </record>
+<!--         Temporary fix to update jobseeker category. Should be removed before 2021-SEPT-01-->
+         <record id="ir_actions_update_jobseeker_from_partner" model="ir.actions.server">
+            <field name="name">Update JobSeeker (contacts) from CRM</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="binding_model_id" ref="base.model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">records.update_jobseeker_data()</field>
+        </record>
+        <record id="email_temp_to_report_error_on_get_jobseeker_from_crm" model="mail.template">
+            <field name="name">Outplacement Report error on CRM Sync Get Jobseeker</field>
+            <field name="model_id" ref="outplacement.model_outplacement"/>
+            <field name="email_from">${(user.email or '')|safe}</field>
+            <field name="email_to">${ctx.get('email_to')}</field>
+            <field name="subject">Error on Getting Jobseeker From CRM Outplacement - ${object.name}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        <h4>Error on Getting Jobseeker From CRM Outplacement ${object.name}</h4>
+                        <br/>
+                        <b>Record:</b>
+                        <a href="${ctx.get('url')}">${object.name}</a>
+                        <br/>
+                        <b>Error:</b>" + ${ctx.get('error_msg')}
+                    </p>
+                </div>
+            </field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="False"/>
+        </record>
+    </data>
 </odoo>

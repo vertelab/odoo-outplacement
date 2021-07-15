@@ -22,12 +22,13 @@
 
 
 import datetime  # Used in test
+import logging
 import random  # Used in test
 import string  # Used in test
+from odoo.exceptions import Warning
 
 from odoo import api, fields, models, _
-from odoo.exceptions import Warning
-import logging
+
 _logger = logging.getLogger(__name__)
 
 
@@ -63,6 +64,56 @@ class Outplacement(models.Model):
 
     # Temporary solution
     temp_lang = fields.Char(string='Language support requested')
+    sale_order_id = fields.Many2one('sale.order', string="Sale Order", compute='compute_sale_order', store=True)
+    currency_id = fields.Many2one('res.currency', related='sale_order_id.currency_id', store=True)
+    total_sale_amt = fields.Float(compute="compute_sale_invoice_amt", store=True)
+    total_invoice_amt = fields.Float(compute="compute_sale_invoice_amt", store=True)
+    invoice_status = fields.Selection([
+        ('upselling', 'Upselling Opportunity'),
+        ('invoiced', 'Fully Invoiced'),
+        ('to invoice', 'To Invoice'),
+        ('no', 'Nothing to Invoice')
+    ], compute="compute_sale_invoice_amt", store=True)
+
+    @api.depends('sale_order_id')
+    def compute_sale_invoice_amt(self):
+        for rec in self:
+            if rec.sale_order_id:
+                sale_order = rec.sale_order_id
+                rec.total_sale_amt = sale_order.amount_total
+                inv_amt = 0
+                for invoice in sale_order.invoice_ids:
+                    inv_amt += invoice.amount_total
+                rec.total_invoice_amt = inv_amt
+                rec.invoice_status = sale_order.invoice_status
+
+    @api.depends('name')
+    def compute_sale_order(self):
+        sale_obj = self.env['sale.order']
+        for rec in self:
+            if rec.name:
+                sale = sale_obj.search([('name', '=', rec.name)], limit=1)
+                if sale:
+                    rec.sale_order_id = sale.id
+
+    def open_outplacement_sales(self):
+        self.ensure_one()
+        action = self.env.ref('sale.action_quotations_with_onboarding').read([])[0]
+        if self.sale_order_id:
+            action['domain'] = [('id', '=', self.sale_order_id.id)]
+        else:
+            action['domain'] = [('id', '=', False)]
+        return action
+
+    def open_outplacement_invoices(self):
+        self.ensure_one()
+        invoices = []
+        if self.sale_order_id:
+            for invoice in self.sale_order_id.invoice_ids:
+                invoices.append(invoice.id)
+        action = self.env.ref('account.action_invoice_tree1').read([])[0]
+        action['domain'] = [('id', 'in', invoices)]
+        return action
 
     @api.onchange('employee_id')
     def _employee_activites(self):
@@ -72,8 +123,8 @@ class Outplacement(models.Model):
                  ('res_model_id.model', '=', self._name),
                  ('res_id', '=', self.id)]).unlink()
             for activity in self.order_id.mapped('order_line').filtered(
-                "product_id.is_suborder").mapped(
-                    'product_id.mail_activity_ids'):
+                    "product_id.is_suborder").mapped(
+                'product_id.mail_activity_ids'):
                 self.env['mail.activity'].create({
                     'res_id': self.id,
                     'res_model_id': self.env.ref(
@@ -135,20 +186,17 @@ class Outplacement(models.Model):
 
     @api.model
     def suborder_process_data(self, data):
-        _logger.info(data)
         data = super(Outplacement, self).suborder_process_data(data)
         partner = self._get_partner(data)
 
         order_number = data["ordernummer"]
         no_outplacement = self.env["outplacement"].search_count(
             [("name", "=", order_number)]
-        ) + self.env["outplacement"].search_count(
-            [("partner_id", "=", partner.id)]
         )
         if no_outplacement:
             _logger.warning(
-                "Rejected outplacement because of duplicate. Either because of outplacement.name: %s or partner_id: %s"
-                % (order_number, partner.id)
+                "Rejected outplacement because of duplicate. Either because of outplacement.name: %s"
+                % order_number
             )
             return 400
 
@@ -172,8 +220,8 @@ class Outplacement(models.Model):
             'partner_id': partner.id,
             'skill_id': skill.id if skill else None,
             'participitation_rate': data['deltagandegrad'],
-            'service_start_date': data['startdatum_insats'],
-            'service_end_date': data['slutdatum_insats'],
+            'service_start_date': data['startdatum_avrop'],
+            'service_end_date': data['slutdatum_avrop'],
             'order_start_date': data['startdatum_avrop'],
             'order_close_date': data['slutdatum_avrop'],
             'file_reference_number': data['aktnummer_diariet'],
@@ -192,11 +240,17 @@ class Outplacement(models.Model):
         partner.interpreter_language = lang.id if lang else False
         # Temporary hack until language is fixed in TLR
         if interpreter_need and not lang:
-            outplacement.temp_lang = interpreter_need
+            outplacement.temp_lang = interpreter_need if interpreter_need != 'false' else ''
         order.outplacement_id = outplacement.id
         self.env['project.task'].init_joint_planning(outplacement.id)
         self.env['project.task'].init_joint_planning_stages(outplacement.id)
         return data
+
+    @api.multi
+    def update_lang_support_req(self):
+        for rec in self:
+            if rec.temp_lang == 'false':
+                rec.temp_lang = ''
 
     # For test. ToDo: Rename with a test in function name.
     @api.model
@@ -220,16 +274,16 @@ class Outplacement(models.Model):
             "bokat_sfi": False,
             "startdatum_insats": '%s' % datetime.date.today(),
             "slutdatum_insats": str(
-                datetime.date.today()+datetime.timedelta(days=365)),
+                datetime.date.today() + datetime.timedelta(days=365)),
             "startdatum_avrop": str(datetime.date.today()),
             "slutdatum_avrop": str(
-                datetime.date.today()+datetime.timedelta(days=90)),
+                datetime.date.today() + datetime.timedelta(days=90)),
             "aktnummer_diariet": "Af-2021/0000 " +
                                  ''.join(random.sample(string.digits, k=4)),
             "telefonnummer_handlaggargrupp": "+46734176359",
             "epost_handlaggargrupp": ''.join(
                 random.sample(string.digits, k=4)) + "@test.com"
-            })
+        })
 
     @api.model
     def create(self, values):
@@ -256,7 +310,7 @@ class Outplacement(models.Model):
         analytic_accounts_to_delete = self.env['account.analytic.account']
         for outplacement in self:
             if (outplacement.analytic_account_id and not
-                    outplacement.analytic_account_id.line_ids):
+            outplacement.analytic_account_id.line_ids):
                 analytic_accounts_to_delete |= outplacement.analytic_account_id
         result = super(Outplacement, self).unlink()
         analytic_accounts_to_delete.unlink()

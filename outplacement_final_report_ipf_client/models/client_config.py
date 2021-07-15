@@ -1,12 +1,13 @@
 # -*- coding: UTF-8 -*-
 
-from odoo.tools import pycompat
 import json
-import uuid
 import logging
 import requests
-from odoo import api, models, fields, _
+import uuid
 from odoo.exceptions import ValidationError
+from odoo.tools import pycompat
+
+from odoo import api, models, fields, _
 
 _logger = logging.getLogger(__name__)
 
@@ -138,48 +139,49 @@ class ClientConfig(models.Model):
                     },
                     {
                         "typ": "Annat",
-                        "fritext": "Används vid val_av_huvudmal_motivering" 
+                        "fritext": "Används vid val_av_huvudmal_motivering"
                     }
                 ],
                 "steg": [
                     {
-                    "typ": "Studera reguljär utbildning", 
+                        "typ": "Studera reguljär utbildning",
                         # Studera reguljär utbildning 
-                        #Lämpliga kompletterande insatser
+                        # Lämpliga kompletterande insatser
                         # Annat
-                    "namn": "",
-                    "niva": "",
-                    "startdatum": "2020-12-22",
-                    "slutdatum": "2020-12-22"
+                        "namn": "",
+                        "niva": "",
+                        "startdatum": "2020-12-22",
+                        "slutdatum": "2020-12-22"
                     },
                     {
-                    "typ": "Lämpliga kompletterande insatser",
-                    "kompletterande_insats": {   # This is displayed when "Lämpliga kompletterande insatser" is selected in "Typ"
-                    "typ": "Studiemotiverande insats",
-                        #Studiemotiverande insats
-                        #Rusta inför arbete
-                        #Matcha till arbete
-                        #Utreda arbetsförmågan
-                        #Delta i en arbetsmarknadsutbildning/Praktik/Validering
-                        #Svenskastudier inom valt område
-                        #Översättning av betyg
-                        #Bedömning och komplettering av utländsk utbildning
-                        #Annat
-                    "fritext":"text goes here for Annat" # If "Annat" is selected in "Typ"
+                        "typ": "Lämpliga kompletterande insatser",
+                        "kompletterande_insats": {
+                            # This is displayed when "Lämpliga kompletterande insatser" is selected in "Typ"
+                            "typ": "Studiemotiverande insats",
+                            # Studiemotiverande insats
+                            # Rusta inför arbete
+                            # Matcha till arbete
+                            # Utreda arbetsförmågan
+                            # Delta i en arbetsmarknadsutbildning/Praktik/Validering
+                            # Svenskastudier inom valt område
+                            # Översättning av betyg
+                            # Bedömning och komplettering av utländsk utbildning
+                            # Annat
+                            "fritext": "text goes here for Annat"  # If "Annat" is selected in "Typ"
+                        },
+                        "namn": "",
+                        "niva": "",
+                        "startdatum": "2020-12-22",
+                        "slutdatum": "2020-12-22"
                     },
-                    "namn": "",
-                    "niva": "",
-                    "startdatum": "2020-12-22",
-                    "slutdatum": "2020-12-22"
-                }, 
-                {
-                    "typ": "Annat",
-                    "fritext":"Only sent when it is 'Annat'in Typ under steg object",
-                    "namn": "Används vid val_av_huvudmal_motivering Annat",
-                    "niva": "Används vid val_av_huvudmal_motivering Annat",
-                    "startdatum": "2020-12-22",
-                    "slutdatum": "2020-12-22"
-                }
+                    {
+                        "typ": "Annat",
+                        "fritext": "Only sent when it is 'Annat'in Typ under steg object",
+                        "namn": "Används vid val_av_huvudmal_motivering Annat",
+                        "niva": "Används vid val_av_huvudmal_motivering Annat",
+                        "startdatum": "2020-12-22",
+                        "slutdatum": "2020-12-22"
+                    }
 
                 ]
             },
@@ -276,28 +278,28 @@ class ClientConfig(models.Model):
             if goal_id.matches_interest:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
                     "typ": 'Matchar deltagarens intressen'
-                    })
+                })
             if goal_id.matches_ability:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
                     "typ": 'Arbetsuppgifter matchar förmåga'
-                    })
+                })
             if goal_id.market_demand:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
                     "typ": 'Efterfrågan på arbetsmarknaden'
-                    })
+                })
             if goal_id.complementing_education:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
                     "typ": 'Kompletterar nuvarande utbildning'
-                    })
+                })
             if goal_id.complementing_experience:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
                     "typ": 'Kompletterar tidigare erfarenhet'
-                    })
+                })
             if goal_id.other_motivation:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
                     "typ": 'Annat',
                     "fritext": goal_id.free_text or ""
-                    })
+                })
             if len(payload["huvudmal"]["val_av_huvudmal_motivering"]) < 1 \
                     and not outplacement.interruption:
                 raise ValidationError(_("Motivation of main goal missing"))
@@ -350,28 +352,28 @@ class ClientConfig(models.Model):
             if goal_id.matches_interest:
                 payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
                     "typ": 'Matchar deltagarens intressen'
-                    })
+                })
             if goal_id.matches_ability:
                 payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
                     "typ": 'Arbetsuppgifter matchar förmåga'
-                    })
+                })
             if goal_id.market_demand:
                 payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
                     "typ": 'Efterfrågan på arbetsmarknaden'
-                    })
+                })
             if goal_id.complementing_education:
                 payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
                     "typ": 'Kompletterar nuvarande utbildning'
-                    })
+                })
             if goal_id.complementing_experience:
                 payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
                     "typ": 'Kompletterar tidigare erfarenhet'
-                    })
+                })
             if goal_id.other_motivation:
                 payload["alternativt_mal"]["val_av_alternativt_mal_motivering"].append({
                     "typ": 'Annat',
                     "fritext": goal_id.free_text or ""
-                    })
+                })
             if len(payload["alternativt_mal"]["val_av_alternativt_mal_motivering"]) < 1 \
                     and not outplacement.interruption:
                 raise ValidationError(_("Motivation of alternative goal missing"))

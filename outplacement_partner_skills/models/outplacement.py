@@ -19,15 +19,17 @@
 #
 ##############################################################################
 
-from odoo import models, fields, api, _
 import logging
+
+from odoo import models, fields, api, _
+
 _logger = logging.getLogger(__name__)
 
 
 class Outplacement(models.Model):
-    _inherit = "outplacement" 
+    _inherit = "outplacement"
 
-    skills = fields.Many2many('hr.skill', string="Skill")
+    skills = fields.Many2many('hr.skill', string="All Skills")
     skill_id = fields.Char(string="Skill", related="skills.complete_name")
 
     other_experiences = fields.Many2many(comodel_name='outplacement.other_experiences', string="Other Experience")
@@ -38,6 +40,7 @@ class Outplacement(models.Model):
         comodel_name='hr.employee.skill',
         inverse_name='partner_id',
     )
+
 
 class PartnerSkill(models.Model):
     _inherit = 'hr.employee.skill'
@@ -56,21 +59,20 @@ class HrEmployee(models.Model):
 
 class OtherExperiences(models.Model):
     _name = 'outplacement.other_experiences'
-    description = "Experiences"
+    _description = "Experiences"
 
     name = fields.Char(string="Experience")
 
 
 class Strengths(models.Model):
     _name = 'outplacement.strengths'
-    description = "Strengths"
+    _description = "Strengths"
 
     name = fields.Char(string="Strengths")
 
 
 class Interests(models.Model):
     _name = 'outplacement.interests'
-    description = "Interests"
+    _description = "Interests"
 
     name = fields.Char(string="Interests")
-

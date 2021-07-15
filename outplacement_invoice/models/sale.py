@@ -20,15 +20,16 @@
 #
 ################################################################################
 
-from odoo.tools import pycompat
+import base64
 import json
-import uuid
 import logging
 import requests
+import uuid
 import xmltodict
-import base64
-from html import unescape
 from datetime import datetime
+from html import unescape
+from odoo.tools import pycompat
+
 from odoo import api, models, fields, tools, _
 
 _logger = logging.getLogger(__name__)
@@ -42,13 +43,14 @@ class SaleOrder(models.Model):
         for sale_order in self:
             sale_order.invoice_count_stored = sale_order.invoice_count
 
-    invoice_count_stored = fields.Integer(string='Invoice Count (stored)', compute='_get_invoiced_stored', readonly=True, store=True)
+    invoice_count_stored = fields.Integer(string='Invoice Count (stored)', compute='_get_invoiced_stored',
+                                          readonly=True, store=True)
 
     @api.model
     def cron_outplacement_invoice(self):
         """Cron job entry point."""
         sale_orders = self.env['sale.order'].search([('invoice_count_stored', '<', 2)])
-        for sale_order in sale_orders: 
+        for sale_order in sale_orders:
             sale_order.outplacement_invoice()
 
     @api.one
@@ -74,11 +76,12 @@ class SaleOrder(models.Model):
         # res = client_config.get_invoices(order_id="AKTTEST-2272")
         # res = client_config.get_invoices(order_id="AKTTEST-4925")
         # res = client_config.get_invoices(order_id="AKTTEST-4923")
-        for invoice in res.get('invoices', []):
-            invoice_id = invoice.get('invoice_number')
-            if invoice_id:
-                res_invoice = client_config.get_invoice(invoice_id=invoice_id)
-                new_invoice = self.create_invoice(res_invoice)
+        if res:
+            for invoice in res.get('invoices', []):
+                invoice_id = invoice.get('invoice_number')
+                if invoice_id:
+                    res_invoice = client_config.get_invoice(invoice_id=invoice_id)
+                    new_invoice = self.create_invoice(res_invoice)
 
     @api.one
     def create_invoice(self, invoice):
@@ -105,13 +108,15 @@ class SaleOrder(models.Model):
             if not res_partner:
                 name = party['cac:PartyName']['cbc:Name']['#text']
                 vat = party['cac:PartyTaxScheme']['cac:CompanyID']
-                street = False # Steet is not sent in raindance data
+                street = False  # Steet is not sent in raindance data
                 city = party['cac:Address']['cbc:CityName']['#text']
                 zip_ = party['cac:Address']['cbc:PostalZone']['#text']
                 country_code = party['cac:Address']['cac:Country']['cac:IdentificationCode']
                 country = self.env['res.country'].search([('code', '=', country_code)])
                 country_code = party['cac:Address']['cac:Country']['cac:IdentificationCode']
-                bank = sf_dict['Invoice']['cac:PaymentMeans']['cac:PayeeFinancialAccount']['cac:FinancialInstitutionBranch']['cac:FinancialInstitution']['cac:ID']
+                bank = \
+                sf_dict['Invoice']['cac:PaymentMeans']['cac:PayeeFinancialAccount']['cac:FinancialInstitutionBranch'][
+                    'cac:FinancialInstitution']['cac:ID']
                 bank_nr = sf_dict['Invoice']['cac:PaymentMeans']['cac:PayeeFinancialAccount']['cac:ID']
 
                 res_partner = self.env['res.partner'].create(
@@ -177,7 +182,8 @@ class SaleOrder(models.Model):
 
             # Find invoice delivery date
             try:
-                date = datetime.strptime(sf_dict['Invoice']['cac:Delivery']['cbc:ActualDeliveryDateTime']['#text'], '%Y-%m-%d').date()
+                date = datetime.strptime(sf_dict['Invoice']['cac:Delivery']['cbc:ActualDeliveryDateTime']['#text'],
+                                         '%Y-%m-%d').date()
             except KeyError:
                 _logger.exception("Raindance invoice: invoice delivery date not found in svefaktura-data.")
                 date = False
@@ -258,7 +264,7 @@ class SaleOrder(models.Model):
                 for order_line in self.order_line:
                     if order_line.product_id == product:
                         order_line.invoice_lines = [(4, invoice_line.id, 0)]
-                        break # we found what we were looking for
+                        break  # we found what we were looking for
 
             # Trigger onchange on the invoice in order to force odoo
             # to calculate taxes correctly.

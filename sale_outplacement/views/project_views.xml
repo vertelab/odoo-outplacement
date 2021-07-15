@@ -1,141 +1,159 @@
 <?xml version="1.0"?>
 <odoo>
-  <record id="view_task_form2" model="ir.ui.view">
-    <field name="name">project.task.form</field>
-    <field name="model">project.task</field>
-    <field name="inherit_id" ref="project.view_task_form2" />
-    <field name="arch" type="xml">
-      <field name="date_deadline" position="attributes">
-        <attribute name="invisible">1</attribute>
-      </field>
-      <field name="date_deadline" position="after">
-        <field name="start_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
-        <field name="end_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
-        <field name="child_start_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
-        <field name="child_end_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
-      </field>
-      <field name="parent_id" position="replace"/>
-      <field name="project_id" position="before">
-        <field name="instructions"/>
-        <field name="outplacement_id" />
-        <field name="parent_id"
-          domain="[('outplacement_id', '=', outplacement_id), ('parent_id', '=', False)]"
-          attrs="{'invisible' : [('subtask_count', '>', 0)]}"
-          groups="project.group_subtask_project"
-        />
-      </field>
-      <button name="toggle_active" position="attributes">
-        <attribute name="invisible">1</attribute>
-      </button>
-      <field name="priority" position="attributes">
-        <attribute name="invisible">1</attribute>
-      </field>
-      <field name="kanban_state" position="attributes">
-        <attribute name="invisible">1</attribute>
-      </field>
-      <field name="project_id" position="attributes">
-        <attribute name="invisible">1</attribute>
-      </field>
-      <field name="user_id" position="attributes">
-        <attribute name="invisible">1</attribute>
-      </field>
-      <field name="tag_ids" position="attributes">
-        <attribute name="invisible">1</attribute>
-      </field>
-      <field name="email_from" position="attributes">
-        <attribute name="invisible">1</attribute>
-      </field>
-      <xpath expr="//notebook" position="attributes">
-        <attribute name="invisible">1</attribute>
-      </xpath>
-    </field>
-  </record>
-  <record id="view_task_kanban" model="ir.ui.view">
-    <field name="name">project.task.kanban</field>
-    <field name="model">project.task</field>
-    <field name="inherit_id" ref="project.view_task_kanban" />
-    <field name="arch" type="xml">
-      <xpath expr="//div[@class='oe_kanban_bottom_left']/field[@name='priority']" position="attributes">
-        <attribute name="invisible">1</attribute>
-      </xpath>
-      <xpath expr="//div[@class='oe_kanban_bottom_left']/field[@name='activity_ids']" position="attributes">
-        <attribute name="invisible">1</attribute>
-      </xpath>
-      <xpath expr="//div[@class='o_kanban_record_headings']/small/span/i/field[@name='date_deadline']" position="before">
-        <field name="instructions"/>
-        <field name="start_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
-        <field name="end_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
-        <field name="child_start_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
-        <field name="child_end_date" attrs="{'invisible': [('parent_id','=',False)]}"/>
-        <field name="parent_id" invisible="1"/>
-      </xpath>
-      <xpath expr="//div[@class='o_kanban_record_headings']/small/span/i/field[@name='date_deadline']" position="attributes">
-        <attribute name="invisible">1</attribute>
-      </xpath>
-      <xpath expr="//div[@class='oe_kanban_bottom_right']" position="attributes">
-        <attribute name="invisible">1</attribute>
-      </xpath>
-      <xpath expr="//field[@name='color']" position="after">
-        <field name="outplacement_id"/>
-      </xpath>
-      <xpath expr="//div[hasclass('o_kanban_record_body')]" position="inside">
-        <t t-if="record.order_id_origin.raw_value">
-          <b>Source Document: </b><field name="order_id_origin"/><br/>
-        </t>
-        <t t-if="record.outplacement_name.raw_value">
-          <b>Outplacement: </b><field name="outplacement_name"/><br/>
-        </t>
-        <t t-if="record.partner_name.raw_value">
-          <b>Partner Name: </b><field name="partner_name"/><br/>
-        </t>
-        <t t-if="record.performing_operation_id.raw_value">
-          <b>Performing Operation: </b><field name="performing_operation_id"/> <br/>
-        </t>
-        <t t-if="record.employee_id.raw_value">
-          <b>Coach: </b><field name="employee_id"/><br/>
-        </t>
-      </xpath>
-    </field>
-  </record>
-  <record id="view_task_tree2" model="ir.ui.view">
-    <field name="name">project.task.tree2</field>
-    <field name="model">project.task</field>
-    <field name="inherit_id" ref="project.view_task_tree2" />
-    <field name="arch" type="xml">
-      <field name="user_id" position="after">
-        <field name="start_date"/>
-        <field name="end_date"/>
-      </field>
-    </field>
-  </record>
+    <record id="view_task_form2" model="ir.ui.view">
+        <field name="name">project.task.form</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <field name="date_deadline" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="date_deadline" position="after">
+                <field name="start_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
+                <field name="end_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
+                <field name="child_start_date" attrs="{'invisible': [('parent_id','=',False)]}"
+                 string="Start Date"/>
+                <field name="child_end_date" attrs="{'invisible': [('parent_id','=',False)]}"
+                string="End Date"/>
+            </field>
+            <field name="parent_id" position="replace"/>
+            <field name="project_id" position="before">
+                <field name="instructions"/>
+                <field name="outplacement_id"/>
+                <field name="parent_id"
+                       domain="[('outplacement_id', '=', outplacement_id), ('parent_id', '=', False)]"
+                       attrs="{'invisible' : [('subtask_count', '>', 0)]}"
+                       groups="project.group_subtask_project"
+                />
+            </field>
+            <button name="toggle_active" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </button>
+            <field name="priority" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="kanban_state" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="project_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="user_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="tag_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="email_from" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <xpath expr="//notebook" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_task_kanban" model="ir.ui.view">
+        <field name="name">project.task.kanban</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_kanban_bottom_left')]/field[@name='priority']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_kanban_bottom_left')]/field[@name='activity_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('o_kanban_record_headings')]/small/span/i/field[@name='date_deadline']"
+                   position="before">
+                <field name="instructions"/>
+                <field name="start_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
+                <field name="end_date" widget="date" attrs="{'invisible': [('parent_id','!=',False)]}"/>
+                <field name="child_start_date" attrs="{'invisible': [('parent_id','=',False)]}"
+                string="Start Date"/>
+                <field name="child_end_date" attrs="{'invisible': [('parent_id','=',False)]}"
+                string="End Date"/>
+                <field name="parent_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//div[hasclass('o_kanban_record_headings')]/small/span/i/field[@name='date_deadline']"
+                   position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_kanban_bottom_right')]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='color']" position="after">
+                <field name="outplacement_id"/>
+            </xpath>
+            <xpath expr="//div[hasclass('o_kanban_record_body')]" position="inside">
+                <t t-if="record.order_id_origin.raw_value">
+                    <b>Source Document:</b>
+                    <field name="order_id_origin"/>
+                    <br/>
+                </t>
+                <t t-if="record.outplacement_name.raw_value">
+                    <b>Outplacement:</b>
+                    <field name="outplacement_name"/>
+                    <br/>
+                </t>
+                <t t-if="record.partner_name.raw_value">
+                    <b>Partner Name:</b>
+                    <field name="partner_name"/>
+                    <br/>
+                </t>
+                <t t-if="record.performing_operation_id.raw_value">
+                    <b>Performing Operation:</b>
+                    <field name="performing_operation_id"/>
+                    <br/>
+                </t>
+                <t t-if="record.employee_id.raw_value">
+                    <b>Coach:</b>
+                    <field name="employee_id"/>
+                    <br/>
+                </t>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_task_tree2" model="ir.ui.view">
+        <field name="name">project.task.tree2</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_tree2"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="start_date"/>
+                <field name="end_date"/>
+            </field>
+        </field>
+    </record>
 
-  <record id="view_task_quick_form" model="ir.ui.view">
-    <field name="name">project.task.quick.form</field>
-    <field name="model">project.task</field>
-    <field name="inherit_id" ref="project.quick_create_task_form" />
-    <field name="arch" type="xml">
-      <field name="name" position="after">
-        <field name="instructions"/>
-      </field>
-      <field name="user_id" position="after">
-        <field name="parent_id" domain="[('outplacement_id', '=', context.get('default_outplacement_id', False))]" />
-      </field>
-    </field>
-  </record>
+    <record id="view_task_quick_form" model="ir.ui.view">
+        <field name="name">project.task.quick.form</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.quick_create_task_form"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="instructions"/>
+            </field>
+            <field name="user_id" position="after">
+                <field name="parent_id"
+                       domain="[('outplacement_id', '=', context.get('default_outplacement_id', False))]"/>
+            </field>
+        </field>
+    </record>
 
-  <record id="project.view_task_calendar" model="ir.ui.view">
-    <field name="name">project.task.calendar</field>
-    <field name="model">project.task</field>
-    <field eval="2" name="priority"/>
-    <field name="arch" type="xml">
-      <calendar date_start="start_date" date_stop="end_date" date_delay="duration" string="Tasks" mode="month" quick_add="false">
-        <field name="name"/>
-      </calendar>
-    </field>
-  </record>
+    <record id="project.view_task_calendar" model="ir.ui.view">
+        <field name="name">project.task.calendar</field>
+        <field name="model">project.task</field>
+        <field eval="2" name="priority"/>
+        <field name="arch" type="xml">
+            <calendar date_start="start_date" date_stop="end_date" date_delay="duration" string="Tasks" mode="month"
+                      quick_add="false">
+                <field name="name"/>
+            </calendar>
+        </field>
+    </record>
 
-  <record id="project.action_view_task" model="ir.actions.act_window">
-    <field name="view_mode">kanban,tree,form,calendar</field>
-  </record>
-  
+    <record id="project.action_view_task" model="ir.actions.act_window">
+        <field name="view_mode">kanban,tree,form,calendar</field>
+    </record>
+
 </odoo>

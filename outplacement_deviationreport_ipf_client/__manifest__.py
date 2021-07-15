@@ -22,29 +22,23 @@
 
 {
     'name': 'IPF Deviation Report Client',
-    'version': '12.0.1.0.1',
+    'version': '12.0.1.0.2',
     'category': 'hr',
-    'description': """
-    API to submit deviation (SV: Avvikelse) report.
-""",
-
-    'author': "N-development",
+    'author': "Vertel AB",
     'license': 'AGPL-3',
-    'website': 'https://www.n-development.com',
+    'website': 'https://vertel.se',
     'depends': [
-        'hr'
+        'hr',
+        'api_ipf'
     ],
     'data': [
         "security/ir.model.access.csv",
-
         'views/client_config_views.xml',
     ],
     'installable': True,
     'qweb': [
-
     ],
-
     'images': [
-        'static/description/img.png'
+        'static/description/icon.png'
     ],
 }

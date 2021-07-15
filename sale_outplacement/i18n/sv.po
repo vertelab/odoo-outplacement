@@ -92,7 +92,6 @@ msgid "Duration"
 msgstr "Varaktighet"
 
 #. module: sale_outplacement
-#: model:ir.model.fields,field_description:sale_outplacement.field_project_task__child_end_date
 #: model:ir.model.fields,field_description:sale_outplacement.field_project_task__end_date
 msgid "End date"
 msgstr "Slutdatum"
@@ -282,8 +281,18 @@ msgstr "Kompetens"
 msgid "Slutersättning"
 msgstr ""
 
+
+#. module: sale_outplacement
+#: model:ir.model.fields,field_description:sale_outplacement.field_project_task__child_end_date
+msgid "Child End date"
+msgstr "Slutdatum"
+
 #. module: sale_outplacement
 #: model:ir.model.fields,field_description:sale_outplacement.field_project_task__child_start_date
+msgid "Child Start date"
+msgstr "Startdatum"
+
+#. module: sale_outplacement
 #: model:ir.model.fields,field_description:sale_outplacement.field_project_task__start_date
 msgid "Start date"
 msgstr "Startdatum"

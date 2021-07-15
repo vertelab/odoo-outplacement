@@ -865,3 +865,23 @@ msgstr "Studiemotiverande insats"
 #: selection:outplacement.goal.step,complementing_effort_type:0
 msgid "translation of grades"
 msgstr "Översättning av betyg"
+
+#. module: outplacement_final_report
+#: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_outplacement_kanban
+msgid "<br/><span style=\"color:red;font-size:12px\">Time to submit Final Report</span>"
+msgstr "<br/><span style=\"color:red;font-size:12px\">Dags att skicka in slutredovisning</span>"
+
+#. module: outplacement_final_report
+#: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_outplacement_kanban
+msgid "<br/><span style=\"color:green;font-size:12px\">Please submit Final Report</span>"
+msgstr "<br/><span style=\"color:green;font-size:12px\">Dags att skicka in slutredovisning</span>"
+
+#. module: outplacement_final_report
+#: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_outplacement_kanban
+msgid "<br/><span style=\"color:red;font-size:12px\">It is too late to submit a Final Report</span>"
+msgstr "<br/><span style=\"color:red;font-size:12px\">Det är för sent att lämna in en slutrapport</span>"
+
+#. module: outplacement_final_report
+#: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_outplacement_kanban
+msgid "<br/><span style=\"color:red;font-size:12px\">Please submit Final Report</span>"
+msgstr "<br/><span style=\"color:red;font-size:12px\">Dags att skicka in slutredovisning</span>"

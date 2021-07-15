@@ -1,9 +1,9 @@
 # coding: utf-8
 
-from odoo import api, fields, models
+import logging
 from odoo.exceptions import Warning
 
-import logging
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -12,8 +12,8 @@ class ResPartner(models.Model):
     _inherit = "res.partner"
 
     @api.model
-    def partnersyncCrm2DafaSSN(self,ssn):
-        partner = self.sudo().search([('social_sec_nr','=',ssn)],limit=1)
+    def partnersyncCrm2DafaSSN(self, ssn):
+        partner = self.sudo().search([('social_sec_nr', '=', ssn)], limit=1)
         if not partner:
             return False
         values = {

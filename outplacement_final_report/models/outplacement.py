@@ -1,14 +1,14 @@
 # -*- coding: UTF-8 -*-
+import datetime
 import logging
+from odoo.exceptions import ValidationError
 
 from odoo import fields, models, api, _
-from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
 
 class Outplacement(models.Model):
-
     _inherit = 'outplacement'
 
     study_visit_ids = fields.One2many(comodel_name="outplacement.study_visit", inverse_name="outplacement_id")
@@ -30,6 +30,66 @@ class Outplacement(models.Model):
     interrupted_early = fields.Boolean(string="Interrupted early", compute="_compute_interrupted_early", readonly=True)
 
     fr_rejected = fields.Boolean(string="Rejected")
+    time_to_submit_fr_1_4 = fields.Boolean(compute="compute_time_to_submit_fr", store=True)
+    time_to_submit_fr_5_20 = fields.Boolean(compute="compute_time_to_submit_fr", store=True)
+    time_to_submit_fr_21 = fields.Boolean(compute="compute_time_to_submit_fr", store=True)
+
+    def date_by_adding_business_days(self, from_date, add_days):
+        business_days_to_add = add_days
+        current_date = from_date
+        while business_days_to_add > 0:
+            current_date += datetime.timedelta(days=1)
+            weekday = current_date.weekday()
+            if weekday >= 5:  # sunday = 6
+                continue
+            business_days_to_add -= 1
+        return current_date
+
+    @api.depends('fr_send_date', 'service_end_date')
+    def compute_time_to_submit_fr(self):
+        today = datetime.date.today()
+        for rec in self:
+            if rec.stage_id and rec.stage_id.id != self.env.ref('outplacement.cancelled_stage').id and \
+                    rec.service_end_date and not rec.fr_send_date:
+                next_1_days = self.date_by_adding_business_days(rec.service_end_date, 1)
+                next_4_days = self.date_by_adding_business_days(rec.service_end_date, 4)
+                next_5_days = self.date_by_adding_business_days(rec.service_end_date, 5)
+                next_20_days = self.date_by_adding_business_days(rec.service_end_date, 20)
+                next_21_days = self.date_by_adding_business_days(rec.service_end_date, 21)
+                if today >= next_1_days and today <= next_4_days:
+                    rec.time_to_submit_fr_1_4 = True
+                else:
+                    rec.time_to_submit_fr_1_4 = False
+                if today >= next_5_days and today <= next_20_days:
+                    rec.time_to_submit_fr_5_20 = True
+                else:
+                    rec.time_to_submit_fr_5_20 = False
+                if today >= next_21_days:
+                    rec.time_to_submit_fr_21 = True
+                else:
+                    rec.time_to_submit_fr_21 = False
+
+    def cron_check_final_report_time(self):
+        today = datetime.date.today()
+        for rec in self.search([('fr_send_date', '=', False), ('service_end_date', '!=', False)]):
+            if rec.stage_id and rec.stage_id.id != self.env.ref('outplacement.cancelled_stage').id:
+                next_1_days = self.date_by_adding_business_days(rec.service_end_date, 1)
+                next_4_days = self.date_by_adding_business_days(rec.service_end_date, 4)
+                next_5_days = self.date_by_adding_business_days(rec.service_end_date, 5)
+                next_20_days = self.date_by_adding_business_days(rec.service_end_date, 20)
+                next_21_days = self.date_by_adding_business_days(rec.service_end_date, 21)
+                if today >= next_1_days and today <= next_4_days:
+                    rec.time_to_submit_fr_1_4 = True
+                else:
+                    rec.time_to_submit_fr_1_4 = False
+                if today >= next_5_days and today <= next_20_days:
+                    rec.time_to_submit_fr_5_20 = True
+                else:
+                    rec.time_to_submit_fr_5_20 = False
+                if today >= next_21_days:
+                    rec.time_to_submit_fr_21 = True
+                else:
+                    rec.time_to_submit_fr_21 = False
 
     @api.onchange('service_start_date', 'service_end_date')
     @api.multi
@@ -52,7 +112,9 @@ class Outplacement(models.Model):
         for outplacement in self:
             ir_model_data = self.env['ir.model.data']
             try:
-                template_id = ir_model_data.get_object_reference('outplacement_final_report', 'email_template_edi_final_report')[1]
+                template_id = \
+                    ir_model_data.get_object_reference('outplacement_final_report', 'email_template_edi_final_report')[
+                        1]
             except ValueError:
                 template_id = False
             try:
@@ -88,6 +150,7 @@ class Outplacement(models.Model):
 
 class OutplacementGoal(models.Model):
     _name = "outplacement.goal"
+    _description = "Outplacement Goal"
 
     outplacement_id = fields.Many2one(comodel_name="outplacement")
     field_of_work_id = fields.Many2one(
@@ -148,11 +211,11 @@ class OutplacementGoal(models.Model):
             display_value = goal.job_description if goal.job_description else goal.job_id.name
             data.append((goal.id, display_value))
         return data
-    
 
 
 class OutplacementGoalStep(models.Model):
     _name = "outplacement.goal.step"
+    _description = "Outplacement Goal Step"
 
     goal_id = fields.Many2one(comodel_name="outplacement.goal")
     step_type = fields.Selection(selection=[
@@ -171,9 +234,9 @@ class OutplacementGoalStep(models.Model):
              'Swedish studies in chosen field'),
             ('Översättning av betyg', 'translation of grades'),
             ('Bedömning och komplettering av utländsk utbildning',
-            'evaluation and complementation of foreign education'),
+             'evaluation and complementation of foreign education'),
             ('Annat', 'Other')
-            ], default='Annat')
+        ], default='Annat')
     complementing_effort_description = fields.Char(
         string="Complementing effort")
     step_name = fields.Char(string="Name")
@@ -193,13 +256,13 @@ class OutplacementGoalStep(models.Model):
     def _constrain_other_step_name(self):
         if self.other_step_name and len(self.other_step_name) > 1000:
             raise ValidationError(_('Number of characters in the name field must not exceed 1000'))
-    
+
     @api.constrains('complementing_effort_description')
     @api.one
     def _constrain_complementing_effort_description(self):
         if self.complementing_effort_description and len(self.complementing_effort_description) > 1000:
             raise ValidationError(_('Number of characters in the description field must not exceed 1000'))
-    
+
     @api.multi
     def name_get(self):
         data = []
@@ -211,6 +274,7 @@ class OutplacementGoalStep(models.Model):
 
 class OutplacementStudyVisit(models.Model):
     _name = "outplacement.study_visit"
+    _description = "Outplacement Study Visit"
 
     outplacement_id = fields.Many2one(comodel_name="outplacement", string="Outplacement")
     visit_selection = fields.Selection(string="Select organizer",

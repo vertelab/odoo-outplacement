@@ -21,6 +21,7 @@
 ################################################################################
 
 import logging
+
 from odoo import models, fields
 
 _logger = logging.getLogger(__name__)
@@ -28,6 +29,7 @@ _logger = logging.getLogger(__name__)
 
 class IpfRequestHistory(models.Model):
     _name = 'ipf.completion_report.request.history'
+    _description = 'IPF Completion Report Request History'
     _rec_name = 'url'
 
     config_id = fields.Many2one('ipf.completion_report.client.config',

@@ -1,10 +1,6 @@
-==============================
 Outplacement Order Interpreter
 ==============================
-
 This module adds interpreter-functionality.
-
-This module is maintained from: https://github.com/vertelab/odoo-outplacement/tree/Dev-12.0-Fenix-Sprint-02/outplacement_order_interpreter
 
 Different version submitted
 ===========================
@@ -38,17 +34,27 @@ Different version submitted
     Hide 'Deliver Interpreter' button for 'Not Available Interpreter' Bookings, For now Hide cancel booking functionality.
 28. v12.0.1.7.0 AFC-2405: Added different serach view for Interpreter bookings.
 29. v12.0.1.7.1 AFC-2406: Redesign of the interpreter accountant formview.
-29. v12.0.1.7.2 AFC-2441 AFC-2445: Added groupby Booking status, Added Calender & Pivot view for Interpreter Booking,
-30. v12.0.1.7.3 AFC-2601: Trivial spelling corrections, line length and other trivial improvements
-Added new filter 'Cancelled By Interpreter' in Interpreter tray widget.
-
+30. v12.0.1.7.2 AFC-2441 AFC-2445: Added groupby Booking status, Added Calender & Pivot view for Interpreter Booking,
+    Added new filter 'Cancelled By Interpreter' in Interpreter tray widget.
+31. v12.0.1.7.3 AFC-2505 Added Jobseeker category in Interpreter booking.
+32. v12.0.1.7.4 AFC-2358 Added server action and updated code to update duration of booking in two decimal, Added text 'Please submit Interpreter' on kanban if booking is not delivered, Added breadcrumbs for activity.
+33. v12.0.1.7.5 AFC-2568 Made 'Interpreter Gender Preference' editable.
+34. v12.0.1.7.6 AFC-2581 Added dynamic date filter to outplacement interpreter booking filter view.
+35. v12.0.1.7.7 Added info about informing the interpreter when the interpreter is cancelled in activity.js-file
+36. v12.0.1.7.8 AFC-2596 Listed all activities from Interpreters menus.
+30. v12.0.1.7.9 AFC-2601: Trivial spelling corrections, line length and other trivial improvements
 
 Maintainers
 ~~~~~~~~~~~
 
-This module is maintained by Vertal.
+This module is maintained by Vertel AB <www.vertel.se> on behalf of Arbetsförmedlingen <www.arbetsformedlingen.se>
+
+This module is maintained from: https://github.com/vertelab/odoo-outplacement/tree/Dev-12.0-Fenix-Sprint-02/outplacement_order_interpreter
 
 Contributors
 ~~~~~~~~~~~~
-
+* Anders Wallenquist <anders.wallenquist@vertel.se>
 * Anil Kesariya <anil.r.kesariya@gmail.com>
+* Fredrik Arvas <fredrik.arvas@vertel.se>
+* Rupareliya Hemangi <rupareliyahemangi145@gmail.com>
+* Nils Nyman-Waara <nils.nyman-waara@vertel.se>

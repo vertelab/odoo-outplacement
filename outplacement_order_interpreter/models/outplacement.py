@@ -16,9 +16,11 @@ class Outplacement(models.Model):
         readonly=False)
     interpreter_type = fields.Many2one(
         related='partner_id.interpreter_type',
+        string = "Interpreter Type",
         readonly=False)
     interpreter_remote_type = fields.Many2one(
         related='partner_id.interpreter_type',
+        string='Interpreter Remote Type',
         readonly=False)
     total_activity = fields.Integer(compute='compute_total_activity')
 
@@ -29,9 +31,10 @@ class Outplacement(models.Model):
                 [('outplacement_id', '=', record.id)])
             for task in tasks:
                 messages = msg_obj.search(
-                    [('res_id', '=', task.id),
-                     ('model', '=', 'project.task'),
-                     ('body', 'ilike', 'Tolkbokning är bekräftad')])
+                  [('res_id', '=', task.id),
+                   ('model', '=', 'project.task'),
+                   ('body', 'ilike', 'Tolkbokning är bekräftad')])
+
                 if len(messages) > 1:
                     for msg in messages[1:]:
                         msg.unlink()
@@ -45,7 +48,8 @@ class Outplacement(models.Model):
             if tasks:
                 activities = activity_obj.search(
                     [('res_id', 'in', tasks.ids),
-                     ('res_model', '=', 'project.task'), '|',
+                     ('res_model', '=', 'project.task'),
+                     '|',
                      ('active', '=', True), ('active', '=', False)]).ids
             outplacement.total_activity = len(activities)
 
@@ -57,9 +61,8 @@ class Outplacement(models.Model):
             activities = self.env['mail.activity'].search(
                 [('res_id', 'in', tasks.ids),
                  ('res_model', '=', 'project.task'),
-                 '|',
-                 ('active', '=', True),
-                 ('active', '=', False)]).ids
+                  '|',
+                 ('active', '=', True), ('active', '=', False)]).ids
         action = self.env.ref('outplacement_order_interpreter.interpreter_activity_action').read([])[0]
         action['domain'] = [('id', 'in', activities), '|', ('active', '=', True), ('active', '=', False)]
         return action

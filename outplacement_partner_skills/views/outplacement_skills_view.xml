@@ -14,7 +14,7 @@
                     <group>
                         <field name="partner_skill_ids" nolabel="1">
                             <tree editable="bottom">
-                                <field name="skill_id"  string="Skill"/>
+                                <field name="skill_id" string="Skill"/>
                                 <field name="level" widget="priority" invisible="1"/>
                             </tree>
                         </field>

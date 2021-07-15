@@ -3,10 +3,10 @@ from collections import defaultdict
 import datetime
 import json
 import logging
+import pytz
 
 from odoo.exceptions import UserError
 from odoo import api, models, fields, tools, _
-import pytz
 
 _logger = logging.getLogger(__name__)
 
@@ -74,6 +74,7 @@ class ProjectTask(models.Model):
 
 class MailActivity(models.Model):
     _inherit = "mail.activity"
+    _rec_name = 'activity_type_id'
 
     active = fields.Boolean(default=True)
     interpreter_language = fields.Many2one(
@@ -105,8 +106,8 @@ class MailActivity(models.Model):
                                default=lambda self: self._get_end_time())
     duration = fields.Char("Duration(In minutes)", compute='_compute_dates_duration', store=True)
     date = fields.Date("Date", compute='_compute_dates_duration', store=True)
-    split_start_time = fields.Char("Start Time", compute='_compute_dates_duration', store=True)
-    split_end_time = fields.Char("End Time", compute='_compute_dates_duration', store=True)
+    split_start_time = fields.Char("Split Start Time", compute='_compute_dates_duration', store=True)
+    split_end_time = fields.Char("Split End Time", compute='_compute_dates_duration', store=True)
     additional_time = fields.Integer(string='Additional time (minutes)', default=0)
 
     interpreter_receiver = fields.Char(string='Interpreter Receiver')
@@ -154,7 +155,8 @@ class MailActivity(models.Model):
         readonly=True)
 
     interpreter_ka_nr = fields.Char(compute='_compute_ka_nr')
-    task_outplacement_id = fields.Many2one('project.task', string="Task", compute='_compute_outplacement_task', store=True)
+    task_outplacement_id = fields.Many2one('project.task', string="Task", compute='_compute_outplacement_task',
+                                           store=True)
     activity_status_for_interpreter = fields.Char(string="Activity Status for Interpreter",
                                                   compute='_compute_activity_status', store=True)
 
@@ -170,8 +172,31 @@ class MailActivity(models.Model):
     add_log_booking_confirmed = fields.Boolean("Added Log for Booking Confirmed?")
     add_log_booking_delivered = fields.Boolean("Added Log for Booking Delivered?")
     performing_operation_id = fields.Many2one('performing.operation', "Performing Operation",
-                                             related="outplacement_id.performing_operation_id", store=True)
+                                              related="outplacement_id.performing_operation_id", store=True)
     employee_id = fields.Many2one('hr.employee', related='outplacement_id.employee_id', store=True)
+    jobseeker_category_id = fields.Many2one(comodel_name="res.partner.skat",
+                                            related='outplacement_id.partner_id.jobseeker_category_id',
+                                            store=True)  # is added in partner_extension_af
+    jobseeker_category = fields.Char(
+        string="Jobseeker category", compute="combine_category_name_code", store=True
+    )
+
+    @api.multi
+    @api.depends('jobseeker_category_id')
+    def combine_category_name_code(self):
+        for rec in self:
+            if rec.jobseeker_category_id:
+                rec.jobseeker_category = "%s %s" % (
+                    rec.jobseeker_category_id.code,
+                    rec.jobseeker_category_id.name,
+                )
+
+    def update_activity_duration(self):
+        for activity in self:
+            if activity.time_start and activity.time_end:
+                activity.duration = format((((activity.time_end - activity.time_start).total_seconds()) / 60),
+                                           '.2f')
+
 
     @staticmethod
     def change_tz(date: datetime.datetime,
@@ -194,7 +219,8 @@ class MailActivity(models.Model):
     def _compute_dates_duration(self):
         for activity in self:
             if activity.time_start and activity.time_end:
-                activity.duration = ((activity.time_end - activity.time_start).total_seconds()) / 60
+                activity.duration = format((((activity.time_end - activity.time_start).total_seconds()) / 60),
+                                           '.2f')
                 activity.date = activity.time_start.date()
                 start_date = self.change_tz(
                     activity.time_start, 'utc', 'Europe/Stockholm')
@@ -243,13 +269,14 @@ class MailActivity(models.Model):
         return super(MailActivity, self).search_read(
             domain=domain, fields=fields, offset=offset, limit=limit, order=order)
 
+
     @api.model
     def read_group(
             self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
         if 'from_outplacement_interpreters_menu' in self._context:
             act_type = self.env.ref('outplacement_order_interpreter.order_interpreter')
             if act_type:
-                domain += [('activity_type_id', '=', act_type.id)]
+                domain += [('activity_type_id', '=', act_typetype.id)]
         return super(MailActivity, self).read_group(
             domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
 
@@ -280,7 +307,7 @@ class MailActivity(models.Model):
                             and activity._interpreter_booking_status_2 in ['1', '3']:
                         activity.activity_status_for_interpreter = 'awaiting_booking'
                     elif activity.active and activity._interpreter_booking_status == '1' \
-                        and activity._interpreter_booking_status_2 == '2':
+                            and activity._interpreter_booking_status_2 == '2':
                         activity.activity_status_for_interpreter = 'failed_booking'
                     elif activity.active and activity._interpreter_booking_status_2 == '5':
                         activity.activity_status_for_interpreter = 'cancelled_by_interpreter'
@@ -623,8 +650,7 @@ class MailActivity(models.Model):
             _logger.debug('Interpreter booking success.')
         elif status_code == 404:
             self._interpreter_booking_status = msg
-            _logger.error('Check KA-Number and that address is correct.')
-            _logger.error(response.text)
+            _logger.error('Check KA-Number and that address is correct. %s' % str(response.text))
             _logger.error(payload)
             msg = _('Failed to book Interpreter, '
                     'please check KA-Number and address in request.\n')

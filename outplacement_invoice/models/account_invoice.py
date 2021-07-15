@@ -21,8 +21,10 @@
 ################################################################################
 
 import logging
-from odoo import api, models, fields, tools, _
 from odoo.exceptions import Warning
+
+from odoo import api, models, fields, tools, _
+
 _logger = logging.getLogger(__name__)
 
 # only used in tests
@@ -36,13 +38,16 @@ class AccountInvoice(models.Model):
     raindance_ref = fields.Char(string='Raindance ID')
     partner_vat = fields.Char(related="partner_id.vat", readonly=True)
     partner_company_registry = fields.Char(related="partner_id.company_registry", readonly=True)
-    company_partner_id = fields.Many2one(comodel_name='res.partner', readonly=True, related='company_id.partner_id')
+    company_partner_id = fields.Many2one(comodel_name='res.partner', readonly=True, related='company_id.partner_id',
+                                         string="Company's Partner")
     company_partner_street = fields.Char(related='company_id.partner_id.street', readonly=True)
     company_partner_zip = fields.Char(related='company_id.partner_id.zip', readonly=True)
     company_partner_city = fields.Char(related='company_id.partner_id.city', readonly=True)
-    company_partner_country_id = fields.Many2one(comodel_name="res.country", related='company_id.partner_id.country_id', readonly=True)
-    company_vat = fields.Char(related="company_id.vat", readonly=True)
-    company_company_registry = fields.Char(related="company_id.company_registry", readonly=True)
+    company_partner_country_id = fields.Many2one(comodel_name="res.country", related='company_id.partner_id.country_id',
+                                                 readonly=True)
+    company_vat = fields.Char(related="company_id.vat", readonly=True, string="Company Tax ID")
+    company_company_registry = fields.Char(related="company_id.company_registry", readonly=True,
+                                           string="Company's Company Registry")
     contract_nr = fields.Char(string="Contract nr", readonly=True)
 
     def test_data(self):

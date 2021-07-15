@@ -18,7 +18,7 @@ class Outplacement(models.Model):
         ('komm_info_02', 'Information has not been communicated'),
         ('komm_info_03', 'Information missing'),
     ], default="komm_info_03")
-    
+
     fr_send_date = fields.Date(string="Final report send date", readonly=True)
     fr_report_date = fields.Date(string="Reporting date")
     fr_report_approved_date = fields.Date(string="Final report approved date", readonly=True)

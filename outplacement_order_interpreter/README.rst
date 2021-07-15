@@ -39,6 +39,7 @@ Different version submitted
 28. v12.0.1.7.0 AFC-2405: Added different serach view for Interpreter bookings.
 29. v12.0.1.7.1 AFC-2406: Redesign of the interpreter accountant formview.
 29. v12.0.1.7.2 AFC-2441 AFC-2445: Added groupby Booking status, Added Calender & Pivot view for Interpreter Booking,
+30. v12.0.1.7.3 AFC-2601: Trivial spelling corrections, line length and other trivial improvements
 Added new filter 'Cancelled By Interpreter' in Interpreter tray widget.
 
 
@@ -51,5 +52,3 @@ Contributors
 ~~~~~~~~~~~~
 
 * Anil Kesariya <anil.r.kesariya@gmail.com>
-
-

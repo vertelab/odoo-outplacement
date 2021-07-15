@@ -36,6 +36,8 @@ var Activity = MailActivity.include({
                                                          <b>Avboka tolkbokningen</b> <br>
                                                          Avbokning sker i två steg: <br/>
                                                          1 Informera tolken om att ni inte kan använda tiden.<br/>
+                                                         Tolkens namn : &nbsp'+activity.interpreter_name+' <br/>
+                                                         Tolkens telefonnummer: &nbsp'+activity.interpreter_phone+' <br/>
                                                          2 Skicka ett epostmeddelande till&nbsp<a href="mailto:team-crm@arbetsformedlingen.se?subject=Avboka tolk med referens ' + activity.interpreter_booking_ref + ' och KA-Nr: ' + activity.interpreter_ka_nr + '."> team-crm@arbetsformedlingen.se</a> &nbsp och ange referensnummer&nbsp'+ activity.interpreter_booking_ref +'.<br/>
                                                          Aktuellt KA-Nr:&nbsp'+activity.interpreter_ka_nr+'.<br/>
                                                          3 Klicka på inleverera tolken.<br/>

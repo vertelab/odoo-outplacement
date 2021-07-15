@@ -42,6 +42,7 @@ Different version submitted
 34. v12.0.1.7.6 AFC-2581 Added dynamic date filter to outplacement interpreter booking filter view.
 35. v12.0.1.7.7 Added info about informing the interpreter when the interpreter is cancelled in activity.js-file
 36. v12.0.1.7.8 AFC-2596 Listed all activities from Interpreters menus.
+37. v12.0.1.7.9 AFC-2593 Added Interpreter name and Phone number on booking cancellation message.
 
 Maintainers
 ~~~~~~~~~~~

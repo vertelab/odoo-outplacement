@@ -9,7 +9,7 @@ _logger = logging.getLogger(__name__)
 
 
 class InterpreterDeliveryWizard(models.TransientModel):
-    """Wizard for delivery of an interpereter booking."""
+    """Wizard for delivery of an interpreter booking."""
     _name = 'outplacement.interpreter_delivery.wizard'
     _description = "Outplacement Intepreter Delivery Wizard"
 
@@ -112,7 +112,7 @@ class InterpreterDeliveryWizard(models.TransientModel):
             ref=activity.interpreter_booking_ref)
 
         self.env['mail.message'].create({
-            'body': (f"{subject}<br>{msg}"),
+            'body': f"{subject}<br>{msg}",
             'subject': _("Interpreter Delivery"),
             'author_id': self.env['res.users'].browse(
                 self.env.uid).partner_id.id,
@@ -122,7 +122,7 @@ class InterpreterDeliveryWizard(models.TransientModel):
         activity.additional_time = self.additional_time
 
     def log_to_accounting(self):
-        """Create an acounting row with the amount of hours logged."""
+        """Create an accounting row with the amount of hours logged."""
         activity = self.mail_activity_id
         analytic_id = activity.get_outplacement_value('analytic_account_id')
         extra = datetime.timedelta(minutes=self.additional_time)

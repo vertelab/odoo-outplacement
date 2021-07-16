@@ -17,19 +17,18 @@ class ClientConfig(models.Model):
     _description = 'Final report ipf client'
     _rec_name = 'url'
 
-    url = fields.Char(string='Url',
-                      required=True)
-    client_secret = fields.Char(string='Client Secret',
-                                required=True)
-    client_id = fields.Char(string='Client ID',
-                            required=True)
-    environment = fields.Selection(selection=[
-        ('U1', 'U1'),
-        ('I1', 'I1'),
-        ('T1', 'T1'),
-        ('T2', 'T2'),
-        ('PROD', 'PROD'),
-    ], string='Environment',
+    url = fields.Char(string='Url', required=True)
+    client_secret = fields.Char(string='Client Secret', required=True)
+    client_id = fields.Char(string='Client ID', required=True)
+    environment = fields.Selection(
+        selection=[
+            ('U1', 'U1'),
+            ('I1', 'I1'),
+            ('T1', 'T1'),
+            ('T2', 'T2'),
+            ('PROD', 'PROD'),
+        ],
+        string='Environment',
         default='U1',
         required=True)
     request_history_ids = fields.One2many(

@@ -25,8 +25,8 @@ import datetime  # Used in test
 import logging
 import random  # Used in test
 import string  # Used in test
-from odoo.exceptions import Warning
 
+from odoo.exceptions import UserError
 from odoo import api, fields, models, _
 
 _logger = logging.getLogger(__name__)
@@ -62,7 +62,7 @@ class Outplacement(models.Model):
              "outplacements with budgets, planning, cost and revenue "
              "analysis, timesheets.")
 
-    # Temporary solution
+    # Temporary solution until BÄR fixes its language handling.
     temp_lang = fields.Char(string='Language support requested')
     sale_order_id = fields.Many2one('sale.order', string="Sale Order", compute='compute_sale_order', store=True)
     currency_id = fields.Many2one('res.currency', related='sale_order_id.currency_id', store=True)
@@ -152,9 +152,10 @@ class Outplacement(models.Model):
                     'customer_id': data['sokande_id'],
                     'social_sec_nr': data['personnummer'],
                 })
-        except:
-            _logger.exception('Error in partner information: %s' % data)
-            raise Warning('Error in partner information: %s' % data)
+        except Exception:
+            msg = f'Error in partner information: {data}'
+            _logger.exception(msg)
+            raise UserError(msg)
         return partner
 
     @api.multi
@@ -172,17 +173,17 @@ class Outplacement(models.Model):
 
     @api.multi
     def _get_department_id(self, data):
+        perf_op = data.get('utforande_verksamhet_id', '')
         department = self.env['performing.operation'].search(
-            [('ka_nr', '=', data.get('utforande_verksamhet_id', ''))],
+            [('ka_nr', '=', perf_op)],
             limit=1)
-        _logger.debug('Department: hr_department %s | %s' % (
-            department, data.get('utforande_verksamhet_id')))
+        _logger.debug(f'Department: hr_department {department} | {perf_op}')
         return department.id if department else None
 
     @api.multi
     def _get_skill(self, data):
-        return self.env['hr.skill'].search([
-            ('name', '=', data['tjanstekod'])], limit=1)
+        return self.env['hr.skill'].search(
+            [('name', '=', data['tjanstekod'])], limit=1)
 
     @api.model
     def suborder_process_data(self, data):
@@ -195,9 +196,7 @@ class Outplacement(models.Model):
         )
         if no_outplacement:
             _logger.warning(
-                "Rejected outplacement because of duplicate. Either because of outplacement.name: %s"
-                % order_number
-            )
+                f"Rejected outplacement because of duplicate. Name: {order_number}")
             return 400
 
         skill = self._get_skill(data)
@@ -252,9 +251,9 @@ class Outplacement(models.Model):
             if rec.temp_lang == 'false':
                 rec.temp_lang = ''
 
-    # For test. ToDo: Rename with a test in function name.
+    # For test. ToDo: Verify that this test data is valid.
     @api.model
-    def create_suborder_process_data(self):
+    def test_create_suborder_process_data(self):
         self.suborder_process_data({
             "genomforande_referens": ''.join(
                 random.sample(string.digits, k=9)),

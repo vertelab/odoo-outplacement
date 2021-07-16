@@ -21,8 +21,6 @@
                             <control>
                                 <create string="Add a product"/>
                             </control>
-
-
                             <field name="summary"/>
                             <field name="activity_type_id"/>
                             <field name="due_days"/>

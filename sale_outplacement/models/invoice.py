@@ -13,8 +13,9 @@ class AccountInvoice(models.Model):
         :param view_type: Active view type
         :param toolbar:
         :param submenu:
-        :return: This function will disable CUD operations for active user if user has dafa accounting read access
-        and will disable all the button from form view except preview button.
+        :return: This function will disable CUD operations for active
+        user if user has dafa accounting read access and will disable
+        all the button from form view except preview button.
         """
 
         res = super(AccountInvoice, self).fields_view_get(

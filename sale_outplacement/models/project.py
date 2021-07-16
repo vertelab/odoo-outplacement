@@ -1,8 +1,6 @@
 import base64
 import logging
-from datetime import datetime
-from odoo.exceptions import ValidationError, AccessError, Warning
-from odoo.modules.module import get_module_resource
+from odoo.exceptions import ValidationError, UserError
 
 from odoo import api, fields, models, tools, SUPERUSER_ID
 from odoo import tools, _
@@ -122,16 +120,16 @@ class ProjectTask(models.Model):
                 % self.name)
         elif self.task_type == "optional" and (self.stage_id.id == stage_todo.id and not self.child_ids):
             self.stage_id = stage_optional.id
-            raise Warning(_("An optional task with no sub-tasks can't be made required"))
+            raise UserError(_("An optional task with no sub-tasks can't be made required"))
         elif self.task_type == "optional" and (self.stage_id.id == stage_todo.id and self.child_ids):
             for child in self.child_ids:
                 if child.stage_id == stage_todo.id:
                     self.stage_id = stage_todo.id
-                    raise Warning(_("An optional task with sub-tasks"
-                                    "in To Do stage can't be made optional"
-                                    "until the required sub-tasks are done"))
+                    raise UserError(_("An optional task with sub-tasks"
+                                      "in To Do stage can't be made optional"
+                                      "until the required sub-tasks are done"))
         elif not self.task_type and (self.stage_id.id == stage_todo.id or self.stage_id.id == stage_optional.id):
-            self.stage_id == False
+            self.stage_id = False
             raise ValidationError(_("You are not allowed to add new required or optional tasks."))
 
     @api.depends("stage_id")
@@ -149,7 +147,7 @@ class ProjectTask(models.Model):
     def unlink(self):
         for task in self:
             if task.task_type == "mandatory":
-                raise Warning(_('You are not allowed to remove requred tasks'))
+                raise UserError(_('You are not allowed to remove requred tasks'))
         return models.Model.unlink(self)
 
     @api.model
@@ -206,8 +204,7 @@ class ProjectTaskType(models.Model):
         default_outplacement_id = self.env.context.get("default_outplacement_id")
         if default_outplacement_id:
             shared_stages = self.filtered(
-                lambda x: len(x.outplacement_ids) > 1
-                          and default_outplacement_id in x.outplacement_ids.ids
+                lambda x: len(x.outplacement_ids) > 1 and default_outplacement_id in x.outplacement_ids.ids
             )
             tasks = (
                 self.env["project.task"]

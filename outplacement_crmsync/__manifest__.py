@@ -21,7 +21,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Outplacement Sync from CRM',
-    'version': '12.0.1.1.5',
+    'version': '12.0.1.1.6',
     'category': 'Outplacement',
     'author': "Vertel AB",
     'license': 'AGPL-3',

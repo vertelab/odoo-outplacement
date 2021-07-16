@@ -25,4 +25,4 @@ Different version submitted
 Maintainers
 ~~~~~~~~~~~
 
-This module is maintained by Vertal.
+This module is maintained by Vertel.

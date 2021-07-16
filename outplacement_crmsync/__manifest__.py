@@ -33,11 +33,14 @@
         'partner_firstname',
         'partner_view_360_DAFA'
     ],
+    'external_dependencies': {
+            'python': ['odoorpc'],
+    },
     'data': [
         'data/data.xml',
     ],
     'installable': True,
     'images': [
-        'static/description/img.png'
+        'static/description/icon.png'
     ],
 }

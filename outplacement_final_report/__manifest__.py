@@ -10,7 +10,8 @@
         'res_ssyk',
         'base_user_groups_dafa',
         'partner_education',
-        'mail'
+        'mail',
+        'api_ipf'
     ],
     'data': [
         'views/outplacement_view.xml',

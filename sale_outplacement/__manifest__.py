@@ -46,6 +46,12 @@
         'hr_holidays',
         'hr_office'
     ],
+    'external_dependencies': {
+            'python': ['lxml',
+                       'pytz',
+                       'xmltodict',
+                       ],
+    },
     'data': [
         'security/security_view.xml',
         'security/ir.model.access.csv',

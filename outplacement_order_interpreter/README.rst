@@ -42,6 +42,7 @@ Different version submitted
 34. v12.0.1.7.6 AFC-2581 Added dynamic date filter to outplacement interpreter booking filter view.
 35. v12.0.1.7.7 Added info about informing the interpreter when the interpreter is cancelled in activity.js-file
 36. v12.0.1.7.8 AFC-2596 Listed all activities from Interpreters menus.
+30. v12.0.1.7.9 AFC-2601: Trivial spelling corrections, line length and other trivial improvements
 
 Maintainers
 ~~~~~~~~~~~
@@ -57,5 +58,3 @@ Contributors
 * Fredrik Arvas <fredrik.arvas@vertel.se>
 * Rupareliya Hemangi <rupareliyahemangi145@gmail.com>
 * Nils Nyman-Waara <nils.nyman-waara@vertel.se>
-
-

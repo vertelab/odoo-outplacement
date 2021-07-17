@@ -30,19 +30,23 @@ var Activity = MailActivity.include({
         if (activity.is_interpreter_order) {
             // If we are trying to remove an interpreter booking ask the user
             // if all things the user have to do before removing it has been done.
-
+            var content = '<p><b>Avboka tolkbokningen</b> <br> Avbokning sker i tre steg: <br/> 1 Informera tolken om att ni inte kan använda tiden.<br/>'
+            if (activity.interpreter_name) {
+                content += "Tolkens namn : " + activity.interpreter_name + "<br/>"
+            }
+            if (activity.interpreter_phone) {
+                content += "Tolkens telefonnummer: " + activity.interpreter_phone + "<br/>"
+            }
+            content += "2 Skicka ett epostmeddelande till "
+            var link = "mailto:team-crm@arbetsformedlingen.se?subject=Avboka tolk med referens " + activity.interpreter_booking_ref + " och KA-Nr: " + activity.interpreter_ka_nr + "."
+            content += "<a href=\" " + link + " \">team-crm@arbetsformedlingen.se</a>"
+            content += " och ange referensnummer "
+            content += activity.interpreter_booking_ref + ".<br/> Aktuellt KA-Nr: " + activity.interpreter_ka_nr
+            content += ".<br/> 3 Klicka på inleverera tolken.<br/></p>"
             let dialog = new Dialog(this, {'title': 'Avboka tolkbokningen',
-                                           '$content': $('<p>
-                                                         <b>Avboka tolkbokningen</b> <br>
-                                                         Avbokning sker i tre steg: <br/>
-                                                         1 Informera tolken om att ni inte kan använda tiden.<br/>
-                                                         Tolkens namn : &nbsp'+activity.interpreter_name+'<br/>
-                                                         Tolkens telefonnummer: &nbsp'+activity.interpreter_phone+'<br/>
-                                                         2 Skicka ett epostmeddelande till&nbsp<a href="mailto:team-crm@arbetsformedlingen.se?subject=Avboka tolk med referens ' + activity.interpreter_booking_ref + ' och KA-Nr: ' + activity.interpreter_ka_nr + '."> team-crm@arbetsformedlingen.se</a> &nbsp och ange referensnummer&nbsp'+ activity.interpreter_booking_ref +'.<br/>
-                                                         Aktuellt KA-Nr:&nbsp'+activity.interpreter_ka_nr+'.<br/>
-                                                         3 Klicka på inleverera tolken.<br/>
-                                                         </p>'),
-                                           'technical':'false',
+                                           '$content': $('<div>', {
+                                                html: content,
+                                            }),
                                            'buttons':[
                                                {'text':'Inleverera tolken', 'close':'true', 'classes':'btn-primary',
                                                'click':function(){self.interpreter_deliver(options, activity)}},

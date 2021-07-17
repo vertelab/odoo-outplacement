@@ -1,18 +1,19 @@
 # coding: utf-8
 
 import logging
-import pprint
-from odoo.exceptions import Warning
-from xmlrpc.client import ServerProxy
 
+# noinspection PyProtectedMember
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
+from xmlrpc.client import ServerProxy
 
 _logger = logging.getLogger(__name__)
 
 try:
     import odoorpc
-except:
+except ImportError:
     _logger.info("outplacement_crmsync needs odoorpc. pip install odoorpc")
+    raise
 
 
 class crm_server(object):
@@ -20,28 +21,28 @@ class crm_server(object):
 
         self.server_url = (
             env["ir.config_parameter"]
-                .sudo()
-                .get_param("outplacement_crmsync.server_url", "http[s]://<domain>")
+            .sudo()
+            .get_param("outplacement_crmsync.server_url", "http[s]://<domain>")
         )
         self.server_port = (
             env["ir.config_parameter"]
-                .sudo()
-                .get_param("outplacement_crmsync.server_port", "8069")
+            .sudo()
+            .get_param("outplacement_crmsync.server_port", "8069")
         )
         self.server_db = (
             env["ir.config_parameter"]
-                .sudo()
-                .get_param("outplacement_crmsync.server_db", "database")
+            .sudo()
+            .get_param("outplacement_crmsync.server_db", "database")
         )
         self.server_login = (
             env["ir.config_parameter"]
-                .sudo()
-                .get_param("outplacement_crmsync.server_login", "userid")
+            .sudo()
+            .get_param("outplacement_crmsync.server_login", "userid")
         )
         self.server_pw = (
             env["ir.config_parameter"]
-                .sudo()
-                .get_param("outplacement_crmsync.server_pw", "password")
+            .sudo()
+            .get_param("outplacement_crmsync.server_pw", "password")
         )
 
         self.url_common = f"{self.server_url}:{self.server_port}/xmlrpc/2/common"
@@ -52,13 +53,13 @@ class crm_server(object):
                 self.server_db, self.server_login, self.server_pw, {}
             )
         except Exception as e:
-            raise Warning("Login %s" % e)
+            raise UserError(f"Login {e}")
 
         self.url_model = f"{self.server_url}:{self.server_port}/xmlrpc/2/object"
         try:
             self.model = ServerProxy(self.url_model)
         except Exception as e:
-            raise Warning("Model %s " % e)
+            raise UserError(f"Model {e} ")
 
     def execute(self, model, command, param):
         return self.model.execute_kw(
@@ -81,17 +82,19 @@ class crm_serverII(object):
             self.common = odoorpc.ODOO(host=self.server_host, protocol=self.server_protocol, port=self.server_port)
             # self.common = odoorpc.ODOO(host="http://172.16.42.112",port=8069)
             # self.common = odoorpc.ODOO(host="172.16.42.112",port='8069')
-            _logger.warn("DAER crm_serverII INIT")
+            _logger.debug("crm_serverII INIT")
             self.common.login(db=self.server_db, login=self.server_login, password=self.server_pw)
             # self.common.login(db="odoocrm", login="admin", password="admin")
-            _logger.warn("DAER crm_serverII LOGIN")
+            _logger.debug("crm_serverII LOGIN")
 
         except Exception as e:
-            raise Warning("Login %s" % e)
+            raise UserError(f"Login {e}")
+
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
+    # ToDo: Fix this!
     # Temporary fix to update jobseeker category. Should be removed before 2021-SEPT-01
     def update_jobseeker_data(self):
         job_categ_obj = self.env['res.partner.skat']
@@ -101,22 +104,23 @@ class ResPartner(models.Model):
                 rec = xmlrpc.common.env['res.partner'].partnersyncCrm2DafaSSN(
                     partner.social_sec_nr)
                 if rec:
-                    if rec.get('partner').get('jobseeker_category_id'):
-                        jobeeker_category = job_categ_obj.search(
-                            [('name', '=', rec.get('partner').get('jobseeker_category_id')[1])], limit=1)
-                        if jobeeker_category:
-                            partner.sudo().jobseeker_category_id = jobeeker_category.id
+                    cat_id = rec.get('partner', {}).get('jobseeker_category_id')
+                    if cat_id:
+                        jobseeker_category = job_categ_obj.search(
+                            [('name', '=', cat_id[1])], limit=1)
+                        if jobseeker_category:
+                            partner.sudo().jobseeker_category_id = jobseeker_category.id
                         else:
-                            categ_code = ''
-                            if rec.get('jobseeker_category_code'):
-                                categ_code = rec.get('jobseeker_category_code')
+                            categ_code = rec.get('jobseeker_category_code', '')
                             category = job_categ_obj.sudo().create(
-                                {'name': rec.get('partner').get('jobseeker_category_id')[1],
+                                {'name': cat_id[1],
                                  'code': categ_code})
                             partner.sudo().jobseeker_category_id = category.id
             except Exception as e:
-                _logger.error("Something went wrong when updating the Jobseeker category from CRM! %s" % str(e))
-                raise Warning(str(e))
+                _logger.error("Something went wrong when updating the"
+                              f" Jobseeker category from CRM! {e}")
+                raise UserError(str(e))
+
 
 class Outplacement(models.Model):
     _inherit = "outplacement"
@@ -127,14 +131,13 @@ class Outplacement(models.Model):
 
     @api.one
     def check_connection(self):
-
-        _logger.warn("CRMSYNC: testing connection..")
+        _logger.warning("CRMSYNC: testing connection..")
         xmlrpc = crm_serverII(self.env)
-        _logger.warn("CRMSYNC xmlrpc object initialized")
+        _logger.warning("CRMSYNC xmlrpc object initialized")
         test = xmlrpc.common.env['res.partner'].browse(1)
-        _logger.warn("CRMSYNC test: %s" % test)
+        _logger.warning(f"CRMSYNC test: {test}")
         if test.id == 1:
-            raise Warning("Connection established!")
+            raise UserError("Connection established!")
 
     @api.one
     def get_jobseeker_dataV(self):
@@ -188,24 +191,25 @@ class Outplacement(models.Model):
                 self.partner_id.write({f: rec['partner'][f] if f != 'jobseeker_category_id' else '' for f in FIELDS})
                 # education_ids
                 self.partner_id.education_ids = [(6, 0, [])]
-                if rec.get('partner').get('jobseeker_category_id'):
+                cat_id = rec.get('partner', {}).get('jobseeker_category_id')
+                if cat_id:
                     jobeeker_category = self.env['res.partner.skat'].search(
-                        [('name', '=', rec.get('partner').get('jobseeker_category_id')[1])], limit=1)
+                        [('name', '=', cat_id[1])], limit=1)
                     if jobeeker_category:
                         self.partner_id.jobseeker_category_id = jobeeker_category.id
                     else:
-                        categ_code = ''
-                        if rec.get('jobseeker_category_code'):
-                            categ_code = rec.get('jobseeker_category_code')
-                        category = self.env['res.partner.skat'].sudo().create({'name': rec.get('partner').get('jobseeker_category_id')[1],
-                                                             'code': categ_code})
+                        categ_code = rec.get('jobseeker_category_code', '')
+                        category = self.env['res.partner.skat'].sudo().create(
+                            {'name': cat_id[1],
+                             'code': categ_code})
                         self.partner_id.jobseeker_category_id = category.id
                 for code, level, foreign, approved in rec['education_ids']:
                     self.partner_id.education_ids = [(0, 0, {
                         'sun_id': self.env['res.sun'].search(
                             [('code', '=', code)], limit=1)[0].id,
                         'education_level_id':
-                            self.env['res.partner.education.education_level'].search([('name', '=', level)], limit=1)[0].id,
+                            self.env['res.partner.education.education_level'].search([('name', '=', level)],
+                                                                                     limit=1)[0].id,
                         'foreign_education': foreign,
                         'foreign_education_approved': approved
                     })]
@@ -217,37 +221,41 @@ class Outplacement(models.Model):
                 # job_ids
                 self.partner_id.job_ids = [(6, 0, [])]
                 for ssyk_code, exp_length, exp, edu, sun_code, edu_lvl, edu_f, edu_fa in rec['job_ids']:  # noqa: E501
-                    _logger.debug('ssyk code %s %s,exp lenght %s,exp %s,edu %s' % (
-                        ssyk_code, self.env['res.ssyk'].search(
-                            [('code', '=', ssyk_code)], limit=1)[0],
-                        exp_length, exp, edu))
+                    ssyk_id = self.env['res.ssyk'].search(
+                        [('code', '=', ssyk_code)], limit=1)[0]
+                    _logger.debug(f'ssyk code: {ssyk_code} '
+                                  f'ssyk id: {ssyk_id} '
+                                  f'exp lenght: {exp_length} '
+                                  f'exp: {exp}, edu: {edu}')
                     values = {
                         'partner_id': self.id,
-                        'ssyk_id': self.env['res.ssyk'].search(
-                            [('code', '=', code)], limit=1)[0],
+                        'ssyk_id': ssyk_id,
                         'experience_length': exp_length,
                         'education': edu,
                         'experience': exp
                     }
-                    sun_id = self.env['res.sun'].search([('code', '=', sun_code)], limit=1)[0]
-                    edu_level = self.env['res.partner.education.education_level'].search([('name', '=', edu_lvl)], limit=1)[
-                        0]
-                    education_id = self.env['res.partner.education'].search([('partner_id', '=', self.partner_id.id),
-                                                                             ('sun_id', '=', sun_id.id),
-                                                                             ('education_level_id', '=', edu_level.id),
-                                                                             ('foreign_education', '=', edu_f),
-                                                                             ('foreign_education_approved', '=', edu_fa)],
-                                                                            limit=1)[0]
-                    _logger.debug('sun code %s %s, edu level %s %s, edu_f %s'
-                                  ', edu_fa %s, education %s' % (
-                                      sun_code, sun_id, edu_lvl, edu_level,
-                                      edu_f, edu_fa, education_id))
+                    sun_id = self.env['res.sun'].search(
+                        [('code', '=', sun_code)], limit=1)[0]
+                    edu_level = \
+                        self.env['res.partner.education.education_level'].search(
+                            [('name', '=', edu_lvl)], limit=1)[0]
+                    education_id = self.env['res.partner.education'].search(
+                        [('partner_id', '=', self.partner_id.id),
+                         ('sun_id', '=', sun_id.id),
+                         ('education_level_id', '=', edu_level.id),
+                         ('foreign_education', '=', edu_f),
+                         ('foreign_education_approved', '=', edu_fa)],
+                        limit=1)[0]
+                    _logger.debug(f'sun code: {sun_code}, sun_id: {sun_id}, '
+                                  f'edu_lvl: {edu_lvl}, edu_level: {edu_level}, '
+                                  f'edu_f: {edu_f}, edu_fa: {edu_fa}, '
+                                  f'education_id: {education_id}')
                     values['education_id'] = education_id.id
                     self.partner_id.job_ids = [(0, 0, values)]
             else:
-                raise Warning("Partner not found in CRM")
+                raise UserError("Partner not found in CRM")
         except Exception as e:
-            _logger.error("Something went wrong when Getting Jobseeker from CRM. %s" % str(e))
+            _logger.error(f"Something went wrong when Getting Jobseeker from CRM. {e}")
             if email_to:
                 menu_id = model_obj.get_object_reference('outplacement', 'menu_outplacement')[1]
                 action_id = model_obj.get_object_reference('outplacement', 'outplacement_action')[1]

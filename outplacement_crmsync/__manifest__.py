@@ -21,7 +21,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Outplacement Sync from CRM',
-    'version': '12.0.1.1.5',
+    'version': '12.0.1.1.6',
     'category': 'Outplacement',
     'author': "Vertel AB",
     'license': 'AGPL-3',
@@ -33,11 +33,14 @@
         'partner_firstname',
         'partner_view_360_DAFA'
     ],
+    'external_dependencies': {
+            'python': ['odoorpc'],
+    },
     'data': [
         'data/data.xml',
     ],
     'installable': True,
     'images': [
-        'static/description/img.png'
+        'static/description/icon.png'
     ],
 }

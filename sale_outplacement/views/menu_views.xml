@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <!-- Disable Internal group and added access for HR officer -->
+    <menuitem id="hr_office.operation_menu" name="Operations" sequence="8" action="hr_office.action_operation"
+              groups="-base.group_user,group_operations"/>
+
+    <!-- Remove Internal Group and added data disable group to the menu to hide it.-->
+    <menuitem id="base.menu_board_root" name="Dashboards" sequence="305" web_icon="base,static/description/board.png"
+              groups="-base.group_user,group_disable_dafa_hide"/>
+
+
+    <!-- Remove Internal Group and added data disable group to the menu to hide it.-->
+    <menuitem
+        name="Leaves"
+        id="hr_holidays.menu_hr_holidays_root"
+        sequence="95"
+        web_icon="hr_holidays,static/description/icon.png"
+        groups="-base.group_user,group_disable_dafa_hide"/>
+
+
+</odoo>

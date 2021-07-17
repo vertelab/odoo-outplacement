@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Order Interpreter',
-    'version': '12.0.1.7.9',
+    'version': '12.0.1.8.0',
     'category': 'Outplacement',
     'author': "Vertel AB",
     'license': 'AGPL-3',

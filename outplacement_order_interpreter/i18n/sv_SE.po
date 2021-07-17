@@ -87,7 +87,7 @@ msgstr "<br/>\n"
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_kanban_view_for_interpreter
 msgid "<br/>\n"
 "                                <b>Task:</b>"
-msgstr "\"<br/>\n"
+msgstr "<br/>\n"
 "                                <b>Tolkbokning:</b>"
 
 #. module: outplacement_order_interpreter

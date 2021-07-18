@@ -30,19 +30,19 @@ var Activity = MailActivity.include({
         if (activity.is_interpreter_order) {
             // If we are trying to remove an interpreter booking ask the user
             // if all things the user have to do before removing it has been done.
-            var content = '<p><b>Avboka tolkbokningen</b> <br> Avbokning sker i tre steg: <br/> 1 Informera tolken om att ni inte kan använda tiden.<br/>'
+            var content = '<p><b>Avboka tolkbokningen</b> <br> Avbokning sker i steg: <br/>'
             if (activity.interpreter_name) {
-                content += "Tolkens namn : " + activity.interpreter_name + "<br/>"
+                content +=  '- Informera tolken om att ni inte kan använda tiden.<br/>' + "Tolkens namn : " + activity.interpreter_name + "<br/>"
             }
             if (activity.interpreter_phone) {
                 content += "Tolkens telefonnummer: " + activity.interpreter_phone + "<br/>"
             }
-            content += "2 Skicka ett epostmeddelande till "
+            content += "- Skicka ett epostmeddelande till "
             var link = "mailto:team-crm@arbetsformedlingen.se?subject=Avboka tolk med referens " + activity.interpreter_booking_ref + " och KA-Nr: " + activity.interpreter_ka_nr + "."
             content += "<a href=\" " + link + " \">team-crm@arbetsformedlingen.se</a>"
             content += " och ange referensnummer "
             content += activity.interpreter_booking_ref + ".<br/> Aktuellt KA-Nr: " + activity.interpreter_ka_nr
-            content += ".<br/> 3 Klicka på inleverera tolken.<br/></p>"
+            content += ".<br/> - Klicka på inleverera tolken.<br/></p>"
             let dialog = new Dialog(this, {'title': 'Avboka tolkbokningen',
                                            '$content': $('<div>', {
                                                 html: content,

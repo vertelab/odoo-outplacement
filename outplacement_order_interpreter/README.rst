@@ -44,6 +44,7 @@ Different version submitted
 36. v12.0.1.7.8 AFC-2596 Listed all activities from Interpreters menus.
 30. v12.0.1.7.9 AFC-2601: Trivial spelling corrections, line length and other trivial improvements
 31. v12.0.1.8.0 AFC-2593: Added Interpreter name & Phone and Deliver interpreter button on Cancellation popup.
+32. v12.0.1.9.0 AFC-2609: Added Interpreter name, Phone on Activity form view, Fixed quote issue on Activity kanban, Added some more fields on activity search view.
 
 Maintainers
 ~~~~~~~~~~~

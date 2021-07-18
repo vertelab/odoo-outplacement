@@ -43,6 +43,7 @@ Different version submitted
 35. v12.0.1.7.7 Added info about informing the interpreter when the interpreter is cancelled in activity.js-file
 36. v12.0.1.7.8 AFC-2596 Listed all activities from Interpreters menus.
 30. v12.0.1.7.9 AFC-2601: Trivial spelling corrections, line length and other trivial improvements
+31. v12.0.1.8.0 AFC-2593: Added Interpreter name & Phone and Deliver interpreter button on Cancellation popup.
 
 Maintainers
 ~~~~~~~~~~~

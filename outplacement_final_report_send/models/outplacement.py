@@ -29,7 +29,8 @@ class Outplacement(models.Model):
         next_41_days = self.date_by_adding_business_days(self.service_end_date, 41)
         if self.stage_id and self.stage_id.id == self.env.ref('outplacement.cancelled_stage').id or \
                 today >= next_41_days:
-            raise UserError(_("The Final Report can only be sent after the Service has ended."))
+            raise UserError(
+                _("You are only allowed to send Final Report within the 60 working days after the service ended."))
 
         if today <= self.service_end_date:
             raise UserError(_("You are not allowed to send final report before service end"
@@ -144,9 +145,9 @@ class Outplacement(models.Model):
                     code = cause_dict.get("code", _("Unknown error code"))
                     cause_message = cause_dict.get("message", _("Unknown cause"))
                     error_text = _("Error %s: %s\nCause: %s\nTracking ID: %s") % (
-                    code, message, cause_message, tracking_id)
+                        code, message, cause_message, tracking_id)
                     _logger.error("Something went wrong with sending Final Report for Outplacement %s. %s" % (
-                    self.name, str(error_text)))
+                        self.name, str(error_text)))
                     raise UserError(error_text)
                 _logger.debug("Successfully created final report")
                 self.fr_rejected = False

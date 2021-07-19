@@ -31,8 +31,7 @@ class Outplacement(models.Model):
                 today >= next_41_days:
             raise UserError(_("The Final Report can only be sent after the Service has ended."))
 
-        delta = self.service_end_date - datetime.datetime.now().date()
-        if not self.interruption and delta.days > -1:
+        if today > self.service_end_date:
             raise UserError(_("You are not allowed to send final report before service end"
                               " unless there has been an interruption"))
         if not self.jp_sent_date:

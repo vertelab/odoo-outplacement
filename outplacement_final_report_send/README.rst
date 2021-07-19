@@ -20,6 +20,7 @@ Different version submitted
 9. v12.0.1.2.4 AFC-2560 Fixed better error message for IPF Config.
 10. v12.0.1.2.5 AFC-2582 Adjusted calculation of allowed time to send Final Report.
 11. v12.0.1.2.6 AFC-2600 Raised onscreen warnings for required fields when sending Final Report. Improved code for Final report Send date.
+12. v12.0.1.2.7 AFC-2615 Raised onscreen warnings user send final report after service ended.
 
 Maintainers
 ~~~~~~~~~~~

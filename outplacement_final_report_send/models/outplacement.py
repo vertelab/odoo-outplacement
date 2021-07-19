@@ -31,18 +31,12 @@ class Outplacement(models.Model):
                 today >= next_41_days:
             raise UserError(_("The Final Report can only be sent after the Service has ended."))
 
-        if today > self.service_end_date:
+        if today <= self.service_end_date:
             raise UserError(_("You are not allowed to send final report before service end"
                               " unless there has been an interruption"))
         if not self.jp_sent_date:
             raise UserError(_("You need to send in a joint planning "
                               "before sending in a final report"))
-
-        already_sent = False
-        if self.fr_send_date:
-            already_sent = True
-        if already_sent:
-            raise UserError(_("You have already sent a final report for this outplacement"))
 
         if not self.performing_operation_id and not self.interruption:
             raise ValidationError(_("Performing operation needs to be set to send final report"))
@@ -50,6 +44,10 @@ class Outplacement(models.Model):
         if not self.employee_id:
             raise ValidationError(_("Employee must be set"))
         payload = {}
+
+        if not self.main_goal_id:
+            raise ValidationError(_("A main goal is required to send final report"))
+
         goal_id = self.main_goal_id
         if goal_id:
             payload["huvudmal"] = {
@@ -92,6 +90,8 @@ class Outplacement(models.Model):
             raise ValidationError(_("A main goal is required to send final report"))
 
         goal_id = self.alternative_goal_id
+        if not self.alternative_goal_id:
+            raise ValidationError(_("A alternative goal is required to send final report"))
         if goal_id:
             payload["alternativt_mal"] = {
                 "arbetsuppgifter_beskrivning": goal_id.job_description or "",

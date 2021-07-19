@@ -80,3 +80,9 @@ msgstr "Det är inte tillåtet att skicka en slutredovisning innan tjänstens sl
 #, python-format
 msgid "You need to send in a joint planning before sending in a final report"
 msgstr "Du måste skicka in en gemensam planering innan du skickar in en slutredovisning"
+
+#. module: outplacement_final_report_send
+#: code:addons/outplacement_final_report_send/models/outplacement.py:33
+#, python-format
+msgid "You are only allowed to send Final Report within the 60 working days after the service ended."
+msgstr "Det är bara tillåtet att skicka in slutredovisning inom 60 arbetsdagar efter att tjänsten avslutats."

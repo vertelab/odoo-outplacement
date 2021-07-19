@@ -43,7 +43,17 @@ var Activity = MailActivity.include({
             content += " och ange referensnummer "
             content += activity.interpreter_booking_ref + ".<br/> Aktuellt KA-Nr: " + activity.interpreter_ka_nr
             content += ".<br/> - Klicka på inleverera tolken.<br/></p>"
-            let dialog = new Dialog(this, {'title': 'Avboka tolkbokningen',
+            if (activity._interpreter_booking_status_2 == '2') {
+                let dialog = new Dialog(this, {'title': 'Avboka tolkbokningen',
+                                           '$content': $('<div>', {
+                                                html: content,
+                                            }),
+                                           'buttons': [{'text':'Stäng', 'close':'true'}]})
+                dialog.open()
+                return
+            }
+            else {
+                let dialog = new Dialog(this, {'title': 'Avboka tolkbokningen',
                                            '$content': $('<div>', {
                                                 html: content,
                                             }),
@@ -51,8 +61,9 @@ var Activity = MailActivity.include({
                                                {'text':'Inleverera tolken', 'close':'true', 'classes':'btn-primary',
                                                'click':function(){self.interpreter_deliver(options, activity)}},
                                                {'text':'Stäng', 'close':'true'}]})
-            dialog.open()
-            return
+                dialog.open()
+                return
+            }
         };
         return this._rpc({
                 model: options.model,

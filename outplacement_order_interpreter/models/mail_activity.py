@@ -749,7 +749,9 @@ class MailActivity(models.Model):
         bookings.
         """
         email_address = 'team-crm@arbetsformedlingen.se'
-        message = f"Skicka ett epostmeddelande till {email_address}</a>  och ange referensnummer {str(self.interpreter_booking_ref)}.Aktuellt KA-Nr: {str(self.interpreter_ka_nr)}"
+        message = f"Skicka ett epostmeddelande till {email_address}</a> och ange " \
+                  f"referensnummer {str(self.interpreter_booking_ref)}. " \
+                  f"Aktuellt KA-Nr: {str(self.interpreter_ka_nr)}"
         _logger.info(message)
 
     @api.model

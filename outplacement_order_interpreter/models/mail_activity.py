@@ -752,9 +752,8 @@ class MailActivity(models.Model):
                str(self.interpreter_booking_ref) + " och KA-Nr: " + str(self.interpreter_ka_nr) + "."
         message = "Skicka ett epostmeddelande till "
         email_address = 'team-crm@arbetsformedlingen.se'
-        message += '<a href=' + link + '>' + email_address + '</a>'
-        message += " och ange referensnummer " \
-            + str(self.interpreter_booking_ref) + ".Aktuellt KA-Nr: " + str(self.interpreter_ka_nr)
+        message += f"<a href='{link}'>{email_address}</a>"
+        message += f" och ange referensnummer {self.interpreter_booking_ref}. Aktuellt KA-Nr: {self.interpreter_ka_nr}"
         _logger.info(message)
 
     @api.model

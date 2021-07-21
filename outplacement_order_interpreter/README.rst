@@ -48,6 +48,7 @@ Different version submitted
 33. v12.0.1.9.1 AFC-2614: Hide delivery button in "cancel-message" when there is no available interpreter.
 34. v12.0.1.9.2 Improved code to fix Interpreter booking status issue and Added log when user click on cancel button of cancellation booking popup.
 
+
 Maintainers
 ~~~~~~~~~~~
 

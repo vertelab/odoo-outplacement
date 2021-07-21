@@ -94,7 +94,6 @@
                         'readonly': [('interpreter_booking_ref', '!=', False)],
                        'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
                        'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
-
                         </group>
                         <group>
                             <field name="date_deadline"

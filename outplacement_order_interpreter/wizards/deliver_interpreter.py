@@ -49,7 +49,7 @@ class InterpreterDeliveryWizard(models.TransientModel):
     def deliver_interpreter(self):
         """Deliver interpreter booking to Tolkportalen."""
         self.validate_data()
-        client = self.env['ipf.interpreter.client']
+        client = self.env['ipf.interpreter.client'].search([], limit=1)
         payload = {'extraMinuter': self.additional_time,
                    'kanr': self.kanr,
                    'uteblivenTolk': self.absent_interpreter,

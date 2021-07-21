@@ -48,7 +48,8 @@ var Activity = MailActivity.include({
                                            '$content': $('<div>', {
                                                 html: content,
                                             }),
-                                           'buttons': [{'text':'Stäng', 'close':'true'}]})
+                                           'buttons': [{'text':'Markera som Avbokad', 'close':'true',
+                                               'click':function(){self.interpreter_cancel(options)}}]})
                 dialog.open()
                 return
             }
@@ -60,7 +61,8 @@ var Activity = MailActivity.include({
                                            'buttons':[
                                                {'text':'Inleverera tolken', 'close':'true', 'classes':'btn-primary',
                                                'click':function(){self.interpreter_deliver(options, activity)}},
-                                               {'text':'Stäng', 'close':'true'}]})
+                                               {'text':'Markera som Avbokad', 'close':'true',
+                                               'click':function(){self.interpreter_cancel(options)}}]})
                 dialog.open()
                 return
             }
@@ -89,6 +91,11 @@ var Activity = MailActivity.include({
         };
         var callback = this._reload.bind(this, { activity: true, thread: true });
         return this.do_action(action, { on_close: callback });
+    },
+    interpreter_cancel: function (options){
+        // Unlink, logg, reload.
+        this._rpc({model: options.model, method: 'interpreter_cancel_booking', args: options.args})
+        .then(this._reload.bind(this, {activity: true}));
     },
 });
 

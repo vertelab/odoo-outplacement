@@ -594,8 +594,8 @@ class MailActivity(models.Model):
         """Makes request to server with a booking."""
         record = record or self
         try:
-            resp = self.env[
-                'ipf.interpreter.client'].post_tolkbokningar(record)
+            client = self.env['ipf.interpreter.client'].search([], limit=1)
+            resp = client.post_tolkbokningar(record)
         except Exception as e:
             _logger.exception(e)
         else:
@@ -630,7 +630,7 @@ class MailActivity(models.Model):
     @staticmethod
     def strip_seconds(dt):
         """Remove seconds from a dt"""
-        return f'{dt.rsplit(":", 1)[0]}:00'
+        return f'{str(dt).rsplit(":", 1)[0]}:00'
 
     @api.multi
     def process_response(self, response, payload):
@@ -715,7 +715,7 @@ class MailActivity(models.Model):
     @api.model
     def cron_order_interpreter(self):
         """Cron job to check booking status."""
-        ipf_client = self.env['ipf.interpreter.client']
+        ipf_client = self.env['ipf.interpreter.client'].search([], limit=1)
         if not ipf_client.is_params_set():
             return
         for activity in self.env['mail.activity'].search([]):
@@ -748,18 +748,11 @@ class MailActivity(models.Model):
         Runs after user presses Yes in dialog to remove interpreter
         bookings.
         """
-        author = self.env['res.users'].browse(self.env.uid).partner_id.id
-        ref = self.interpreter_booking_ref
-        message = _('<p>Interpreter booking with ref: {ref} canceled<p>')
-        message_id = self.env['mail.message'].create({
-            'body': message.format(ref=ref),
-            'subject': f"{_('Cancled Interpreter booking')}",
-            'author_id': author,
-            'res_id': self.res_id,
-            'model': self.res_model,
-        })
-        _logger.info(f'{author} {message_id.body}')
-        self.active = False
+        email_address = 'team-crm@arbetsformedlingen.se'
+        message = f"Skicka ett epostmeddelande till {email_address}</a> och ange " \
+                  f"referensnummer {str(self.interpreter_booking_ref)}. " \
+                  f"Aktuellt KA-Nr: {str(self.interpreter_ka_nr)}"
+        _logger.info(message)
 
     @api.model
     def is_interpreter(self, obj=None):

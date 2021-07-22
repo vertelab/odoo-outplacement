@@ -6,7 +6,7 @@
             <field name="state">code</field>
             <field name="code">model.cron_outplacement_order()</field>
             <field name="user_id" ref="base.user_root"/>
-            <field name="nextcall">2020-09-30 05:00:00</field>
+            <field name="nextcall" eval="datetime.now()"/>
             <field name="interval_number">3</field>
             <field name="interval_type">hours</field>
             <field name="numbercall">-1</field>

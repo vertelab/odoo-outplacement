@@ -98,10 +98,10 @@ class InterpreterDeliveryWizard(models.TransientModel):
             _logger.exception(error_codes[status_code].format(
                 ref=ref, msg=msg))
             raise UserError(_(error_codes[status_code]).format(
-                ref=ref, msg=msg))
+                 ref=ref, msg=msg))
         else:
-            msg = 'Unkown status_code:\n ' \
-                  '{response.status_code}\n{response.text}'
+            msg = 'Unkown status_code:' \
+                  '{response.status_code} {response.text}'
             _logger.error(msg.format(response=response))
             raise UserError(_(msg).format(response=response))
 
@@ -110,7 +110,7 @@ class InterpreterDeliveryWizard(models.TransientModel):
         subject = _('Interpreter Booking')
         msg = _('Interpreter booking with reference: {ref} delivered').format(
             ref=activity.interpreter_booking_ref)
-
+        activity._interpreter_booking_status = '2'
         self.env['mail.message'].create({
             'body': f"{subject}<br>{msg}",
             'subject': _("Interpreter Delivery"),

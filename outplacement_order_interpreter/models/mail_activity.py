@@ -653,15 +653,16 @@ class MailActivity(models.Model):
             _logger.error('Check KA-Number and that address is correct. %s' % str(response.text))
             _logger.error(payload)
             msg = _('Failed to book Interpreter, '
-                    'please check KA-Number and address in request.\n')
-            raise UserError(f'{msg}{json.loads(response.text)["message"]}')
+                    'please check KA-Number and address in request.')
+            _logger.error(f'{msg}{json.loads(response.text)["message"]}')
+            raise UserError(f'{json.loads(response.text)["message"]}')
         else:
             self._interpreter_booking_status = msg
-            err_msg = (f'\n{msg}\n{_("Response text")}:\n{response.text}\n'
-                       f'{_("Response status code")}:\n{response.status_code}')
+            err_msg = (f'{msg}{_("Response text")}:{response.text}'
+                       f'{_("Response status code")}:{response.status_code}')
             _logger.error(err_msg)
             _logger.error(payload)
-            raise UserError(err_msg)
+            raise UserError(f'{json.loads(response.text)["message"]}')
 
     @api.multi
     def update_activity(self, response):

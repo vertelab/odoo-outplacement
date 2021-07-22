@@ -207,6 +207,7 @@
                 <filter string="My Activities" name="activities_my" domain="[('user_id', '=', uid)]"/>
                 <separator/>
                 <filter name="date" string="Date" date="date"/>
+                <filter name="create_date" date="create_date" string="Create Date" groups="base.group_no_one"/>
                 <separator/>
                 <filter string="Late Activities" name="activities_overdue"
                         domain="[('date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"

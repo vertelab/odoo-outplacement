@@ -345,9 +345,9 @@ msgstr "Ingen tillgänglig tolk"
 #. module: outplacement_order_interpreter
 #: code:addons/outplacement_order_interpreter/models/mail_activity.py:559
 #, python-format
-msgid "Failed to book Interpreter, please check KA-Number and address in request.\n"
+msgid "Failed to book Interpreter, please check KA-Number and address in request."
 ""
-msgstr "Misslyckades att boka tolk, kontrollera KA-Nummer och address i förfrågan.\n"
+msgstr "Misslyckades att boka tolk, kontrollera KA-Nummer och address i förfrågan."
 ""
 
 #. module: outplacement_order_interpreter

@@ -101,8 +101,7 @@
                             <field name="user_id"/>
                             <field name="interpreter_gender_preference"
                                    attrs="{
-                           'readonly': [('interpreter_booking_ref', '!=', False)],
-                           'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
+                            'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
                            'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
                                    options="{'no_quick_create': True, 'no_create_edit' : True}"/>
 

@@ -34,6 +34,7 @@ class InterpreterDeliveryWizard(models.TransientModel):
     follow_up_code = fields.Char(string='Follow up code')
     office_code = fields.Char(string='Office code')
     project_code = fields.Char(string='Project code')
+    delivered = fields.Boolean()
 
     def get_ka_nr(self):
         """Gets KA number from parents parent (Outplacement)."""
@@ -85,11 +86,11 @@ class InterpreterDeliveryWizard(models.TransientModel):
         except AttributeError:
             _logger.exception(_('Could not access status code in response'))
             raise UserError(_('Could not access status code in response'))
-        error_codes = {400: 'Faulty params\n{msg}',
-                       403: 'Faulty credentials\n{msg}',
+        error_codes = {400: 'Faulty params {msg}',
+                       403: 'Faulty credentials {msg}',
                        404: 'Faulty reference ({ref}),'
-                            'could not find booking\n{msg}',
-                       500: 'Unknown Error\n{msg}'}
+                            'could not find booking {msg}',
+                       500: 'Unknown Error {msg}'}
         if status_code in (200,):
             return
         elif status_code in error_codes:

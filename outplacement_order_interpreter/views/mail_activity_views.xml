@@ -132,12 +132,12 @@
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
                             <field name="_interpreter_booking_status" invisible="1"/>
                             <field name="_interpreter_booking_status_2" invisible="1"/>
-                            <button name="%(deliver_interpreter_action)d"
+                            <button name="deliver_interpreter_action"
                                     attrs="{'invisible': ['|', '|', '|', ('_interpreter_booking_status_2', '=', '2'),
                                               ('_interpreter_booking_status', '=', '2'),
                                               ('interpreter_booking_ref', '=', False),
                                               ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
-                                    type="action">Inleverera tolk
+                                    type="object">Inleverera tolk
                             </button>
                         </group>
                     </group>
@@ -369,12 +369,12 @@
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
                 <field name="_interpreter_booking_status" invisible="1"/>
                 <field name="_interpreter_booking_status_2" invisible="1"/>
-                <button name="%(deliver_interpreter_action)d"
+                <button name="deliver_interpreter_action"
                         attrs="{'invisible': ['|', '|', '|', ('_interpreter_booking_status_2', '=', '2'),
                                               ('_interpreter_booking_status', '=', '2'),
                                               ('interpreter_booking_ref', '=', False),
                                               ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
-                        type="action">Inleverera tolk
+                        type="object">Inleverera tolk
                 </button>
             </field>
             <button name="action_done" position="attributes">
@@ -566,12 +566,12 @@
                             <field name="res_model_id" invisible="1"/>
                         </group>
                     </group>
-                    <button name="%(deliver_interpreter_action)d" groups="outplacement.group_outplacement_user_read"
+                    <button name="deliver_interpreter_action" groups="outplacement.group_outplacement_user_read"
                             attrs="{'invisible': ['|', '|', '|', ('_interpreter_booking_status_2', '=', '2'),
                                               ('_interpreter_booking_status', '=', '2'),
                                               ('interpreter_booking_ref', '=', False),
                                               ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
-                            type="action">Inleverera tolk
+                            type="object">Inleverera tolk
                     </button>
                     <group string="Supplier and Participent info">
                         <field name="performing_operation_id"/>

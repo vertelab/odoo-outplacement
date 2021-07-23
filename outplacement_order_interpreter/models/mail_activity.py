@@ -407,6 +407,46 @@ class MailActivity(models.Model):
                             activity.add_log_booking_confirmed = True
         return res
 
+    def deliver_interpreter_action(self):
+        self.ensure_one()
+        client = self.env['ipf.interpreter.client'].search([], limit=1)
+        kanr = ''
+        perf_op = self.get_outplacement_value('performing_operation_id')
+        if perf_op:
+            kanr = perf_op.ka_nr
+        payload = {'kanr': kanr}
+        _logger.info(payload)
+        response = client.put_tolkbokningar_id_inleverera(self.interpreter_booking_ref, payload)
+        status_code = response.status_code
+        error_codes = {500: 'Unknown Error {msg}'}
+        if status_code in error_codes:
+            msg = json.loads(response.text).get('message')
+            full_msg = error_codes[status_code].format(msg=msg)
+            if full_msg == 'Unknown Error Interpreter Booking Refe An error occurred when an interpreter ' \
+                           'reservation was delivered in KA: Inleveransperiod har redan ' \
+                           'uppdaterats av annan anvendare':
+                self._interpreter_booking_status = '2'
+            _logger.exception(full_msg)
+            return {
+                'name': _('Interpreter delivery'),
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'outplacement.interpreter_delivery.wizard',
+                'view_id': False,
+                'type': 'ir.actions.act_window',
+                'context': {'default_delivered': True},
+                'target': 'new'
+            }
+        return {
+            'name': _('Interpreter delivery'),
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'outplacement.interpreter_delivery.wizard',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+        }
+
     @api.depends('_interpreter_booking_status',
                  '_interpreter_booking_status_2',
                  'interpreter_company')

@@ -46,7 +46,8 @@ Different version submitted
 31. v12.0.1.8.0 AFC-2593: Added Interpreter name & Phone and Deliver interpreter button on Cancellation popup.
 32. v12.0.1.9.0 AFC-2609: Added Interpreter name, Phone on Activity form view, Fixed quote issue on Activity kanban, Added some more fields on activity search view.
 33. v12.0.1.9.1 AFC-2614: Hide delivery button in "cancel-message" when there is no available interpreter.
-34. v12.0.1.9.2 Improved code to fix Interpreter booking status issue and Added log when user click on cancel button of cancellation booking popup.
+34. v12.0.1.9.2 Improved code to fix Interpreter booking status with API issue and Added log when user click on cancel button of cancellation booking popup.
+35. v12.0.1.9.3 #701 Updated code to add log message in one line and for user friendly message, Checked response from interpreter API before user click on 'Inleverera tolk', Updated booking status when booking delivered via cron, Added create date filter on Interpreter booking.
 
 
 Maintainers

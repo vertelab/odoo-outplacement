@@ -48,6 +48,7 @@ Different version submitted
 33. v12.0.1.9.1 AFC-2614: Hide delivery button in "cancel-message" when there is no available interpreter.
 34. v12.0.1.9.2 Improved code to fix Interpreter booking status with API issue and Added log when user click on cancel button of cancellation booking popup.
 35. v12.0.1.9.3 #701 Updated code to add log message in one line and for user friendly message, Checked response from interpreter API before user click on 'Inleverera tolk', Updated booking status when booking delivered via cron, Added create date filter on Interpreter booking.
+36. v12.0.1.9.4 AFC-2627 Added default '1 Valfri' for Interpreter Gender Preference when creating booking if Gender prefernce is not selected in Outplacement Partner.
 
 
 Maintainers

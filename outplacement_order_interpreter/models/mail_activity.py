@@ -526,7 +526,13 @@ class MailActivity(models.Model):
             project_task = self.env[res_model].browse(res_id)
             try:
                 if project_task and project_task.outplacement_id:
-                    return getattr(project_task.outplacement_id, field_name)
+                    value = getattr(project_task.outplacement_id, field_name)
+                    if field_name == 'interpreter_gender_preference' and not value:
+                        gender_pref = self.env['res.interpreter.gender_preference'].search([('code', '=', '1'),
+                                                            ('name', '=', 'Valfri')], limit=1)
+                        if gender_pref:
+                            return gender_pref.id
+                    return value
             except AttributeError:
                 _logger.warning(f'Could not find field: {field_name}')
 

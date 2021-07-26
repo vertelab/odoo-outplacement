@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0-20210129\n"
+"Project-Id-Version: Odoo Server 12.0-20210721\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-14 14:08+0000\n"
-"PO-Revision-Date: 2021-05-18 16:00+0200\n"
+"PO-Revision-Date: 2021-07-26 16:52+0200\n"
 "Last-Translator: <Sebastian Gieser>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,19 @@ msgstr ""
 "X-Generator: Poedit 2.4.2\n"
 
 #. module: outplacement_final_report_send
-#: code:addons/outplacement_final_report_send/models/outplacement.py:35
+#: code:addons/outplacement_final_report_send/models/outplacement.py:36
+#, python-format
+msgid "A main goal is required to send final report"
+msgstr "Huvudmål krävs för att skicka in slutredovisning"
+
+#. module: outplacement_final_report_send
+#: code:addons/outplacement_final_report_send/models/outplacement.py:38
+#, python-format
+msgid "An alternative goal is required to send final report"
+msgstr "Alternativt mål krävs för att skicka in slutredovisning"
+
+#. module: outplacement_final_report_send
+#: code:addons/outplacement_final_report_send/models/outplacement.py:58
 #, python-format
 msgid ""
 "Error %s: %s\n"
@@ -30,13 +42,13 @@ msgstr ""
 "Spårnings-ID: %s"
 
 #. module: outplacement_final_report_send
-#: code:addons/outplacement_final_report_send/models/outplacement.py:41
+#: code:addons/outplacement_final_report_send/models/outplacement.py:65
 #, python-format
 msgid "Final report sent"
 msgstr "Slutredovisning inskickad"
 
 #. module: outplacement_final_report_send
-#: code:addons/outplacement_final_report_send/models/outplacement.py:39
+#: code:addons/outplacement_final_report_send/models/outplacement.py:71
 #, python-format
 msgid "No config found for final report"
 msgstr "Ingen konfiguration för slutredovisning finns"
@@ -52,37 +64,31 @@ msgid "Send FP report"
 msgstr "Skicka in slutredovisning"
 
 #. module: outplacement_final_report_send
-#: code:addons/outplacement_final_report_send/models/outplacement.py:31
-#, python-format
-msgid "The Final Report can only be sent after the Service has ended."
-msgstr "Slutrapporten kan bara skickas efter att tjänsten har avslutats."
-
-#. module: outplacement_final_report_send
-#: code:addons/outplacement_final_report_send/models/outplacement.py:34
+#: code:addons/outplacement_final_report_send/models/outplacement.py:57
 #, python-format
 msgid "Unknown cause"
 msgstr "Okänd orsak"
 
 #. module: outplacement_final_report_send
-#: code:addons/outplacement_final_report_send/models/outplacement.py:33
+#: code:addons/outplacement_final_report_send/models/outplacement.py:56
 #, python-format
 msgid "Unknown error code"
 msgstr "Okänd felkod"
 
 #. module: outplacement_final_report_send
-#: code:addons/outplacement_final_report_send/models/outplacement.py:16
+#: code:addons/outplacement_final_report_send/models/outplacement.py:41
 #, python-format
 msgid "You are not allowed to send final report before service end unless there has been an interruption"
 msgstr "Det är inte tillåtet att skicka en slutredovisning innan tjänstens slutdatum om det inte skett ett avbrott"
-
-#. module: outplacement_final_report_send
-#: code:addons/outplacement_final_report_send/models/outplacement.py:19
-#, python-format
-msgid "You need to send in a joint planning before sending in a final report"
-msgstr "Du måste skicka in en gemensam planering innan du skickar in en slutredovisning"
 
 #. module: outplacement_final_report_send
 #: code:addons/outplacement_final_report_send/models/outplacement.py:33
 #, python-format
 msgid "You are only allowed to send Final Report within the 60 working days after the service ended."
 msgstr "Det är bara tillåtet att skicka in slutredovisning inom 60 arbetsdagar efter att tjänsten avslutats."
+
+#. module: outplacement_final_report_send
+#: code:addons/outplacement_final_report_send/models/outplacement.py:44
+#, python-format
+msgid "You need to send in a joint planning before sending in a final report"
+msgstr "Du måste skicka in en gemensam planering innan du skickar in en slutredovisning"

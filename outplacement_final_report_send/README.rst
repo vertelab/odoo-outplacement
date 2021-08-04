@@ -21,6 +21,8 @@ Different version submitted
 10. v12.0.1.2.5 AFC-2582 Adjusted calculation of allowed time to send Final Report.
 11. v12.0.1.2.6 AFC-2600 Raised onscreen warnings for required fields when sending Final Report. Improved code for Final report Send date.
 12. v12.0.1.2.7 AFC-2615 Raised onscreen warnings user send final report after service ended.
+13. v12.0.1.2.8 AFC-2637 fixed always throwing UserError if outplacement was cancelled, empty main and alternative goals can now only be sent if you are within 15 days of order start
+
 
 Maintainers
 ~~~~~~~~~~~

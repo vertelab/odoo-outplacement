@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Order Interpreter',
-    'version': '12.0.1.9.5',
+    'version': '12.0.1.9.6',
     'category': 'Outplacement',
     'author': "Vertel AB",
     'license': 'AGPL-3',
@@ -41,6 +41,7 @@
         'base_user_groups_dafa'
     ],
     'data': [
+        'security/ir.model.access.csv',
         'wizards/deliver_interpreter_view.xml',
         'data/mail_data.xml',
         'data/cron.xml',

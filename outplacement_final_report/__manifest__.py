@@ -1,6 +1,6 @@
 {
     'name': 'Outplacement final report',
-    'version': '12.0.0.2.5',
+    'version': '12.0.0.2.6',
     'category': 'Outplacement',
     'author': 'Vertel AB',
     'license': 'AGPL-3',

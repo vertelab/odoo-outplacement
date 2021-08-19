@@ -41,25 +41,24 @@ class ProjectTask(models.Model):
                                          ('active', '=', False)])
             for activity in activities:
                 if task.outplacement_id:
-                    if activity.active and activity._interpreter_booking_status == '1' \
-                            and activity._interpreter_booking_status_2 == '4' and \
-                            datetime.datetime.today() >= activity.time_end:
-                        activity.activity_status_for_interpreter = 'not_delivered_booking'
-                    elif activity.active and activity._interpreter_booking_status == '1' \
-                            and activity._interpreter_booking_status_2 in ['3', '4']:
-                        activity.activity_status_for_interpreter = 'ongoing_booking'
-                    elif activity.active and activity._interpreter_booking_status == '1' \
-                            and activity._interpreter_booking_status_2 in ['1', '3']:
-                        activity.activity_status_for_interpreter = 'awaiting_booking'
-                    elif activity.active and activity._interpreter_booking_status == '1' \
-                            and activity._interpreter_booking_status_2 == '2':
-                        activity.activity_status_for_interpreter = 'failed_booking'
-                    elif activity.active and activity._interpreter_booking_status_2 == '5':
+                    if activity._interpreter_booking_status == '1' \
+                        and activity.interpreter_company \
+                            and activity._interpreter_booking_status_2 not in ('1', '2', '3', '4', '5', '6'):
+                        activity.activity_status_for_interpreter = 'interpreter_booked'
+                    elif activity._interpreter_booking_status_2 == '1':
+                        activity.activity_status_for_interpreter = 'order_received'
+                    elif activity._interpreter_booking_status_2 == '2':
+                        activity.activity_status_for_interpreter = 'no_available_interpreter'
+                    elif activity._interpreter_booking_status_2 == '3':
+                        activity.activity_status_for_interpreter = 'order_in_process'
+                    elif activity._interpreter_booking_status_2 == '4':
+                        activity.activity_status_for_interpreter = 'interpreter_booked'
+                    elif activity._interpreter_booking_status_2 == '5':
                         activity.activity_status_for_interpreter = 'cancelled_by_interpreter'
-                    elif not activity.active:
-                        activity.activity_status_for_interpreter = 'done_booking'
+                    elif activity._interpreter_booking_status_2 == '6':
+                        activity.activity_status_for_interpreter = 'cancelled_by_af'
                     else:
-                        activity.activity_status_for_interpreter = 'all_booking'
+                        activity.activity_status_for_interpreter = ''
 
     @api.model
     def create(self, vals):
@@ -180,6 +179,7 @@ class MailActivity(models.Model):
     jobseeker_category = fields.Char(
         string="Jobseeker category", compute="combine_category_name_code", store=True
     )
+    is_not_delivered_booking = fields.Boolean("Not Delivered Booking?")
 
     @api.multi
     @api.depends('jobseeker_category_id')
@@ -282,13 +282,16 @@ class MailActivity(models.Model):
 
     def cron_activity_status_order_interpreter(self):
         activity_obj = self.env['mail.activity']
-        current_time = datetime.datetime.today()
+        current_time = datetime.datetime.now()
         for activity in activity_obj.search([('_interpreter_booking_status', '=', '1'),
                                              ('_interpreter_booking_status_2', '=', '4'),
-                                             ('time_end', '<=', current_time)]):
-            activity.activity_status_for_interpreter = 'not_delivered_booking'
+                                             '|', ('active', '=', True), ('active', '=', False)]):
+            if activity.time_end < current_time:
+                activity.is_not_delivered_booking = True
+            else:
+                activity.is_not_delivered_booking = False
 
-    @api.depends('_interpreter_booking_status', '_interpreter_booking_status_2', 'time_end', 'active')
+    @api.depends('_interpreter_booking_status', '_interpreter_booking_status_2', 'active')
     def _compute_activity_status(self):
         task_obj = self.env['project.task']
         for activity in self:
@@ -296,25 +299,25 @@ class MailActivity(models.Model):
                 task_id = activity.res_id
                 task = task_obj.browse(task_id)
                 if task.outplacement_id:
-                    if activity.active and activity._interpreter_booking_status == '1' \
-                        and activity._interpreter_booking_status_2 == '4' and \
-                            datetime.datetime.today() >= activity.time_end:
-                        activity.activity_status_for_interpreter = 'not_delivered_booking'
-                    elif activity.active and activity._interpreter_booking_status == '1' \
-                            and activity._interpreter_booking_status_2 in ['3', '4']:
-                        activity.activity_status_for_interpreter = 'ongoing_booking'
-                    elif activity.active and activity._interpreter_booking_status == '1' \
-                            and activity._interpreter_booking_status_2 in ['1', '3']:
-                        activity.activity_status_for_interpreter = 'awaiting_booking'
-                    elif activity.active and activity._interpreter_booking_status == '1' \
-                            and activity._interpreter_booking_status_2 == '2':
-                        activity.activity_status_for_interpreter = 'failed_booking'
-                    elif activity.active and activity._interpreter_booking_status_2 == '5':
+                    if activity._interpreter_booking_status == '1' \
+                        and activity.interpreter_company \
+                            and activity._interpreter_booking_status_2 not in ('1', '2', '3', '4', '5', '6'):
+                        activity.activity_status_for_interpreter = 'interpreter_booked'
+                    elif activity._interpreter_booking_status_2 == '1':
+                        activity.activity_status_for_interpreter = 'order_received'
+                    elif activity._interpreter_booking_status_2 == '2':
+                        activity.activity_status_for_interpreter = 'no_available_interpreter'
+                    elif activity._interpreter_booking_status_2 == '3':
+                        activity.activity_status_for_interpreter = 'order_in_process'
+                    elif activity._interpreter_booking_status_2 == '4':
+                        activity.activity_status_for_interpreter = 'interpreter_booked'
+                    elif activity._interpreter_booking_status_2 == '5':
                         activity.activity_status_for_interpreter = 'cancelled_by_interpreter'
-                    elif not activity.active:
-                        activity.activity_status_for_interpreter = 'done_booking'
+                    elif activity._interpreter_booking_status_2 == '6':
+                        activity.activity_status_for_interpreter = 'cancelled_by_af'
                     else:
-                        activity.activity_status_for_interpreter = 'all_booking'
+                        activity.activity_status_for_interpreter = ''
+
 
     @api.model
     def _selection_target_model(self):
@@ -407,6 +410,46 @@ class MailActivity(models.Model):
                             activity.add_log_booking_confirmed = True
         return res
 
+    def deliver_interpreter_action(self):
+        self.ensure_one()
+        client = self.env['ipf.interpreter.client'].search([], limit=1)
+        kanr = ''
+        perf_op = self.get_outplacement_value('performing_operation_id')
+        if perf_op:
+            kanr = perf_op.ka_nr
+        payload = {'kanr': kanr}
+        _logger.info(payload)
+        response = client.put_tolkbokningar_id_inleverera(self.interpreter_booking_ref, payload)
+        status_code = response.status_code
+        error_codes = {500: 'Unknown Error {msg}'}
+        if status_code in error_codes:
+            msg = json.loads(response.text).get('message')
+            full_msg = error_codes[status_code].format(msg=msg)
+            if full_msg == 'Unknown Error Interpreter Booking Refe An error occurred when an interpreter ' \
+                           'reservation was delivered in KA: Inleveransperiod har redan ' \
+                           'uppdaterats av annan anvendare':
+                self._interpreter_booking_status = '2'
+            _logger.exception(full_msg)
+            return {
+                'name': _('Interpreter delivery'),
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'outplacement.interpreter_delivery.wizard',
+                'view_id': False,
+                'type': 'ir.actions.act_window',
+                'context': {'default_delivered': True},
+                'target': 'new'
+            }
+        return {
+            'name': _('Interpreter delivery'),
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'outplacement.interpreter_delivery.wizard',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+        }
+
     @api.depends('_interpreter_booking_status',
                  '_interpreter_booking_status_2',
                  'interpreter_company')
@@ -486,7 +529,13 @@ class MailActivity(models.Model):
             project_task = self.env[res_model].browse(res_id)
             try:
                 if project_task and project_task.outplacement_id:
-                    return getattr(project_task.outplacement_id, field_name)
+                    value = getattr(project_task.outplacement_id, field_name)
+                    if field_name == 'interpreter_gender_preference' and not value:
+                        gender_pref = self.env['res.interpreter.gender_preference'].search([('code', '=', '1'),
+                                                            ('name', '=', 'Valfri')], limit=1)
+                        if gender_pref:
+                            return gender_pref.id
+                    return value
             except AttributeError:
                 _logger.warning(f'Could not find field: {field_name}')
 
@@ -653,15 +702,16 @@ class MailActivity(models.Model):
             _logger.error('Check KA-Number and that address is correct. %s' % str(response.text))
             _logger.error(payload)
             msg = _('Failed to book Interpreter, '
-                    'please check KA-Number and address in request.\n')
-            raise UserError(f'{msg}{json.loads(response.text)["message"]}')
+                    'please check KA-Number and address in request.')
+            _logger.error(f'{msg}{json.loads(response.text)["message"]}')
+            raise UserError(f'{json.loads(response.text)["message"]}')
         else:
             self._interpreter_booking_status = msg
-            err_msg = (f'\n{msg}\n{_("Response text")}:\n{response.text}\n'
-                       f'{_("Response status code")}:\n{response.status_code}')
+            err_msg = (f'{msg}{_("Response text")}:{response.text}'
+                       f'{_("Response status code")}:{response.status_code}')
             _logger.error(err_msg)
             _logger.error(payload)
-            raise UserError(err_msg)
+            raise UserError(f'{json.loads(response.text)["message"]}')
 
     @api.multi
     def update_activity(self, response):

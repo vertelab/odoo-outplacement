@@ -34,6 +34,7 @@ class InterpreterDeliveryWizard(models.TransientModel):
     follow_up_code = fields.Char(string='Follow up code')
     office_code = fields.Char(string='Office code')
     project_code = fields.Char(string='Project code')
+    delivered = fields.Boolean()
 
     def get_ka_nr(self):
         """Gets KA number from parents parent (Outplacement)."""
@@ -85,11 +86,11 @@ class InterpreterDeliveryWizard(models.TransientModel):
         except AttributeError:
             _logger.exception(_('Could not access status code in response'))
             raise UserError(_('Could not access status code in response'))
-        error_codes = {400: 'Faulty params\n{msg}',
-                       403: 'Faulty credentials\n{msg}',
+        error_codes = {400: 'Faulty params {msg}',
+                       403: 'Faulty credentials {msg}',
                        404: 'Faulty reference ({ref}),'
-                            'could not find booking\n{msg}',
-                       500: 'Unknown Error\n{msg}'}
+                            'could not find booking {msg}',
+                       500: 'Unknown Error {msg}'}
         if status_code in (200,):
             return
         elif status_code in error_codes:
@@ -98,10 +99,10 @@ class InterpreterDeliveryWizard(models.TransientModel):
             _logger.exception(error_codes[status_code].format(
                 ref=ref, msg=msg))
             raise UserError(_(error_codes[status_code]).format(
-                ref=ref, msg=msg))
+                 ref=ref, msg=msg))
         else:
-            msg = 'Unkown status_code:\n ' \
-                  '{response.status_code}\n{response.text}'
+            msg = 'Unkown status_code:' \
+                  '{response.status_code} {response.text}'
             _logger.error(msg.format(response=response))
             raise UserError(_(msg).format(response=response))
 
@@ -110,7 +111,7 @@ class InterpreterDeliveryWizard(models.TransientModel):
         subject = _('Interpreter Booking')
         msg = _('Interpreter booking with reference: {ref} delivered').format(
             ref=activity.interpreter_booking_ref)
-
+        activity._interpreter_booking_status = '2'
         self.env['mail.message'].create({
             'body': f"{subject}<br>{msg}",
             'subject': _("Interpreter Delivery"),

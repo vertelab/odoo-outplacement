@@ -7,7 +7,9 @@
         <field name="arch" type="xml">
 
             <form>
-                <group>
+                <field name="delivered" invisible="1"/>
+                <span attrs="{'invisible': [('delivered', '=', False)]}">Already Delivered</span>
+                <group attrs="{'invisible': [('delivered', '=', True)]}">
                     <field name="mail_activity_id" invisible="1"/>
                     <field name="booking_ref"/>
                     <field name="kanr"/>
@@ -22,7 +24,8 @@
                 <footer>
                     <button name="deliver_interpreter"
                             string="Inleverera"
-                            type="object"/>
+                            type="object" attrs="{'invisible': [('delivered', '=', True)]}"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
                 </footer>
             </form>
         </field>

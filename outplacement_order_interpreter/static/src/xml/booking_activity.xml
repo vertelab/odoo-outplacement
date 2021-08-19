@@ -35,30 +35,34 @@
                         </div>
                     </div>
                     <div t-if="activity and activity.type == 'activity'">
-                        <button t-if="activity.all_booking_count" type="button"
+                        <button t-if="activity.order_received_count" type="button"
                                 class="btn btn-link o_activity_filter_button mr16" t-att-data-res_model="activity.model"
-                                t-att-data-model_name="activity.name" data-filter='all_booking'>
-                            <t t-esc="activity.all_booking_count"/>
-                            All Bookings </button>
-                        <span t-if="!activity.all_booking_count" class="o_no_activity float-right">0 All Bookings</span>
-                         <button t-if="activity.awaiting_booking_count" type="button"
+                                t-att-data-model_name="activity.name" data-filter='order_received'>
+                            <t t-esc="activity.order_received_count"/>
+                            Order received </button>
+                        <span t-if="!activity.order_received_count" class="o_no_activity float-right">0 Order received</span>
+
+                         <button t-if="activity.no_available_interpreter_count" type="button"
                                 class="btn btn-link o_activity_filter_button mr16" t-att-data-res_model="activity.model"
-                                t-att-data-model_name="activity.name" data-filter='awaiting_booking'>
-                            <t t-esc="activity.awaiting_booking_count"/>
-                            Awaiting Response </button>
-                        <span t-if="!activity.awaiting_booking_count" class="o_no_activity float-right">0 Awaiting Response</span>
-                        <button t-if="activity.ongoing_booking_count" type="button"
+                                t-att-data-model_name="activity.name" data-filter='no_available_interpreter'>
+                            <t t-esc="activity.no_available_interpreter_count"/>
+                            No available interpreter </button>
+                        <span t-if="!activity.no_available_interpreter_count" class="o_no_activity float-right">0 No available interpreter</span>
+
+                        <button t-if="activity.order_in_process_count" type="button"
                                 class="btn btn-link o_activity_filter_button mr16" t-att-data-res_model="activity.model"
-                                t-att-data-model_name="activity.name" data-filter='ongoing_booking'>
-                            <t t-esc="activity.ongoing_booking_count"/>
-                            Ongoing </button>
-                        <span t-if="!activity.ongoing_booking_count" class="o_no_activity float-right">0 Ongoing</span>
-                        <button t-if="activity.not_delivered_booking_count" type="button"
+                                t-att-data-model_name="activity.name" data-filter='order_in_process'>
+                            <t t-esc="activity.order_in_process_count"/>
+                            Order in Process </button>
+                        <span t-if="!activity.order_in_process_count" class="o_no_activity float-right">0 Order in Process</span>
+
+                        <button t-if="activity.interpreter_booked_count" type="button"
                                 class="btn btn-link o_activity_filter_button mr16" t-att-data-res_model="activity.model"
-                                t-att-data-model_name="activity.name" data-filter='not_delivered_booking'>
-                            <t t-esc="activity.not_delivered_booking_count"/>
-                            Not Delivered </button>
-                        <span t-if="!activity.not_delivered_booking_count" class="o_no_activity float-right">0 Not Delivered</span>
+                                t-att-data-model_name="activity.name" data-filter='interpreter_booked'>
+                            <t t-esc="activity.interpreter_booked_count"/>
+                            Interpreter Booked </button>
+                        <span t-if="!activity.interpreter_booked_count" class="o_no_activity float-right">0 Interpreter Booked</span>
+
                         <button t-if="activity.cancelled_by_interpreter_count" type="button"
                                 class="btn btn-link o_activity_filter_button mr16" t-att-data-res_model="activity.model"
                                 t-att-data-model_name="activity.name" data-filter='cancelled_by_interpreter'>
@@ -66,18 +70,13 @@
                             Cancelled By Interpreter </button>
                         <span t-if="!activity.cancelled_by_interpreter_count" class="o_no_activity float-right">
                             0 Cancelled By Interpreter</span>
-                        <button t-if="activity.failed_booking_count" type="button"
+
+                        <button t-if="activity.cancelled_by_af_count" type="button"
                                 class="btn btn-link o_activity_filter_button mr16" t-att-data-res_model="activity.model"
-                                t-att-data-model_name="activity.name" data-filter='failed_booking'>
-                            <t t-esc="activity.failed_booking_count"/>
-                            Failed </button>
-                        <span t-if="!activity.failed_booking_count" class="o_no_activity float-right">0 Failed</span>
-                        <button t-if="activity.done_booking_count" type="button"
-                                class="btn btn-link o_activity_filter_button mr16" t-att-data-res_model="activity.model"
-                                t-att-data-model_name="activity.name" data-filter='done_booking'>
-                            <t t-esc="activity.done_booking_count"/>
-                            Done </button>
-                        <span t-if="!activity.done_booking_count" class="o_no_activity float-right">0 Done</span>
+                                t-att-data-model_name="activity.name" data-filter='cancelled_by_af'>
+                            <t t-esc="activity.cancelled_by_af_count"/>
+                            Cancelled by AF </button>
+                        <span t-if="!activity.cancelled_by_af_count" class="o_no_activity float-right">0 Cancelled by AF</span>
                     </div>
                 </div>
             </div>

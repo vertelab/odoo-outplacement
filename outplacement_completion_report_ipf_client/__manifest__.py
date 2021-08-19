@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'IPF CompletionReport Client',
-    'version': '12.0.0.1.3',
+    'version': '12.0.0.1.4',
     'category': 'Outplacement',
     'author': "Vertel AB",
     'license': 'AGPL-3',

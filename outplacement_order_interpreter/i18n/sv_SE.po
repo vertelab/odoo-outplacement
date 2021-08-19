@@ -24,45 +24,54 @@ msgstr ""
 
 #. module: outplacement_order_interpreter
 #. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:71
+#, python-format
+msgid "0 Cancelled By Interpreter"
+msgstr "0 Avbruten av Tolkleverentören"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:79
+#, python-format
+msgid "0 Cancelled by AF"
+msgstr "0 Avbokad via Arbetsformedlingen"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:64
+#, python-format
+msgid "0 Interpreter Booked"
+msgstr "0 Tolk bokad"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:50
+#, python-format
+msgid "0 No available interpreter"
+msgstr "0 Ingen tillgänglig tolk"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:57
+#, python-format
+msgid "0 Order in Process"
+msgstr "0 Ordern behandlas"
+
+#. module: outplacement_order_interpreter
+#. openerp-web
 #: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:43
 #, python-format
-msgid "0 All Bookings"
-msgstr "0 Alla bokningar"
-
-#. module: outplacement_order_interpreter
-#. openerp-web
-#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:49
-#, python-format
-msgid "0 Awaiting Response"
-msgstr "0 Avvaktar svar"
-
-#. module: outplacement_order_interpreter
-#. openerp-web
-#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:73
-#, python-format
-msgid "0 Done"
-msgstr "0 Avslutad"
-
-#. module: outplacement_order_interpreter
-#. openerp-web
-#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:67
-#, python-format
-msgid "0 Failed"
-msgstr "0 Ingen tillgänglig"
-
-#. module: outplacement_order_interpreter
-#. openerp-web
-#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:61
-#, python-format
-msgid "0 Not Delivered"
-msgstr "0 Ej Inlevererad"
+msgid "0 Order received"
+msgstr "0 Order mottagen"
 
 #. module: outplacement_order_interpreter
 #. openerp-web
 #: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:55
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
 #, python-format
-msgid "0 Ongoing"
-msgstr "0 Pågående"
+msgid "Order in Process"
+msgstr "Ordern behandlas"
 
 #. module: outplacement_order_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_kanban_view_for_interpreter
@@ -213,15 +222,28 @@ msgid "Bookings"
 msgstr "Tolkbokningar"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:258
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:326
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:356
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:464
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:77
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
 #, python-format
 msgid "Cancelled by AF"
 msgstr "Inställt av Arbetsförmedlingen"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:257
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:325
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:69
+#, python-format
+msgid "Cancelled By Interpreter"
+msgstr "Inställt av tolkleverantören"
+
+#. module: outplacement_order_interpreter
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:355
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:463
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
 #, python-format
 msgid "Cancelled by Interpreter"
 msgstr "Inställt av tolkleverantören"
@@ -345,9 +367,9 @@ msgstr "Ingen tillgänglig tolk"
 #. module: outplacement_order_interpreter
 #: code:addons/outplacement_order_interpreter/models/mail_activity.py:559
 #, python-format
-msgid "Failed to book Interpreter, please check KA-Number and address in request.\n"
+msgid "Failed to book Interpreter, please check KA-Number and address in request."
 ""
-msgstr "Misslyckades att boka tolk, kontrollera KA-Nummer och address i förfrågan.\n"
+msgstr "Misslyckades att boka tolk, kontrollera KA-Nummer och address i förfrågan."
 ""
 
 #. module: outplacement_order_interpreter
@@ -382,8 +404,12 @@ msgid "Inleverera tolk"
 msgstr "Inleverera tolk"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:256
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:324
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:354
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:462
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:62
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
 #, python-format
 msgid "Interpreter Booked"
 msgstr "Tolk bokad"
@@ -561,8 +587,12 @@ msgid "Mobile"
 msgstr "Mobil"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:254
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:322
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:352
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:460
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:48
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
 #, python-format
 msgid "No available interpreter"
 msgstr "Ingen tillgänglig tolk"
@@ -617,11 +647,15 @@ msgid "Order Interpreter"
 msgstr "Beställ tolk"
 
 #. module: outplacement_order_interpreter
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:253
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:255
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:319
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:321
-#: code:addons/outplacement_order_interpreter/models/mail_activity.py:323
+#. openerp-web
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:351
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:353
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:457
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:459
+#: code:addons/outplacement_order_interpreter/models/mail_activity.py:461
+#: code:addons/outplacement_order_interpreter/static/src/xml/booking_activity.xml:41
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
+#: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.project_task_form_extended
 #, python-format
 msgid "Order received"
 msgstr "Order mottagen"

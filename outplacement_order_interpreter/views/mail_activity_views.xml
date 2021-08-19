@@ -101,8 +101,7 @@
                             <field name="user_id"/>
                             <field name="interpreter_gender_preference"
                                    attrs="{
-                           'readonly': [('interpreter_booking_ref', '!=', False)],
-                           'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
+                            'required': [('activity_type_id', '=', %(outplacement_order_interpreter.order_interpreter)d)],
                            'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
                                    options="{'no_quick_create': True, 'no_create_edit' : True}"/>
 
@@ -132,12 +131,12 @@
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
                             <field name="_interpreter_booking_status" invisible="1"/>
                             <field name="_interpreter_booking_status_2" invisible="1"/>
-                            <button name="%(deliver_interpreter_action)d"
+                            <button name="deliver_interpreter_action"
                                     attrs="{'invisible': ['|', '|', '|', ('_interpreter_booking_status_2', '=', '2'),
                                               ('_interpreter_booking_status', '=', '2'),
                                               ('interpreter_booking_ref', '=', False),
                                               ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
-                                    type="action">Inleverera tolk
+                                    type="object">Inleverera tolk
                             </button>
                         </group>
                     </group>
@@ -158,7 +157,7 @@
                 <field name="partner_name"/>
                 <field name="outplacement_name"/>
                 <field name="res_name"/>
-                <field name="activity_status_for_interpreter"/>
+                <field name="is_not_delivered_booking"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
@@ -179,7 +178,7 @@
                                 <br/>
                                 <field name="interpreter_type"/>
                                 <br/>
-                                <t t-if="record.activity_status_for_interpreter.value == 'not_delivered_booking'">
+                                <t t-if="record.is_not_delivered_booking.raw_value">
                                     <span style="color:red;">Please submit the Interpreter</span>
                                 </t>
                                 <br/>
@@ -207,6 +206,7 @@
                 <filter string="My Activities" name="activities_my" domain="[('user_id', '=', uid)]"/>
                 <separator/>
                 <filter name="date" string="Date" date="date"/>
+                <filter name="create_date" date="create_date" string="Create Date" groups="base.group_no_one"/>
                 <separator/>
                 <filter string="Late Activities" name="activities_overdue"
                         domain="[('date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
@@ -216,28 +216,29 @@
                 <filter string="Future Activities" name="activities_upcoming_all"
                         domain="[('date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
                 <separator/>
-                <filter string="Awaiting Response" name="activities_awaiting_booking"
+                <filter string="Order received" name="activities_order_received"
                         domain="[('user_id', '=', uid),
-                         ('activity_status_for_interpreter', '=', 'awaiting_booking')]"/>
-                <filter string="Failed Bookings" name="activities_failed_booking"
+                         ('activity_status_for_interpreter', '=', 'order_received'),
+                         '|', ('active', '=', True), ('active', '=', False)]"/>
+                <filter string="No available interpreter" name="activities_no_available_interpreter"
                         domain="[('user_id', '=', uid),
-                         ('activity_status_for_interpreter', '=', 'failed_booking')]"/>
-                <filter string="Done Bookings" name="activities_done_booking"
+                         ('activity_status_for_interpreter', '=', 'no_available_interpreter'),
+                         '|', ('active', '=', True), ('active', '=', False)]"/>
+                <filter string="Order in Process" name="activities_order_in_process"
                         domain="[('user_id', '=', uid), ('active', '=', False),
-                        ('activity_status_for_interpreter', '=', 'done_booking')]"/>
-                <filter string="All Bookings" name="activities_all_booking"
-                        domain="[('user_id', '=', uid),
-                        ('activity_status_for_interpreter', 'in', ('all_booking', 'awaiting_booking', 'failed_booking',
-                        'done_booking', 'ongoing_booking', 'not_delivered_booking')),
+                        ('activity_status_for_interpreter', '=', 'order_in_process'),
                         '|', ('active', '=', True), ('active', '=', False)]"/>
-                <filter string="Ongoing" name="activities_ongoing_booking"
-                        domain="[('user_id', '=', uid), ('activity_status_for_interpreter', '=', 'ongoing_booking')]"/>
-                <filter string="Not Delivered" name="activities_not_delivered_booking"
+                <filter string="Interpreter Booked" name="activities_interpreter_booked"
+                        domain="[('user_id', '=', uid), ('activity_status_for_interpreter', '=', 'interpreter_booked'),
+                        '|', ('active', '=', True), ('active', '=', False)]"/>
+                <filter string="Cancelled by Interpreter" name="activities_cancelled_by_interpreter"
                         domain="[('user_id', '=', uid),
-                        ('activity_status_for_interpreter', '=', 'not_delivered_booking')]"/>
-                <filter string="Cancelled By Interpreter" name="activities_cancelled_by_interpreter"
+                        ('activity_status_for_interpreter', '=', 'cancelled_by_interpreter'),
+                        '|', ('active', '=', True), ('active', '=', False)]"/>
+                <filter string="Cancelled by AF" name="activities_cancelled_by_af"
                         domain="[('user_id', '=', uid),
-                        ('activity_status_for_interpreter', '=', 'cancelled_by_interpreter')]"/>
+                        ('activity_status_for_interpreter', '=', 'cancelled_by_af'),
+                        '|', ('active', '=', True), ('active', '=', False)]"/>
                 <separator/>
                 <group expand="0" string="Group By">
                     <filter string="Deadline" name="date_deadline" context="{'group_by': 'date_deadline'}"/>
@@ -368,12 +369,12 @@
                     'invisible': [('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"/>
                 <field name="_interpreter_booking_status" invisible="1"/>
                 <field name="_interpreter_booking_status_2" invisible="1"/>
-                <button name="%(deliver_interpreter_action)d"
+                <button name="deliver_interpreter_action"
                         attrs="{'invisible': ['|', '|', '|', ('_interpreter_booking_status_2', '=', '2'),
                                               ('_interpreter_booking_status', '=', '2'),
                                               ('interpreter_booking_ref', '=', False),
                                               ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
-                        type="action">Inleverera tolk
+                        type="object">Inleverera tolk
                 </button>
             </field>
             <button name="action_done" position="attributes">
@@ -473,7 +474,7 @@
         <field name="res_model">mail.activity</field>
         <field name="view_mode">kanban,tree,calendar,form</field>
         <field name="view_id" ref="outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking"/>
-        <field name="domain">[('user_id', '=', uid)]</field>
+        <field name="domain">[('user_id', '=', uid), '|', ('active', '=', True), ('active', '=', False)]</field>
     </record>
 
     <record id="interpreter_activity_action_form" model="ir.actions.act_window.view">
@@ -565,12 +566,12 @@
                             <field name="res_model_id" invisible="1"/>
                         </group>
                     </group>
-                    <button name="%(deliver_interpreter_action)d" groups="outplacement.group_outplacement_user_read"
+                    <button name="deliver_interpreter_action" groups="outplacement.group_outplacement_user_read"
                             attrs="{'invisible': ['|', '|', '|', ('_interpreter_booking_status_2', '=', '2'),
                                               ('_interpreter_booking_status', '=', '2'),
                                               ('interpreter_booking_ref', '=', False),
                                               ('activity_type_id', '!=', %(outplacement_order_interpreter.order_interpreter)d)]}"
-                            type="action">Inleverera tolk
+                            type="object">Inleverera tolk
                     </button>
                     <group string="Supplier and Participent info">
                         <field name="performing_operation_id"/>

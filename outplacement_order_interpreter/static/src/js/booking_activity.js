@@ -123,35 +123,31 @@ odoo.define('mail.Bookings.ActivityMenu', function (require) {
             var data = _.extend({}, $(event.currentTarget).data(), $(event.target).data());
             var context = {};
             if (data.filter === 'my') {
-                context['search_default_activities_all_booking'] = 1;
-                context['search_default_activities_awaiting_booking'] = 1;
-                context['search_default_activities_ongoing_booking'] = 1;
-                context['search_default_activities_not_delivered_booking'] = 1;
-                context['search_default_activities_failed_booking'] = 1;
-                context['search_default_activities_done_booking'] = 1;
+                context['search_default_activities_order_received'] = 1;
+                context['search_default_activities_no_available_interpreter'] = 1;
+                context['search_default_activities_order_in_process'] = 1;
+                context['search_default_activities_interpreter_booked'] = 1;
+                context['search_default_activities_cancelled_by_af'] = 1;
                 context['search_default_activities_cancelled_by_interpreter'] = 1;
             } else {
                 context['search_default_activities_' + data.filter] = 1;
             }
-            if (data.filter === 'failed_booking') {
-               context['search_default_activities_failed_booking'] = 1;
+            if (data.filter === 'order_received') {
+               context['search_default_activities_order_received'] = 1;
             }
-            if (data.filter === 'done_booking') {
-               context['search_default_activities_done_booking'] = 1;
+            if (data.filter === 'no_available_interpreter') {
+               context['search_default_activities_no_available_interpreter'] = 1;
             }
-            if (data.filter === 'all_booking') {
-               context['search_default_activities_all_booking'] = 1;
+            if (data.filter === 'order_in_process') {
+               context['search_default_activities_order_in_process'] = 1;
             }
-            if (data.filter === 'ongoing_booking') {
-               context['search_default_activities_ongoing_booking'] = 1;
+            if (data.filter === 'interpreter_booked') {
+               context['search_default_activities_interpreter_booked'] = 1;
             }
-            if (data.filter === 'awaiting_booking') {
-               context['search_default_activities_awaiting_booking'] = 1;
+            if (data.filter === 'cancelled_by_af') {
+               context['search_default_activities_cancelled_by_af'] = 1;
             }
-            if (data.filter === 'not_delivered_booking') {
-               context['search_default_activities_not_delivered_booking'] = 1;
-            }
-             if (data.filter === 'cancelled_by_interpreter') {
+            if (data.filter === 'cancelled_by_interpreter') {
                context['search_default_cancelled_by_interpreter'] = 1;
             }
             this.do_action('outplacement_order_interpreter.interpreter_activity_action', {

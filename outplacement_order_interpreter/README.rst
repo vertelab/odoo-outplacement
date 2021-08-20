@@ -51,6 +51,7 @@ Different version submitted
 36. v12.0.1.9.4 AFC-2627 Added default '1 Valfri' for Interpreter Gender Preference when creating booking if Gender prefernce is not selected in Outplacement Partner.
 37. v12.0.1.9.5 AFC-2613 Updated Interpreter booking filters on Odoo tray and search views.
 35. v12.0.1.9.6 AFC-2640 Fixed Interpreter booking issues with access rights.
+36. v12.0.1.9.7 AFC-2668 Fixed missing record error in activity widget.
 
 
 

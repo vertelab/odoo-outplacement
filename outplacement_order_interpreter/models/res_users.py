@@ -37,7 +37,8 @@ class Users(models.Model):
                             END AS states
                         FROM mail_activity AS act
                         JOIN ir_model AS m ON act.res_model_id = m.id
-                        WHERE user_id = %(user_id)s AND res_model = 'project.task'
+                        JOIN project_task AS t ON act.res_id = t.id
+                        WHERE act.user_id = %(user_id)s AND act.res_model = 'project.task' AND t.outplacement_id IS NOT NULL
                         GROUP BY m.id, states, act.res_model, act.res_id;
                         """
         self.env.cr.execute(query, {
@@ -45,17 +46,10 @@ class Users(models.Model):
             'user_id': self.env.uid,
         })
         activity_data = self.env.cr.dictfetchall()
-        new_activity_data = []
-        task_obj = self.env['project.task']
-        for activity_dict in activity_data:
-            task_id = activity_dict.get('res_id')
-            task = task_obj.browse(task_id)
-            if task.outplacement_id:
-                new_activity_data.append(activity_dict)
-        model_ids = [a['id'] for a in new_activity_data]
+        model_ids = [a['id'] for a in activity_data]
         model_names = {n[0]: n[1] for n in self.env['ir.model'].browse(model_ids).name_get()}
         user_activities = {}
-        for activity in new_activity_data:
+        for activity in activity_data:
             if not user_activities.get(activity['model']):
                 user_activities[activity['model']] = {
                     'name': model_names[activity['id']],

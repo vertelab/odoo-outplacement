@@ -771,6 +771,8 @@ class MailActivity(models.Model):
         for activity in self.env['mail.activity'].search([]):
             if not activity.is_interpreter():
                 continue
+            if activity.active:
+                continue
             ref = activity.interpreter_booking_ref
             perf_op = activity.get_outplacement_value(
                 'performing_operation_id')

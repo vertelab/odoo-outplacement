@@ -768,10 +768,8 @@ class MailActivity(models.Model):
         ipf_client = self.env['ipf.interpreter.client'].search([], limit=1)
         if not ipf_client.is_params_set():
             return
-        for activity in self.env['mail.activity'].search([]):
+        for activity in self.env['mail.activity'].with_context(active_test=False).search([()]):
             if not activity.is_interpreter():
-                continue
-            if activity.active:
                 continue
             ref = activity.interpreter_booking_ref
             perf_op = activity.get_outplacement_value(

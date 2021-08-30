@@ -39,6 +39,7 @@
         'data/cron.xml',
         'data/test.xml',
         'views/account_invoice_view.xml',
+        'data/server_action.xml'
     ],
     'installable': True,
     'images': [

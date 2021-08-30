@@ -82,6 +82,16 @@ class SaleOrder(models.Model):
                 if invoice_id:
                     res_invoice = client_config.get_invoice(invoice_id=invoice_id)
                     new_invoice = self.create_invoice(res_invoice)
+                else:
+                    _logger.error(f"There was no 'invoice_number' in invoice {invoice},"
+                                  f" for outplacement {self.outplacement_id.name}")
+                    if res.get('error_id', False):
+                        _logger.error(f"There was an error when "
+                                      f"getting invoice for "
+                                      f"{self.outplacement_id.name}: "
+                                      f"{res}")
+        else:
+            _logger.error(f"There was no response for outplacement {self.outplacement_id.name}")
 
     @api.one
     def create_invoice(self, invoice):
@@ -273,5 +283,7 @@ class SaleOrder(models.Model):
             # make sure odoo didn't calculate the tax different than
             # what the invoice says.
             current_invoice.amount_tax = amount_tax
+        else:
+            _logger.error(f"No 'svefaktura' in {invoice}")
 
         return current_invoice

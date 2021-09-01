@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="update_outplacement_invoices" model="ir.actions.server">
+        <field name="name">Update all outplacement invoices</field>
+        <field name="model_id" ref="base.model_ir_actions_server"/>
+        <field name="state">code</field>
+        <field name="groups_id" eval="[(4, ref('base.group_system'))]"/>
+        <field name="code">
+for order in env['sale.order'].search([]):
+    client_config = env['api.raindance.client.config'].search([], limit=1)
+    if not client_config:
+        raise Warning("No client config for raindance integration")
+    if not client_config.url:
+        raise Warning("No url configured for raindance client config")
+    if not client_config.client_id:
+        raise Warning("No client_id configured for raindance client config")
+    if not client_config.client_secret:
+        raise Warning("No client_secret configured for raindance client config")
+
+    legacy_no = env["ir.config_parameter"].sudo().get_param("dafa.legacy_no")
+    if not legacy_no:
+        raise Warning("dafa.legacy_no not set in system parameters")
+
+    res = client_config.get_invoices(order_id=order.outplacement_id.name)
+    if res:
+        for invoice in res.get('invoices', []):
+            invoice_id = invoice.get('invoice_number')
+            if invoice_id:
+                res_invoice = client_config.get_invoice(invoice_id=invoice_id)
+                new_invoice = order.create_invoice(res_invoice)
+        </field>
+    </record>
+
+    <function name="create_action" model="ir.actions.server">
+        <value model="ir.actions.server" search="[
+            ('id', 'in', [ref('update_outplacement_invoices')]),
+            ]"/>
+    </function>
+</odoo>
+

@@ -9,6 +9,8 @@ The module is maintained here: https://github.com/vertelab/odoo-outplacement/tre
 Different version submitted
 ===========================
 
+1. V12.0.1.1.1 - AFC-2704 Added new record rule for mail activity
+
 Maintainers
 ~~~~~~~~~~~
 

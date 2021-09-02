@@ -23,7 +23,7 @@
 
 {
     'name': 'Outplacement DAFA',
-    'version': '12.0.1.1.0',
+    'version': '12.0.1.1.1',
     'category': 'Outplacement',
     'author': 'Vertel AB',
     'license': 'AGPL-3',

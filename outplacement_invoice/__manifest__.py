@@ -22,7 +22,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Outplacement Invoice',
-    'version': '12.0.1.2.2',
+    'version': '12.0.1.2.3',
     'category': 'Outplacement',
     'author': "Vertel AB",
     'license': 'AGPL-3',
@@ -39,6 +39,7 @@
         'data/cron.xml',
         'data/test.xml',
         'views/account_invoice_view.xml',
+        'data/server_action.xml'
     ],
     'installable': True,
     'images': [

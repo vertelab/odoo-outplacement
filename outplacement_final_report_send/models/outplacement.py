@@ -48,7 +48,7 @@ class Outplacement(models.Model):
         if client_config:
             response = client_config.post_request(self)
             if response.status_code != 201:
-                res_dict = json.loads(response.text)
+                res_dict = json.loads(response.text) if response.text else {}
                 tracking_id = res_dict.get("error_id", "")
                 message = res_dict.get("message", "")
                 cause_dict = res_dict.get("cause", {})

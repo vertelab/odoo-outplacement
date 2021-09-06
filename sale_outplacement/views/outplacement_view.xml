@@ -90,12 +90,24 @@
             </field>
         </record>
 
+        <record id="outplacement_kanban_view" model="ir.ui.view">
+            <field name="name">Outplacement</field>
+            <field name="model">outplacement</field>
+            <field name="inherit_id" ref="outplacement.outplacement_kanban_view"/>
+            <field name="priority">14</field>
+            <field name="arch" type="xml">
+                <xpath expr="//span[@class='o_kanban_record_subtitle']" position="inside">
+                    <field name="order_id_origin"/>
+                </xpath>
+            </field>
+        </record>
+
         <record id="inherit_outplacement_search_view_for_origin" model="ir.ui.view">
             <field name="name">inherit.outplacement.search.view.for.origin</field>
             <field name="model">outplacement</field>
             <field name="inherit_id" ref="outplacement.outplacement_filter_view"/>
             <field name="arch" type="xml">
-                <field name="name" position="after">
+                <field name="name" position="before">
                     <field name="order_id_origin"/>
                 </field>
             </field>

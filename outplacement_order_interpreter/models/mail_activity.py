@@ -65,6 +65,8 @@ class ProjectTask(models.Model):
         task_subtype = self.env.ref('project.mt_task_new')
         if res.outplacement_id:
             for message in res.message_ids:
+                # AFC-2145 Updated Interpreter logging. Hide 'Task Created' log and Added log for booked status.
+                # Removing a logmessage that we dont want to see.
                 if message.subtype_id and message.subtype_id.id == task_subtype.id:
                     message.unlink()
         return res

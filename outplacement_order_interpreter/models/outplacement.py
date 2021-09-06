@@ -16,7 +16,7 @@ class Outplacement(models.Model):
         readonly=False)
     interpreter_type = fields.Many2one(
         related='partner_id.interpreter_type',
-        string = "Interpreter Type",
+        string="Interpreter Type",
         readonly=False)
     interpreter_remote_type = fields.Many2one(
         related='partner_id.interpreter_type',

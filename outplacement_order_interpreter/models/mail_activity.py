@@ -1,15 +1,31 @@
 # -*- coding: utf-8 -*-
+
+from collections import defaultdict
 import datetime
+from datetime import timedelta
 import json
 import logging
-import pytz
-from collections import defaultdict
-from datetime import timedelta
-from odoo.exceptions import UserError
 
+import pytz
+
+from odoo.exceptions import UserError
 from odoo import api, models, fields, tools, _
 
 _logger = logging.getLogger(__name__)
+
+
+def change_tz(dt, from_tz='Europe/Stockholm', to_tz='UTC'):
+    """
+    Change between timezones.
+
+    Tolkportalen gives times in Swedish time instead of UTC.
+    """
+    if dt:
+        from_tz = pytz.timezone(from_tz)
+        to_tz = pytz.timezone(to_tz)
+        res = from_tz.localize(dt).astimezone(to_tz)
+        return res.replace(tzinfo=None)
+    return False
 
 
 class SaleOrder(models.Model):
@@ -195,7 +211,6 @@ class MailActivity(models.Model):
                 activity.duration = format((((activity.time_end - activity.time_start).total_seconds()) / 60),
                                            '.2f')
 
-
     @api.multi
     @api.depends('time_start', 'time_end')
     def _compute_dates_duration(self):
@@ -204,10 +219,10 @@ class MailActivity(models.Model):
                 activity.duration = format((((activity.time_end - activity.time_start).total_seconds()) / 60),
                                            '.2f')
                 activity.date = activity.time_start.date()
-                start_date = activity.time_start + timedelta(hours=2)
-                end_date = activity.time_end + timedelta(hours=2)
-                activity.split_start_time = str(start_date.hour).zfill(2) + ':' + str(start_date.minute).zfill(2)
-                activity.split_end_time = str(end_date.hour).zfill(2) + ':' + str(end_date.minute).zfill(2)
+                start_date = change_tz(activity.time_start, 'UTC', 'Europe/Stockholm')
+                end_date = change_tz(activity.time_end, 'UTC', 'Europe/Stockholm')
+                activity.split_start_time = start_date.strftime(start_date, '%H:%M')
+                activity.split_end_time = end_date.strftime(start_date, '%H:%M')
 
     @api.multi
     @api.depends('res_id', 'res_model')
@@ -233,26 +248,28 @@ class MailActivity(models.Model):
     @api.model
     def search(self, args, offset=0, limit=None, order=None, count=False):
         if 'from_outplacement_interpreters_menu' in self._context:
-            type = self.env.ref('outplacement_order_interpreter.order_interpreter')
-            if type:
-                args += [('activity_type_id', '=', type.id)]
+            type_ = self.env.ref('outplacement_order_interpreter.order_interpreter')
+            if type_:
+                args += [('activity_type_id', '=', type_.id)]
         return super(MailActivity, self).search(args, offset, limit, order, count=count)
 
     @api.model
     def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
         if 'from_outplacement_interpreters_menu' in self._context:
-            type = self.env.ref('outplacement_order_interpreter.order_interpreter')
-            if type:
-                domain += [('activity_type_id', '=', type.id)]
+            type_ = self.env.ref('outplacement_order_interpreter.order_interpreter')
+            if type_:
+                domain = domain or []
+                domain += [('activity_type_id', '=', type_.id)]
         return super(MailActivity, self).search_read(domain=domain, fields=fields, offset=offset, limit=limit,
                                                      order=order)
 
     @api.model
     def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
         if 'from_outplacement_interpreters_menu' in self._context:
-            type = self.env.ref('outplacement_order_interpreter.order_interpreter')
-            if type:
-                domain += [('activity_type_id', '=', type.id)]
+            type_ = self.env.ref('outplacement_order_interpreter.order_interpreter')
+            if type_:
+                domain = domain or []
+                domain += [('activity_type_id', '=', type_.id)]
         return super(MailActivity, self).read_group(domain, fields, groupby, offset=offset, limit=limit,
                                                     orderby=orderby,
                                                     lazy=lazy)
@@ -295,8 +312,8 @@ class MailActivity(models.Model):
 
     @api.model
     def _selection_target_model(self):
-        models = self.env['ir.model'].search([])
-        return [(model.model, model.name) for model in models]
+        models_ = self.env['ir.model'].search([])
+        return [(model.model, model.name) for model in models_]
 
     def _compute_resource_ref(self):
         for record in self:
@@ -304,7 +321,7 @@ class MailActivity(models.Model):
             if record.res_id:
                 activity = self.env['project.task'].search([('id', '=', record.res_id)])
                 if activity:
-                    record.task_id = '%s,%s' % (model, activity.id)
+                    record.task_id = f'{model},{activity.id}'
                 else:
                     record.task_id = False
             else:
@@ -464,7 +481,7 @@ class MailActivity(models.Model):
                 if project_task and project_task.outplacement_id:
                     return getattr(project_task.outplacement_id, field_name)
             except AttributeError:
-                _logger.warn('Could not find field: {field_name}')
+                _logger.warning('Could not find field: {field_name}')
 
     @api.multi
     def get_outplacement_value(self, field_name):
@@ -477,7 +494,7 @@ class MailActivity(models.Model):
                 if project_task.exists() and project_task.outplacement_id:
                     return getattr(project_task.outplacement_id, field_name)
             except AttributeError:
-                _logger.warn('Could not find field: {field_name}')
+                _logger.warning('Could not find field: {field_name}')
 
     @api.multi
     def action_create_calendar_event(self):
@@ -496,11 +513,11 @@ class MailActivity(models.Model):
         return action
 
     def action_feedback(self, feedback=False):
-        '''
+        """
         Overriding the standard action feedback for interpreter messages.
         As the standard version takes height for that it may be more
         than one message we need to take height for it as well.
-        '''
+        """
         interpreter_messages = self.filtered(lambda m: self.is_interpreter())
         other_messages = self - interpreter_messages
         if other_messages:
@@ -643,19 +660,9 @@ class MailActivity(models.Model):
         Updates the activity with new status if it has been updated on
         server.
         """
-
-        def change_tz(dt, tz='Europe/Stockholm'):
-            # Tolkportalen gives times in swedish local time.
-            if dt:
-                tz = pytz.timezone(tz)
-                dt = tz.localize(dt).astimezone(datetime.timezone.utc)
-                # Making it naive again so that Odoo likes it.
-                return dt.replace(tzinfo=None)
-            return False
-
         if response.status_code not in (200,):
-            _logger.warn('Failed to update interperator bookings with code: '
-                         f'{response.status_code}')
+            _logger.warning('Failed to update interperator bookings with code: '
+                            f'{response.status_code}')
             return
         data = json.loads(response.content.decode())
         self._interpreter_booking_status = str(

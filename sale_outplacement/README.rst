@@ -25,6 +25,7 @@ Different version submitted
 12. V 12.0.1.1.3 AFC-2560 Improved code to remove error.
 13. V 12.0.1.1.4 AFC-2443-2433 Updated access right for dafa hide menus
 14. V 12.0.1.1.5 AFC-2601 Minor changes after code review
+15. V 12.0.1.1.6 AFC-2153 moved around fields in outplacement search, replaced name with booking reference number in kanban.
 
 Usage
 =====

@@ -42,19 +42,18 @@ Different version submitted
 34. v12.0.1.7.6 AFC-2581 Added dynamic date filter to outplacement interpreter booking filter view.
 35. v12.0.1.7.7 Added info about informing the interpreter when the interpreter is cancelled in activity.js-file
 36. v12.0.1.7.8 AFC-2596 Listed all activities from Interpreters menus.
-30. v12.0.1.7.9 AFC-2601: Trivial spelling corrections, line length and other trivial improvements
-31. v12.0.1.8.0 AFC-2593: Added Interpreter name & Phone and Deliver interpreter button on Cancellation popup.
-32. v12.0.1.9.0 AFC-2609: Added Interpreter name, Phone on Activity form view, Fixed quote issue on Activity kanban, Added some more fields on activity search view.
-33. v12.0.1.9.1 AFC-2614: Hide delivery button in "cancel-message" when there is no available interpreter.
-34. v12.0.1.9.2 Improved code to fix Interpreter booking status with API issue and Added log when user click on cancel button of cancellation booking popup.
-35. v12.0.1.9.3 #701 Updated code to add log message in one line and for user friendly message, Checked response from interpreter API before user click on 'Inleverera tolk', Updated booking status when booking delivered via cron, Added create date filter on Interpreter booking.
-36. v12.0.1.9.4 AFC-2627 Added default '1 Valfri' for Interpreter Gender Preference when creating booking if Gender prefernce is not selected in Outplacement Partner.
-37. v12.0.1.9.5 AFC-2613 Updated Interpreter booking filters on Odoo tray and search views.
-35. v12.0.1.9.6 AFC-2640 Fixed Interpreter booking issues with access rights.
-36. v12.0.1.9.7 AFC-2668 Fixed missing record error in activity widget.
-36. v12.0.1.9.8 Fixed cron function not running on inactive activities.
-
-
+37. v12.0.1.7.9 AFC-2601: Trivial spelling corrections, line length and other trivial improvements
+38. v12.0.1.8.0 AFC-2593: Added Interpreter name & Phone and Deliver interpreter button on Cancellation popup.
+39. v12.0.1.9.0 AFC-2609: Added Interpreter name, Phone on Activity form view, Fixed quote issue on Activity kanban, Added some more fields on activity search view.
+40. v12.0.1.9.1 AFC-2614: Hide delivery button in "cancel-message" when there is no available interpreter.
+41. v12.0.1.9.2 Improved code to fix Interpreter booking status with API issue and Added log when user click on cancel button of cancellation booking popup.
+42. v12.0.1.9.3 #701 Updated code to add log message in one line and for user friendly message, Checked response from interpreter API before user click on 'Inleverera tolk', Updated booking status when booking delivered via cron, Added create date filter on Interpreter booking.
+43. v12.0.1.9.4 AFC-2627 Added default '1 Valfri' for Interpreter Gender Preference when creating booking if Gender preference is not selected in Outplacement Partner.
+44. v12.0.1.9.5 AFC-2613 Updated Interpreter booking filters on Odoo tray and search views.
+45. v12.0.1.9.6 AFC-2640 Fixed Interpreter booking issues with access rights.
+46. v12.0.1.9.7 AFC-2668 Fixed missing record error in activity widget.
+47. v12.0.1.9.8 Fixed cron function not running on inactive activities.
+48. v12.0.1.9.9 Minor bugfixes
 
 Maintainers
 ~~~~~~~~~~~

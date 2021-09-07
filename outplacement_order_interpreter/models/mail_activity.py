@@ -267,6 +267,7 @@ class MailActivity(models.Model):
         if 'from_outplacement_interpreters_menu' in self._context:
             act_type = self.env.ref('outplacement_order_interpreter.order_interpreter')
             if act_type:
+                domain = domain or []
                 domain += [('activity_type_id', '=', act_type.id)]
         return super(MailActivity, self).search_read(
             domain=domain, fields=fields, offset=offset, limit=limit, order=order)
@@ -278,6 +279,7 @@ class MailActivity(models.Model):
         if 'from_outplacement_interpreters_menu' in self._context:
             act_type = self.env.ref('outplacement_order_interpreter.order_interpreter')
             if act_type:
+                domain = domain or []
                 domain += [('activity_type_id', '=', act_type.id)]
         return super(MailActivity, self).read_group(
             domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)

@@ -132,7 +132,6 @@
                                                 </strong>
                                             </strong>
                                             <span class="o_kanban_record_subtitle">
-                                                <field name="name"/>
                                             </span>
                                         </div>
                                     </div>
@@ -173,11 +172,11 @@
             <field name="model">outplacement</field>
             <field name="arch" type="xml">
                 <search string="Outplacement">
-                    <field name="name"/>
+                    <field name="partner_name"/>
+                    <field name="name" string="Outplacement id"/>
                     <field name="employee_id"/>
                     <field name="syv_id"/>
                     <field name="booking_ref"/>
-                    <field name="partner_name"/>
                     <field name="partner_social_sec_nr"/>
                     <field name="performing_operation_id"/>
                     <filter name="my_performing_operation" string="My Performing Operation"

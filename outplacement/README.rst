@@ -18,6 +18,7 @@ Different version submitted
 8. v12.0.1.2.8 - AFC-2542 Added Social security number to outplacement filter view.
 9. v12.0.1.2.9 - AFC-2851 Added dynamic Service start and end date filter to outplacement filter view.
 10. v12.0.1.3.0 - AFC-2585 Added SYV field into Outplacement.
+11. v12.0.1.3.1 - AFC-2153 moved around fields in search, replaced name with booking reference number in kanban.
 
 Maintainers
 ~~~~~~~~~~~

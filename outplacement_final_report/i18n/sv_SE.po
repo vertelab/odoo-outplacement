@@ -879,7 +879,7 @@ msgstr "<br/><span style=\"color:green;font-size:12px\">Dags att skicka in slutr
 #. module: outplacement_final_report
 #: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_outplacement_kanban
 msgid "<br/><span style=\"color:red;font-size:12px\">It is too late to submit a Final Report</span>"
-msgstr "<br/><span style=\"color:red;font-size:12px\">Det är för sent att lämna in en slutrapport</span>"
+msgstr "<br/><span style=\"color:red;font-size:12px\">Det är för sent att lämna in en slutredovisning</span>"
 
 #. module: outplacement_final_report
 #: model_terms:ir.ui.view,arch_db:outplacement_final_report.view_outplacement_kanban

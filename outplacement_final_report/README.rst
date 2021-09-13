@@ -20,6 +20,7 @@ Different version submitted
 9. v12.0.0.2.4 AFC-2357 Added visual aids on the kanban-view to help the caseworker to remember to submit Final Report.
 10. v12.0.0.2.5 AFC-2582 Adjusted calculation of allowed time to send Final Report.
 11. v12.0.0.2.6 AFC-2582 Added some space between two msg on outplacement kanban view.
+12. v12.0.0.2.7 AFC-2582 Removed some space between two msg on outplacement kanban view.
 
 Maintainers
 ~~~~~~~~~~~

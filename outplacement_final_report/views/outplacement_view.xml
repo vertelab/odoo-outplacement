@@ -86,17 +86,17 @@
             </xpath>
             <xpath expr="//div[hasclass('o_kanban_record_body')]" position="inside">
                  <t t-if="record.time_to_submit_fr_1_4.raw_value">
-                     <div style="padding-top:5px">
+                     <div style="padding-top:2px">
                         <span style="color:green;font-size:12px">Please submit Final Report</span>
                      </div>
                  </t>
                  <t t-if="record.time_to_submit_fr_5_20.raw_value">
-                     <div style="padding-top:5px">
+                     <div style="padding-top:2px">
                         <span style="color:red;font-size:12px">Please submit Final Report</span>
                      </div>
                  </t>
                  <t t-if="record.time_to_submit_fr_21.raw_value">
-                     <div style="padding-top:5px">
+                     <div style="padding-top:2px">
                         <span style="color:red;font-size:12px">It is too late to submit a Final Report</span>
                      </div>
                  </t>

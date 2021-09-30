@@ -26,7 +26,14 @@ class Outplacement(models.Model):
 
     def send_final_report(self):
         today = datetime.date.today()
-        next_41_days = self.date_by_adding_business_days(self.service_end_date, 41)
+        try:
+            num_days = int(self.env["ir.config_parameter"].get_param(
+                "outplacement_final_report_send.days_to_send", "41"))
+        except ValueError:
+            _logger.error('system parameter "outplacement_final_report_send.days_to_send" '
+                          'is set to a non-numerical value')
+            num_days = 41
+        next_41_days = self.date_by_adding_business_days(self.service_end_date, num_days)
         if self.stage_id and self.stage_id.id == self.env.ref('outplacement.cancelled_stage').id and \
                 today >= next_41_days:
             raise UserError(

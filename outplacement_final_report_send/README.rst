@@ -24,6 +24,7 @@ Different version submitted
 13. v12.0.1.2.8 AFC-2637 fixed always throwing UserError if outplacement was cancelled, empty main and alternative goals can now only be sent if you are within 15 days of order start
 14. v12.0.1.2.9 AFC-2708 restored usererror on api error response.
 14. v12.0.1.2.10 Moved amount of days to send final report to a system parameter.
+14. v12.0.1.2.11 Added sudo() to get_param().
 
 
 Maintainers

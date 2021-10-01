@@ -27,7 +27,7 @@ class Outplacement(models.Model):
     def send_final_report(self):
         today = datetime.date.today()
         try:
-            num_days = int(self.env["ir.config_parameter"].get_param(
+            num_days = int(self.env["ir.config_parameter"].sudo().get_param(
                 "outplacement_final_report_send.days_to_send", "41"))
         except ValueError:
             _logger.error('system parameter "outplacement_final_report_send.days_to_send" '

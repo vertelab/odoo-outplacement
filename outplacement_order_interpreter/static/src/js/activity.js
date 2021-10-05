@@ -39,8 +39,7 @@ odoo.define('mail.Activity.Interpreter', function (require) {
                 // Check if we are over the deadline and thus need to deliver the interpreter.
                 if (activity.delivery_on_cancel()) {
                     // If we got information about the interpreter, tell user to contact interpreter as well.
-                    if (activity.interpreter_name or
-                    activity.interpreter_phone){
+                    if (activity.interpreter_name || activity.interpreter_phone){
                         content += '<p><b>Avboka tolkbokningen</b></br>'
 
                         if (activity.interpreter_name) {

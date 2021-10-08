@@ -803,9 +803,10 @@ class MailActivity(models.Model):
             _logger.exception(e)
         else:
             if resp.status_code not in (200, 201):
-                msg = f'Something went wrong in '
-                _logger.warning(resp.status_code)
-                _logger.warning(resp.text)
+                msg = (f'Something went wrong when canceling interpreter\n'
+                       f'\tStatus Code: {resp.status_code}\n'
+                       f'\tMessage: {resp.text}')
+                _logger.warning(msg)
 
     @api.model
     def is_interpreter(self, obj=None):

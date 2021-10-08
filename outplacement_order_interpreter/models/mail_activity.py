@@ -633,12 +633,11 @@ class MailActivity(models.Model):
         """Adding request to server in create."""
         order_interpreter = self.env.ref(
             'outplacement_order_interpreter.order_interpreter').id
-        if vals['activity_type_id'] == order_interpreter:
-            for field in ('time_start', 'time_end'):
-                vals[field] = vals[field].replace(second=0)
-            vals['date_deadline'] = vals['time_start']
         record = super(MailActivity, self).create(vals)
         if record.activity_type_id.id == order_interpreter:
+            for field in ('time_start', 'time_end'):
+                getattr(record, field).replace(second=0)
+            record.date_deadline = record.time_start.date()
             self.validate_booking_rules(record)
             self.make_request(record)
         return record
@@ -799,22 +798,14 @@ class MailActivity(models.Model):
         """
         try:
             client = self.env['ipf.interpreter.client'].search([], limit=1)
-            resp = client.cancel_interpreter(self.interpreter_booking_ref)
+            resp = client.cancel_interpreter(self.interpreter_booking_ref, self.interpreter_ka_nr)
         except Exception as e:
             _logger.exception(e)
         else:
-            # Handle response here
-            pass
-
-    def delivery_on_cancel(self):
-        """
-        Check current time and decide if a delivery is required.
-
-        Same rule applies for if the interpreter has to be canceled
-        manually as well.
-        """
-        deadline = (self.time_start - datetime.timedelta(hours=24)).replace(hour=15)
-        return datetime.datetime.now() > deadline
+            if resp.status_code not in (200, 201):
+                msg = f'Something went wrong in '
+                _logger.warning(resp.status_code)
+                _logger.warning(resp.text)
 
     @api.model
     def is_interpreter(self, obj=None):

@@ -76,7 +76,7 @@ class InterpreterDeliveryWizard(models.TransientModel):
                               'increments'))
         if not self.mail_activity_id.interpreter_company:
             raise UserError(_('Could not find an assigned interpreter'))
-        if self.mail_activity_id.time_start > datetime.datetime.now():
+        if not self.env.context.get('early_ok') and self.mail_activity_id.time_start > datetime.datetime.now():
             raise UserError(_('The occation still lies in the future'))
 
     def check_response(self, response):

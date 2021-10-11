@@ -268,7 +268,7 @@ class Outplacement(models.Model):
                           ''.join(random.sample(string.digits, k=4)),
             "tjanstekod": "KVL",
             "spar_kod": "10",
-            "tolkbehov": "",
+            "tolkbehov": "Tyska",
             "deltagandegrad": 75,
             "bokat_sfi": False,
             "startdatum_insats": '%s' % datetime.date.today(),

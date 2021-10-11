@@ -633,12 +633,11 @@ class MailActivity(models.Model):
         """Adding request to server in create."""
         order_interpreter = self.env.ref(
             'outplacement_order_interpreter.order_interpreter').id
-        if vals['activity_type_id'] == order_interpreter:
-            for field in ('time_start', 'time_end'):
-                vals[field] = self.strip_seconds(vals[field])
-            vals['date_deadline'] = vals['time_start']
         record = super(MailActivity, self).create(vals)
         if record.activity_type_id.id == order_interpreter:
+            for field in ('time_start', 'time_end'):
+                getattr(record, field).replace(second=0)
+            record.date_deadline = record.time_start.date()
             self.validate_booking_rules(record)
             self.make_request(record)
         return record
@@ -679,11 +678,6 @@ class MailActivity(models.Model):
             raise UserError(_('Booking has to be an even '
                               '{} minutes segment.').format(increment))
         return True
-
-    @staticmethod
-    def strip_seconds(dt):
-        """Remove seconds from a dt"""
-        return f'{str(dt).rsplit(":", 1)[0]}:00'
 
     @api.multi
     def process_response(self, response, payload):
@@ -802,11 +796,17 @@ class MailActivity(models.Model):
         Runs after user presses Yes in dialog to remove interpreter
         bookings.
         """
-        email_address = 'team-crm@arbetsformedlingen.se'
-        message = f"Skicka ett epostmeddelande till {email_address}</a> och ange " \
-                  f"referensnummer {str(self.interpreter_booking_ref)}. " \
-                  f"Aktuellt KA-Nr: {str(self.interpreter_ka_nr)}"
-        _logger.info(message)
+        try:
+            client = self.env['ipf.interpreter.client'].search([], limit=1)
+            resp = client.cancel_interpreter(self.interpreter_booking_ref, self.interpreter_ka_nr)
+        except Exception as e:
+            _logger.exception(e)
+        else:
+            if resp.status_code not in (200, 201):
+                msg = (f'Something went wrong when canceling interpreter\n'
+                       f'\tStatus Code: {resp.status_code}\n'
+                       f'\tMessage: {resp.text}')
+                _logger.warning(msg)
 
     @api.model
     def is_interpreter(self, obj=None):

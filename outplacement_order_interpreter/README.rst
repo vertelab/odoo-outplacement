@@ -55,6 +55,7 @@ Different version submitted
 47. v12.0.1.9.8 Fixed cron function not running on inactive activities.
 48. v12.0.1.9.9 Minor bugfixes
 49. v12.0.1.10.0 AFC-2852 - Added ability to cancel interpreter.
+50. v12.0.1.10.1 AFC-2875 - PEP8 Fixes.
 Maintainers
 ~~~~~~~~~~~
 

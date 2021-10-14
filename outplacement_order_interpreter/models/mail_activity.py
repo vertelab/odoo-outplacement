@@ -199,23 +199,6 @@ class MailActivity(models.Model):
                 activity.duration = format((((activity.time_end - activity.time_start).total_seconds()) / 60),
                                            '.2f')
 
-
-    @staticmethod
-    def change_tz(date: datetime.datetime,
-                  tz_from: str = 'Europe/Stockholm',
-                  tz_to: str = 'utc') -> datetime:
-        """
-        Convert naive datetime from one tz to another tz while keeping
-        it naive.
-        """
-        # Make sure that we got a date and not None or False as its the
-        # default value of some fields.
-        if date:
-            tz_from = pytz.timezone(tz_from)
-            tz_to = pytz.timezone(tz_to)
-            return tz_from.localize(date).astimezone(tz_to).replace(tzinfo=None)
-        return False
-
     @api.multi
     @api.depends('time_start', 'time_end')
     def _compute_dates_duration(self):
@@ -272,7 +255,6 @@ class MailActivity(models.Model):
         return super(MailActivity, self).search_read(
             domain=domain, fields=fields, offset=offset, limit=limit, order=order)
 
-
     @api.model
     def read_group(
             self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
@@ -321,7 +303,6 @@ class MailActivity(models.Model):
                         activity.activity_status_for_interpreter = 'cancelled_by_af'
                     else:
                         activity.activity_status_for_interpreter = ''
-
 
     @api.model
     def _selection_target_model(self):
@@ -535,8 +516,8 @@ class MailActivity(models.Model):
                 if project_task and project_task.outplacement_id:
                     value = getattr(project_task.outplacement_id, field_name)
                     if field_name == 'interpreter_gender_preference' and not value:
-                        gender_pref = self.env['res.interpreter.gender_preference'].search([('code', '=', '1'),
-                                                            ('name', '=', 'Valfri')], limit=1)
+                        gender_pref = self.env['res.interpreter.gender_preference'].search([
+                            ('code', '=', '1'), ('name', '=', 'Valfri')], limit=1)
                         if gender_pref:
                             return gender_pref.id
                     return value

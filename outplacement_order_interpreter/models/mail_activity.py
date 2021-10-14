@@ -199,23 +199,6 @@ class MailActivity(models.Model):
                 activity.duration = format((((activity.time_end - activity.time_start).total_seconds()) / 60),
                                            '.2f')
 
-
-    @staticmethod
-    def change_tz(date: datetime.datetime,
-                  tz_from: str = 'Europe/Stockholm',
-                  tz_to: str = 'utc') -> datetime:
-        """
-        Convert naive datetime from one tz to another tz while keeping
-        it naive.
-        """
-        # Make sure that we got a date and not None or False as its the
-        # default value of some fields.
-        if date:
-            tz_from = pytz.timezone(tz_from)
-            tz_to = pytz.timezone(tz_to)
-            return tz_from.localize(date).astimezone(tz_to).replace(tzinfo=None)
-        return False
-
     @api.multi
     @api.depends('time_start', 'time_end')
     def _compute_dates_duration(self):

@@ -675,6 +675,8 @@ class MailActivity(models.Model):
         if status_code == 200:
             self.interpreter_booking_ref = response.text
             self._interpreter_booking_status_2 = _('1')
+            # Update current status from Tolkportalen.
+            self.check_interpreter_order_status()
             _logger.debug('Interpreter booking success.')
         elif status_code == 404:
             self._interpreter_booking_status = msg
@@ -744,10 +746,17 @@ class MailActivity(models.Model):
     @api.model
     def cron_order_interpreter(self):
         """Cron job to check booking status."""
+        self.check_interpreter_order_status()
+
+    @api.model
+    def check_interpreter_order_status(self, activities=None):
         ipf_client = self.env['ipf.interpreter.client'].search([], limit=1)
         if not ipf_client.is_params_set():
             return
-        for activity in self.env['mail.activity'].with_context(active_test=False).search([]):
+        activities = activities or self.env['mail.activity'].with_context(
+            active_test=False).search([])
+
+        for activity in activities:
             if not activity.is_interpreter():
                 continue
             ref = activity.interpreter_booking_ref
@@ -777,17 +786,25 @@ class MailActivity(models.Model):
         Runs after user presses Yes in dialog to remove interpreter
         bookings.
         """
-        try:
-            client = self.env['ipf.interpreter.client'].search([], limit=1)
-            resp = client.cancel_interpreter(self.interpreter_booking_ref, self.interpreter_ka_nr)
-        except Exception as e:
-            _logger.exception(e)
-        else:
-            if resp.status_code not in (200, 201):
-                msg = (f'Something went wrong when canceling interpreter\n'
-                       f'\tStatus Code: {resp.status_code}\n'
-                       f'\tMessage: {resp.text}')
-                _logger.warning(msg)
+        for activity in self:
+            try:
+                # Update so we have the latest status on the order
+                # as its important.
+                activity.check_interpreter_order_status([activity])
+                client = self.env['ipf.interpreter.client'].search([], limit=1)
+                resp = client.cancel_interpreter(activity.interpreter_booking_ref, activity.interpreter_ka_nr)
+            except Exception as e:
+                _logger.exception(e)
+            else:
+                if resp.status_code not in (200, 201):
+                    msg = (f'Something went wrong when canceling interpreter\n'
+                           f'\tStatus Code: {resp.status_code}\n'
+                           f'\tMessage: {resp.text}')
+                    _logger.warning(msg)
+                    raise UserError(msg)
+                # Update status on order afterwards so that user gets
+                # feedback.
+                activity.check_interpreter_order_status([activity])
 
     @api.model
     def is_interpreter(self, obj=None):

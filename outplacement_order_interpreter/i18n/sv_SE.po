@@ -98,7 +98,7 @@ msgstr "<span attrs=\"{'invisible': [('delivered', '=', False)]}\">Redan Leverer
 #. module: outplacement_order_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_kanban_view_for_interpreter
 msgid "<span style=\"color:red;\">Please submit the Interpreter</span>"
-msgstr "<span style=\"color:red;\">Vänligen gör inleverens</span>"
+msgstr "<span style=\"color:red;\">Vänligen gör inleverans</span>"
 
 #. module: outplacement_order_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_form_view_for_interpreter
@@ -285,7 +285,7 @@ msgstr "Kunde inte hitta statuskod i svaret"
 msgid "Could not find KA-Number or Booking Reference\n"
 "Check if Performing operation is setup correctly and that the booking has gotten a reference number"
 msgstr "Kunde inte hitta KA-Nummer eller Boknings Referens\n"
-"Kontrollera om Genomförande Verksamhet är korrekt uppsat och att bokningen har fått ett referens nummer"
+"Kontrollera om Genomförande Verksamhet är korrekt uppsatt och att bokningen har fått ett referensnummer"
 
 #. module: outplacement_order_interpreter
 #: code:addons/outplacement_order_interpreter/wizards/deliver_interpreter.py:78
@@ -303,7 +303,7 @@ msgstr "Land"
 #. module: outplacement_order_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
 msgid "Create Date"
-msgstr "Skappad Datum"
+msgstr "Skapad Datum"
 
 #. module: outplacement_order_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
@@ -563,12 +563,12 @@ msgstr "Tolkadmin"
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__jobseeker_category_id
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
 msgid "Jobseeker Category"
-msgstr "Jobsökar Kategori"
+msgstr "Arbetsökarkategori"
 
 #. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_mail_activity__jobseeker_category
 msgid "Jobseeker category"
-msgstr "Jobsökar Kategori"
+msgstr "Arbetsökarkategori"
 
 #. module: outplacement_order_interpreter
 #: model:ir.model.fields,field_description:outplacement_order_interpreter.field_outplacement_interpreter_delivery_wizard__kanr
@@ -618,7 +618,7 @@ msgstr "Mobil"
 #. module: outplacement_order_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
 msgid "My Activities"
-msgstr "Mina aktivieteter"
+msgstr "Mina aktiviteter"
 
 #. module: outplacement_order_interpreter
 #. openerp-web

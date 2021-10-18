@@ -830,7 +830,7 @@ msgstr "Den här typen av bokning behöver vara minst {min} minuter långt."
 
 #. module: outplacement_order_interpreter
 #: model_terms:ir.ui.view,arch_db:outplacement_order_interpreter.mail_activity_search_view_for_interpreter_booking
-msgid "Today Activities"
+msgid "Today's Activities"
 msgstr "Dagens aktiviteter"
 
 #. module: outplacement_order_interpreter

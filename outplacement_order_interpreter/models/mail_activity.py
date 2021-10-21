@@ -686,44 +686,47 @@ class MailActivity(models.Model):
         server.
         """
         if response.status_code not in (200,):
-            _logger.warning('Failed to update interperater bookings with code: '
+            _logger.warning('Failed to update interpreter bookings with code: '
                             f'{response.status_code}')
             return
         data = json.loads(response.content.decode())
-        self._interpreter_booking_status = str(
-            data.get('tekniskStatusTypId', self._interpreter_booking_status))
-        self._interpreter_booking_status_2 = str(
-            data.get('statusTypId', self._interpreter_booking_status_2))
-        self.interpreter_type = self.env["res.interpreter.type"].search([('code', '=', data.get('tolkTypId'))])
-        self.interpreter_remote_type = self.env["res.interpreter.remote_type"].search(
-            [('code', '=', data.get('distanstolkTypId'))])  # noqa:E501
-        self.time_start = self.change_tz(datetime.datetime.strptime(
-            data.get('fromDatumTid'),
-            '%Y-%m-%dT%H:%M:%S'))
-        self.time_end = self.change_tz(datetime.datetime.strptime(
-            data.get('tomDatumTid'),
-            '%Y-%m-%dT%H:%M:%S'))
-        address_obj = data.get('adress', {})
-        self.street = address_obj.get('gatuadress')
-        self.zip = address_obj.get('postnr')
-        self.city = address_obj.get('ort')
-        # state_id is not used, and its uncertain that code is the one
-        # to be used.
-        self.state_id = self.env['res.country.state'].search([('code', '=', address_obj.get('kommunkod'))],
-                                                             limit=1) or False  # noqa:E501
-        self.interpreter_language = self.env["res.interpreter.language"].search(
-            [('code', '=', data.get('tolksprakId'))])  # noqa:E501
-        self.interpreter_gender = self.env["res.interpreter.gender_preference"].search(
-            [('code', '=', data.get('tolkkonID'))])  # noqa:E501
-        self.interpreter_ref = data.get('tolkId')
-        self.interpreter_name = data.get('tolkNamn')
-        self.interpreter_phone = data.get('tolkTelefonnummer')
-        self.interpreter_company = data.get(
-            'tolkLeverantorVerksamhetsnamn')
-        supplier_obj = data.get('tolkLeverantorKontaktperson', {})
-        self.interpreter_contact_person = supplier_obj.get('namn')
-        self.interpreter_contact_phone = supplier_obj.get(
-            'telefonnummer')
+        supplier = data.get('tolkLeverantorKontaktperson', {})
+        # Make sure we dont crash on faulty, empty or missing fields in
+        # the response.
+        times = {}
+        dt_format = '%Y-%m-%dT%H:%M:%S'
+        for key in ('fromDatumTid', 'tomDatumTid'):
+            try:
+                times['key'] = datetime.datetime.strptime(data.get(key), dt_format)
+            except TypeError:
+                # Most likely False or None as it is probably not set
+                pass
+            except ValueError:
+                _logger.error(f'Update activity: supplied datetime format'
+                              f' (data.get(key)) does not match expected'
+                              f' format ({dt_format})')
+        vals = {"_interpreter_booking_status": str(data.get('tekniskStatusTypId', self._interpreter_booking_status)),
+                "_interpreter_booking_status_2": str(data.get('statusTypId', self._interpreter_booking_status_2)),
+                "interpreter_type": self.env["res.interpreter.type"].search([('code', '=', data.get('tolkTypId'))], limit=1) or False,
+                "interpreter_remote_type": self.env["res.interpreter.remote_type"].search([('code', '=', data.get('distanstolkTypId'))]),
+                "time_start": self.change_tz(times.get('fromDatumTid')),
+                "time_end": self.change_tz(times.get('tomDatumTid')),
+                "address_obj": data.get('adress', {}),
+                "street": address_obj.get('gatuadress'),
+                "zip": address_obj.get('postnr'),
+                "city": address_obj.get('ort'),
+                # state_id is not used, and its uncertain that code is the one
+                # to be used.
+                "state_id": self.env['res.country.state'].search([('code', '=', address_obj.get('kommunkod'))], limit=1) or False,
+                "interpreter_language": self.env["res.interpreter.language"].search([('code', '=', data.get('tolksprakId'))]),
+                "interpreter_gender": self.env["res.interpreter.gender_preference"].search([('code', '=', data.get('tolkkonID'))]),
+                "interpreter_ref": data.get('tolkId'),
+                "interpreter_name": data.get('tolkNamn'),
+                "interpreter_phone": data.get('tolkTelefonnummer'),
+                "interpreter_company": data.get('tolkLeverantorVerksamhetsnamn'),
+                "interpreter_contact_person": supplier.get('namn'),
+                "interpreter_contact_phone": supplier.get('telefonnummer')}
+        self.write(vals=vals)
         # Force computation if time has passed
         if self.time_end and self.time_end < datetime.datetime.now():
             self._compute_booking_status()

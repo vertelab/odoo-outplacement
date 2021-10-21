@@ -59,7 +59,7 @@ Different version submitted
 51. v12.0.1.11.0 AFC-2873 - Better feedback.
 52. v12.0.1.11.1 AFC-2897 - Bugfix of deliver interpreter (Abuse of Tolkportalen API).
 53. V12.0.1.11.2 AFC-2902 - Translations and minor code cleanup.
-
+54. V12.0.1.11.3 AFC-2954 - Optimization and safeguards.
 Maintainers
 ~~~~~~~~~~~
 

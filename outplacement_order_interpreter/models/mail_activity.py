@@ -3,7 +3,6 @@ from collections import defaultdict
 import datetime
 import json
 import logging
-import pytz
 
 from odoo.exceptions import UserError
 from odoo import api, models, fields, tools, _
@@ -266,6 +265,7 @@ class MailActivity(models.Model):
         return super(MailActivity, self).read_group(
             domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
 
+    # ToDo: Nils maybe move to the other update function.
     def cron_activity_status_order_interpreter(self):
         activity_obj = self.env['mail.activity']
         current_time = datetime.datetime.now()
@@ -397,8 +397,6 @@ class MailActivity(models.Model):
 
     def deliver_interpreter_action(self):
         self.ensure_one()
-        client = self.env['ipf.interpreter.client'].search([], limit=1)
-
         perf_op = self.get_outplacement_value('performing_operation_id')
         ka_nr = perf_op and perf_op.ka_nr or ''
         if ka_nr and self.interpreter_booking_ref:
@@ -547,6 +545,7 @@ class MailActivity(models.Model):
         """
         interpreter_messages = self.filtered(lambda m: self.is_interpreter())
         other_messages = self - interpreter_messages
+        result = False
         if other_messages:
             result = super(MailActivity, other_messages).action_feedback(feedback)
         if interpreter_messages:

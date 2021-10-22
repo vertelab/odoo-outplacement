@@ -705,21 +705,26 @@ class MailActivity(models.Model):
                 _logger.error(f'Update activity: supplied datetime format'
                               f' (data.get(key)) does not match expected'
                               f' format ({dt_format})')
+        address_obj = data.get('adress', {})
+
+        interpreter_type = self.env["res.interpreter.type"].search([('code', '=', data.get('tolkTypId'))], limit=1)
+        state_id = self.env['res.country.state'].search([('code', '=', address_obj.get('kommunkod'))], limit=1)
+        interpreter_language = self.env["res.interpreter.language"].search([('code', '=', data.get('tolksprakId'))], limit=1)
+        interpreter_gender = self.env["res.interpreter.gender_preference"].search([('code', '=', data.get('tolkkonID'))], limit=1)
         vals = {"_interpreter_booking_status": str(data.get('tekniskStatusTypId', self._interpreter_booking_status)),
                 "_interpreter_booking_status_2": str(data.get('statusTypId', self._interpreter_booking_status_2)),
-                "interpreter_type": self.env["res.interpreter.type"].search([('code', '=', data.get('tolkTypId'))], limit=1) or False,
+                "interpreter_type":  interpreter_type and interpreter_type.id or False,
                 "interpreter_remote_type": self.env["res.interpreter.remote_type"].search([('code', '=', data.get('distanstolkTypId'))]),
                 "time_start": self.change_tz(times.get('fromDatumTid')),
                 "time_end": self.change_tz(times.get('tomDatumTid')),
-                "address_obj": data.get('adress', {}),
                 "street": address_obj.get('gatuadress'),
                 "zip": address_obj.get('postnr'),
                 "city": address_obj.get('ort'),
                 # state_id is not used, and its uncertain that code is the one
                 # to be used.
-                "state_id": self.env['res.country.state'].search([('code', '=', address_obj.get('kommunkod'))], limit=1) or False,
-                "interpreter_language": self.env["res.interpreter.language"].search([('code', '=', data.get('tolksprakId'))]),
-                "interpreter_gender": self.env["res.interpreter.gender_preference"].search([('code', '=', data.get('tolkkonID'))]),
+                "state_id":  state_id and state_id.id or False,
+                "interpreter_language": interpreter_language and interpreter_language.id or False,
+                "interpreter_gender": interpreter_gender and interpreter_gender.id or False,
                 "interpreter_ref": data.get('tolkId'),
                 "interpreter_name": data.get('tolkNamn'),
                 "interpreter_phone": data.get('tolkTelefonnummer'),

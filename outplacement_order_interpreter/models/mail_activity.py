@@ -711,10 +711,11 @@ class MailActivity(models.Model):
         state_id = self.env['res.country.state'].search([('code', '=', address_obj.get('kommunkod'))], limit=1)
         interpreter_language = self.env["res.interpreter.language"].search([('code', '=', data.get('tolksprakId'))], limit=1)
         interpreter_gender = self.env["res.interpreter.gender_preference"].search([('code', '=', data.get('tolkkonID'))], limit=1)
+        remote_type = self.env["res.interpreter.remote_type"].search([('code', '=', data.get('distanstolkTypId'))], limit=1)
         vals = {"_interpreter_booking_status": str(data.get('tekniskStatusTypId', self._interpreter_booking_status)),
                 "_interpreter_booking_status_2": str(data.get('statusTypId', self._interpreter_booking_status_2)),
                 "interpreter_type":  interpreter_type and interpreter_type.id or False,
-                "interpreter_remote_type": self.env["res.interpreter.remote_type"].search([('code', '=', data.get('distanstolkTypId'))]),
+                "interpreter_remote_type": remote_type and remote_type.id or False,
                 "time_start": self.change_tz(times.get('fromDatumTid')),
                 "time_end": self.change_tz(times.get('tomDatumTid')),
                 "street": address_obj.get('gatuadress'),

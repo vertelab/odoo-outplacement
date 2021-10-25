@@ -61,6 +61,7 @@ Different version submitted
 53. V12.0.1.11.2 AFC-2902 - Translations and minor code cleanup.
 54. V12.0.1.11.3 AFC-2954 - Optimization and safeguards.
 55. V12.0.1.11.4 AFC-2976 - Crashbug fix
+55. V12.0.1.11.5 HOTFIX - Crashbug fix
 Maintainers
 ~~~~~~~~~~~
 

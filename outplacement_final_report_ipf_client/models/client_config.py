@@ -249,7 +249,7 @@ class ClientConfig(models.Model):
         if outplacement.fr_report_date:
             payload["rapportering_datum"] = str(outplacement.fr_report_date)
         else:
-            raise UserError(_("You need to full out reporting date to send final report"))
+            raise UserError(_("You need to fill out reporting date to send final report"))
 
         if outplacement.partner_id:
             payload["deltagare"] = {

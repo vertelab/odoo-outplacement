@@ -4,7 +4,7 @@ import json
 import logging
 import requests
 import uuid
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools import pycompat
 
 from odoo import api, models, fields, _
@@ -70,7 +70,7 @@ class ClientConfig(models.Model):
         try:
             values.update(message=json.loads(response.content))
         except json.decoder.JSONDecodeError:
-            pass
+            _logger.error(f"Error decoding response text")
         self.env['ipf.final_report.request.history'].create(values)
 
     def get_headers(self):
@@ -236,7 +236,6 @@ class ClientConfig(models.Model):
             "personnummer": outplacement.partner_id.social_sec_nr.replace("-", ""),
             "unikt_id": str(uuid.uuid4()),
             "inskickad_datum": str(outplacement.fr_send_date),
-            "rapportering_datum": str(outplacement.fr_report_date) if outplacement.fr_report_date else "",
             "status": outplacement.stage_id.sequence,
             "sent_inskickad": "true" if outplacement.late else "false",
             "avbrott": "true" if outplacement.interruption else "false",
@@ -247,6 +246,11 @@ class ClientConfig(models.Model):
                 "svar": outplacement.complementing_information or "komm_info_03"
             }
         }
+        if outplacement.fr_report_date:
+            payload["rapportering_datum"] = str(outplacement.fr_report_date)
+        else:
+            raise UserError(_("You need to full out reporting date to send final report"))
+
         if outplacement.partner_id:
             payload["deltagare"] = {
                 "fornamn": outplacement.partner_id.firstname or "",

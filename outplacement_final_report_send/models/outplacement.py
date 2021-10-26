@@ -60,6 +60,7 @@ class Outplacement(models.Model):
                 except ValueError as e:
                     res_dict = {}
                     _logger.error(f"Error decoding response text: {e}")
+                    raise UserError(f"Error decoding response, try again or contact support")
                 tracking_id = res_dict.get("error_id", "")
                 message = res_dict.get("message", "")
                 cause_dict = res_dict.get("cause", {})

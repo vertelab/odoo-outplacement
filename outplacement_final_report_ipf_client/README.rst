@@ -18,6 +18,7 @@ Different version submitted
 7. v12.0.1.2.0 AFC-2368 Added 'Cancelled by AF' label in Outplacement kanban view if outplacement 'Interrupted'.
 8. v12.0.1.2.1 AFC-2566 Added request history to technical menu.
 9. v12.0.1.2.2 #701 Added Form and Search view for Outplacement Final Report IPF client response history.
+10. v12.0.1.2.3 Added check for reporting date
 
 Maintainers
 ~~~~~~~~~~~

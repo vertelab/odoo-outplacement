@@ -4,11 +4,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0-20210129\n"
+"Project-Id-Version: Odoo Server 12.0-20210816\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-15 11:39+0000\n"
-"PO-Revision-Date: 2021-04-21 09:52+0200\n"
-"Last-Translator: <Sebastian Gieser>\n"
+"PO-Revision-Date: 2021-10-26 16:30+0200\n"
+"Last-Translator: Sebastian Gieser <sebastian.gieser@arbetsformedlingen.se>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,25 +18,25 @@ msgstr ""
 "X-Generator: Poedit 2.4.2\n"
 
 #. module: outplacement_final_report_ipf_client
-#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:325
-#, python-format
-msgid "A main goal is required to send final report"
-msgstr "Huvudmål krävs för att skicka in slutredovisning"
-
-#. module: outplacement_final_report_ipf_client
 #: model_terms:ir.ui.view,arch_db:outplacement_final_report_ipf_client.view_outplacement_kanban_for_interruption
 msgid "<span style=\"color:red\">Cancelled by AF</span>"
 msgstr "<span style=\"color:red\">Avbruten av AF</span>"
 
 #. module: outplacement_final_report_ipf_client
-#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:388
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:332
+#, python-format
+msgid "A main goal is required to send final report"
+msgstr "Huvudmål krävs för att skicka in slutredovisning"
+
+#. module: outplacement_final_report_ipf_client
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:406
 #, python-format
 msgid "An alternative goal is required to send final report"
 msgstr "Alternativt mål krävs för att skicka in slutredovisning"
 
 #. module: outplacement_final_report_ipf_client
-#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:306
-#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:369
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:311
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:385
 #, python-format
 msgid "At least one step is required to send final report"
 msgstr "Minst ett steg krävs för att kunna skicka slutredovisning"
@@ -44,17 +44,27 @@ msgstr "Minst ett steg krävs för att kunna skicka slutredovisning"
 #. module: outplacement_final_report_ipf_client
 #: model:ir.model.fields,field_description:outplacement_final_report_ipf_client.field_ipf_final_report_client_config__client_id
 msgid "Client ID"
-msgstr ""
+msgstr "Klient ID"
 
 #. module: outplacement_final_report_ipf_client
 #: model:ir.model.fields,field_description:outplacement_final_report_ipf_client.field_ipf_final_report_client_config__client_secret
 msgid "Client Secret"
-msgstr ""
+msgstr "Klient hemlighet"
 
 #. module: outplacement_final_report_ipf_client
 #: model:ir.model.fields,field_description:outplacement_final_report_ipf_client.field_ipf_final_report_request_history__config_id
 msgid "Config ID"
 msgstr "Konfig ID"
+
+#. module: outplacement_final_report_ipf_client
+#: model_terms:ir.ui.view,arch_db:outplacement_final_report_ipf_client.ipf_final_report_client_config_request_history_search
+msgid "Create Date"
+msgstr "Skapad Datum"
+
+#. module: outplacement_final_report_ipf_client
+#: model_terms:ir.ui.view,arch_db:outplacement_final_report_ipf_client.ipf_final_report_client_config_request_history_search
+msgid "Created On"
+msgstr "Skapad den"
 
 #. module: outplacement_final_report_ipf_client
 #: model:ir.model.fields,field_description:outplacement_final_report_ipf_client.field_ipf_final_report_client_config__create_uid
@@ -75,7 +85,7 @@ msgid "Display Name"
 msgstr "Visningsnamn"
 
 #. module: outplacement_final_report_ipf_client
-#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:264
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:269
 #, python-format
 msgid "Employee must be set"
 msgstr "Deltagare måste ha en ansvarig handläggare för att skicka in slutredovisning"
@@ -91,6 +101,11 @@ msgid "Final report ipf client"
 msgstr "Slutredovisning IPF klient"
 
 #. module: outplacement_final_report_ipf_client
+#: model_terms:ir.ui.view,arch_db:outplacement_final_report_ipf_client.ipf_final_report_client_config_request_history_search
+msgid "Group By"
+msgstr "Gruppera efter"
+
+#. module: outplacement_final_report_ipf_client
 #: selection:ipf.final_report.client.config,environment:0
 msgid "I1"
 msgstr ""
@@ -102,10 +117,29 @@ msgid "ID"
 msgstr ""
 
 #. module: outplacement_final_report_ipf_client
-#: model:ir.actions.act_window,name:outplacement_final_report_ipf_client.ipf_client_config_action_window
-#: model:ir.ui.menu,name:outplacement_final_report_ipf_client.ipf_client_config
+#: model:ir.ui.menu,name:outplacement_final_report_ipf_client.menu_ipf_final_report_client_config_request_history
+msgid "IPF Final"
+msgstr "IPF Slutredovisning"
+
+#. module: outplacement_final_report_ipf_client
+#: model:ir.ui.menu,name:outplacement_final_report_ipf_client.menu_ipf_final_report
+msgid "IPF Final Report"
+msgstr "IPF Slutredovisning"
+
+#. module: outplacement_final_report_ipf_client
+#: model:ir.actions.act_window,name:outplacement_final_report_ipf_client.ipf_final_report_action_window
 msgid "IPF Final Report Client Config"
 msgstr "IPF slutredovisning klient konfig"
+
+#. module: outplacement_final_report_ipf_client
+#: model:ir.actions.act_window,name:outplacement_final_report_ipf_client.ipf_final_report_client_config_request_history_action_window
+msgid "IPF Final Report Client Config Request History"
+msgstr "IPF Slutredovisning Request History"
+
+#. module: outplacement_final_report_ipf_client
+#: model:ir.model,name:outplacement_final_report_ipf_client.model_ipf_final_report_request_history
+msgid "IPF Final Report Request History"
+msgstr "IPF Slutredovisning Request History"
 
 #. module: outplacement_final_report_ipf_client
 #: model:ir.model.fields,field_description:outplacement_final_report_ipf_client.field_ipf_final_report_client_config____last_update
@@ -136,19 +170,19 @@ msgid "Method"
 msgstr "Metod"
 
 #. module: outplacement_final_report_ipf_client
-#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:367
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:383
 #, python-format
 msgid "Motivation of alternative goal missing"
 msgstr "Motivering för alternativt mål saknas"
 
 #. module: outplacement_final_report_ipf_client
-#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:304
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:309
 #, python-format
 msgid "Motivation of main goal missing"
 msgstr "Motivering för huvudmål saknas"
 
 #. module: outplacement_final_report_ipf_client
-#: model_terms:ir.ui.view,arch_db:outplacement_final_report_ipf_client.ipf_client_config_view_form
+#: model_terms:ir.ui.view,arch_db:outplacement_final_report_ipf_client.ipf_final_report_view_form
 msgid "POST"
 msgstr ""
 
@@ -160,7 +194,7 @@ msgstr ""
 #. module: outplacement_final_report_ipf_client
 #: model:ir.model.fields,field_description:outplacement_final_report_ipf_client.field_ipf_final_report_request_history__params
 msgid "Params"
-msgstr ""
+msgstr "Parametrar"
 
 #. module: outplacement_final_report_ipf_client
 #: model:ir.model.fields,field_description:outplacement_final_report_ipf_client.field_ipf_final_report_request_history__payload
@@ -168,7 +202,7 @@ msgid "Payload"
 msgstr ""
 
 #. module: outplacement_final_report_ipf_client
-#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:230
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:231
 #, python-format
 msgid "Performing operation needs to be set to send final report"
 msgstr "Deltagare behöver ha en utförande verksamhet för att kunna skicka slutredovisning"
@@ -176,23 +210,24 @@ msgstr "Deltagare behöver ha en utförande verksamhet för att kunna skicka slu
 #. module: outplacement_final_report_ipf_client
 #: model:ir.model.fields,field_description:outplacement_final_report_ipf_client.field_ipf_final_report_request_history__request_headers
 msgid "Request Headers"
-msgstr ""
+msgstr "Anrops Huvud"
 
 #. module: outplacement_final_report_ipf_client
 #: model:ir.model.fields,field_description:outplacement_final_report_ipf_client.field_ipf_final_report_client_config__request_history_ids
-#: model_terms:ir.ui.view,arch_db:outplacement_final_report_ipf_client.ipf_client_config_view_form
+#: model_terms:ir.ui.view,arch_db:outplacement_final_report_ipf_client.ipf_final_report_view_form
 msgid "Requests"
-msgstr ""
+msgstr "Anrop"
 
 #. module: outplacement_final_report_ipf_client
 #: model:ir.model.fields,field_description:outplacement_final_report_ipf_client.field_ipf_final_report_request_history__response_code
+#: model_terms:ir.ui.view,arch_db:outplacement_final_report_ipf_client.ipf_final_report_client_config_request_history_search
 msgid "Response Code"
-msgstr ""
+msgstr "Svarskod"
 
 #. module: outplacement_final_report_ipf_client
 #: model:ir.model.fields,field_description:outplacement_final_report_ipf_client.field_ipf_final_report_request_history__response_headers
 msgid "Response Headers"
-msgstr ""
+msgstr "Svarshuvud"
 
 #. module: outplacement_final_report_ipf_client
 #: selection:ipf.final_report.client.config,environment:0
@@ -216,12 +251,13 @@ msgid "Url"
 msgstr ""
 
 #. module: outplacement_final_report_ipf_client
-#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:318
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:252
+#, python-format
+msgid "You need to fill out reporting date to send final report"
+msgstr "Du behöver fylla i påbörjat datum för att skicka in slutredovisning."
+
+#. module: outplacement_final_report_ipf_client
+#: code:addons/outplacement_final_report_ipf_client/models/client_config.py:325
 #, python-format
 msgid "complementing effort type not set"
 msgstr "Typ av kompletterande insats inte angiven"
-
-#. module: outplacement_final_report_ipf_client
-#: model:ir.model,name:outplacement_final_report_ipf_client.model_ipf_final_report_request_history
-msgid "ipf.final_report.request.history"
-msgstr ""

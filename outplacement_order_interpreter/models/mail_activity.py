@@ -660,9 +660,8 @@ class MailActivity(models.Model):
         if status_code == 200:
             self.interpreter_booking_ref = response.text
             self._interpreter_booking_status_2 = _('1')
-            # Update current status from Tolkportalen.
-            self.check_interpreter_order_status()
             _logger.debug('Interpreter booking success.')
+            self.check_interpreter_order_status([self])
         elif status_code == 404:
             self._interpreter_booking_status = msg
             _logger.error('Check KA-Number and that address is correct. %s' % str(response.text))
@@ -695,18 +694,18 @@ class MailActivity(models.Model):
         # the response.
         times = {}
         dt_format = '%Y-%m-%dT%H:%M:%S'
-        for key in ('fromDatumTid', 'tomDatumTid'):
+        for key, target in (('fromDatumTid', 'time_start'),
+                            ('tomDatumTid', 'time_end')):
             try:
-                times['key'] = datetime.datetime.strptime(data.get(key), dt_format)
+                times[key] = self.change_tz(datetime.datetime.strptime(data.get(key), dt_format)) or getattr(self, target)
             except TypeError:
-                # Most likely False or None as it is probably not set
-                pass
-            except ValueError:
+                times[key] = getattr(self, target)
+            except (ValueError):
                 _logger.error(f'Update activity: supplied datetime format'
                               f' (data.get(key)) does not match expected'
                               f' format ({dt_format})')
-        address_obj = data.get('adress', {})
 
+        address_obj = data.get('adress', {})
         interpreter_type = self.env["res.interpreter.type"].search([('code', '=', data.get('tolkTypId'))], limit=1)
         state_id = self.env['res.country.state'].search([('code', '=', address_obj.get('kommunkod'))], limit=1)
         interpreter_language = self.env["res.interpreter.language"].search([('code', '=', data.get('tolksprakId'))], limit=1)
@@ -714,18 +713,18 @@ class MailActivity(models.Model):
         remote_type = self.env["res.interpreter.remote_type"].search([('code', '=', data.get('distanstolkTypId'))], limit=1)
         vals = {"_interpreter_booking_status": str(data.get('tekniskStatusTypId', self._interpreter_booking_status)),
                 "_interpreter_booking_status_2": str(data.get('statusTypId', self._interpreter_booking_status_2)),
-                "interpreter_type":  interpreter_type and interpreter_type.id or False,
-                "interpreter_remote_type": remote_type and remote_type.id or False,
-                "time_start": self.change_tz(times.get('fromDatumTid')),
-                "time_end": self.change_tz(times.get('tomDatumTid')),
+                "interpreter_type":  interpreter_type and interpreter_type.id or self.interpreter_type,
+                "interpreter_remote_type": remote_type and remote_type.id or self.interpreter_remote_type,
+                "time_start": times.get('fromDatumTid'),
+                "time_end": times.get('tomDatumTid'),
                 "street": address_obj.get('gatuadress'),
                 "zip": address_obj.get('postnr'),
                 "city": address_obj.get('ort'),
                 # state_id is not used, and its uncertain that code is the one
                 # to be used.
-                "state_id":  state_id and state_id.id or False,
-                "interpreter_language": interpreter_language and interpreter_language.id or False,
-                "interpreter_gender": interpreter_gender and interpreter_gender.id or False,
+                "state_id":  state_id and state_id.id or self.state_id,
+                "interpreter_language": interpreter_language and interpreter_language.id or self.interpreter_language,
+                "interpreter_gender": interpreter_gender and interpreter_gender.id or self.interpreter_gender,
                 "interpreter_ref": data.get('tolkId'),
                 "interpreter_name": data.get('tolkNamn'),
                 "interpreter_phone": data.get('tolkTelefonnummer'),
@@ -782,19 +781,28 @@ class MailActivity(models.Model):
         """
         for activity in self:
             try:
-                # Update so we have the latest status on the order
-                # as its important.
-                activity.check_interpreter_order_status([activity])
                 client = self.env['ipf.interpreter.client'].search([], limit=1)
                 resp = client.cancel_interpreter(activity.interpreter_booking_ref, activity.interpreter_ka_nr)
             except Exception as e:
                 _logger.exception(e)
             else:
-                if resp.status_code not in (200, 201):
-                    msg = (f'Something went wrong when canceling interpreter\n'
-                           f'\tStatus Code: {resp.status_code}\n'
-                           f'\tMessage: {resp.text}')
-                    _logger.warning(msg)
+                if resp.status_code in (500,):
+                    msg = _('Something went wrong when canceling interpreter\n'
+                            'If you tried to cancel a booking that was just made,'
+                            ' that can be the reason as it has not finished '
+                            'processing at receiving end, please wait a few '
+                            'minutes and try again.\n\n'
+                            'Original error: {status_code}\n'
+                            'Original error message: {text}').format(status_code=resp.status_code,
+                                                                     text=resp.text)
+                    _logger.error(msg)
+                    raise UserError(msg)
+                elif resp.status_code not in (200, 201):
+                    msg = _('Something went wrong when canceling interpreter\n'
+                            '\tStatus Code: {status_code}\n'
+                            '\tMessage: {text}').format(status_code=resp.status_code,
+                                                        text=resp.text)
+                    _logger.error(msg)
                     raise UserError(msg)
                 # Update status on order afterwards so that user gets
                 # feedback.

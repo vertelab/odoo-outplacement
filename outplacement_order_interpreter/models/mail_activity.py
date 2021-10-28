@@ -717,20 +717,20 @@ class MailActivity(models.Model):
                 "interpreter_remote_type": remote_type and remote_type.id or self.interpreter_remote_type,
                 "time_start": times.get('fromDatumTid'),
                 "time_end": times.get('tomDatumTid'),
-                "street": address_obj.get('gatuadress'),
-                "zip": address_obj.get('postnr'),
-                "city": address_obj.get('ort'),
+                "street": address_obj.get('gatuadress', self.street),
+                "zip": address_obj.get('postnr', self.zip),
+                "city": address_obj.get('ort', self.city),
                 # state_id is not used, and its uncertain that code is the one
                 # to be used.
                 "state_id":  state_id and state_id.id or self.state_id,
                 "interpreter_language": interpreter_language and interpreter_language.id or self.interpreter_language,
                 "interpreter_gender": interpreter_gender and interpreter_gender.id or self.interpreter_gender,
-                "interpreter_ref": data.get('tolkId'),
-                "interpreter_name": data.get('tolkNamn'),
-                "interpreter_phone": data.get('tolkTelefonnummer'),
-                "interpreter_company": data.get('tolkLeverantorVerksamhetsnamn'),
-                "interpreter_contact_person": supplier.get('namn'),
-                "interpreter_contact_phone": supplier.get('telefonnummer')}
+                "interpreter_ref": data.get('tolkId', self.interpreter_ref),
+                "interpreter_name": data.get('tolkNamn', self.interpreter_name),
+                "interpreter_phone": data.get('tolkTelefonnummer', self.interpreter_phone),
+                "interpreter_company": data.get('tolkLeverantorVerksamhetsnamn', self.interpreter_company),
+                "interpreter_contact_person": supplier.get('namn', self.interpreter_contact_person),
+                "interpreter_contact_phone": supplier.get('telefonnummer', self.interpreter_contact_phone)}
         self.write(vals=vals)
         # Force computation if time has passed
         if self.time_end and self.time_end < datetime.datetime.now():

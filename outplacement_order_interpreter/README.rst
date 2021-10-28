@@ -62,6 +62,7 @@ Different version submitted
 54. V12.0.1.11.3 AFC-2954 - Optimization and safeguards.
 55. V12.0.1.11.4 AFC-2976 - Crashbug fix
 55. V12.0.1.11.5 HOTFIX - Crashbug fix
+56. V12.0.1.11.6 AFC-2871, AFC-2982 - Bugfix, additional Safeguards.
 Maintainers
 ~~~~~~~~~~~
 

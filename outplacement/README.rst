@@ -19,6 +19,7 @@ Different version submitted
 9. v12.0.1.2.9 - AFC-2851 Added dynamic Service start and end date filter to outplacement filter view.
 10. v12.0.1.3.0 - AFC-2585 Added SYV field into Outplacement.
 11. v12.0.1.3.1 - AFC-2153 moved around fields in search, replaced name with booking reference number in kanban.
+11. v12.0.1.3.2 - AFC-2862 fixed _default_stage_id so that it always sets the correct stage
 
 Maintainers
 ~~~~~~~~~~~

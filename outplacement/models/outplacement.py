@@ -22,10 +22,9 @@ class Outplacement(models.Model):
             base64.b64encode(open(image_path, 'rb').read()))
 
     def _default_stage_id(self):
-        # since default sorting on outplacement.stage is sequence
-        # this code will fetch the stage with the lowest sequence.
+        # Finds the lowest sequence which is known to be 10.
         return self.env['outplacement.stage'].search(
-            [('fold', '=', False)], limit=1)
+            [('fold', '=', False), ('sequence', '=', 10)], limit=1)
 
     @api.model
     def _read_group_employee_ids(self, employees, domain, order):

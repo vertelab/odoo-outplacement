@@ -34,8 +34,8 @@ class Outplacement(models.Model):
                           'is set to a non-numerical value')
             num_days = 41
         next_41_days = self.date_by_adding_business_days(self.service_end_date, num_days)
-        if self.stage_id and self.stage_id.id == self.env.ref('outplacement.cancelled_stage').id and \
-                today >= next_41_days:
+        canceled = self.stage_id and self.stage_id.id == self.env.ref('outplacement.cancelled_stage').id
+        if canceled and today >= next_41_days:
             raise UserError(
                 _("You are only allowed to send Final Report within the 60 working days after the service ended."))
         workdays_from_start = self.order_start_date + datetime.timedelta(days=15)
@@ -44,7 +44,7 @@ class Outplacement(models.Model):
         if not self.alternative_goal_id and workdays_from_start < today:
             raise UserError(_("An alternative goal is required to send final report"))
 
-        if today <= self.service_end_date:
+        if today <= self.service_end_date and not canceled:
             raise UserError(_("You are not allowed to send final report before service end"
                               " unless there has been an interruption"))
         if not self.jp_sent_date:

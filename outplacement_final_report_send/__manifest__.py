@@ -2,8 +2,11 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Outplacement Final Report send',
-    'version': '12.0.1.2.11',
+    'version': '12.0.1.2.12',
     'category': 'Outplacement',
+    'description': """
+    v12.0.1.2.12 AFC-3334 - Fixed case with failing to send in endreport when is canceled.\n
+    """,
     'author': "Vertel AB",
     'license': 'AGPL-3',
     'website': 'https://vertel.se',

@@ -53,8 +53,18 @@ class Outplacement(models.Model):
 
         client_config = self.env['ipf.final_report.client.config'].search([], limit=1)
         if client_config:
-            response = client_config.post_request(self)
+            self.fr_send_date = datetime.datetime.today().strftime("%Y-%m-%d")
+            try:
+                response = client_config.post_request(self)
+            except Exception as e:
+                # Failed to send, reset sent date.
+                self.fr_send_date = False
+                msg = _('Failed to send final report with error: {}')
+                _logger.exception(msg.format(e))
+                raise UserError(msg.format(e))
             if response.status_code != 201:
+                # Failed to send, reset sent date.
+                self.fr_send_date = False
                 try:
                     res_dict = json.loads(response.text)
                 except ValueError as e:
@@ -74,6 +84,5 @@ class Outplacement(models.Model):
             _logger.debug("Successfully created final report")
             self.fr_rejected = False
             self.message_post(body=_("Final report sent"))
-            self.fr_send_date = datetime.datetime.today().strftime("%Y-%m-%d")
         else:
             raise UserError(_("No config found for final report"))

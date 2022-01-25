@@ -19,6 +19,7 @@ Different version submitted
 8. v12.0.1.2.1 AFC-2566 Added request history to technical menu.
 9. v12.0.1.2.2 #701 Added Form and Search view for Outplacement Final Report IPF client response history.
 10. v12.0.1.2.3 Added check for reporting date
+11. v12.0.2.0.0 AFC-3412 Use SSYK-COde instead, some code cleanup
 
 Maintainers
 ~~~~~~~~~~~

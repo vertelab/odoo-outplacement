@@ -1,11 +1,9 @@
 import datetime
-import datetime
 import json
 import logging
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError
 
-from odoo import api, fields, models, tools
-from odoo import tools, _
+from odoo import api, fields, models, tools, _
 
 _logger = logging.getLogger(__name__)
 
@@ -68,7 +66,6 @@ class Outplacement(models.Model):
                 try:
                     res_dict = json.loads(response.text)
                 except ValueError as e:
-                    res_dict = {}
                     _logger.error(f"Error decoding response text: {e}")
                     raise UserError(f"Error decoding response, try again or contact support")
                 tracking_id = res_dict.get("error_id", "")

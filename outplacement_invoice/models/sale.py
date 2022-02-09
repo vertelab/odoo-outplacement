@@ -79,10 +79,12 @@ class SaleOrder(models.Model):
         if res:
             for invoice in res.get('invoices', []):
                 invoice_id = invoice.get('invoice_number')
-                if invoice_id:
+                existing_invoice = self.env['account.invoice'].search(
+                    [('raindance_ref', '=', invoice.get('ID'))])
+                if invoice_id and not existing_invoice:
                     res_invoice = client_config.get_invoice(invoice_id=invoice_id)
-                    new_invoice = self.create_invoice(res_invoice)
-                else:
+                    self.create_invoice(res_invoice)
+                elif not invoice_id:
                     _logger.error(f"There was no 'invoice_number' in invoice {invoice},"
                                   f" for outplacement {self.outplacement_id.name}")
                     if res.get('error_id', False):
@@ -106,7 +108,7 @@ class SaleOrder(models.Model):
             invoice_ref = sf_dict['Invoice']['ID']
             invoice = self.env['account.invoice'].search([('raindance_ref', '=', invoice_ref)])
             if invoice:
-                _logger.warn('Invoice already exists: %s', invoice_ref)
+                _logger.warning(f'Invoice already exists: {invoice_ref}')
                 return invoice
             party = sf_dict['Invoice']['cac:BuyerParty']['cac:Party']
             # Find or create a res_partner for buyer (AF).

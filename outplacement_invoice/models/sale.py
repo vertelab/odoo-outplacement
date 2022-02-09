@@ -84,10 +84,7 @@ class SaleOrder(models.Model):
                 if invoice_id and not existing_invoice:
                     res_invoice = client_config.get_invoice(invoice_id=invoice_id)
                     self.create_invoice(res_invoice)
-                elif invoice_id:
-                    # Invoice already existing in system, do nothing.
-                    pass
-                else:
+                elif not invoice_id:
                     _logger.error(f"There was no 'invoice_number' in invoice {invoice},"
                                   f" for outplacement {self.outplacement_id.name}")
                     if res.get('error_id', False):

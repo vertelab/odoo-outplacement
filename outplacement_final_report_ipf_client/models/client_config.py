@@ -276,9 +276,9 @@ class ClientConfig(models.Model):
                 "steg": []
             }
             if goal_id.field_of_work_id:
-                payload["huvudmal"]["yrkesomrade"] = goal_id.field_of_work_id.name
+                payload["huvudmal"]["yrkesomrade"] = str(goal_id.field_of_work_id.code)
             if goal_id.job_id:
-                payload["huvudmal"]["yrke"] = goal_id.job_id.name
+                payload["huvudmal"]["yrke"] = str(goal_id.job_id.code)
             if goal_id.matches_interest:
                 payload["huvudmal"]["val_av_huvudmal_motivering"].append({
                     "typ": 'Matchar deltagarens intressen'

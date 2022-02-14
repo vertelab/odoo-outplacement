@@ -27,6 +27,7 @@ Different version submitted
 16. v12.0.1.2.11 Added sudo() to get_param().
 17. v12.0.1.2.12 AFC-3334 - Fixed case with failing to send in endreport when is canceled.\n
 18. v12.0.1.2.13 AFC-3337 - Fixed so that sent_date gets sent.\n
+19. v12.0.1.2.14 AFC-3412 - Some cleanup.
 
 
 Maintainers

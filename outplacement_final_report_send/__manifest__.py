@@ -2,7 +2,7 @@
 # Version format OdooMajor.OdooMinor.Major.Minor.Patch
 {
     'name': 'Outplacement Final Report send',
-    'version': '12.0.1.2.13',
+    'version': '12.0.1.2.14',
     'category': 'Outplacement',
     'description': """
     """,

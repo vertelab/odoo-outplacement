@@ -21,7 +21,6 @@ Different version submitted
 10. v12.0.0.2.5 AFC-2582 Adjusted calculation of allowed time to send Final Report.
 11. v12.0.0.2.6 AFC-2582 Added some space between two msg on outplacement kanban view.
 12. v12.0.0.2.7 AFC-2582 Removed some space between two msg on outplacement kanban view.
-13. v12.0.1.0.0 AFC-3412 Use SSYK-COde instead, some code cleanup
 
 Maintainers
 ~~~~~~~~~~~

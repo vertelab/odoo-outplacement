@@ -49,9 +49,13 @@ class SaleOrder(models.Model):
     @api.model
     def cron_outplacement_invoice(self):
         """Cron job entry point."""
-        sale_orders = self.env['sale.order'].search([('invoice_count_stored', '<', 2)])
+        sale_orders = self.env['sale.order'].search(
+            [('invoice_count_stored', '<', 2), ('outplacement_id', '!=', None)])
         for sale_order in sale_orders:
-            sale_order.outplacement_invoice()
+            try:
+                sale_order.outplacement_invoice()
+            except Exception:
+                _logger.exception(f"Problem fetching order: {sale_order.outplacement_id.name}")
 
     @api.one
     def outplacement_invoice(self):

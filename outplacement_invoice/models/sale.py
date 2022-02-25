@@ -84,7 +84,7 @@ class SaleOrder(models.Model):
             for invoice in res.get('invoices', []):
                 invoice_id = invoice.get('invoice_number')
                 existing_invoice = self.env['account.invoice'].search(
-                    [('raindance_ref', '=', invoice.get('ID'))])
+                    [('raindance_ref', '=', invoice.get('id'))])
                 if invoice_id and not existing_invoice:
                     res_invoice = client_config.get_invoice(invoice_id=invoice_id)
                     self.create_invoice(res_invoice)

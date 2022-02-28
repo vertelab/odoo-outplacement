@@ -21,8 +21,9 @@ Different version submitted
 10. v12.0.0.2.5 AFC-2582 Adjusted calculation of allowed time to send Final Report.
 11. v12.0.0.2.6 AFC-2582 Added some space between two msg on outplacement kanban view.
 12. v12.0.0.2.7 AFC-2582 Removed some space between two msg on outplacement kanban view.
+12. v12.0.0.2.8 AFC-2582 Fixed invisibility domain for complementing_effort_description.
 
 Maintainers
 ~~~~~~~~~~~
 
-This module is maintained by Vertal.
+This module is maintained by Vertel.

@@ -159,7 +159,7 @@
                     <field name="complementing_effort_type"
                            attrs="{'invisible': [('step_type', '!=', 'Lämpliga kompletterande insatser')]}"/>
                     <field name="complementing_effort_description"
-                           attrs="{'invisible': [('complementing_effort_type', '!=', 'Annat')]}"/>
+                           attrs="{'invisible': ['|', ('complementing_effort_type', '!=', 'Annat'), ('step_type', '!=', 'Lämpliga kompletterande insatser')]}"/>
                     <field name="step_name" string="Describe other step"
                            attrs="{'invisible': [('step_type', '!=', 'Annat')]}"/>
                     <field name="step_name"

@@ -144,6 +144,29 @@ class Outplacement(models.Model):
         return hosts
 
     @api.model
+    def _handle_final_report_msg(self, order, message_type, comment):
+        outplacement = self.search([  # '&',
+            # ('partner_social_sec_nr', '=', jobseeker),
+            # ('some_field', '=', employer),
+            ('name', '=', order)])
+        if outplacement:
+            # possible values:
+            # Slutredovisning ej godkänd
+            # Slutredovisning inkommen
+            # Slutredovisning godkänd
+            if message_type == "Slutredovisning ej godkänd":
+                outplacement.fr_rejected = True
+                outplacement.message_post(body=_(f"Hello.\n"
+                                                 f"The Employment service has decided "
+                                                 f"to reject the final report for "
+                                                 f"order id : %s\nMotivation:"
+                                                 f"\n%s" % (outplacement.order_id_origin, comment)))
+            elif message_type == "Slutredovisning godkänd":
+                outplacement.message_post(body=message_type)
+                outplacement.fr_report_approved_date = datetime.today().date()
+            return True
+
+    @api.model
     def mq_fr_listener(self, minutes_to_live=10):
         _logger.info("Final report MQ Listener started.")
         host_port = self.__get_host_port()
@@ -158,6 +181,12 @@ class Outplacement(models.Model):
         stomp_log_level = self.env["ir.config_parameter"].get_param(
             "outplacement_final_report_mq_ipf.stomp_logger", "INFO"
         )
+        databases = self.env['ir.config_parameter'].get_param(
+            "outplacement_final_report_mq_ipf.mq_databases",
+            "").split()
+        if not databases:
+            raise Warning("MQ: No databases configured. Set system parameter"
+                          "outplacement_final_report_mq_ipf.mq_databases")
 
         # decide the stomper log level depending on param
         stomp_logger = logging.getLogger("stomp.py")
@@ -186,58 +215,51 @@ class Outplacement(models.Model):
             while time() < limit:
                 message = frlsnr.next_message()
                 if message:
-                    env_new = None
                     try:
-                        new_cr = registry(self.env.cr.dbname).cursor()
-                        uid, context = self.env.uid, self.env.context
-                        with api.Environment.manage():
-                            env_new = api.Environment(new_cr, uid, context)
-                            _logger.debug("Final report MQ Sender: finding outplacement")
-                            headers, msg = message
-                            comment = msg.get(COMMENT)
-                            employer = msg.get(EMP_REF)
-                            order = msg.get(ORDER_NR)
-                            jobseeker = msg.get(JS_REF)
-                            # only relevant if it's a social security number
-                            # jobseeker = f"{jobseeker[:8]}-{jobseeker[8:]}"
-                            message_type = msg.get(MSGTYPE)
-                            _logger.debug(f"Got message with order number {order}, "
-                                          f"jobseeker reference {jobseeker}, "
-                                          f"employer reference {employer}, "
-                                          f"comment {comment}, "
-                                          f"type {message_type}")
-                            # not sure how specific the search has to be to find the right object
-                            outplacement = env_new['outplacement'].search([  # '&',
-                                # ('partner_social_sec_nr', '=', jobseeker),
-                                # ('some_field', '=', employer),
-                                ('name', '=', order)])
-                            if outplacement:
-                                # possible values:
-                                # Slutredovisning ej godkänd
-                                # Slutredovisning inkommen
-                                # Slutredovisning godkänd
-                                if message_type == "Slutredovisning ej godkänd":
-                                    outplacement.fr_rejected = True
-                                    outplacement.message_post(body=_(f"Hello.\n"
-                                                                     f"The Employment service has decided "
-                                                                     f"to reject the final report for "
-                                                                     f"order id : %s\nMotivation:"
-                                                                     f"\n%s" % (self.order_id_origin, comment)))
-                                elif message_type == "Slutredovisning godkänd":
-                                    outplacement.message_post(body=message_type)
-                                    outplacement.fr_report_approved_date = datetime.today().date()
-                                frlsnr.ack_message(message)
-                            else:
-                                _logger.error(f"Failed to find outplacement with jobseeker ref {jobseeker} "
-                                              f"and order number {order}")
+                        _logger.debug("Final report MQ Sender: finding outplacement")
+                        headers, msg = message
+                        comment = msg.get(COMMENT)
+                        employer = msg.get(EMP_REF)
+                        order = msg.get(ORDER_NR)
+                        jobseeker = msg.get(JS_REF)
+                        # only relevant if it's a social security number
+                        # jobseeker = f"{jobseeker[:8]}-{jobseeker[8:]}"
+                        message_type = msg.get(MSGTYPE)
+                        _logger.debug(f"Got message with order number {order}, "
+                                      f"jobseeker reference {jobseeker}, "
+                                      f"employer reference {employer}, "
+                                      f"comment {comment}, "
+                                      f"type {message_type}")
+                        # not sure how specific the search has to be to find the right object
+                        # Loop through all receiving databases
+                        for database in databases:
+                            env_new = None
+                            try:
+                                # Open cursor and env to the database
+                                new_cr = registry(database).cursor()
+                                uid, context = self.env.uid, self.env.context
+                                with api.Environment.manage():
+                                    env_new = api.Environment(new_cr, uid, context)
+                                    # Check for outplacement in the database
+                                    if env_new['outplacement'].\
+                                            _handle_final_report_msg(
+                                            order, message_type, comment):
+                                        # Found outplacement.
+                                        # We're done with this message.
+                                        env_new.cr.commit()
+                                        break
+                            except:
+                                _logger.exception("Något gick fel vid MQ-hantering.")
+                            finally:
+                                if env_new:
+                                    env_new.cr.close()
+                        frlsnr.ack_message(message)
+
                     except Exception as e:
                         _logger.exception(
                             f"Final report MQ Listener: error: {e}"
                         )
-                    finally:
-                        # close our new cursor
-                        if env_new:
-                            env_new.cr.close()
+
                 self.env.cr.commit()
                 # Check if stop has been called
                 cronstop = self.env["ir.config_parameter"].get_param(

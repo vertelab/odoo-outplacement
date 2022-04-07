@@ -27,8 +27,9 @@ Different version submitted
 2. v12.0.0.1.2 - Refactored code and bugfixes and better rejection message.
 3. v12.0.0.1.3 - fixed datetime date mismatch.
 4. v12.0.0.1.4 - fixed datetime date mismatch.
+5. v12.0.0.2.0 - Fixed issue with unanswered MQ messages.
 
 Maintainers
 ~~~~~~~~~~~
 
-This module is maintained by Vertal.
+This module is maintained by Vertel.

@@ -47,10 +47,11 @@ class SaleOrder(models.Model):
                                           readonly=True, store=True)
 
     @api.model
-    def cron_outplacement_invoice(self):
+    def cron_outplacement_invoice(self, limit=None, offset=None):
         """Cron job entry point."""
         sale_orders = self.env['sale.order'].search(
-            [('invoice_count_stored', '<', 2), ('outplacement_id', '!=', None)])
+            [('invoice_count_stored', '<', 2), ('outplacement_id', '!=', None)],
+            limit=limit, offset=offset)
         for sale_order in sale_orders:
             try:
                 sale_order.outplacement_invoice()
@@ -60,8 +61,7 @@ class SaleOrder(models.Model):
     @api.one
     def outplacement_invoice(self):
         """Get invoices from raindance and proccess them."""
-        raindance = 'api.raindance.client.config'
-        client_config = self.env[raindance].search([], limit=1)
+        client_config = self.env['api.raindance.client.config'].search([], limit=1)
         if not client_config:
             raise Warning(_("No client config for raindance integration"))
         if not client_config.url:
